@@ -1,0 +1,41 @@
+.blindbox #header {
+		position: relative;
+		color: #fff;
+		text-shadow: 0 0 0.5px rgba(255, 255, 255, 0.25);
+		text-align: center;
+		margin: 0;
+		padding: 10em 0 20em 0;
+		cursor: default;
+background-image:url("https://www.fearnft.games/blindbox/fear-pandoras-blind-box-event-red-outline.png"); 
+background-color:#000;
+background-position:center; 
+background-attachment:scroll; 
+-o-background-size:cover; 
+-moz-background-size:cover; 
+-webkit-background-size:cover; 
+background-size:cover; 
+background-repeat:no-repeat;
+border-bottom:5px solid #333;
+}
+
+@media screen and (max-width: 1400px) {
+.blindbox #header {
+-o-background-size:contain; 
+-moz-background-size:contain; 
+-webkit-background-size:contain; 
+background-size:contain; 
+padding:0;
+}
+}
+
+<!-- Header -->
+			<section id="header">
+			<!--<ul class="navmenu">
+			<li><a href="games.html">Games</a></li>
+			<li><a href="nfts.html">NFTs</a></li>
+			<li><a href="coin.html">Coin</a></li>
+			<li><a href="about.html">About</a></li>
+			</ul>-->
+				
+					
+			</section>

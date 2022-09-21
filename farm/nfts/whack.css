@@ -1,0 +1,26 @@
+.whitetitle {color:red ! important;}
+
+.caption p a {color:red ! important;}
+.caption p a:hover {color:white ! important;}
+
+
+@media screen and (max-width: 1000px) {
+h2 {background:rgba(16,16,16,0.5);}
+}
+
+.feargames {margin:0;padding:0;position:relative;z-index:1;}
+.feargames li {list-style:none;display:inline-block;margin:0;padding:0;}
+.feargames li a {color:white;}
+.feargames li a:hover {color:red;}
+.feargames li.divider {color:red;padding:0 5px;}
+.feargames li ul {background:black;border:1px solid red;position:absolute;border-radius:10px;left:60px;margin:0;padding:0;display:none;}
+.feargames li:hover ul {display:block;}
+#thumbnails {position:relative;z-index:0;}
+.feargames li ul li, .feargames li ul li a {display:block;}
+.feargames li a.browselink2 {padding:5px 0 0 25px;background:url(images/blood-bullet.svg) no-repeat;border-bottom:0;}
+.feargames li ul li a {padding:10px 20px;border-bottom:0;}
+.latest .navlink1 a, .wyun .navlink3 a, .wtd .navlink4 a, .upcoming .navlink2 a {color:red;}
+
+.nftgallery h1 img, .nftgallery span.slogan img {height:25px;}
+.nftgallery span.slogan {margin-bottom:20px ! important;display:block;margin-top:10px ! important;line-height:13px ! important;}
+.nftgallery .slogan img {height:25px ! important;}

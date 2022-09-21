@@ -1,0 +1,705 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+		<title>Clucking Hell Oracle | Fear</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script defer src="https://unpkg.com/alpinejs@3.2.3/dist/cdn.min.js"></script>
+        <script type="text/javascript" src="scripts/api.js"></script>
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/animate.min.css">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/boxicons.min.css">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/meanmenu.min.css">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/flaticon.css">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/fancybox.min.css">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/magnific-popup.min.css">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/style.css">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/responsive.css">
+        <link rel="stylesheet" href="https://www.fear.io/updates.css?v680">
+    <link rel="shortcut icon" href="https://www.fear.io/images/fear-icon.svg" type="image/x-icon" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
+       <script defer type="text/javascript">
+            document.addEventListener("alpine:init", () => {
+                Alpine.store("vm", {
+                    tabs: ["The Oracle", "In Game Economy Guide"],
+                    selectedTab: "The Oracle",
+                    busy: false,
+                    setBusy: function(val, statusText) {
+                        window.vm.busy = val;
+                        window.vm.progressStatus = statusText;
+                    },
+                    selectTab: function(tab) {
+                        window.vm.selectedTab = tab;
+                    },
+                    warning: "",
+                    progressStatus: "",
+                    status: "",
+                    setWarning: function(e) {
+                        let message = $.type(e) === "string" ? e : e.data && e.data.message ? e.data.message : e.message;
+                        window.vm.warning = message;
+                    },
+                    setProgressStatus: function(ps){
+                        window.vm.progressStatus = ps;
+                    },
+                    setStatus: function(st){
+                        window.vm.status = st;
+                    },
+                    showWarning: function(){
+                        return window.vm.warning !== null && window.vm.warning.length > 0;
+                    },
+                    showProgressStatus: function(){
+                        return window.vm.progressStatus !== null && window.vm.progressStatus.length > 0;
+                    },
+                    showStatus: function() {
+                        return window.vm.status !== null && window.vm.status.length > 0;
+                    },
+                    answers: {
+                        gamesPerDay : "",
+                        defenceUnit: false,
+                        fearStaked: "",
+                        roundReached: ""
+                    },
+                    calculatedEarnings: false,
+                    roundRewards: [],
+                    fearPricePredictions: [
+                        {price:0.5, destination: "Hell and Back - $0.5"},
+                        {price:2, destination: "International Space Station - $2"},
+                        {price:5, destination: "Half Moon - $5"},
+                        {price:10, destination: "Full Moon - $10"},
+                        {price:100, destination: "Final Destination - $100"}
+                    ],
+                    predictEarnings: function(){
+                        const vm = window.vm;
+                        vm.futureEarnings = null;
+
+                        if (!$.isNumeric(vm.answers.gamesPerDay)){
+                            vm.setWarning("Games per day must be numeric");
+                            $("#gamesPerDay").focus();
+                            return;
+                        }
+
+                        if (!$.isNumeric(vm.answers.fearStaked) || vm.answers.fearStaked <= 0 || vm.answers.fearStaked > vm.maxStake) {
+                            vm.setWarning("FEAR Staked must be > 0 and <= " + vm.maxStake);
+                            $("#fearStaked").focus();
+                            return;
+                        }
+
+                        if ($.isNumeric(vm.answers.roundReached)){
+                            vm.answers.roundReached = Math.round(vm.answers.roundReached);
+                        }
+
+                        if (!$.isNumeric(vm.answers.roundReached) || vm.answers.roundReached < 11 || vm.answers.roundReached > 30) {
+                            vm.setWarning("Round reached must be >= 11 and <= 30");
+                            vm.answers.roundReached = Math.round(vm.answers.roundReached);
+                            $("#roundReached").focus();
+                            return;
+                        }
+
+                        if (vm.answers.roundReached < 11){
+                            vm.setWarning
+                            vm.futureEarnings = null;
+                            return;
+                        }
+
+                        let fearPerGame = 0;
+
+                        for (var i = 0; i < vm.answers.roundReached - 10; i++){
+                            fearPerGame += vm.roundRewards[i].r;
+                        }
+                        
+                        vm.gamesPerWeek = vm.answers.gamesPerDay * 7;
+                        vm.gamesPerMonth = vm.answers.gamesPerDay * 30;
+                        
+                        fearPerGame = fearPerGame * (!vm.answers.defenceUnit && !vm.whiskyActivated() ? 0.3 : 1);
+                        const fearPerMonth = vm.gamesPerMonth * fearPerGame;
+
+                        const priceToUse = this.fearPricePrediction !== null ? parseFloat(vm.fearPricePrediction) : vm.fearPrice;
+                    
+                        vm.calculatedEarnings = true;
+                        vm.futureEarnings = (parseFloat(fearPerMonth * priceToUse).toFixed(2) * (parseFloat(vm.answers.fearStaked)/vm.maxStake)).toFixed(2);
+                    },
+                    whiskyActivated: function(){
+                        return vm.answers.fearStaked >= vm.whiskyThreshold;
+                    },
+                    getFearPrice: function(){
+                        api.getFearPrice(function(fp) {
+                            window.vm.fearPrice = fp;
+                            window.vm.fearPricePredictions.splice(0,0, {price:fp, destination: "Current Price - $" + fp.toFixed(2)})
+                            window.vm.setBusy(false, "");
+                        });
+                    },
+                    getOracleData: function(){
+                        api.getOracleData(function(cps) {
+                            window.vm.roundRewards = cps.rs;
+                            window.vm.whiskyThreshold = cps.wa;
+                            window.vm.maxStake = cps.ms;
+                            window.vm.rewardsTotal = cps.rst.toFixed(3);
+                            window.vm.setBusy(false, "");
+                        });
+                    },
+                    canPredicate: function(){
+                        return !window.vm.busy && window.vm.fearPrice !== null;
+                    },
+                    fearPricePrediction: null,
+                    fearPrice: null,
+                    maxStake: 500,
+                    whiskyThreshold: 20,
+                    futureEarnings: null,
+                    gamesPerWeek: null,
+                    gamesPerMonth: null,
+                    rewardsTotal: null
+                });
+
+                window.vm = Alpine.store("vm");
+                window.vm.getFearPrice();
+                window.vm.getOracleData();
+            });
+        </script>
+    </head>
+
+	<body class="subpage gamespage oraclepage cluckingoraclepage">
+
+                                   <!-- Start Navbar Area -->
+        <div class="navbar-area">
+            <div class="fear-responsive-nav">
+                <div class="container">
+                    <div class="fear-responsive-menu">
+                        <div class="logo">
+                            <span><a href="https://www.fear.io/">
+                                <img src="../../../images/fear-logo.svg" alt="Fear NFT Horror Games">
+                            </a></span>
+							<span class="fearslogan"><img src="../../../images/fear-slogan.svg" alt="Your Worst Nightmares Tokenised"/></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fear-nav">
+                <div class="container-fluid">
+                    <nav class="navbar navbar-expand-md navbar-light">
+                        <a class="navbar-brand" href="https://www.fear.io/">
+                                <img src="../../../images/fear-logo.svg" alt="logo">
+                        </a>
+							<span class="fearslogan"><img src="../../../images/fear-slogan.svg" alt="Your Worst Nightmares Tokenised"/></span>
+
+                        <div class="collapse navbar-collapse mean-menu">
+                            <ul class="navbar-nav">
+                                <li class="nav-item nav-item-1"><a href="#" class="nav-link">Play <i class="flaticon-down-arrow"></i></a>
+                                    <ul class="dropdown-menu">
+
+                                        <li class="nav-item araya-link"><a href="/games/araya/" class="nav-link">Araya</a></li>
+                                        
+<li class="nav-item the-crypt-link"><a href="/games/the-crypt/" class="nav-link">The Crypt</a></li>
+
+                                        <li class="nav-item fear-museum-link"><a href="/games/blood-realms/" class="nav-link">Blood Realms</a></li>
+										
+										 <li class="nav-item cluck-sub-menu clucking-hell-link"><a href="/games/clucking-hell/" class="nav-link nav-cluck-original">Clucking Hell</a></li>
+
+                                        
+                                    </ul>
+                                </li>
+
+<li class="nav-item nav-item-watch"><a href="/watch/" class="nav-link">WATCH <i class="flaticon-down-arrow"></i></a>
+<ul class="dropdown-menu">
+<li class="nav-item cluck-chest"><a href="/watch/wyun/" class="nav-link wyun-link">Whack Your UND. Neighbour</a></li>
+<li class="nav-item cluck-chest"><a href="/watch/whack-the-demon/" class="nav-link wtdlink">Whack the Demon</a></li>
+</ul>
+</li>
+
+                                <!--<li class="nav-item"><a href="#" class="nav-link">NFTS <i class="flaticon-down-arrow"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item"><a href="/opensea" class="nav-link" rel="nofollow" target="_blank">SECONDARY MARKET</a></li>
+                                    </ul>
+                                </li>-->
+
+                                <li class="nav-item"><a href="#" class="nav-link">TOKEN <i class="flaticon-down-arrow"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item fear-token-link"><a href="/token.html" class="nav-link">FEAR TOKEN</a></li>           
+
+                                        <li class="nav-item"><a href="https://www.fear.io/staking" class="nav-link">STAKING</a></li>
+
+                                        <li class="nav-item holders-link"><a href="/utility.html" class="nav-link">UTILITY</a></li>
+                                    </ul>
+                                </li>
+
+                               
+	 <li class="nav-item"><a href="#" class="nav-link">ABOUT <i class="flaticon-down-arrow"></i></a>
+                                    <ul class="dropdown-menu">
+
+                                        <li class="nav-item team-link"><a href="/about.html" class="nav-link">Company</a></li>
+                                        <li class="nav-item news-link"><a href="https://medium.com/@FEAROFFICIAL/" class="nav-link" rel="nofollow" target="_blank">NEWS &amp; HELP</a></li>
+
+                                        <!--<li class="nav-item jobs-link"><a href="#" class="nav-link">JOBS</a></li>-->
+                                    </ul>
+                                </li>
+                            			<li class="nav-item nav-item-5"><span class="transactlink"><button id="transakLink">Buy Fear</button></span></li>
+
+</ul>
+				
+
+                            <div class="others-option d-flex align-items-center">
+                              
+
+                                <div class="option-item">
+                                    <div class="side-menu-btn">
+                                        <i class="flaticon-null-2" data-bs-toggle="modal" data-bs-target="#sidebarModal"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="others-option-for-responsive">
+                <div class="container">
+                    <div class="dot-menu">
+                        <div class="inner">
+                            <div class="circle circle-one"></div>
+                            <div class="circle circle-two"></div>
+                            <div class="circle circle-three"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="container">
+                        <div class="option-inner">
+                            <div class="others-option">
+                                <div class="option-item">
+                                    <div class="search-box">
+                                        <i class="flaticon-search-1"></i>
+                                    </div>
+                                </div>
+
+                                <div class="option-item">
+                                    <div class="side-menu-btn">
+                                        <i class="flaticon-null-2" data-bs-toggle="modal" data-bs-target="#sidebarModal"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Navbar Area -->
+
+        <!-- Sidebar Modal -->
+        <div class="sidebarModal modal right fade" id="sidebarModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <button type="button" class="close" data-bs-dismiss="modal"><i class='bx bx-x'></i></button>
+
+                    <div class="modal-body">
+                        <div class="logo">
+                            <a href="https://www.fear.io/" class="d-inline-block"><img src="https://www.fear.io/images/fear-logo.svg" alt="image"></a>
+                        </div>
+
+                      <div class="instagram-list">
+                            <div class="row">
+
+                                
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/games/araya-logo.png" alt="araya">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/games/araya/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+<div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/the-crypt-logo-500.png" alt="The Crypt">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/games/the-crypt/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+                               <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/games/blood-realms/blood-realms-logo-square.png" alt="Blood Realms">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/games/blood-realms/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/games/clucking-hell-logo.svg" alt="clucking hell">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/games/clucking-hell/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/games/whack-the-demon-logo.svg" alt="whack the demon">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/watch/whack-the-demon/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="sidebar-contact-info">
+                            <h2>
+                                <a href="#" class="emailus"><img src="https://www.fear.io/images/email.svg" alt="email"/></a>
+                            </h2>
+                        </div>
+
+                        <ul class="social-list">
+                            <li><span>Follow Us On:</span></li>
+                            <li><a href="https://www.fear.io/discord" target="_blank"><i class='bx bxl-discord'></i></a></li>
+                            <li><a href="https://twitter.com/fearnfts" target="_blank"><i class='bx bxl-twitter'></i></a></li>
+                            <li><a href="https://t.me/fearcoin" target="_blank"><i class='bx bxl-telegram'></i></a></li>
+                            <li><a href="https://www.youtube.com/channel/UCHRX3sh3G8sxvHLLQ21vNiQ" target="_blank"><i class='bx bxl-youtube'></i></a></li>
+                            <li><a href="https://www.instagram.com/fearnfts/" target="_blank"><i class='bx bxl-instagram'></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Sidebar Modal -->
+
+
+        <!-- Start Page Title Area -->
+        <section class="page-title-area page-title-bg1">
+            <div class="container">
+                <div class="page-title-content">
+                    <h1 title="Clucking Oracle">Clucking Oracle</h1>
+                </div>
+            </div>
+        </section>
+        <!-- End Page Title Area -->
+
+        <!-- Start Products Details Area -->
+        <section class="products-details-area ptb-100">
+            <div class="container">
+                <div class="row align-items-center">
+				 
+				 <div class="central">
+				 <div class="videoblackfade">
+			<video playsinline loop controls autoplay muted loop poster='clucking-hell-oracle.jpg'>
+			<source src="clucking-oracle-2.mp4" type="video/mp4">
+			<source src="clucking-oracle.webm" type="video/webm">Sorry, your browser doesn't support embedded videos.
+			</video>
+			</div>
+				 </div>
+				 
+				
+				 
+			 <div class="container-fluid" x-data="$store.vm">
+            <ul class="nav nav-tabs">
+                <template x-for="tab in tabs">
+                    <li class="nav-item nav-link-fear">
+                        <a :class="selectedTab === tab ? 'nav-link active' : 'nav-link'" aria-current="page" x-text="tab" x-on:click="selectTab(tab)"></a>
+                    </li>
+                </template>
+            </ul>
+            <div x-show="selectedTab === 'In Game Economy Guide'" class="tab tabcon">
+                <h2>Rags to Riches - How you can prosper with the in Game Economy!</h2>
+
+                <p>
+                    You can stake anything up to a max of 500 FEAR in order to play clucking hell play to earn mode,
+                    but the below example is the earning potential based on staking the max allowed - <span x-text="maxStake"></span> FEAR. 
+                </p>
+                <p>    
+                    The earning potential is relative to the amount of FEAR staked.
+                    I stake <span x-text="maxStake"></span> FEAR and play with Whisky activated (minimum <span x-text="whiskyThreshold"></span> FEAR required for Whisky)
+                    The first 10 rounds are free with no earning potential, but are good for practicing!
+                </p>
+                <p>
+                    I play rounds 11 to 30 and succeed on every round. The below is the payout in FEAR I receive
+                    from each round based on my <span x-text="maxStake"></span> FEAR stake...
+                </p>
+                <p> 
+                    <ol>
+                        <template x-for="rr in roundRewards">
+                            <li x-text="rr.o + '. ' + rr.r"></li>
+                        </template>
+                    </ol>
+                </p>
+                <ul>
+                    <li>Total FEAR Payout per game is <span x-text="rewardsTotal"></span></li>
+                    <li>The game takes approx 20-30 minutes to play.</li>
+                    <li>I play the game twice a day (there is no limit on how many times you play) for 30 days of the month</li>
+                    <li>I earn in total <span x-text="60 * rewardsTotal"></span> FEAR.</li>
+                    <li>This is an equivalent APR of approx <span x-text="(((12 * (60*rewardsTotal))/maxStake)*100).toFixed(2)"></span>% capped at <span x-text="maxStake"></span> FEAR. However the more you play the more the APR goes up!</li>                    
+                    <li>This APR will be dialed down as the number of gamers coming onboard increases and the FEAR price visits outer space.</li>
+                </ul>
+                <h2>
+                    Other things that can effect your earning potential
+                </h2>
+                <ul>
+                    <li>Holding a defense NFT currently available in our farm</li>
+                    <li>How far you get through the game</li>
+                    <li>Whether you are a high scorer in the top 5 of each month!</li>
+                </ul>
+                </p>
+            </div>
+            <div x-show="selectedTab === 'The Oracle'" class="tab tabcon">
+                <div class="table table-dark table-striped table-stats">
+                        <div class="labelexplanation">
+                            <div colspan="2" class="table-header">
+                                <p>Seek the advice of the Clucking Oracle and discover how much you can earn by staking Fear and Playing <a href="/games/clucking-hell/">Clucking Hell</a>.</p>
+								<p>Answer the Oracle's questions below and all will be revealed!</p>
+                            </div>
+                        </div>
+<div class="alert alert-danger" role="alert" x-show="showWarning()">
+                        <div x-text="warning" style="color:#c91ec9;font-weight:bold;padding-top:10px;padding-bottom:10px;"></div>
+                    </div>
+                      <div class="grouplabel">
+                        <div class="labeltitle">
+						1. How many times will you play the game per day?
+						</div>
+                        <div class="fieldbox">
+                            <input type="text" class="form-control" id="gamesPerDay" aria-describedby="gamesPerDay" x-model="answers.gamesPerDay">
+                        </div>
+                      </div>
+                      <div class="grouplabel">
+                        <div class="labeltitle">
+                            2. How much FEAR will you stake to play the game? (max allowed <span x-text="maxStake"></span> while <span x-text="whiskyThreshold"></span> or more activates Whisky)
+                        </div>
+                        <div class="fieldbox">
+                            <input type="text" class="form-control" id="fearStaked" aria-describedby="fearStaked" x-model="answers.fearStaked">
+                        </div>
+                      </div>
+                      <div class="grouplabel">
+                        <div class="labeltitle">
+						  3. Which round will you reach? Between 11-30 activates Play-to-earn
+						  </div>
+                        <div class="fieldbox">
+                            <input type="text" class="form-control" id="roundReached" aria-describedby="roundReached" x-model="answers.roundReached">
+                          </div>
+                      </div>
+                      <div class="grouplabel">
+                        <div class="labeltitle">
+						4. Do you have a <a href="https://www.fear.io/farm">Defence Unit NFT</a> (due out mid Oct 2021)?
+						</div>
+                        <div class="fieldbox">
+                            <input class="form-check-input" type="checkbox" id="defenseUnits" x-model="answers.defenceUnit">
+                        </div>
+                      </div>
+                      <div class="grouplabel">
+                        <div class="labeltitle">
+						5. What price do you think  we should use to assess your FEAR earnings?
+						</div>
+                        <div class="fieldbox fearpredictionselect">
+                          <select x-model="fearPricePrediction">
+                            <template x-for="pp in fearPricePredictions">
+                                <option x-bind:value="pp.price" x-text="pp.destination"></option>
+                            </template>
+                          </select>
+                        </div>
+                    </div>
+                    </div>
+                      <div class="grouplabel">
+                          <div colspan="2" class="calculatebutton">
+                            <button x-bind:class="!canPredicate() ? 'disabled' : ''" @click="predictEarnings()" class="btn btn-danger">Tell me my Future Earnings</button>
+                            </div>
+                      </div>
+					  <div class="oracleanswers">
+                      <div x-show="futureEarnings !== null">
+                        Based on your answers, the Almighty Chicken Oracle predicts that:
+                      </div>
+                      <div x-show="futureEarnings !== null">
+                        The amount of times you play per week: <span x-text="gamesPerWeek" class="althighlight"></span>
+                      </div>
+                      <div x-show="futureEarnings !== null">
+                        You could be earning <span class="althighlight althighlight2">$<span x-text="futureEarnings"></span></span> by playing the game <span x-text="gamesPerMonth"></span> times per month!
+                      </div>
+                      <div x-show="!whiskyActivated() && futureEarnings !== null" style="margin-bottom:0;">
+                        You can improve your earnings by staking <span x-text="whiskyThreshold"></span> or more FEAR which activates Whisky!
+                      </div>
+					  </div>
+                    </div>
+                </div>
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+				 
+
+            </div>
+        </section>
+        <!-- End Products Details Area -->
+
+
+         <!-- Start Social Area -->
+        <section class="social-area pt-100 pb-70">
+            <div class="container">
+                <div class="section-title stayconnected">
+                    <span class="sub-title">Official</span>
+                    <h2>Stay Connected</h2>
+                </div>
+
+                <div class="row socialrow">
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-discord'></i>
+                                Discord
+                            </div>
+                            <div class="shape">
+                                <img src="../../../assets/img/social-shape1.png" alt="image">
+                                <img src="../../../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://www.fear.io/discord" class="link-btn"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-twitter'></i>
+                                Twitter
+                            </div>
+                            <div class="shape">
+                                <img src="../../../assets/img/social-shape1.png" alt="image">
+                                <img src="../../../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://twitter.com/fearnfts" class="link-btn"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-telegram'></i>
+                                Telegram
+                            </div>
+                            <div class="shape">
+                                <img src="../../../assets/img/social-shape1.png" alt="image">
+                                <img src="../../../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://t.me/fearcoin" class="link-btn"></a>
+                        </div>
+                    </div>
+<div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-medium'></i>
+                                Medium
+                            </div>
+                            <div class="shape">
+                                <img src="../../../assets/img/social-shape1.png" alt="image">
+                                <img src="../../../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://medium.com/@FEAROFFICIAL" class="link-btn" target="_blank"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-youtube'></i>
+                                YouTube
+                            </div>
+                            <div class="shape">
+                                <img src="../../../assets/img/social-shape1.png" alt="image">
+                                <img src="../../../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://www.youtube.com/channel/UCHRX3sh3G8sxvHLLQ21vNiQ" class="link-btn"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-instagram'></i>
+                                Instagram
+                            </div>
+                            <div class="shape">
+                                <img src="../../../assets/img/social-shape1.png" alt="image">
+                                <img src="../../../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://www.instagram.com/fearnfts/" class="link-btn"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Social Area -->
+
+         <!-- Start Footer Area -->
+        <footer class="footer-area">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="logo">
+                        <a href="https://www.fear.io/" class="d-inline-block"><img src="https://www.fear.io/images/fear-logo.svg" alt="Fear" style="width:100px;"></a>
+                        <ul class="footer-menu">
+                            <li class="nav-item"><a class="nav-link" href="https://www.fear.io/terms-of-use.html">Terms of Use</a></li>
+                            <li class="nav-item"><a class="nav-link" href="https://www.fear.io/privacy-policy.html">Privacy policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+       <div class="copyright-area">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6 col-sm-5">
+                        <p><i class='bx bx-copyright'></i>2022 <a href="https://www.fear.io/">FEAR</a> All rights reserved.</p>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-7">
+                        <div class="lang-switcher">
+                            <span>Select your language</span>
+                            <select>
+                                <option>English</option>
+                              </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Footer Area -->
+
+        <div class="go-top"><i class='bx bx-up-arrow-alt'></i></div>
+
+        <div class="fear-cursor"></div>
+        <div class="fear-cursor2"></div>
+
+        <!-- Links of JS files -->
+        <script src="https://www.fear.io/assets/js/jquery.min.js"></script>
+        <script src="https://www.fear.io/assets/js/popper.min.js"></script>
+        <script src="https://www.fear.io/assets/js/bootstrap.min.js"></script>
+        <script src="https://www.fear.io/assets/js/owl.carousel.min.js"></script>
+        <script src="https://www.fear.io/assets/js/magnific-popup.min.js"></script>
+        <script src="https://www.fear.io/assets/js/parallax.min.js"></script>
+        <script src="https://www.fear.io/assets/js/meanmenu.min.js"></script>
+        <script src="https://www.fear.io/assets/js/isotope.pkgd.min.js"></script>
+        <script src="https://www.fear.io/assets/js/cursor.min.js"></script>
+        <script src="https://www.fear.io/assets/js/fancybox.min.js"></script>
+        <script src="https://www.fear.io/assets/js/wow.min.js"></script>
+        <script src="https://www.fear.io/assets/js/form-validator.min.js"></script>
+        <script src="https://www.fear.io/assets/js/contact-form-script.js"></script>
+        <script src="https://www.fear.io/assets/js/ajaxchimp.min.js"></script>
+        <script src="https://www.fear.io/assets/js/main.js"></script>
+   
+<script type="text/javascript">
+var sc_project=12412733; 
+var sc_invisible=1; 
+var sc_security="af2ceb8d"; 
+var sc_remove_link=1; 
+</script>
+<script type="text/javascript"
+src="https://www.statcounter.com/counter/counter.js"
+async></script>
+<noscript><div class="statcounter"><img class="statcounter"
+src="https://c.statcounter.com/12412733/0/af2ceb8d/1/"
+alt="Web Analytics"
+referrerPolicy="no-referrer-when-downgrade"></div></noscript>
+
+</body>
+</html>

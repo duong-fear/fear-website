@@ -1,0 +1,469 @@
+body{margin: 0 auto auto auto;text-align:center;font-family: Arial, Verdana, sans-serif;font-size: 11pt;color:#000000;text-align:left;background:url(images/whack-it-body.jpg) no repeat left top;}
+
+a {color:#000000;}
+
+.div1 {margin:0 auto;max-width:1000px;}
+.div2 {float:left;width:100%;background-color:#ffffff;position:relative;}
+
+img {border:none;}
+
+ul, ol {margin:0 0 15px 0;padding:0;list-style:none;width:100%;}
+ul li, ol li {background-repeat:no-repeat;float:left;clear:left;margin-bottom:5px;}
+ul li a, ol li a, ul li img {float:left;text-decoration:none;}
+
+ul.gameslist {float:left;}
+
+.banner, .maincon, .footer, .text {float:left;width:100%;margin:15px 0 0 0;}
+.maincon {margin:30px 0 0 0;}
+.browser .maincon {margin:15px 0 0 0;}
+.banner {margin:0;position:relative;width:100%;background-repeat:no-repeat;height:111px;}
+
+.text {padding:0 1.5% 0 1.5%;width:97%;float:left;}
+.text p {margin:0 0 15px 0;line-height:1.5em;}
+.text img {max-width:100%;}
+.home .text p {float:left;width:100%;}
+.text li {clear:left;margin-bottom:10px;}
+.text h2, .text h3 {margin-top:0;clear:left;}
+
+.listheader {font-weight:bold;font-size:15pt;width:98.5%;margin:0 0 15px 1.5%;float:left;}
+
+.websitetitle, .websitetitle a, .slogan {float:left;text-decoration:none;margin:0;padding:0;font-size:29pt;text-decoration:none;font-weight:bold;}
+
+.slogan {font-size:13pt;margin:0 0 0 160px;color:#ffffff;clear:left;}
+
+.addthis, .googleplus {position:absolute;left:47.7%;top:45%;width:145px;}
+.googleplus {left:64%;top:45%;}
+.gamepage .addthis {top:286px;left:19%;}
+.gamepage .googleplus {position:absolute;top:286px;left:34.4%;}
+.opengame .addthis {top:275px;left:543px;}
+.download .addthis, .download .googleplus {top:156px;}
+.download .addthis {left:54%;}
+.mobile .googleplus, .tablet .googleplus, .mobile .addthis, .tablet .addthis {top:66% ! important;}
+.mobile .addthis, .tablet .addthis {left:72% ! important;}
+.opengame .googleplus {top:275px;left:690px;}
+.mobile .addthis, .mobile .googleplus, .tablet .addthis, .tablet .googleplus {left:49.7% ! important;top:45% ! important;}
+.mobile .googleplus, .tablet .googleplus {top:50% ! important;}
+.gamepage #game {margin-top:15px;}
+.gamepage .section1 {float:right;}
+.gamepage .text {padding:0;width:100%;}
+
+   .playbutton a, .playbutton3 a {font-size:19pt;}
+    .playbutton a {font-size:19pt;margin:10px 0;-webkit-border-radius:10px; -moz-border-radius:10px; border-radius:10px;}
+
+.playbutton a, .readmore a, .moregames a, .downloadgame a {
+	background-color:#ff0000;
+	background: -moz-linear-gradient(#f46b6b, #ff0000);
+	background: -o-linear-gradient(#f46b6b, #ff0000);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f46b6b), to(#ff0000));
+	background: -webkit-linear-gradient(#f46b6b, #ff0000);
+	color:#ffffff;
+}
+
+
+.playbutton2 a {
+	background-color:#464646;
+	background: -moz-linear-gradient(#464646, #000000);
+	background: -o-linear-gradient(#464646, #000000);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#464646), to(#000000));
+	background: -webkit-linear-gradient(#464646, #000000);
+	color:#ffffff;
+}
+
+.playbutton a:hover, .readmore a:hover, .downloadgame a:hover, .moregames a:hover 
+{
+    background-color:#990000;
+background: -moz-linear-gradient(#ff0000, #990000);
+	background: -o-linear-gradient(#ff0000, #990000);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff0000), to(#990000));
+	background: -webkit-linear-gradient(#ff0000, #990000);color:#ffffff;
+}
+
+.playbutton2 a:hover {
+	background-color:#000000;
+	background: -moz-linear-gradient(#000000, #464646);
+	background: -o-linear-gradient(#000000, #464646);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#000000), to(#464646));
+	background: -webkit-linear-gradient(#000000, #464646);
+}
+
+.gamepage .section2 ul li {width:100%;margin-bottom:10px;}
+.gamepage .section2 ul li a {width:92%;padding:7px 5px 7px 5px;background-color:#ffffff;-webkit-border-radius:10px; -moz-border-radius:10px; border-radius:10px;border:1px solid #666666;}
+.gamepage .section2 {margin:0 10px 0 10px;width:17%;}
+.readmore a:hover,
+.downloadgame a:hover,
+.moregames a:hover, 
+.playbutton a:hover,
+.footer,
+.game1 	.section2 	.gamelink1 	 a,
+.game2	.section2 	.gamelink2 	 a,
+.game3	.section2	.gamelink3 	 a,
+.game4	.section2	.gamelink4	 a,
+.game5	.section2	.gamelink5	 a,
+.game6	.section2	.gamelink6	 a,
+.game7	.section2	.gamelink7	 a,
+.game8	.section2	.gamelink8	 a,
+.game9	.section2	.gamelink9	 a,
+.game10	.section2	.gamelink10	 a,
+.game11	.section2	.gamelink11	 a,
+.game12	.section2	.gamelink12	 a,
+.game13	.section2	.gamelink13	 a,
+.game14	.section2	.gamelink14	 a,
+.game15	.section2	.gamelink15	 a,
+.game16	.section2	.gamelink16	 a,
+.game17	.section2	.gamelink17	 a,
+.game18	.section2	.gamelink18	 a,
+.game19	.section2	.gamelink19	 a,
+.game20	.section2	.gamelink20	 a,
+.game21	.section2	.gamelink21	 a,
+.game22	.section2	.gamelink22	 a,
+.game23	.section2	.gamelink23	 a,
+.game24	.section2	.gamelink24	 a,
+.game25	.section2	.gamelink25	 a,
+.game26	.section2	.gamelink26	 a,
+.game27	.section2	.gamelink27	 a,
+.game28	.section2	.gamelink28	 a,
+.game29	.section2	.gamelink29	 a,
+.game30	.section2	.gamelink30	 a,
+.game31	.section2	.gamelink31	 a,
+.game32	.section2	.gamelink32	 a,
+.game33	.section2	.gamelink33	 a,
+.game34	.section2	.gamelink34	 a,
+.game35	.section2	.gamelink35	 a,
+.game36	.section2	.gamelink36	 a,
+.game37	.section2	.gamelink37	 a,
+.game38	.section2	.gamelink38	 a,
+.game39	.section2	.gamelink39	 a,
+.game40	.section2	.gamelink40	 a,
+.game41	.section2	.gamelink41	 a,
+.game42	.section2	.gamelink42	 a,
+.game43	.section2	.gamelink43	 a,
+.game44	.section2	.gamelink44	 a,
+.game45	.section2	.gamelink45	 a,
+.game46	.section2	.gamelink46	 a,
+.game47	.section2	.gamelink47	 a,
+.game48	.section2	.gamelink48	 a,
+.game49	.section2	.gamelink49	 a,
+.game50	.section2	.gamelink50	 a,
+.game51	.section2	.gamelink51	 a,
+.game52	.section2	.gamelink52	 a,
+.game53	.section2	.gamelink53	 a,
+.game54	.section2	.gamelink54	 a,
+.game55	.section2	.gamelink55	 a,
+.game56	.section2	.gamelink56	 a,
+.game57	.section2	.gamelink57	 a,
+.game58	.section2	.gamelink58	 a,
+.game59	.section2	.gamelink59	 a,
+.game60	.section2	.gamelink60	 a,
+.game61	.section2	.gamelink61	 a,
+.game62	.section2	.gamelink62	 a,
+.game63	.section2	.gamelink63	 a,
+.game64	.section2	.gamelink64	 a,
+.game65	.section2	.gamelink65	 a,
+.game66	.section2	.gamelink66	 a,
+.game67	.section2	.gamelink67	 a,
+.game68	.section2	.gamelink68	 a,
+.game69	.section2	.gamelink69	 a,
+.game70	.section2	.gamelink70	 a,
+.game71	.section2	.gamelink71	 a,
+.game72	.section2	.gamelink72	 a,
+.game73	.section2	.gamelink73	 a,
+.game74	.section2	.gamelink74	 a,
+.game75	.section2	.gamelink75	 a,
+.game76	.section2	.gamelink76	 a,
+.game77	.section2	.gamelink77	 a,
+.game78	.section2	.gamelink78	 a,
+.game79	.section2	.gamelink79	 a,
+.game80	.section2	.gamelink80	 a,
+.game81	.section2	.gamelink81	 a,
+.game82	.section2	.gamelink82	 a,
+.game83	.section2	.gamelink83	 a,
+.game84	.section2	.gamelink84	 a,
+.game85	.section2	.gamelink85	 a,
+.game86	.section2	.gamelink86	 a,
+.game87	.section2	.gamelink87	 a,
+.game88	.section2	.gamelink88	 a,
+.game89	.section2	.gamelink89	 a,
+.game90	.section2	.gamelink90	 a,
+.game91	.section2	.gamelink91	 a,
+.game92	.section2	.gamelink92	 a,
+.game93	.section2	.gamelink93	 a,
+.game94	.section2	.gamelink94	 a,
+.game95	.section2	.gamelink95	 a,
+.game96	.section2	.gamelink96	 a,
+.game97	.section2	.gamelink97	 a,
+.game98	.section2	.gamelink98	 a,
+.game99	.section2	.gamelink99	 a,
+.gamepage .section2 ul li a:hover,
+.home .homel a
+{background-color:#ff0000;background: -moz-linear-gradient(#ff0000, #990000);
+	background: -o-linear-gradient(#ff0000, #990000);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff0000), to(#990000));
+	background: -webkit-linear-gradient(#ff0000, #990000);color:#ffffff;}
+
+.android .navigation li.navigationl2 ul li.androidgames a,
+.android li.androidgames a,
+.ios .navigation li.navigationl2 ul li.iosgames a,
+.ios li.iosgames a,
+.tablet .navigation li.navigationl2 ul li.tabletgames a,
+.tablet li.tabletgames a
+{color:#991b1e;font-weight:bold;}
+
+.footer {padding:1%;width:97.8%;text-align:left;background-color:#cccccc;font-size:9pt;border:1px solid #ffffff;}
+.footer a {color:#ffffff;}
+.footer a:hover {color:#cccccc;}
+
+.gameslist span {float:left;width:100%;margin:5px 0 0 0;text-align:center;}
+.gameslist li {width:18%;margin:0 0 15px 3%;clear:none;height:10em;}
+.gameslist {margin-bottom:0px;}
+.gameslist li a img {width:100%;}
+.moregames {width:100%;float:left;margin:0 0 15px 0;}
+
+.mobile .gameslist li, .tablet .gameslist li, .browser .gameslist li, .download .gameslist li, .comingsoonpage .gameslist li  {height:148px;margin-left:1.7%;width:147px;;}
+
+.adcon, .adcon2 {width:100%;clear:left;height:90px;}
+.adcon {margin-bottom:40px;}
+.adcon2 {margin-bottom:10px;}
+.home .adcon, .home .adcon2,
+.browserhome .adcon, .browserhome .adcon2,
+.mobilehome .adcon, .mobilehome .adcon2,
+.tablethome .adcon, .tablethome .adcon2,
+.downloadhome .adcon, .downloadhome .adcon2
+{margin-left:15px;}
+
+.section1, .section2 {float:left;width:80%;margin-right:10px;}
+.section2 {float:left;width:18%;margin:0 10px 0 0;position:relative;text-align:left;padding:0;}
+
+#game {margin-bottom:30px;text-align:left;}
+.gamealt {background-color:#ffffff ! important;}
+
+.mobile #game, .tablet #game, .download #game {background-color:#ffffff;}
+
+.text .tags {margin-top:15px;float:left;width:100%;}
+.text .tags li {margin-right:10px;clear:none;}
+.text .tags li a {text-decoration:underline;}
+
+.text object {float:left;margin-bottom:15px;}
+
+.comingsoon, .discussion {width:100%;}
+.discussion ul li {clear:none;}
+.comingsoon p {margin:0 0 15px 0;}
+
+.privacy .addthis, .privacy .googleplus {left:-9999px;}
+
+.thankyou {font-weight:bold;color:green;font-size:18pt;margin-bottom:15px;display:inline-block;}
+.width56 {width:56px;}
+.width125 {width:125px;}
+.width215 {width:215px;}
+.width420 {width:420px;}
+.marginbottom15 {margin:0 0 15px 0;}
+textarea {padding:4px;border:1px solid #000000;}
+.noborder {border:none;}
+
+.gameslist li.listad {float:left;width:300px;margin-right:25px;margin-bottom:25px;height:600px;}
+
+.headtitle {font-size:18pt;float:left;margin:10px 0 0 0;display:inline;font-family: 'Oxygen', sans-serif;width:100%;text-align:center;}
+    
+     .adconleft {float:left;width:336px;margin-right:15px;padding-top:15px;}
+    .playbutton a, .playbutton3 a {float:left;width:93%;text-align:center;text-decoration:none;font-weight:bold;padding:0.6em;font-size:19pt;margin:10px 0;-webkit-border-radius:10px; -moz-border-radius:10px; border-radius:10px;}
+	.playbutton2 a {font-size:12pt;margin-bottom:15px;width:300px;margin-right:15px;}
+
+	
+		.playbutton3 a {padding:0.6em 0.6em 0.6em 2.2em;width:84%;background-repeat:no-repeat;margin-top:0px;}
+	.playbutton3 a span {font-size:12pt;}
+	.downloadbutton a {padding: 3% 1% 3% 28%;width:71%;}
+
+	.text .playbutton3 a {width:200px;margin-top:0px;margin-bottom:15px;clear:left;font-size:14pt;margin-right:10px;padding:3% 11%;text-align:right;}
+	
+	.back {float:left;width:447px;background-repeat:no-repeat;}
+
+.navoverride .section1 {width:90%;margin-right:0%;}
+.navoverride .section2 {width:8.4% ! important;margin-right:0.5% ! important;}
+.navoverride .addthis {left:10% ! important;}
+.navoverride .googleplus {left:25% ! important;}
+.navoverride .section2 ul li a {width:84% ! important;}
+.navoverride2 .section1 {width:98%;margin-right:0%;}
+
+.navigation, .navigation li, .navigation li a {float:left;clear:none;}
+.navigation {width:100%;margin:0;position:relative;}
+.navigation li {margin-bottom:0px;}
+
+.navigation li.searchbox {float:right;padding:8px 1% 0 0;}
+.searchbutton {width:60px;}
+.navigation li.gamesearch {color:#ffffff;font-weight:bold;position:absolute;right:146px;top:-25px;}
+	
+.navigation li a {color:#000000;font-size:13pt;padding:5px 10px 5px 10px;text-decoration:none;}
+
+.readmore a, .downloadgame a, .moregames a {font-weight:bold;font-size:12pt;text-decoration:none;color:#ffffff;padding:5px; -webkit-border-radius:10px; -moz-border-radius:10px; border-radius:10px;}
+	
+.moregames a {float:left;font-size:21pt;padding:4px 20px;margin-left:31%;display:inline;text-align:center;}
+.moregame {width:100% ! important;float:left;margin:0 0 15px 0 ! important;height:0px ! important;}
+.moregame a {color:#ffffff ! important;}
+
+#disqus_thread li, #disqus_thread ul {clear:none;width:auto;}
+
+.wider .section1 {width:88%;}
+.wider .section2 {width:8%;}
+
+.clearh {width:100%;clear:left;}
+.marginbottom15 a {margin-bottom:15px ! important;}
+.standard {float:left;width:100%;}
+
+/* ================================================================ 
+This copyright notice must be untouched at all times.
+
+The original version of this stylesheet and the associated (x)html
+is available at http://www.cssplay.co.uk/menus/drop_examples.html
+Copyright (c) 2005-2007 Stu Nicholls. All rights reserved.
+This stylesheet and the assocaited (x)html may be modified in any 
+way to fit your requirements.
+=================================================================== */
+/* commom style for all browsers */
+
+.section2 ul {
+padding:0; margin:0; list-style-type:none; /* for Firefox */
+}
+.section2 li {
+float:left; position:relative;clear:left;
+}
+.section2 li a {
+display:block; text-decoration:none; width:180px; color:#000000; float:left;
+}
+* html .section2 li a, .section2 li a:visited {
+width:7em; w\idth:6em; /* hack for IE5.5 */
+}
+.section2 li a.drop, .section2 li a.drop:visited {
+font-weight:bold;
+}
+.section2 li ul {
+visibility:hidden; position:absolute; left:11.5em; height:0; overflow:hidden;-webkit-border-radius:10px; -moz-border-radius:10px; border-radius:10px;
+}
+.section2 table {
+margin:-1px; border-collapse:collapse; font-size:1em; /* font size for IE5.5 */
+}
+
+/* fist line style for IE7 and non-IE browsers and the second line for IE5.5 and IE6 */
+.section2 li:hover a,
+.section2 li a:hover {
+text-decoration:none; border:0;
+}
+.section2 li:hover ul,
+.section2 li a:hover ul {
+visibility:visible; height:auto; width:auto; background:#fff; border:1px solid #ddd; left:11.5em; top:0em; overflow:visible;
+}
+.section2 li:hover ul li a,
+.section2 li a:hover ul li a {
+display:block; font-weight:normal;text-decoration:none; height:auto; line-height:1.5em; padding:0.5em; width:9em;color:#000000;
+}
+* html .section2 li a:hover ul li a {
+width:10em; w\idth:9em; /* hack for IE5.5 */
+}
+.section2 li:hover ul li a.drop,
+.section2 li a:hover ul li a.drop {
+font-weight:bold;
+}
+.section2 li:hover ul li ul,
+.section2 li a:hover ul li a ul {
+visibility:hidden; position:absolute; top:0; left:9.5em; height:0; overflow:hidden;
+}
+.section2 li:hover ul li:hover ul,
+.section2 li a:hover ul li a:hover ul {
+visibility:visible; color:#000; border:1px solid #ddd; height:auto; background:#fff; width:9.5em;
+} 
+.section2 li:hover ul li:hover ul li a,
+.section2 li a:hover ul li a:hover ul li a {
+display:block; height:auto;
+}
+.section2 li:hover ul li:hover ul li:hover a,
+.section2 li a:hover ul li a:hover ul li a:hover {
+text-decoration:underline;
+}
+
+
+/*---HORIZONTAL DROP DOWN MENU---*/
+
+/* commom style for all browsers */
+
+.navigation {float:left;}
+.navigation li {
+position:relative;
+}
+/*---Adjust Individual Drop Down Menu Widths---*/
+.navigation li ul li.navigationl1 {
+width:300px;
+}
+* html .navigation li a {
+width:7em; w\idth:6em; /* hack for IE5.5 */
+}
+.navigation li ul {
+visibility:hidden; position:absolute; left:0em; height:0; overflow:hidden;top:2.2em;
+}
+.navigation li ul li ul {
+top:2.2em;left:0;width:300px;
+}
+
+.navigation table {
+margin:-1px; border-collapse:collapse; font-size:1em; /* font size for IE5.5 */
+}
+
+/* fist line style for IE7 and non-IE browsers and the second line for IE5.5 and IE6 */
+.navigation li:hover a,
+.navigation li a:hover {
+text-decoration:none; border:0;
+}
+.navigation li:hover ul,
+.navigation li a:hover ul {
+visibility:visible; height:auto; width:auto; background:#fff; border:1px solid #ddd; left:0em; top:2.2em; overflow:visible;z-index:3;
+}
+.navigation li.navigationl1 a:hover li {width:300px;}
+
+.navigation li:hover ul li a,
+.navigation li a:hover ul li a {
+display:block; font-weight:normal;text-decoration:none; height:auto; line-height:1.5em; padding:0.5em; color:#000000;background:#ffffff;
+}
+* html .navigation li a:hover ul li a {
+width:10em; w\idth:9em; /* hack for IE5.5 */
+}
+.navigation li:hover ul li ul,
+.navigation li a:hover ul li a ul {
+visibility:hidden; position:absolute; top:0; left:9.5em; height:0; overflow:hidden;
+}
+.navigation li:hover ul li:hover ul,
+.navigation li a:hover ul li a:hover ul {
+visibility:visible; color:#000; border:1px solid #ddd; height:auto; background:#fff; width:9.5em;
+} 
+.navigation li:hover ul li:hover ul li a,
+.navigation li a:hover ul li a:hover ul li a {
+display:block; height:auto;
+}
+.navigation li a:hover ul li a:hover ul {left:-200px;width:300px;}
+.navigation li ul li a:hover {color:#991b1e ! important;}
+
+.categorylist {float:left;margin:1.5%;width:97%;}
+.categorylist li {float:left;margin-right:10px;clear:none;}
+.categorylist li a {font-size:12pt;}
+.listcatlabel {font-size:12pt;font-weight:bold;}
+
+.column1, .column2, .column3 {float:left;}
+.column1, .column2 {margin-right:1%;}
+.column1 {width:47%;}
+.column2 {width:30%;}
+.column3 {width:20%;}
+
+.column1 .gameslist li {width:30.3%;}
+.column2 .gameslist li {width:29.8%;margin:0 1.6% 15px 1.6%;height:10em;}
+.column3 .gameslist li {width:90%;height:11em;}
+
+.column1 .gameslist li.listad {width:300px;height:280px;}
+
+.column1 .listheader {margin-left:2.9%;}
+.column2 .listheader {margin-left:1.2%;}
+.column3 .listheader {margin-left:3%;}
+
+.column1 .moregames a {margin-left:8%;}
+.column2 .moregames a {margin-left:0%;font-size:1.4em;}
+.column3 .moregames a {margin-left:0%;font-size:1.6em;}
+
+.mobile .gameslist li.listad, .tablet .gameslist li.listad, .browser .gameslist li.listad, .download .gameslist li.listad {height:600px;width:300px;}
+
+.text img {max-width:100%;margin-bottom:15px;}
+.back img {max-width:100%;}

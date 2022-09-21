@@ -1,0 +1,71 @@
+@font-face {
+  font-family: "Marshal the Dead";
+  src: url("https://www.fear.io/images/fonts/marshall-the-dead.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Horroroid Light";
+  src: url("https://www.fear.io/images/fonts/horroroid.ttf") format("truetype");
+}
+@font-face {
+  font-family: "White wood";
+  src: url("https://www.fear.io/images/fonts/white-wood.otf") format("truetype");
+}
+@font-face {
+  font-family: "Woodbone";
+  src: url("https://www.fear.io/images/fonts/woodbone.otf") format("truetype");
+}
+
+.layout_contentHasNotice__2WPBL {padding-top:20px ! important;}
+
+@media (max-width: 768px){
+.layout_contentHasNotice__2WPBL {padding-top: 20px ! important;}
+}
+
+.layout_content__30anV, .farms_farmDesc__1G4CZ {background:black ! important;}
+.layout_layout__2Y7VY {border-radius:20px ! important;}
+.layout_menuLeft__VghOd, .layout_menuItem__2Lu-6 a, .layout_menuItem__2Lu-6 a, .grid_row__2wWen layout_footer__1Lbzs, .layout_header__IvluH, .layout_footer__1Lbzs, .farms_farmDescBodyName__2QzOg, .farms_farmHeaderTitle__3gB_h, .farms_farmDescBodyText__3xhki, .farms_farmDescDetails__2ffEE, .layout_noticeBar__3rXy4 {display:none ! important;}
+.farms_farmHeaderTitle__3gB_h, .farms_farmDescBodyName__2QzOg, .farms_farmTokensTokenName__QicVv {color:red ! important;font-family:Woodbone;}
+.farms_farmTokensTokenName__QicVv {font-size:18pt ! important;text-align:center ! important;margin:10px 0 ! important;}
+.farms_farmTokensTokenName__QicVv {line-height:28px ! important;}
+.farms_farmHeaderBalance__1J3QK, .farms_farmDescBodyText__3xhki, .farms_farmDescGuide__9aiFh, .farms_farmDescNumberText__1-U_9, .farms_farmTokensTokenDesc__3v37h, .farms_farmTokensTokenPriceAvail__3OQYQ, .farms_farmTokensTokenPrice__fMbG7 {color:white ! important;margin-bottom:20px ! important;}
+.farms_farmTokensTokenDesc__3v37h {width:100% ! important;}
+.layout_button__2Aw1x, .layout_button__2Aw1x {background:red ! important;}
+.farms_farmTokensToken__2d1sD {border:none ! important;}
+.farms_farmTokensList__3JnVv {background:black ! important;}
+.farms_farmStakeCard__3I6f2 {background:white ! important;}
+.farms_farmStakeCardBalance__3BkyT {color:white;}
+.farms_farmTokensTokenDesc__3v37h {line-height:20px ! important;}
+.farms_farmTokensTokenPrice__fMbG7 {margin-top:20px;padding:20px 0;border-top:1px solid red;}
+.farms_farm__Kw4Cy {max-width:1000px ! important;}
+.chnMFN {top:-525px ! important;}
+
+
+.farms_farmDesc__1G4CZ {clear:left;}
+.farms_farmHeader__2wfLd {float:left;width:auto;}
+.farms_farmHeaderBalance__1J3QK {float:left;margin-right:20px;margin-left:0;}
+.farms_farmHeaderBtn__1AKEA {float:left;}
+.farms_farmHeader__2wfLd {flex-direction:inherit ! important;}
+
+@media (max-width: 1000px){
+.farms_farm__Kw4Cy {width:94% ! important;padding:0 3% ! important;}
+}
+
+@media (max-width: 768px){
+.layout_menu__3kdkv {background:black;}
+.layout_content__30anV {padding: 0px 8px 0 ! important;}
+}
+
+
+
+@media screen and (max-width: 550px) {
+.farms_farmTokensToken__2d1sD {width:100% ! important;flex:none ! important;}
+.farms_farmTokens__1hzXe {max-width:90% ! important;margin:40px auto 0 auto ! important;}
+.farms_farmHeader__2wfLd {width:100% ! important;}
+.farms_farmHeaderBalance__1J3QK {text-align:center ! important;width:100%;max-width:100% ! important;}
+.farms_farmHeaderBtn__1AKEA {margin-left:0;width:100%;text-align:center;}
+.farms_farmHeader__2wfLd  {padding-bottom:20px;flex:none ! important;display:inherit ! important;}
+.farms_farmHeaderBtn__1AKEA {margin-left:0 ! important;}
+.layout_button__2Aw1x {width:auto;}
+}
+
+.ReactModal__Overlay {display:none ! important;}

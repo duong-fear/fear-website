@@ -1,0 +1,26 @@
+.videohome {display:none ! important;}
+.iosimage {display:block;width:100%;margin-top:77px;}
+.iosimage img {max-width:100%;}
+
+
+@media only screen and (max-width:1000px){
+.iosimage {margin-top:123px;}
+}
+
+@media only screen and (max-width:800px){
+.iosimage {margin-top:146px;z-index:2;}
+}
+
+
+@media only screen and (max-width:600px){
+.iosimage {margin-top:233px;}
+}
+
+@media only screen and (max-width:550px){
+.iosimage {margin-top:237px;}
+}
+
+
+@media only screen and (max-width:450px){
+.iosimage {margin-top:250px;}
+}

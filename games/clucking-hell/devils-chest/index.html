@@ -1,0 +1,1081 @@
+<!--
+  █████▒▓█████ ▄▄▄       ██▀███        ██▓ ▒█████  
+▓██   ▒ ▓█   ▀▒████▄    ▓██ ▒ ██▒     ▓██▒▒██▒  ██▒
+▒████ ░ ▒███  ▒██  ▀█▄  ▓██ ░▄█ ▒     ▒██▒▒██░  ██▒
+░▓█▒  ░ ▒▓█  ▄░██▄▄▄▄██ ▒██▀▀█▄       ░██░▒██   ██░
+░▒█░    ░▒████▒▓█   ▓██▒░██▓ ▒██▒ ██▓ ░██░░ ████▓▒░
+ ▒ ░    ░░ ▒░ ░▒▒   ▓▒█░░ ▒▓ ░▒▓░ ▒▓▒ ░▓  ░ ▒░▒░▒░ 
+ ░       ░ ░  ░ ▒   ▒▒ ░  ░▒ ░ ▒░ ░▒   ▒ ░  ░ ▒ ▒░ 
+ ░ ░       ░    ░   ▒     ░░   ░  ░    ▒ ░░ ░ ░ ▒  
+           ░  ░     ░  ░   ░       ░   ░      ░ ░  
+                                   ░               
+-->
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+		<title>Devils Chest | Clucking Hell | Fear</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/bootstrap.min.css?v3">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/animate.min.css?v3">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/boxicons.min.css?v3">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/meanmenu.min.css?v3">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/flaticon.css?v3">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/fancybox.min.css?v3">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/owl.carousel.min.css?v3">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/magnific-popup.min.css?v3">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/style.css?v3">
+        <link rel="stylesheet" href="https://www.fear.io/assets/css/responsive.css?v3">
+        <link rel="stylesheet" href="https://www.fear.io/updates.css?v110">
+    <link rel="shortcut icon" href="https://www.fear.io/images/fear-icon.svg" type="image/x-icon" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="css/styles.css">
+        <script type="text/javascript" src="scripts/libs/bundle.umd.js"></script>
+        <script type="text/javascript" src="scripts/libs/ethers.umd.min.js"></script>
+        <script type="text/javascript" src="scripts/libs/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="scripts/libs/bundle-min.js"></script>
+        <script type="text/javascript" src="scripts/libs/bootstrap.bundle.min.js"></script>
+        <script type="text/javascript" src="scripts/libs/bootbox.min.js"></script>
+        <script defer src="scripts/libs/alpinejs-3.2.3.min.js"></script>
+        <!-- <script type="text/javascript" src="scripts/libs/wallet-connect.min.js"></script> -->
+        <script type="text/javascript" src="scripts/libs/web3-modal.js"></script>
+        <script type="text/javascript" src="scripts/libs/lodash-4.17.15-npm.min.js"></script>
+        <script type="text/javascript" src="scripts/wallet.js"></script>
+        <script type="text/javascript" src="scripts/misc.js"></script>
+        <script type="text/javascript" src="scripts/abi.js"></script>
+        <script type="text/javascript" src="scripts/blockchain.js"></script>
+        <script type="text/javascript" src="scripts/api.js"></script>
+        <script type="text/javascript" src="scripts/vm.js"></script>
+        <script type="text/javascript">
+            document.addEventListener("alpine:init", setupVm);
+        </script>
+    </head>
+
+    <body class="subpage gamespage devilschest cluckinghellchest">
+
+            <!-- Start Navbar Area -->
+        <div class="navbar-area">
+            <div class="fear-responsive-nav">
+                <div class="container">
+                    <div class="fear-responsive-menu">
+                        <div class="logo">
+                            <span><a href="https://www.fear.io/">
+                                <img src="../../../images/fear-logo.svg" alt="Fear NFT Horror Games">
+                            </a></span>
+							<span class="fearslogan"><img src="../../../images/fear-slogan.svg" alt="Your Worst Nightmares Tokenised"/></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fear-nav">
+                <div class="container-fluid">
+                    <nav class="navbar navbar-expand-md navbar-light">
+                        <a class="navbar-brand" href="https://www.fear.io/">
+                                <img src="../../../images/fear-logo.svg" alt="logo">
+                        </a>
+							<span class="fearslogan"><img src="../../../images/fear-slogan.svg" alt="Your Worst Nightmares Tokenised"/></span>
+
+                        <div class="collapse navbar-collapse mean-menu">
+                            <ul class="navbar-nav">
+                                <li class="nav-item nav-item-1"><a href="#" class="nav-link">Play <i class="flaticon-down-arrow"></i></a>
+                                    <ul class="dropdown-menu">
+
+                                        <li class="nav-item araya-link"><a href="/games/araya/" class="nav-link">Araya</a></li>
+                                        
+<li class="nav-item the-crypt-link"><a href="/games/the-crypt/" class="nav-link">The Crypt</a></li>
+
+                                        <li class="nav-item fear-museum-link"><a href="/games/blood-realms/" class="nav-link">Blood Realms</a></li>
+										
+										 <li class="nav-item cluck-sub-menu clucking-hell-link"><a href="/games/clucking-hell/" class="nav-link nav-cluck-original">Clucking Hell</a></li>
+
+                                        
+                                    </ul>
+                                </li>
+
+<li class="nav-item nav-item-watch"><a href="/watch/" class="nav-link">WATCH <i class="flaticon-down-arrow"></i></a>
+<ul class="dropdown-menu">
+<li class="nav-item cluck-chest"><a href="/watch/wyun/" class="nav-link wyun-link">Whack Your UND. Neighbour</a></li>
+<li class="nav-item cluck-chest"><a href="/watch/whack-the-demon/" class="nav-link wtdlink">Whack the Demon</a></li>
+</ul>
+</li>
+
+                                <!--<li class="nav-item"><a href="#" class="nav-link">NFTS <i class="flaticon-down-arrow"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item"><a href="/opensea" class="nav-link" rel="nofollow" target="_blank">SECONDARY MARKET</a></li>
+                                    </ul>
+                                </li>-->
+
+                                <li class="nav-item"><a href="#" class="nav-link">TOKEN <i class="flaticon-down-arrow"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item fear-token-link"><a href="/token.html" class="nav-link">FEAR TOKEN</a></li>           
+
+                                        <li class="nav-item"><a href="https://www.fear.io/staking" class="nav-link">STAKING</a></li>
+
+                                        <li class="nav-item holders-link"><a href="/utility.html" class="nav-link">UTILITY</a></li>
+                                    </ul>
+                                </li>
+
+                               
+	 <li class="nav-item"><a href="#" class="nav-link">ABOUT <i class="flaticon-down-arrow"></i></a>
+                                    <ul class="dropdown-menu">
+
+                                        <li class="nav-item team-link"><a href="/about.html" class="nav-link">Company</a></li>
+                                        <li class="nav-item news-link"><a href="https://medium.com/@FEAROFFICIAL/" class="nav-link" rel="nofollow" target="_blank">NEWS &amp; HELP</a></li>
+
+                                        <!--<li class="nav-item jobs-link"><a href="#" class="nav-link">JOBS</a></li>-->
+                                    </ul>
+                                </li>
+                            			<li class="nav-item nav-item-5"><span class="transactlink"><button id="transakLink">Buy Fear</button></span></li>
+
+</ul>
+				
+
+                            <div class="others-option d-flex align-items-center">
+                              
+
+                                <div class="option-item">
+                                    <div class="side-menu-btn">
+                                        <i class="flaticon-null-2" data-bs-toggle="modal" data-bs-target="#sidebarModal"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="others-option-for-responsive">
+                <div class="container">
+                    <div class="dot-menu">
+                        <div class="inner">
+                            <div class="circle circle-one"></div>
+                            <div class="circle circle-two"></div>
+                            <div class="circle circle-three"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="container">
+                        <div class="option-inner">
+                            <div class="others-option">
+                                <div class="option-item">
+                                    <div class="search-box">
+                                        <i class="flaticon-search-1"></i>
+                                    </div>
+                                </div>
+
+                                <div class="option-item">
+                                    <div class="side-menu-btn">
+                                        <i class="flaticon-null-2" data-bs-toggle="modal" data-bs-target="#sidebarModal"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Navbar Area -->
+        <!-- End Navbar Area -->
+
+            <!-- Sidebar Modal -->
+        <div class="sidebarModal modal right fade" id="sidebarModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <button type="button" class="close" data-bs-dismiss="modal"><i class='bx bx-x'></i></button>
+
+                    <div class="modal-body">
+                        <div class="logo">
+                            <a href="https://www.fear.io/" class="d-inline-block"><img src="https://www.fear.io/images/fear-logo.svg" alt="image"></a>
+                        </div>
+
+                      <div class="instagram-list">
+                            <div class="row">
+
+                                
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/games/araya-logo.png" alt="araya">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/games/araya/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+<div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/the-crypt-logo-500.png" alt="The Crypt">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/games/the-crypt/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+                               <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/games/blood-realms/blood-realms-logo-square.png" alt="Blood Realms">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/games/blood-realms/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/games/clucking-hell-logo.svg" alt="clucking hell">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/games/clucking-hell/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/games/whack-the-demon-logo.svg" alt="whack the demon">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/watch/whack-the-demon/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="sidebar-contact-info">
+                            <h2>
+                                <a href="#" class="emailus"><img src="https://www.fear.io/images/email.svg" alt="email"/></a>
+                            </h2>
+                        </div>
+
+                        <ul class="social-list">
+                            <li><span>Follow Us On:</span></li>
+                            <li><a href="https://www.fear.io/discord" target="_blank"><i class='bx bxl-discord'></i></a></li>
+                            <li><a href="https://twitter.com/fearnfts" target="_blank"><i class='bx bxl-twitter'></i></a></li>
+                            <li><a href="https://t.me/fearcoin" target="_blank"><i class='bx bxl-telegram'></i></a></li>
+                            <li><a href="https://www.youtube.com/channel/UCHRX3sh3G8sxvHLLQ21vNiQ" target="_blank"><i class='bx bxl-youtube'></i></a></li>
+                            <li><a href="https://www.instagram.com/fearnfts/" target="_blank"><i class='bx bxl-instagram'></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Sidebar Modal -->
+
+
+        <!-- Start Page Title Area -->
+        <section class="page-title-area page-title-bg1">
+            <div class="container">
+                <div class="page-title-content">
+                    <h1 title="Devil's Chest">Devil's Chest</h1>
+                </div>
+            </div>
+        </section>
+        <!-- End Page Title Area -->
+
+        <!-- Start Products Details Area -->
+        <section class="products-details-area">
+            <div class="container">
+                <div class="row align-items-center">
+				 
+				 <p>Welcome to the <span class="cluckyellow">Clucking Hell Devils Chest Dashboard</span>. Here you can manage your FEAR Play to Earn Staking, Rewards and access your stats for the Clucking Hell Game.</p>
+				 
+				 
+				 <svg xmlns="https://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </symbol>
+            <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+            </symbol>
+            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </symbol>
+        </svg>
+				 
+				   <div class="container-fluid" x-data="$store.vm">
+            <div class="alert alert-danger fear-alert" role="alert" x-show="showWarning()">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                <span x-text="warning"></span>
+            </div>
+            <div class="alert alert-success fear-alert" role="alert" x-show="showStatus()">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                <span x-text="status"></span>
+            </div>
+            <div class="alert alert-info fear-alert" role="alert" x-show="busy">
+                <div class="flex-auto flex justify-center items-center">
+                  <svg width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                  <div x-text="progressStatus"></div>
+                </div>
+                <div class="clearfix">
+                    <div class="spinner-border float-end" role="status">
+                        <span class="visually-hidden"></span>
+                    </div>
+                </div>
+            </div>
+            <ul class="nav nav-pills justify-content-between">
+              <li class="nav-item flex">
+                <a class="nav-link active bg-dark inline-block mr-2" aria-current="page" target="_blank" href="https://fear.io/games/clucking-hell/oracle/" style="border-color: transparent;">Profit Calculator 🔮</a>
+                <a class="nav-link active bg-dark inline-block mr-2" aria-current="page" target="_blank" href="https://play.fear.io/clucking-hell/index.html" style="border-color: transparent;">Play 🎮</a>
+                <!-- <a x-show="authenticated" :class="selectedTab == 'Twitter' ? 'bg-dc3545' : 'bg-dark text-1DA1F2'" class="cursor-pointer nav-link active mr-2 flex items-center justify-center" aria-current="page" @click='fetchAffiliateStatus' style="border-color: transparent;">
+                  <span class="text-white">Affiliate Program&nbsp;</span> <i class="fa fab fa-twitter"></i>
+                </a> -->
+              </li>
+                <li class="nav-item connectwallet">
+                  <a x-bind:class="disableWalletConnect ? 'disabled' : ''" class="nav-link active nav-link-fear" aria-current="page" href="#" x-show="!authenticated" @click="walletConnect()">Connect</a>
+                  <a class="nav-link active nav-link-fear" aria-current="page" href="#" x-show="authenticated" x-text="'Connected: ' + addressSummary"></a>
+                </li>
+            </ul>
+            <div>
+            </div>
+            <ul class="nav nav-tabs nav-fill">
+                <template x-for="tab in tabs">
+                    <li x-show="tab.visible" class="nav-item nav-link-fear">
+                        <a x-bind:class="selectedTab === tab.name ? 'nav-link active' : 'nav-link'" aria-current="page" x-text="tab.name" x-on:click="selectTab(tab.name)"></a>
+                    </li>
+                </template>
+            </ul>
+            <div x-show="selectedTab === 'How to Play to Earn'" style="margin-top:30px">
+              <h3>How to Play to Earn?</h3>
+              
+              <p>1. Install <a href="https://metamask.io/" target="_blank">Metamask wallet</a></p>
+
+              <p>2. Play to Earn can be experienced on the Binance Smart Chain Network (BSC) or the Polygon Network</p>
+
+              <p>3. Connect your Wallet by clicking the Connect Button and choose a Network you wish to play on. If you don't have the BSC or Polygon network added to your Metamask wallet the Connect Button will take care of this for you.</p>
+
+              <p>4. Buy the FEAR Coin on <a target="_blank" href="https://quickswap.exchange/#/swap?inputCurrency=0x2791bca1f2de4661ed88a30c99a7a9449aa84174&outputCurrency=0xa2CA40DBe72028D3Ac78B5250a8CB8c404e7Fb8C">Quick Swap</a> or <a target="_blank" href="https://pancakeswap.finance/swap?outputCurrency=0x9ba6a67a6f3b21705a46b380a1b97373a33da311">Pancake Swap</a>.</p>
+              
+              <p>5. If you wish to buy FEAR on <a target="_blank" href="https://quickswap.exchange/#/swap?inputCurrency=0x2791bca1f2de4661ed88a30c99a7a9449aa84174&outputCurrency=0xa2CA40DBe72028D3Ac78B5250a8CB8c404e7Fb8C">Quick Swap</a> you'll need MATIC in your Metamask Wallet or for <a target="_blank" href="https://pancakeswap.finance/swap?outputCurrency=0x9ba6a67a6f3b21705a46b380a1b97373a33da311">Pancake Swap</a> you'll need BNB in your Wallet. MATIC and BNB are the native tokens of each chain and are required to run transactions such as Buys and Sells. You only need a few dollars for each to run many transactions!</p>
+
+              <p>6. If you wish to buy FEAR on an exchange you have two options. 1. Polygon -> Buy MATIC on any exchange and withdraw it over the Polygon network to your Meta Mask address and swap your MATIC for FEAR on <a target="_blank" href="https://quickswap.exchange/#/swap?inputCurrency=0x2791bca1f2de4661ed88a30c99a7a9449aa84174&outputCurrency=0xa2CA40DBe72028D3Ac78B5250a8CB8c404e7Fb8C">Quick Swap</a>. 2. BSC -> Buy BNB on any exchange and withdraw it over the BSC network to your Meta Mask address and swap your BNB for FEAR on <a target="_blank" href="https://pancakeswap.finance/swap?outputCurrency=0x9ba6a67a6f3b21705a46b380a1b97373a33da311">Pancake Swap</a>. Make sure to always have some MATIC or BNB left in your wallet to run further transactions.</p>
+
+              <p>7. Go to the the "FEAR Stakers" tab and if necessary approve the page to accept your FEAR</p>
+
+              <p>8. Stake your FEAR (there's no minimum amount to Stake but there is a maximum of 500 FEAR)</p>
+
+              <p>9. After Staking your FEAR click the Play Clucking Hell tab to visit the <a target="_blank" href="https://play.fear.io/clucking-hell/">game</a>. The Game uses Web GL for rendering and therefore works in most modern browsers across all platforms but we recommend you use Google Chrome for the best experience.</p>
+
+              <p>10. On the Main Menu of the Game Connect your wallet and a dialog will appear showing your in game balance (which starts at zero), the Amount of FEAR in your Metmask Wallet and the Amount of FEAR you staked in step 6.</p>
+
+              <p>11. Your Earnings in Game depend on how much FEAR you stake - for a better understanding visit the <a target="_blank" href="https://www.fear.io/cluckoracle">Cluck Oracle</a> (Profit Calculator)</p>
+
+              <p>12. Now click Play and work your way through the Rounds, the first 10 rounds are for practice and you are not eligible to earn FEAR however rounds 11-30 you can progressively earn a higher FEAR reward!</p>
+
+              <p>13. When you have played enough times and accumulated FEAR in your in game balance its time to claim your FEAR!</p>
+
+              <p>14. Visit the "Your Stats" tab and click the claim button. Confirm the transaction in your Meta Mask wallet and once the transaction has finished running your in Game Balance will be converted to real FEAR in your wallet.</p>
+
+              <p>15. You can sell your FEAR on <a target="_blank" href="https://quickswap.exchange/#/swap?inputCurrency=0x2791bca1f2de4661ed88a30c99a7a9449aa84174&outputCurrency=0xa2CA40DBe72028D3Ac78B5250a8CB8c404e7Fb8C">Quick Swap</a>, <a target="_blank" href="https://pancakeswap.finance/swap?outputCurrency=0x9ba6a67a6f3b21705a46b380a1b97373a33da311">Pancake Swap</a> and all exchanges FEAR is listed on.</p>
+            </div>
+
+            <!-- Blood Cup -->
+            <div x-show="selectedTab == 'Blood Cup 🏆'">
+              <template x-if="loading.BC">
+                <div class="flex items-center mt-20px">
+                  Fetching data&nbsp;<div class="spinner-border spinner-border-sm ml-1"></div>
+                </div>
+              </template>
+              <template x-if="!loading.BC">
+                <div>
+                  <div class="flex justify-between pt-4 px-2 select-none items-center m-auto">
+                    <div
+                      x-show="BC_ENABLED && bloodcup.current.finalized === true"
+                      class="status-badge status-finalized"
+                    >
+                      <span>Finalized</span>
+                    </div>
+                    <template x-if="BC_ENABLED && bloodcup.current.finalized === false">
+                      <div>
+                        <div x-show="epoch < +bloodcup.current.start" class="status-badge status-prepare">Prepare</div>
+                        <div x-show="epoch >= +bloodcup.current.start && epoch < +bloodcup.current.end" class="status-badge status-live">Live</div>
+                        <div x-show="epoch >= +bloodcup.current.end" class="status-badge status-ended">Ended</div>
+                      </div>
+                    </template>
+                    <div x-show="!BC_ENABLED">
+                      <div class="status-badge status-ended">temporary closed</div>
+                    </div>
+                    <div>
+                      <img src="img/bloodcup.png" alt="" style="width: 5rem;">
+                    </div>
+                      <div class="flex">
+                       
+                        <div
+                          x-show="authenticated && bloodcup.current.unclaimed > 0"
+                          class="wbtn"
+                        >
+                          <button
+                            :disabled="loading.BC_CLAIM"
+                            @click="claimBloodCupReward"
+                            class="btn bg-fa0 flex justify-center items-center"
+                          >
+                            <span>Claim (<span x-text="bloodcup.current.unclaimed"></span>)</span>
+                            <div x-show="loading.BC_CLAIM" class="spinner-border spinner-border-sm ml-1"></div>
+                          </button>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="pt-4 text-center" x-show="!BC_ENABLED">
+                    <span>⚠️ Blood Cup 🏆 is temporary closed. Entry fee will be refunded to all existing participants</span>
+                  </div>
+                  <div class="pt-4 text-center" x-show="BC_ENABLED && chainId != MATIC_CHAINID">
+                    <span>⚠️ Connect your wallet to <rb>Polygon</rb> network to join Blood Cup 🏆</span>
+                  </div>
+                  <div class="flex justify-between pt-4 select-none items-center m-auto text-center">
+                    <div class="flex flex-col bcb">
+                      <div class="text-smaller">Campaign</div>
+                      <div class="text-xl text-fa0">
+                        <span x-text="bloodcup.current.title || `Week ${+bloodcup.current.id}`"></span>
+                      </div>
+                    </div>
+                    <div class="flex flex-col bcb">
+                      <div class="text-smaller">Start Time (local)</div>
+                      <div class="text-xl text-fa0"><span x-text="formatDate(+bloodcup.current.start)"></span></div>
+                    </div>
+                    <div class="flex flex-col bcb">
+                      <div class="text-smaller">End Time (local)</div>
+                      <div class="text-xl text-fa0">
+                        <span x-text="formatDate(+bloodcup.current.end)"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex justify-between pt-4 select-none items-center m-auto text-center">
+                    <div class="flex flex-col bcb">
+                      <div class="text-smaller">
+                        <span>Prize Pool</span>
+                      </div>
+                      <div class="text-xl text-fa0">
+                        <span x-text="
+                        formatEther(
+                          bloodcup.current.buyin
+                            .mul(bloodcup.current.participantsCount)
+                            .add(bloodcup.current.bonus)
+                            .mul(bloodcup.blood.fearPriceBN)
+                        )
+                        "></span>
+                        <span>$FEAR</span>
+                      </div>
+                    </div>
+                    <div class="flex flex-col bcb">
+                      <div class="text-smaller">Participants</div>
+                      <div class="text-xl text-fa0">
+                        <span x-text="+bloodcup.current.participantsCount"></span>
+                      </div>
+                    </div>
+                    <div class="flex flex-col bcb">
+                      <div class="text-smaller">Entry Fee</div>
+                      <div class="text-xl text-fa0">
+                        <span>
+                            <span x-text="+bloodcup.current.buyin"></span>
+                            <img src="img/blood-vial.png" width="32px" style="margin-left: -0.25rem;margin-right: -0.25rem;"/>
+                            <template x-if="!!bloodcup.blood.fearPriceBN">
+                              <span>(<span x-text="formatEther(bloodcup.blood.fearPriceBN.mul(bloodcup.current.buyin))"></span> $FEAR)</span>
+                            </template>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row m-0 pt-4 select-none">
+                    <div class="col-8 flex justify-center p-0 position-relative fit-content">
+                      <div
+                        style="z-index: 1;" x-show="loading.BC_LEADERBOARD"
+                        class="position-absolute blur-backdrop w-full h-full flex items-center justify-center"
+                      >
+                        <div class="spinner-border spinner-border-sm ml-1"></div>
+                      </div>
+                      <div class="w-full p-2">
+                        <table class="table table-bordered table-striped table-dark text-center mb-0" id="bc-leaderboard">
+                          <thead>
+                            <tr>
+                              <th scope="col">Rank</th>
+                              <th scope="col"><span class="block">Prize</span><img src="img/blood-vial.png" width="24px"></th>
+                              <th scope="col"><span class="block">Prize</span><span class="whitespace-nowrap">(in $FEAR)</span></th>
+                              <th scope="col">Alias</th>
+                              <template x-for="id in 3">
+                                <th scope="col" @click="openOpenSea(id)" class="cursor-pointer"><img class="bg-282a36" :src="'img/' + id + '.mini.png'" /></th>
+                              </template>
+                              <th scope="col">FR</th>
+                              <th scope="col">RNC</th>
+                              <!-- <th scope="col">Last Seen</th> -->
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <template x-for="player in bloodcup.leaderboard">
+                              <tr :class="{ 'unworthy-player': player.void === true }">
+                                <th scope="row" x-text="player.o"></th>
+                                <td x-text="player.prize"></td>
+                                <td x-text="player.prizeInFear"></td>
+                                <td x-text="player.a" class="px-2"></td>
+                                <template x-for="id in 3">
+                                  <td>
+                                    <span
+                                      x-show="player[id] === true"
+                                      class="cursor-pointer"
+                                      @click="openOpenSea(id)"
+                                      x-html="svgFaCheck"
+                                    ></span>
+                                  </td>
+                                </template>
+                                <td x-text="player.rcr"></td>
+                                <td x-text="player.rnc"></td>
+                                <!-- <td x-text="player.lpe" class="monospace px-2"></td> -->
+                              </tr>
+                            </template>
+                          </tbody>
+                        </table>
+                        <div class="py-2 text-center">
+                          <template x-for="p in bloodcup.leaderboardTotalPages">
+                            <button
+                              class="btn btn-danger mx-1" x-text="p" style="min-width: 2.5rem;"
+                              :disabled="p-1 === bloodcup.leaderboardCurrentPage"
+                              @click="fetchLeaderboard(p-1)"
+                            ></button>
+                          </template>
+                        </div>
+                        <template x-if="bloodcup.leaderboardTotalPages === 0">
+                          <div class="text-center py-2" style="font-style: italic; color: #fafafadd;">
+                            <div>Awaiting Competitors 😴</div>
+                            <div><span>Use <rb class="cursor-pointer" @click="setCalculatorVisible(true)">this calculator</rb> to calculate your potential earning</span></div>
+                          </div>
+                        </template>
+                        <div>
+                          <div class="row py-2">
+                            <div class="col-6">*FR: Furthest Round</div>
+                            <div class="col-6">*RNC: Record No. of Chicks</div>
+                          </div>
+                          <div style="
+                            border: 1px dashed #44475a;
+                            padding: 1rem;
+                            border-radius: 0.5rem;
+                            font-size: 1rem;
+                          ">
+                          <span>
+                            <span x-html="svgFaWarning"></span>
+                            <span>You must join BloodCup at least once in the last 30 days to be eligible in classic mode earning.</span>
+                          </span>
+                          <br/>
+                          <span>
+                            <span x-html="svgFaWarning"></span>
+                            <span>When you enter <rb>Blood Cup 🏆</rb> with NFTs, you will be <rb style="text-decoration: line-through;">disqualified</rb> from leaderboard if you transfer the NFTs outside your wallet.</span>
+                          </span>
+                          <br/>
+                          <span>
+                            <span x-html="svgFaCircleInfo"></span>
+                            <span>Converting from Blood Vials back to $FEAR carries a <rb><span x-text="100 * (+bloodcup.blood.sellingFeeBN) / 1000"></span>% fee</rb>, fees accrued from the Blood Cup are recycled back into the rewards for classic mode.</span>
+                          </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4 p-2 flex items-center flex-col position-relative fit-content" id="bc-shop">
+                      <div
+                        style="z-index: 2;"
+                        x-show="loading.BC_USER === true"
+                        class="position-absolute blur-backdrop w-full h-full flex items-center justify-center"
+                      >
+                        <div class="spinner-border spinner-border-sm ml-1"></div>
+                      </div>
+                      <div class="w-full pb-4 px-4 pt-2">
+                        <button class="btn bg-fa0 w-full" @click="setCalculatorVisible(true)">
+                          View Prizes 🏅
+                        </button>
+                      </div>
+                      <div class="w-full text-center">
+                        <div class="carter">
+                          <span>FEAR balance</span>
+                        </div>
+                        <div class="carter text-2xl text-fa0" x-text="formatEther(vm.bloodcup.user.fearBalanceBN)"></div>
+                        <div class="carter">
+                          <span>Blood Vial balance</span>
+                        </div>
+                        <div class="carter text-2xl text-fa0 flex justify-center items-center">
+                          <span x-text="formatWei(bloodcup.user.bloodBalanceBN)"></span>
+                          <img src="img/blood-vial.png" style="width: 51px;">
+                        </div>
+                        <div class="carter">
+                          <span>Blood Vial Price</span>
+                        </div>
+                        <div class="carter text-2xl text-fa0">
+                          <span x-text="formatEther(vm.bloodcup.blood.fearPriceBN)"></span> $FEAR
+                        </div>
+                        <div class="py-2">Enter the amount of Blood Vials:</div>
+                        <div class="flex justify-center" style="margin-left: calc(1.5rem - 2px); margin-right: calc(1.5rem - 2px);">
+                          <div class="flex flex-col mr-1 w-full">
+                            <input
+                              placeholder="0" type="text" @keypress="onIntegerOnlyInput" class="h-2.5r form-control my-2"
+                              x-model="bloodBuyAmount" :disabled="loading.BC_BUY_BLOOD"
+                            />
+                            <button
+                              type="button" class="flex-center btn btn-success w-full"
+                              :disabled="BC_DISABLED || !authenticated || !strIsPositiveInteger(bloodBuyAmount) || loading.BC_BUY_BLOOD"
+                              @click="buyBlood"
+                            >
+                              <span>Buy</span>
+                              <div x-show="loading.BC_BUY_BLOOD" class="spinner-border spinner-border-sm ml-1"></div>
+                            </button>
+                          </div>
+                          <div class="flex flex-col ml-1 w-full">
+                            <input
+                              placeholder="0" type="text" @keypress="onIntegerOnlyInput" class="h-2.5r form-control my-2"
+                              x-model="bloodSellAmount" :disabled="loading.BC_SELL_BLOOD"
+                            />
+                            <button
+                              type="button" class="flex-center btn btn-danger w-full"
+                              :disabled="BC_DISABLED || !authenticated || !strIsPositiveInteger(bloodSellAmount) || loading.BC_SELL_BLOOD"
+                              @click="sellBlood"
+                            >
+                              <span>Sell</span>
+                              <div x-show="loading.BC_SELL_BLOOD" class="spinner-border spinner-border-sm ml-1"></div>
+                            </button>
+                          </div>
+                        </div>
+                        <div class='gradient-border mx-4 my-3' x-show="bloodcup.current.joined !== true">
+                          <button
+                            :disabled="BC_DISABLED || !authenticated || bloodcup.current.finalized === true || epoch < +bloodcup.current.start || epoch >= +bloodcup.current.end || loading.BC_JOIN"
+                            @click="joinBloodCup"
+                            class="btn flex justify-center items-center w-full text-white"
+                          >
+                            <span>Join 🏆</span>
+                            <div x-show="loading.BC_JOIN" class="spinner-border spinner-border-sm ml-1"></div>
+                          </button>
+                        </div>
+                        <div class="wbtn joined mx-4 my-3" x-show="authenticated && bloodcup.current.joined === true">
+                          <button
+                            disabled class="btn bg-transparent text-white w-full flex justify-center items-center">
+                            <span>Joined</span>
+                            <svg class="ml-1" style="width: 1rem; height: 1rem; color: green" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" class="svg-inline--fa fa-check fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path></svg>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+
+            <div x-show="selectedTab === 'Your Stats' && !busy">
+                <div x-show="!authenticated" style="text-align: left;margin-top:20px;">Connect your Wallet to see your in Game Stats...</div>
+                <table x-show="authenticated" class="table table-dark table-striped table-stats">
+                    <thead>
+                        <tr>
+                            <th x-show="playerStats === null" colspan="2" class="table-header" style="color:red">Loading Your Clucking Hell Stats...</th>
+                            <th x-show="playerStats !== null" colspan="2" class="table-header"> Clucking Hell Stats</th>
+                        </tr>
+                    </thead>
+                    <tbody x-show="playerStats !== null">
+                      <tr>
+                        <th>FEAR In Game Balance</th>
+                        <td>
+                            <span x-text="playerStats !== null ? playerStats.rb : ''"></span>
+                            <button
+                              class="btn btn-danger"
+                              @click="claimFear()" x-bind:class="{'disabled': loading.P2E_CLAIM || !(_.get(vm, 'playerStats.rb') > 0)}"
+                            >
+                              <span>Claim</span>
+                              <div x-show="loading.P2E_CLAIM" class="spinner-border spinner-border-sm ml-1"></div>
+                            </button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>#️⃣ Number of plays remaining</th>
+                        <td x-text="playerStats !== null ? playerStats.nop : ''"></td>
+                    </tr>
+                    <tr>
+                      <th>⏱ Reset plays date</th>
+                      <td x-text="playerStats !== null ? (new Date(playerStats.rpd*1000)).toString() : ''"></td>
+                  </tr>
+                      <tr>
+                        <th>FEAR Earnt to Date</th>
+                        <td x-text="playerStats !== null ? playerStats.tfe : ''"></td>
+                      </tr>
+                      <tr>
+                        <th>Last Played</th>
+                        <td x-text="playerStats !== null ? playerStats.lp : ''"></td>
+                      </tr>
+                      <tr>
+                        <th>Points (Rounds Completed + Final Rounds * 100)</th>
+                        <td x-text="playerStats !== null ? playerStats.tp : ''"></td>
+                      </tr>
+                      <tr>
+                        <th>Rounds Completed</th>
+                        <td x-text="playerStats !== null ? playerStats.rc : ''"></td>
+                      </tr>
+                      <tr>
+                        <th>Final Rounds</th>
+                        <td x-text="playerStats !== null ? playerStats.frc : ''"></td>
+                      </tr>
+                      <tr>
+                        <th>Round Reached Record</th>
+                        <td x-text="playerStats !== null ? playerStats.fr : ''"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+            <div x-show="selectedTab === 'FEAR Stakers' && !busy">
+                <div x-show="!authenticated" style="text-align: left;margin-top:20px;">Connect your Wallet to Stake FEAR and Play to Earn...</div>
+                <table x-show="authenticated" class="table table-dark table-striped table-stats">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="table-header">Stake your FEAR to Play to Earn</th>
+                        </tr>
+                        <tr x-show="withFear.stakedAmountBNInV4.gt(ZeroBN)">
+                          <th colspan="2" class="table-header text-center">
+                            <button
+                              :disabled="loading.V4_UNSTAKE"
+                              class="btn btn-danger inline-flex items-center justify-center"
+                              @click="blockchain.unstakeFromP2Ev4"
+                            >
+                              <span>Unstake from the previous contract (<span x-text="formatEther(withFear.stakedAmountBNInV4)"></span> FEAR)</span>
+                              <div x-show="loading.V4_UNSTAKE" class="spinner-border spinner-border-sm ml-1"></div>
+                            </button>
+                          </th>
+                        </tr>
+                        <tr>
+                            <th colspan="2" class="table-header">
+                              <rb>
+                                <template x-if="withFear.stakeLockExpirationBN.gt(ZeroBN)">
+                                  <span>⚠️ Your $FEAR will be unlocked on <span x-text="formatDate(+withFear.stakeLockExpirationBN)"></span> (local time) with <span x-text="formatFeePercent(withFear.unstakeFeeBN)"></span>% fee on unstake</span>
+                                </template>
+                                <template x-if="withFear.stakeLockExpirationBN.eq(ZeroBN)">
+                                  <span>⚠️ Your $FEAR will be locked for <span x-text="+withFear.stakeLockPeriodBN"></span> days with <span x-text="formatFeePercent(withFear.unstakeFeeBN)"></span>% fee on unstake</span>
+                                </template>
+                              </rb>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>In wallet</th>
+                        <td class="flex items-center justify-between">
+                          <span>
+                            <span x-text="formatEther(withFear.fearBalanceBN, false)"></span>
+                            <span>$FEAR</span>
+                          </span>
+                          <img class="px-2 cursor-pointer" src="img/metamask.svg" @click="addTokenToMetamask"/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>
+                          <span>Staked amount</span>
+                          <template x-if="withFear.stakeCap.gt(ZeroBN)">
+                            <span>(Max <span x-text="formatEther(withFear.stakeCap)"></span>)</span>
+                          </template>
+                        </th>
+                        <td>
+                          <span x-text="formatEther(withFear.fearStakedBN, false)"></span>
+                          <span>$FEAR</span>
+                        </td>
+                      </tr>
+                      <tr>
+                          <th>Stake</th>
+                          <td>
+                            <input
+                              :class="{'disabled': loading.P2E_STAKE }"
+                              type="text" x-model="withFear.fearToStake" @keypress="onFloatOnlyInput" placeholder="0"
+                            />
+                            <button
+                              @click="withFear.stakeFear(bn(withFear.fearToStake))"
+                              style="float:right" class="btn btn-danger"
+                              :class="{ 'disabled': loading.P2E_STAKE || bn(withFear.fearToStake).eq(ZeroBN) || !bn(withFear.fearToStake).lte(withFear.fearBalanceBN) || !bn(withFear.fearToStake).lte(withFear.remainingStakeQuotaBN) }"
+                            >
+                              <span>Stake</span>
+                              <div class="spinner-border spinner-border-sm ml-1" x-show="loading.P2E_STAKE"></div>
+                            </button>
+                          </td>
+                      </tr>
+                      <tr>
+                        <th>Unstake</th>
+                        <td>
+                          <input
+                            :class="{'disabled': loading.P2E_UNSTAKE }"
+                            type="text" x-model="withFear.fearToUnstake"  @keypress="onFloatOnlyInput" placeholder="0"/>
+                          <button
+                            @click="withFear.unstakeFear(bn(withFear.fearToUnstake))"
+                            :class="{'disabled': loading.P2E_UNSTAKE || bn(withFear.fearToUnstake).eq(ZeroBN) || !bn(withFear.fearToUnstake).lte(withFear.fearStakedBN) || withFear.stakeLockExpirationBN.gt(epoch) }"
+                            class="btn btn-danger" style="float:right"
+                          >
+                          <span>Unstake</span>
+                          <div class="spinner-border spinner-border-sm ml-1" x-show="loading.P2E_UNSTAKE"></div>
+                        </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+
+            <div x-show="selectedTab == 'My NFTs'">
+              <template x-if="nfts == null">
+                <div class="flex items-center mt-20px">
+                  Fetching NFTs balance <div class="spinner-border spinner-border-sm ml-1"></div>
+                </div>
+              </template>
+              <template x-if="nfts != null">
+                <div class="my-nfts flex select-none mt-20px">
+                  <template x-for="nft in nfts">
+                        <div class="flex-grow flex-basis">
+                          <div class="my-nft-item">
+                            <div @click="openOpenSea(nft.id)" class="cursor-pointer">
+                              <img :src="`img/${nft.id}.jpeg`" style="width: 203px; height: 291px;">
+                            </div>
+                            <div @click="openOpenSea(nft.id)" class="p-2 cursor-pointer">
+                              <span x-text="nft.name"></span>
+                              <span>( <b x-text="nft.balance" :class="nft.balance > 0 ? 'text-dc3545' : 'text-white'"></b> )</span>
+                            </div>
+                            <div>
+                              <button :hidden="nft.balance == 0"
+                                class="btn btn-danger w-full"
+                                @click="nftTransfer(nft)"  
+                              >transfer</button>
+                            </div>
+                          </div>
+                        </div>
+                </template>
+                </div>
+              </template>
+            </div>
+
+          <!-- modals -->
+          <template x-if="!!loading.MODAL">
+            <div
+              class="flex items-center justify-center position-fixed h-full w-full"
+              style="top: 0px; left: 0px; backdrop-filter: brightness(0.1);z-index: 999;"
+            >
+              <div>
+                <span x-text="loading.MODAL"></span>
+              </div>
+              <div class="spinner-border spinner-border-sm ml-1" />
+            </div>
+          </template>
+          <template x-if="_.isArray(rewardTable)">
+          <div class="fear-modal" id="bloodcup-calculator">
+            <div class="position-relative">
+              <div class="position-absolute cursor-pointer" style="top: -1rem;right: -1rem;" @click="setCalculatorVisible(false)">
+                <svg color="#f8f8f2" width="2rem" height="2rem" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-xmark" class="svg-inline--fa fa-circle-xmark" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256C397.4 512 512 397.4 512 256S397.4 0 256 0zM336.1 303c9.375 9.375 9.375 24.56 0 33.94c-9.381 9.381-24.56 9.373-33.94 0L256 289.9l-47.03 47.03c-9.381 9.381-24.56 9.373-33.94 0c-9.375-9.375-9.375-24.56 0-33.94l47.03-47.03L175 208.1c-9.375-9.375-9.375-24.56 0-33.94s24.56-9.375 33.94 0L256 222.1l47.03-47.03c9.375-9.375 24.56-9.375 33.94 0s9.375 24.56 0 33.94l-47.03 47.03L336.1 303z"></path></svg>
+              </div>
+              <div style="background: #282a36;border-radius: 4px;" class="py-3 px-4 pb-0">
+                <div>
+                  <div class="py-1 flex items-center" style="border-bottom: 1px dotted #44475a;">
+                    <span>Participants</span>
+                    <input
+                      x-model="xParticipantsCount"
+                      class="flex-auto" type="text" @keypress="onIntegerOnlyInput" autocomplete="off" placeholder="100"
+                    />
+                  </div>
+                  <div class="py-1 flex items-center" style="border-bottom: 1px dotted #44475a;">
+                    <span class="whitespace-nowrap">Entry fee <img src="img/blood-vial.png" width="32px" style="margin-left: -0.5rem;"></span>
+                    <input
+                      x-model="xBuyin"
+                      class="flex-auto" type="text" @keypress="onIntegerOnlyInput" autocomplete="off" placeholder="5"
+                    />
+                  </div>
+                  <div class="py-1 flex items-center" style="border-bottom: 1px dotted #44475a;">
+                    <span>Campaign bonus <img src="img/blood-vial.png" width="32px" style="margin-left: -0.5rem;"></span>
+                    <input
+                      x-model="xBonus"
+                      class="flex-auto" type="text" @keypress="onIntegerOnlyInput" autocomplete="off" placeholder="0"
+                    />
+                  </div>
+                </div>
+                <button
+                  :disabled="[xParticipantsCount, xBuyin, xBonus].includes('') || +xParticipantsCount == 0 || +xBuyin == 0"
+                  class="w-full btn btn-danger my-4" @click="updateBCRewardTable"
+                >View Prizes 🏅</button>
+              </div>
+            <template x-if="_.isArray(rewardTable) && rewardTable.length > 0">
+              <div class="mt-2 text-center rounded" style="max-height: 20rem;overflow-y: auto;">
+                <table class="table table-striped table-dark table-p-4 mb-0 tableFixedHead">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width: 33%">Rank</th>
+                      <th scope="col" style="width: 33%">Reward <img src="img/blood-vial.png" width="32px" style="margin-left: -0.5rem;"></th>
+                      <th scope="col" style="width: 33%">$FEAR value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template x-for="row in rewardTable">
+                      <tr>
+                        <th scope="row" x-text="row[0]"></th>
+                        <td x-text="row[1]"></td>
+                        <td x-text="row[2]"></td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+              </div>
+            </template>
+            </div>
+          </div>
+          </template>
+        </div>
+            </div>
+            </div>
+        </section>
+        <!-- End Products Details Area -->
+
+         <!-- Start Social Area -->
+        <section class="social-area pt-100 pb-70">
+            <div class="container">
+                <div class="section-title stayconnected">
+                    <span class="sub-title">Official</span>
+                    <h2>Stay Connected</h2>
+                </div>
+
+                <div class="row socialrow">
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-discord'></i>
+                                Discord
+                            </div>
+                            <div class="shape">
+                                <img src="../../../assets/img/social-shape1.png" alt="image">
+                                <img src="../../../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://www.fear.io/discord" class="link-btn"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-twitter'></i>
+                                Twitter
+                            </div>
+                            <div class="shape">
+                                <img src="../../../assets/img/social-shape1.png" alt="image">
+                                <img src="../../../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://twitter.com/fearnfts" class="link-btn"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-telegram'></i>
+                                Telegram
+                            </div>
+                            <div class="shape">
+                                <img src="../../../assets/img/social-shape1.png" alt="image">
+                                <img src="../../../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://t.me/fearcoin" class="link-btn"></a>
+                        </div>
+                    </div>
+<div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-medium'></i>
+                                Medium
+                            </div>
+                            <div class="shape">
+                                <img src="../../../assets/img/social-shape1.png" alt="image">
+                                <img src="../../../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://medium.com/@FEAROFFICIAL" class="link-btn" target="_blank"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-youtube'></i>
+                                YouTube
+                            </div>
+                            <div class="shape">
+                                <img src="../../../assets/img/social-shape1.png" alt="image">
+                                <img src="../../../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://www.youtube.com/channel/UCHRX3sh3G8sxvHLLQ21vNiQ" class="link-btn"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-instagram'></i>
+                                Instagram
+                            </div>
+                            <div class="shape">
+                                <img src="../../../assets/img/social-shape1.png" alt="image">
+                                <img src="../../../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://www.instagram.com/fearnfts/" class="link-btn"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Social Area -->
+
+         <!-- Start Footer Area -->
+        <footer class="footer-area">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="logo">
+                        <a href="https://www.fear.io/" class="d-inline-block"><img src="https://www.fear.io/images/fear-logo.svg" alt="Fear" style="width:100px;"></a>
+                        <ul class="footer-menu">
+                            <li class="nav-item"><a class="nav-link" href="https://www.fear.io/terms-of-use.html">Terms of Use</a></li>
+                            <li class="nav-item"><a class="nav-link" href="https://www.fear.io/privacy-policy.html">Privacy policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+       <div class="copyright-area">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6 col-sm-5">
+                        <p><i class='bx bx-copyright'></i>2021 <a href="https://www.fear.io/">FEAR</a> All rights reserved.</p>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-7">
+                        <div class="lang-switcher">
+                            <span>Select your language</span>
+                            <select>
+                                <option>English</option>
+                              </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Footer Area -->
+
+        <div class="go-top"><i class='bx bx-up-arrow-alt'></i></div>
+
+        <!-- <div class="fear-cursor"></div>
+        <div class="fear-cursor2"></div> -->
+
+        <!-- Links of JS files -->
+        <script src="https://www.fear.io/assets/js/jquery.min.js?v4"></script>
+        <script src="https://www.fear.io/assets/js/popper.min.js?v4"></script>
+        <script src="https://www.fear.io/assets/js/bootstrap.min.js?v4"></script>
+        <script src="https://www.fear.io/assets/js/owl.carousel.min.js?v4"></script>
+        <script src="https://www.fear.io/assets/js/magnific-popup.min.js?v4"></script>
+        <script src="https://www.fear.io/assets/js/parallax.min.js?v4"></script>
+        <script src="https://www.fear.io/assets/js/meanmenu.min.js?v4"></script>
+        <script src="https://www.fear.io/assets/js/isotope.pkgd.min.js?v4"></script>
+        <!-- <script src="https://www.fear.io/assets/js/cursor.min.js?v4"></script> -->
+        <script src="https://www.fear.io/assets/js/fancybox.min.js?v4"></script>
+        <script src="https://www.fear.io/assets/js/wow.min.js?v4"></script>
+        <script src="https://www.fear.io/assets/js/form-validator.min.js?v4"></script>
+        <script src="https://www.fear.io/assets/js/contact-form-script.js?v4"></script>
+        <script src="https://www.fear.io/assets/js/ajaxchimp.min.js?v4"></script>
+        <script src="https://www.fear.io/assets/js/main.js?v4"></script>
+		
+			<script type="text/javascript">
+var sc_project=12412733; 
+var sc_invisible=1; 
+var sc_security="af2ceb8d"; 
+var sc_remove_link=1; 
+</script>
+<script type="text/javascript"
+src="https://www.statcounter.com/counter/counter.js"
+async></script>
+<noscript><div class="statcounter"><img class="statcounter"
+src="https://c.statcounter.com/12412733/0/af2ceb8d/1/"
+alt="Web Analytics"
+referrerPolicy="no-referrer-when-downgrade"></div></noscript>
+    </body>
+</html>

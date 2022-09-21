@@ -1,0 +1,1016 @@
+@font-face {
+  font-family: "Carter One";
+  src: url("https://www.fear.io/images/fonts/carter-one.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Frightmare";
+  src: url("https://www.fear.io/images/fonts/frightmare-reg.otf") format("truetype");
+}
+@font-face {
+  font-family: "Lovato";
+  src: url("https://www.fear.io/fonts/lovato.otf") format("truetype");
+}
+@font-face {
+  font-family: "Horror Memories";
+  src: url("https://www.fear.io/fonts/horrormemories.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Wolfs Bane";
+  src: url("https://www.fear.io/fonts/wolfsbane2.ttf") format("truetype");
+}
+
+
+.wolfred {color:#ae303a;}
+#header {border-bottom:none;}
+.dark #header, #header.dark {border:none ! important;border-bottom-color:rgba(255,255,255,0.00) ! important;}
+.navbar-brand {width:100px;}
+.logo a img {width:100px;}
+.home h1, .logo span, .navbar-brand  {margin:0;padding:0;display:inline-block;margin-right:20px;}
+.fearslogan {width:200px ! important;display:inline-block;}
+.fearslogan img {width:200px;max-width:200px ! important;}
+.videocon {position:relative;text-align:center;top:-40px;}
+.featurevideo {position:relative;top:0;z-index:0;}
+.slogan {position:relative;color:#fff;font-size:20pt;display:inline-block;top:400px;z-index:1;background: rgba(0, 0, 0, 0.6);padding:5px;font-family:DM Sans;border-radius:10px;}
+.viewgames {position:absolute;top:450px;font-size:20pt;z-index:3;width:100%;text-align:center;}
+.viewgames a {background: rgba(0, 0, 0, 0.3);border-radius:40px;padding:10px 15px 10px 15px;border:1px solid red;}
+.dot-menu .inner {display:none ! important;}
+.moregamesmarker {position:relative;}
+#moregames {position:absolute;top:-200px;}
+
+.arrow {
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 5px;
+}
+.viewgames a:hover .arrow {border: solid red;
+  border-width: 0 2px 2px 0;}
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.headercentre {width:100%;text-align:center;margin-bottom:20px;}
+
+@media screen and (max-width: 2000px){
+.slogan {top:400px;}
+}
+@media screen and (max-width: 1500px){
+.slogan {top:300px;}
+.viewgames {top:370px;}
+}
+
+@media only screen and (max-width: 1199px){
+.fear-responsive-nav .logo {width: 85%;}
+}
+
+
+@media screen and (max-width: 1000px){
+.fearslogan {width:150px ! important;display:inline-block;}
+.fearslogan img {width:150px;max-width:150px ! important;}
+}
+
+@media screen and (max-width: 820px){
+.slogan {top:250px;font-size:14pt;}
+.viewgames {top:292px;}
+}
+@media screen and (max-width: 770px){
+.slogan {top:250px;width:85%;font-size:13pt;padding:10px;}
+.team-area .col-lg-3 {width:20%;}
+}
+@media screen and (max-width: 720px){
+.slogan {top:230px;font-size:14pt;}
+.viewgames {top:271px;}
+}
+@media screen and (max-width: 620px){
+.videocon video {width:850px ! important;}
+.videocon {overflow:hidden;}
+.viewgames {top:291px;}
+.team-area .col-lg-3 {width:32%;}
+.aboutuspage .team-area .col-lg-3 {width:45%;}
+}
+@media screen and (max-width: 580px){
+.viewgames {top:305px;}
+}
+@media screen and (max-width: 520px){
+.slogan {font-size:12pt;}
+}
+
+@media screen and (max-width: 400px){
+.viewgames {top:331px;}
+}
+
+@media screen and (max-width: 380px){
+.fearslogan {width:130px ! important;display:inline-block;}
+.fearslogan img {width:130px;max-width:130px ! important;}
+.home h1, .logo span {margin-right:10px;}
+}
+
+.red {color:red ! important;}
+.team-area .col-lg-3 {width:15%;margin-right:10px;margin-bottom:10px;}
+.latestnfts .col-lg-3 {margin:0 auto;}
+.latestnfts .col-lg-3 h3, .latestnfts .col-lg-3 span.price {text-align:center;display:block;}
+.aboutteam a {text-transform:uppercase;}
+.aboutteam {margin-top:10px;}
+.partner-area {text-align:center;}
+.single-partner-item {width:120px;margin-right:30px ! important;padding-right:0 ! important;display:inline-block;}
+.socialrow {text-align:center;}
+.col-lg-2 {margin:0 auto ;}
+.slogan {text-transform:uppercase;}
+.spiderweb {width:600px;top:-130px ! important;left:-10% ! important;}
+.fearspider {max-width:1200px;}
+.awards-image {top:100px;position:absolute;left:-200px;}
+.cluckinghellpage .page-title-content h1, .cluckinghellpage h3 {font-family:Carter One;}
+.products-details-tabs .nav {min-height:70px;}
+.page-title-content h1 {color:red;}
+.page-title-content h1 {font-size:50px;font-family:Horror Memories;font-weight:normal;}
+.blog h1 {font-size:30pt;}
+.subpage h3 {color:white;font-size:24pt;}
+.products-add-to-cart {margin-bottom:30px;}
+.page-title-bg1 {background: url(images/backgrounds/dungeon-background.jpg) no-repeat;background-size:cover;}
+.templatepage .page-title-bg1 {background:none;background-size:cover;}
+.wyungamepage .page-title-bg1 {background: url(watch/wyun/images/wyun-feature.jpg) no-repeat;background-size:cover;}
+.whackthedemongamepage .page-title-bg1 {background: url(watch/whack-the-demon/images/whack-the-demon-banner-2.jpg) no-repeat;background-size:cover;background-position:0 -150px;}
+.cluckinghellpage .page-title-bg1 {background: url(images/backgrounds/clucking-hell-2.jpg) center no-repeat;}
+.subpage h2, .subpage h3, .single-products-item h3 a {text-transform:capitalize;font-family:DM Sans;font-size:15pt;}
+.single-products-item h3 a {letter-spacing:3px;}
+a#description-tab {font-family:Horror Memories;font-size:20pt;}
+.cluckinghellpage h2, .cluckinghellpage h3, .cluckinghellpage a#description-tab {font-family:carter one;}
+.moregames h2, .moregames h3  {font-family:Horror Memories ! important;letter-spacing:2px ! important;}
+.cluckinghellpage h2, .subpage h2 {color:red;font-size:17pt;}
+.cluckinghellpage h2 {font-size:26pt;}
+.cluckinghellpage .tab-pane h3 {font-size:16pt;}
+.frostbitepage h2 {color:#70ccd5;}
+.products-details-desc ul li {font-size:15px;color:#c2bcc6;}
+.moregames .single-products-item h3 a {font-family:DM Sans;letter-spacing:1px;}
+.moregames .section-title h2 {font-size:20pt;font-family:Horror Memories ! important;}
+.section-title h2 {font-family:Horror Memories;}
+.central {width:100%;text-align:center;}
+.central2 {text-align:center;width:auto;margin:0 auto;}
+.cluckinghellpage .products-details-desc .products-add-to-cart .default-btn {padding:10px 0;margin-right:10px;}
+.standarddiv {margin-bottom:80px;width:100%;}
+blockquote, .blockquote {background:#222 ! important;}
+
+
+.feardungeonspage h1 {animation:none;}
+.feardungeonspage h1 img {max-width:500px;}
+.feardungeonspage h1, .feardungeonspage h2, .feardungeonspage h3 {font-family:Lovato;}
+.feardungeonspage h2, .feardungeonspage h3 {letter-spacing:-1px;color:#DBAA56;font-size:17pt;}
+.feardungeonspage .ptb-100 {padding-top:0;}
+.goldhighlight {color:#DBAA56;font-weight:bold;}
+.goldhighlight2 {color:#DBAA56;}
+.whitehighlight {color:#fff;font-weight:bold;}
+.feardungeonspage .products-details-tabs .nav .nav-item .nav-link:hover, .feardungeonspage .products-details-tabs .nav .nav-item .nav-link.active {color:#DBAA56;}
+.feardungeonspage .products-details-tabs .nav .nav-item .nav-link::before {border-bottom:2px solid #DBAA56;}
+.feardungeonspage .products-details-image a img {border:2px solid #997137;}
+
+.videobehind {position:absolute;z-index:0;top:0;left:0;}
+.feardungeonspage h1, .feardungeonspage .products-details-area {position:relative;z-index:1;}
+
+.products-details-desc p a {color:#DBAA56;}
+
+
+.products-details-desc ul, #whatsnew ul {margin-left:0;padding-left:0;}
+.products-details-desc li, #whatsnew li {
+ padding-left: 18px;
+background-image:url(images/blood-bullet.svg);
+background-size:40px;
+background-repeat:no-repeat;
+padding-left:35px;
+padding-top:5px;
+list-style:none ! important;
+margin-bottom:10px;
+}
+
+.arayagamepage2 .products-details-desc li, #whatsnew li {background-image:url(games/araya/images/white-bullet.svg);}
+
+.feardungeonspage .products-details-desc li {margin-bottom:20px;overflow:hidden;}
+.feardungeonspage .products-details-desc li ul li {margin-top:10px;}
+.feardungeonspage .products-details-desc p.dungeonpartner span {float:left;margin-bottom:0;margin-right:10px;}
+.feardungeonspage .products-details-desc p.dungeonpartner span.goldhighlight {padding-top:10px;}
+.feardungeonspage .products-details-desc p.dungeonpartner span.dungeonpartnerlogo {width:100px;}
+.feardungeonspage .products-details-desc p.dungeonpartner span.dungeonpartnerlogo img {max-width:100%;}
+.feardungeonspage .dungeonpartnerstop {font-weight:bold;color:#DBAA56;position:relative;z-index:2;font-family:Lovato;text-transform:uppercase;overflow:hidden;margin:0 auto;display:inline-block;}
+.feardungeonspage h1 img {margin-bottom:0;}
+.feardungeonspage .dungeonpartnerstop span {float:left;margin-right:10px;}
+.feardungeonspage .dungeonpartnerstop span.dungeonpartnerstitle {padding-top:10px;}
+.feardungeonspage .dungeonpartnerstop span.dungeonpartnersimg {width:100px;}
+.feardungeonspage .products-details-desc {background:rgba(0, 0, 0, 0.4);padding-top:20px;padding-bottom:20px;border-radius:5px;padding-right:4%;}
+
+.frostbitepage .products-details-desc li, .frostbitepage #whatsnew li, .frostbitepage .products-details-desc li, .frostbitepage .products-details-tabs .tab-content .tab-pane ul li {
+ padding-left: 18px;
+background-image:url(images/frostbite-chicken-bullet.svg);
+background-size:20px;
+background-repeat:no-repeat;
+padding-left:35px;
+padding-top:5px;
+list-style:none ! important;
+margin-bottom:10px;
+}
+.frostbitepage .pegirating li {background:none;padding-left:5px;}
+.frostbitepage .products-details-desc li ul li, .frostbitepage #whatsnew li ul li, .frostbitepage .products-details-desc li ul li {
+ padding-left: 18px;
+background-image:url(images/ice.svg);
+background-size:10px;
+background-repeat:no-repeat;
+padding-left:25px;
+padding-top:5px;
+list-style:none ! important;
+margin-bottom:10px;
+background-position:0px 10px;
+}
+
+.arayagamepage2 .page-title-area {padding-bottom:310px;}
+
+.navbar .navbar-nav .nav-item .dropdown-menu li a:hover, 
+.navbar .navbar-nav .nav-item .dropdown-menu li.active a,
+.cluckinghellchest .dropdown-menu li.cluck-chest ul li.cluck-devils-chest a,
+.cluckinghellchest li a.cluck-chest-2,
+.cluckingoraclepage .dropdown-menu li.cluck-chest ul li.cluck-oracle a,
+.cluckingoraclepage li a.cluck-chest-2,
+.arayagamepage .dropdown-menu li.araya-link a,
+.arayagamepage2 .dropdown-menu li.araya-link a,
+.cluckinghellpage .dropdown-menu li.clucking-hell-link a.nav-cluck-original,
+.frostbitepage .dropdown-menu li.clucking-hell-link ul li.frostbite-link a,
+.bloodrealmspage .dropdown-menu li.fear-museum-link a,
+.feardungeonspage .dropdown-menu li.fear-dungeons-link a,
+.wyungamepage li.wyun-link a,
+.whackthedemongamepage li.whack-the-demon-link a,
+.madcockgamepage .dropdown-menu li.mad-cock-link a,
+.tokenpage .dropdown-menu li.fear-token-link a,
+.thecryptgamepage .dropdown-menu li.the-crypt-link a,
+.aboutuspage .dropdown-menu li.team-link a
+{color:red ! important;background-image:url(images/blood-bullet.svg);background-size:40px;padding-left:35px ! important;background-repeat:no-repeat;}
+
+.frostbitepage .products-details-tabs .nav .nav-item .nav-link:hover, .frostbitepage .products-details-tabs .nav .nav-item .nav-link.active {color:#70ccd5;font-family:Horror Memories;}
+.frostbitepage .products-details-tabs .nav .nav-item .nav-link:hover::before, .frostbitepage .products-details-tabs .nav .nav-item .nav-link.active::before {border-bottom:2px solid white ! important;}
+.tab-pane h3 {margin-bottom:20px ! important;}
+.moregames h2 {color:red ! important;}
+
+.utilitypage h1 {font-size:24pt ! important;}
+
+
+.feardungeonspage .products-details-desc li, .feardungeonspage .products-details-desc li, .feardungeonspage #whatsnew li {background-image: url(images/graphics/gold-skull.svg) ! important;background-size:20px;padding-top:0;}
+
+.feardungeonspage .products-details-tabs ul li {margin-bottom:20px ! important;}
+
+
+.products-details-tabs .tab-content .tab-pane ul li::before {content:none;}
+.buyfearexchanges a, .buyfearexchanges a img {display:inline-block;margin-right:20px;}
+.buyfearexchanges a img {height:60px;}
+
+.frostbitepage h1 {font-size:35pt;}
+.products-reviews ul li {margin-bottom:15px;}
+.products-reviews ul {margin-bottom:20px ! important;}
+.frostyblue, .frostbitepage h1 {color:#70ccd5;font-weight:bold;}
+.frostbitelink {background:#70ccd5;}
+.frostbitelink:hover {color:#70ccd5 ! important;background:#fff ! important;}
+.frostbiteitem h3 a:hover {color:#70ccd5;}
+
+.youtuberlinks a {display:inline-block;font-family:Horror Memories;font-size:11pt;color:white ! important;text-decoration:none;background:black;padding:2px 5px;border:2px solid red;border-radius:5px;margin-right:5px;}
+.youtuberlinks a:hover {background:red ! important;color:white;}
+.mean-container .mean-nav {background:black;}
+.mean-container .mean-nav ul li a, .mean-container .mean-nav ul li ul li a {border-top:1px solid #333;}
+.mean-container .mean-nav ul li a, .mean-container .mean-nav ul li li a {color:white;}
+.mean-container .mean-nav ul li ul {background:black ! important;}
+
+
+.products-details-tabs .nav .nav-item .nav-link {font-size:23pt;}
+.tokenpage h1, .vestingpage h1 {color:white;font-size:40pt;}
+.tokenpage .page-title-area {padding-bottom:0;}
+.utilitypage .standarddiv {text-align:left;}
+.utilitypage .standarddiv li {font-size:11pt;}
+
+@media screen and (max-width: 1000px){
+.cluckinghellpage h2, .cluckinghellpage a#description-tab {font-size:20pt;}
+.moregames .section-title h2 {font-size:26pt;}
+.whackthedemongamepage .page-title-bg1 {background-size:cover;background-position:0 0;}
+}
+@media screen and (max-width: 900px){
+.subpage h1 {font-size:24pt ! important;}
+}
+@media screen and (max-width: 770px){
+.team-area .col-lg-3 {width:20%;}
+.default-btn {padding:10px 25px;}
+.products-details-tabs .nav .nav-item .nav-link {font-size:18pt;}
+.arayagamepage2 .page-title-area {background-position:-200px 0 ! important;}
+}
+@media screen and (max-width: 620px){
+.team-area .col-lg-3 {width:30%;}
+.fearspider, .awards-image .shape {max-width:400px;}
+.fearspider {top:0;}
+.wyungamepage .page-title-bg1 {background: url(watch/wyun/images/wyun-feature-2.jpg) no-repeat;background-size:cover;background-position:top;}
+.whackthedemongamepage .page-title-bg1 {background-position:top;}
+}
+@media screen and (max-width: 560px){
+.top-team-slides .owl-item {height:600px;}
+.arayagamepage2 .page-title-area {background-position:-50px 50px ! important;background-size:contain;background-size:600px;padding-bottom:100px;}
+}
+
+@media screen and (max-width: 450px){
+.fearspider, .awards-image .shape {max-width:300px;}
+}
+
+@media screen and (max-width: 390px){
+.top-team-slides .owl-item {height:372px;}
+}
+.awards-area {background:none ! important;}
+.redbold {color:red ! important;font-weight:bold;text-transform:uppercase;}
+.awards-content a:hover img {transform: scale(1.25);transition: all .4s ease-in-out; }
+
+::-webkit-scrollbar {width: 10px;}
+::-webkit-scrollbar-track {border-radius:10px;box-shadow: inset 0 0 2px black;border:1px solid #bb0000;}
+::-webkit-scrollbar-thumb {background:#ab0000;border-radius:10px;}
+
+
+.single-blog-post-item .post-image.bg-3 {
+  background-image: url(images/home/araya.jpg);
+}
+.single-blog-post-item .post-image.bg-6 {
+  background-image: url(images/home/clucking-hell-menu-thumbnail-2.jpg);
+}
+.single-blog-post-item .post-image.bg-7 {
+  background-image: url(images/home/the-crypt-home.jpg);
+}
+
+ul.navbar-nav li ul {width:250px ! important;}
+ul.navbar-nav li ul li ul {width:120px ! important;}
+ul.navbar-nav li.nav-item-3 ul {width:200px ! important;}
+ul.navbar-nav li.nav-item-4 ul {width:200px ! important;}
+
+.footer-menu a.nav-link {background:none;}
+.devilschest .nav-fill .nav-item, .nav-fill>.nav-link {flex:none;}
+.devilschest .nav-tabs .nav-link {border-top-left-radius:20px;border-top-right-radius:20px;}
+.devilschest .nav-tabs li a {font-size:11pt ! important;border:1px solid red ! important;}
+.devilschest .nav-tabs .nav-link {border:1px solid red ! important;}
+.devilschest .nav-tabs {border-bottom:1px solid red;}
+.cluckinghellchest .nav-tabs .nav-link {border:1px solid #ffaa00 ! important;font-family:Carter One;}
+.cluckinghellchest .nav-tabs {border-bottom:1px solid #ffaa00;}
+.cluckinghellchest .nav-fill li a {color:white;}
+.cluckinghellchest .nav-fill .nav-link.active.nav-link {background-color:#ffaa00 ! important;}
+.cluckinghellchest .nav-tabs .active {color:black ! important;}
+.cluckinghellchest .connectbutton {color:black ! important;}
+.cluckinghellchest ul li a, .cluckinghellchest .products-details-area a {color:#ffaa00;}
+.products-details-area a:hover {color:red;}
+.cluckyellow {color:#ffaa00;}
+.cluckinghellchest .connectwallet a {background-color:#ffaa00 ! important;color:black ! important;}
+.nav-pills {margin-bottom:20px;}
+.cluckinghellchest td {padding:10px 0 10px 10px;}
+.devilschest .products-details-area {padding-top:0;}
+.devilschestmainimage {width:200px;line-height:normal;padding:0;}
+.devilschest .central2 {padding:0;}
+.navbar .navbar-nav .nav-item a, .navbar .navbar-nav .nav-item a:hover, .navbar .navbar-nav .nav-item a.active {border-bottom:none;}
+.cluckinghellchest .page-title-bg1 {background: url(images/backgrounds/clucking-hell-2.jpg) center no-repeat;}
+.navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu {left:200px;width:200px;}
+.dropdown-menu li .dropdown-menu {top:-20px ! important;width:250px ! important;;}
+.dropdown-menu li.cluck-sub-menu .dropdown-menu {width:300px ! important;top:-20px ! important;}
+.single-top-team-box .content h3 {font-size:15pt;}
+.single-top-team-box .content p {font-size:13pt;}
+.single-top-team-box .content img {transition: transform .5s;}
+.single-top-team-box .content img:hover {transform: scale(1.2);}
+.nfttag {display:none;height:40px;position:absolute;bottom:150px;text-align:center;width:100%;}
+.nfttag img {height:40px;display:inline-block;}
+.single-top-team-box .content a:hover .nfttag {display:block;}
+.thecryptgamepage h1 {color:white;}
+.single-blog-post .post-content h3 {font-size:18px;}
+.default-btn {font-size:18px;padding:10px 20px 9px 20px ! important;background:rgba(173,6,16,0.5) ! important;font-weight:bold;}
+.arayabutton {background:rgba(80,140,96,0.6) ! important;}
+.arayabutton:hover {color:#8ecb9e ! important;}
+
+
+@media screen and (max-width: 620px){
+.thecryptgamepage h1 img {max-width:300px ! important;padding:0 2%;}
+}
+
+ul.pegirating {width:100%;}
+ul.pegirating li {display:inline-block;list-style:none;padding:0;width:70px;list-style:none ! important;}
+.cluckingoraclepage video {width:40%;}
+.cluckingoraclepage .ptb-100 {padding-top:0;}
+.videoblackfade {background: #141414;box-shadow: 0 0 15px 10px #000;margin:0 auto;}
+.cluckingoraclepage .nav-tabs li a.active {background:#c91ec9;border:1px solid #c91ec9;}
+.cluckingoraclepage .areacon a:hover {color:#ff7cff;}
+.cluckingoraclepage .nav-tabs li a {background: #000;border-radius: 20px 20px 0 0; color: #fff!important;display: block;border: 1px solid #c91ec9;}
+.cluckingoraclepage .nav-tabs {border-bottom:none;}
+.cluckingoraclepage .tabcon {border: 2px solid #c91ec9;padding: 20px;border-radius: 0 10px 10px 10px;margin-bottom: 50px!important;text-align: center!important;}
+.nav-tabs li {margin-right:10px;}
+.cluckingoraclepage h2 {font-family: Carter One;font-size:19pt;color:#c91ec9;}
+.cluckingoraclepage .nav-tabs li a, .cluckinghellchest .nav-tabs li a {font-family: Carter One;font-size:12pt;}
+.cluckingoraclepage .container-fluid p {text-align:left;font-size:15pt;}
+.cluckingoraclepage .labeltitle {border-bottom: 1px solid #c91ec9;padding-bottom: 20px;display: inline-block;margin-bottom:10px;}
+div.grouplabel {margin-bottom:30px;}
+.labelexplanation p {padding:0;margin-bottom:30px;}
+div.fieldbox {margin-bottom: 20px;}
+.fieldbox input {border: 2px solid #c91ec9;border-radius: 7px;background-color:white ! important;font-size:19pt;display:inline-block;width:auto;}
+.cluckingoraclepage .table>:not(:last-child)>:last-child>* {border-bottom-color: #c91ec9;}
+.cluckingoraclepage .form-check-input {width:20px;height:20px;}
+.cluckingoraclepage .labeltitle a {background:none;color:#f8aef8;}
+.cluckingoraclepage .labeltitle a:hover {color:#c91ec9;}
+.cluckingoraclepage .labeltitle {color:#f8aef8;}
+.fieldbox input {border:2px solid #c91ec9;border-radius: 7px;}
+.fieldbox input:focus {outline: none;border-color: #c91ec9;box-shadow: 0 0 30px #c91ec9;}
+.cluckingoraclepage .form-check-input:checked[type=checkbox] {background:url(images/graphics/tick-box.svg);}
+.fearpredictionselect select {background:white;border-radius:10px;border:2px solid #c91ec9;}
+.fearpredictionselect option:hover {background:#f8aef8;}
+.cluckingoraclepage .calculatebutton button {background:#c91ec9;border:none;border-radius:10px;}
+.cluckingoraclepage .calculatebutton button:hover {background:#f8aef8;color:black;}
+.cluckingoraclepage input {color:black;}
+.cluckingoraclepage input:focus {background:#c91ec9;}
+.table p {background:none;}
+.oracleanswers {display:inline-block;border:2px solid #c91ec9;border-radius:20px;padding:20px;margin-bottom:20px;}
+.cluckingoraclepage .oracleanswers div {color:white;margin-bottom:20px;}
+.cluckingoraclepage .oracleanswers div span.althighlight {color:#f8aef8;font-weight:bold;font-size:20pt;display:block;}
+.cluckingoraclepage .oracleanswers div span.althighlight2 {font-size:25pt;padding:10px 0;}
+.stayconnected h2 {color:red;}
+.cluckingoraclepage ol li {list-style:none;text-align:left;border-bottom:10px;display:block;padding:10px 0;}
+.cluckingoraclepage .tabcon ul li {
+ padding-left: 18px;
+background-image:url(images/oracle-chicken-bullet.svg);
+background-size:20px;
+background-repeat:no-repeat;
+padding-left:35px;
+padding-top:5px;
+list-style:none ! important;
+margin-bottom:20px;
+text-align:left;
+}
+.cluckinghellchest h2, .cluckinghellchest h3 {font-family:Carter One;font-size:15pt;letter-spacing:2px;}
+.cluckinghellchest h2, .cluckinghellchest h3 {color:#ffaa00;}
+.cluckingoraclepage .tabcon h2 {margin:20px 0;}
+.cluckingoraclepage h1, .cluckinghellchest h1 {font-size:60px;color:#c91ec9;font-family:Carter One;font-weight:normal;}
+.cluckinghellchest h1 {color:red;}
+.descbox {padding:40px 15%;text-align:center;}
+.descbox p {color:#c2bcc6;}
+.fearmuseumpage .products-details-desc {margin-top:-200px;}
+
+
+@media screen and (max-width: 1200px){
+.cluckingoraclepage .videoblackfade {margin-bottom:20px;}
+.cluckingoraclepage .page-title-area {padding-bottom:10px;}
+.fearspider {max-width:1000px;}
+.fearmuseumpage .products-details-desc {margin-top:0;}
+}
+
+
+.fearmuseumpage .ptb-100 {padding-top:40px ! important;}
+.fearmuseumpage h1 .logoimage {max-width:400px;}
+
+
+@media screen and (max-width: 1000px){
+.cluckingoraclepage video {width:70%;}
+.stayconnected .single-social-box {margin-bottom:0;}
+.fearspider {max-width:700px;}
+.awards-image {top:100px;}
+.fearmuseumpage h1 .logoimage {max-width:300px;}
+.fearmuseumpage .ptb-100 {padding-top:40px ! important;}
+}
+
+
+@media screen and (max-width: 900px){
+.feardungeonspage h1 img {max-width:400px;}
+}
+
+
+@media screen and (max-width: 760px){
+.cluckingoraclepage .container-fluid p, .fieldbox input {font-size:12pt;}
+.form-control {height:37px;}
+.fearmuseumpage .page-title-bg1 {background-image:url(museum/images/fear-museum-7.jpg) ! important;}
+}
+
+
+@media screen and (max-width: 760px){
+.awards-image {top:-67px;}
+.products-details-tabs .nav .nav-item {margin-bottom:20px;}
+}
+
+@media screen and (max-width: 550px){
+.feardungeonspage h1 img {max-width:300px;}
+.fearmuseumpage h1 .logoimage {max-width:250px;}
+}
+@media screen and (max-width: 370px){
+.feardungeonspage h1 img {max-width:250px;}
+}
+
+@media screen and (max-width: 400px){
+.fieldbox input {width:190px;margin:0 auto;}
+.cluckingoraclepage .nav-tabs li a, .cluckinghellchest .nav-tabs li a {font-size:9pt;}
+}
+
+.asseenon {background:url(images/backgrounds/background-red.jpg) top;padding-top:20px ! important;}
+.asseenon h2 {color:red;}
+.asseenon .single-partner-item {margin-right:60px ! important;}
+.asseenon .single-partner-item img {transition: transform .5s;}
+.asseenon .single-partner-item img:hover {transform: scale(1.2);}
+
+.dateborder {
+	border:2px solid red;
+	margin:10px 0 40px 0;
+	padding:10px;
+	display:inline-block;
+}
+.dateborder p {color:white ! important;}
+
+.frostbitepage .default-btn {background-color:#70ccd5;}
+.frostbitepage .default-btn:hover {color:#70ccd5;}
+.frostbitepage .page-title-area {padding-bottom:120px;}
+span.datetag {color:white;font-size:15pt;font-weight:bold;display:inline-block;margin-left:10px;}
+.single-services-box .icon {width:225px;}
+.homepageroadmap .single-services-box .icon img {width:70px ! important;}
+.homepageroadmap .single-services-box .icon img.arayahomeicon {width:15px ! important;}
+.single-services-box .icon .smallwidth img {width:20px;}
+.homepageroadmap h3 {font-size:18px;}
+.owl-nav .owl-next, .owl-nav .owl-prev {background:url(images/icons/arrow-right.svg) no-repeat ! important;width:80px ! important;transform:translateY(-38%) rotate(0deg) ! important;height:80px;}
+.owl-nav .owl-prev {background:url(images/icons/arrow-left.svg) no-repeat ! important;transform:translateY(-38%) rotate(0deg) ! important;}
+.owl-nav .owl-next:hover {background:url(images/icons/arrow-right-red.svg) no-repeat ! important;}
+.owl-nav .owl-prev:hover {background:url(images/icons/arrow-left-red.svg) no-repeat ! important;}
+.owl-nav :before {content:none ! important;}
+.top-team-slides.owl-theme .owl-nav {display:block ! important;}
+
+.moonmap h1 {font-size:62px ! important;}
+.moonmap .ptb-100 {padding-top:0 ! important;}
+.main-banner-content .logo img {display:inline-block ! important;}
+
+.banner-bg1 {background:url(images/home/fear-wolf-home.jpg) no-repeat ! important;background-size:cover ! important;}
+.banner-bg6 {background:url(images/home/fear-wolf-home.jpg) no-repeat ! important;background-size:cover ! important;}
+.banner-bg2 {background:url(images/home/the-crypt-large.jpg) no-repeat ! important;background-size:cover ! important;}
+.banner-bg3 {background:url(images/home/blood-realms-home-2.jpg) no-repeat ! important;background-size:cover ! important;}
+.banner-bg4 {background:url(images/home/the-crypt-large-5.jpg) no-repeat ! important;background-size:cover ! important;}
+.banner-bg5 {background:url(images/home/araya-home-page-2.jpg) no-repeat ! important;background-size:cover ! important;}
+.main-banner-content .btn-box .default-btn {background:#ad0610;}
+.main-banner-content span.fearwolfsubtitle {background:none;text-shadow:-2px 2px 1px #000;font-family:Wolfs Bane ! important;font-size:18pt;font-weight:normal;letter-spacing:3px;}
+.banner-bg1 .btn-box {margin-top:100px;}
+.main-banner-content div.logo img {padding:40px 0;max-width:400px;display:inline-block;}
+
+
+@media screen and (max-width: 1000px){
+.banner-bg1 {background:url(images/home/fear-wolf-2.jpg) no-repeat ! important;background-size:cover ! important;}
+.main-banner-content div.logo img {max-width:350px;}
+.banner-bg3 .main-banner-content div.logo img {max-width:400px;}
+.banner-bg6 {background-position: -300px 0 ! important;}
+}
+
+.page-title-area {background-color:black ! important;}
+
+.moonmap .page-title-area {
+  padding-top: 200px;
+  padding-bottom: 200px;
+}
+
+@media screen and (max-width: 800px){
+.moonmap h1 {font-size:40px ! important;}
+.single-services-box .icon {width:100%;}
+.top-team-slides.owl-theme .owl-nav [class*=owl-] {top:33% ! important;}
+.top-team-slides.owl-theme .owl-nav [class*=owl-].owl-prev {left:-4px ! important;}
+.top-team-slides.owl-theme .owl-nav [class*=owl-].owl-next {right:-4px ! important;}
+.banner-bg2 {background:url(images/home/the-crypt-large-2.jpg) no-repeat top ! important;background-size:cover ! important;}
+.banner-bg4 {background:url(images/home/the-crypt-large-6-small.jpg) no-repeat top ! important;background-size:cover ! important;}
+.banner-bg3 {background:url(images/home/blood-realms-home-mobile.jpg) no-repeat top ! important;background-size:cover ! important;}
+.banner-bg1 .btn-box {margin-top:50px;}
+.banner-bg1 .default-btn {font-size:14px;background:rgba(0,0,0,0.5) ! important;}
+}
+
+@media screen and (max-width: 767px){
+.banner-bg1	{padding-top:250px;}
+
+.moonmap .page-title-area {padding-top: 100px;padding-bottom: 100px;background-image:url(images/graphics/fear-moon-map-2.jpg) ! important;background-size:cover ! important;}
+.section-title h2 {font-size:21px;}
+.homepageroadmap h3 {font-size:16px;color:red;}
+.banner-bg5 {background-position: -200px 0 ! important;}
+}
+
+@media screen and (max-width: 600px){
+.banner-bg1 {background:url(images/home/fear-wolf-4.jpg) no-repeat ! important;background-size:cover ! important;}
+.moonmap h1 {font-size:30px ! important;}
+.single-services-box .icon img.arayahomeicon {width:20px ! important;}
+.banner-bg6 {background-position: -400px 0 ! important;}
+}
+@media screen and (max-width: 550px){
+.banner-bg1	{padding-top:150px;}
+.moonmap .page-title-area {padding-top: 100px;padding-bottom: 100px;}
+.section-title h2 {font-size:16px;}
+.banner-bg6 {background-position: -500px 0 ! important;}
+.banner-bg5 {background-position: -300px 0 ! important;}
+}
+@media screen and (max-width: 420px){
+.banner-bg1	{padding-top:100px;}
+.banner-bg6 {background-position: -550px 0 ! important;}
+.banner-bg5 {background-position: -400px 0 ! important;}
+}
+
+
+#primary {padding-top:100px;}
+.sidebarModal.modal .modal-body .sidebar-contact-info {margin-top:0;}
+.sticky-post, .button, button, input[type=button], input[type=reset], input[type=submit] {background:red;}
+.widget a {color:white;font-size:12pt;}
+.widget a:hover {color:red;}
+.entry .entry-content>*, .entry .entry-summary>*, .entry .entry-summary>.wp-block-group>.wp-block-group__inner-container>*, .entry .entry-content>.wp-block-group>.wp-block-group__inner-container>* {max-width:100%;}
+
+.entry .entry-content .more-link {color:white;}
+.entry .entry-content .more-link:hover, .standarddesc p a {color:red;}
+.standarddesc p a:hover {color:white;}
+.copyright-area .lang-switcher span, .copyright-area .lang-switcher select, .copyright-area p, .footer-content .footer-menu li a {font-size:12pt ! important;}
+.copyright-area .lang-switcher select {padding:5px;}
+.entry .entry-title a {font-family:DM Sans;}
+
+.main-banner-content .sub-title {letter-spacing:2px;font-family:Horror Memories;}
+.home-slides .main-banner-content {text-align:center;}
+
+
+
+span.gameslogan, h6.comingdate {color:white ! important;display:inline-block ! important;text-align:center ! important;text-shadow: 4px 4px #000;background:rgba(0,0,0,0.5);padding:5px 10px;font-family:DM Sans ! important;}
+span.gameslogan {font-family:DM Sans;}
+.main-banner-image img {border: 10px solid rgba(0, 0, 0, .5) ! important;}
+.centerblockhome {width:auto ! important;display:inline-block;}
+.centerblockhome2 {width:100% ! important;}
+.autoblock {margin:0 auto ! important;text-align:center;}
+.main-banner-content p {font-family:DM Sans ! important;font-size:14pt;}
+
+.owl-carousel {margin-bottom:60px ! important;}
+
+@media only screen and (max-width: 767px) {
+.home-slides.owl-theme .owl-nav, .top-team-slides.owl-theme .owl-nav {display: block !important;}
+.home-slides.owl-theme .owl-nav [class*=owl-] {font-size:30px ! important;}
+.main-banner-content .logo img {max-width:400px;width:auto;display:inline-block;}
+.owl-nav .owl-next, .owl-nav .owl-prev {width:50px ! important;}
+.centerblockhome {width:100% ! important;}
+.main-banner-content p {font-size:12pt;color:#ccc;}
+}
+
+@media only screen and (max-width: 500px) {
+.main-banner-content .logo img {max-width:400px;width:100%;}
+}
+@media only screen and (max-width: 400px) {
+.main-banner-content .logo img {width:100% ! important;}
+.banner-bg1 .logo img {width:auto ! important;max-width:250px ! important;}
+}
+
+.vestingpage .products-details-desc ul.nav-pills li {list-style:none ! important;background-image:none ! important;}
+.vestingpage .products-details-desc li {background:none ! important;padding-left:0 ! important;}
+.tab {padding-top:40px ! important;font-size:12pt ! important;color:#ccc ! important;}
+
+.crypt-area {
+  background-image: url(games/the-crypt/images/thumb.jpg);
+}
+
+.crypt-area h2, .thecryptgamepage .services-area h2, .thecryptgamepage .services-area h3{color:white;font-family:Blatant;font-size:17pt;}
+.thecryptgamepage h2, .thecryptgamepage h3, .thecryptgamepage h1, .thecryptgamepage .sub-title {font-family:Blatant ! important;text-shadow: 2px 2px 4px #000000;}
+.thecryptgamepage h2 {font-size:15pt;text-shadow: 2px 2px 4px #000000;}
+.thecryptgamepage h1 {font-size:15pt ! important;line-height:25pt ! important;color:red;text-shadow: 2px 2px 4px #000000;}
+.social-area h2 {font-family:Horror Memories ! important;font-size:20pt;}
+.thecryptgamepage .services-area h2, .thecryptgamepage .services-area h3 {color:red;font-size:11pt;}
+.section-crypt p {font-size:12pt;color:red;}
+.thecryptgamepage h1 {font-size:20pt;}
+.crypt-circle::before {content:none;}
+.crypt-circle {background:url(games/the-crypt/images/the-crypt-circle-background.png) no-repeat;border-radius:0 ! important;background-size:contain;}
+.thecryptgamepage .hero-banner-area {background-image:url(games/the-crypt/images/the-crypt-background-2.jpg) ! important;}
+.thecryptgamepage .hero-banner-area::before {opacity:0.5;}
+.video-btn {display:inline-block;}
+.video-btn span, .video-btn .watchicon {display:inline-block;}
+.video-btn .watchicon {margin-right:10px;width:40px;}
+.video-btn span {padding-left:48px;padding-top:8px;}
+.video-btn:hover span {color:red;}
+.video-btn {position:relative;}
+.video-btn .skull1, .video-btn .skull2 {position:absolute;top:0;left:0;}
+.video-btn .skull2, .video-btn:hover .skull1 {display:none;}
+.video-btn:hover .skull2 {display:inline-block;}
+.hero-banner-content .btn-box .video-btn {font-size:14px;}
+
+
+@media only screen and (max-width: 1000px) {
+.thecryptgamepage .hero-banner-area {background-size:contain ! important;}
+}
+
+@media only screen and (max-width: 767px) {
+.crypt-circle {background:url(games/the-crypt/images/the-crypt-square-3.jpg) no-repeat;background-size:cover ! important;}
+.thecryptgamepage .hero-banner-area {background-image:none ! important;}
+.banner-bg3 {padding-top:100px ! important;}
+.hero-banner-content .content .btn-box {
+    margin-top: 43px;
+    margin-bottom: -10px;
+}
+.hero-banner-content .btn-box .video-btn {font-size:12px ! important;}
+}
+
+
+.our-experts-content .content {background:rgba(0,0,0,0.7);padding:20px 2%;}
+.our-experts-content .content h2 {color:white;font-size:15pt;margin-bottom:20px;}
+.our-experts-area {border-top:5px solid black;}
+
+.trailerbox {text-align:center;}
+.hero-banner-content .btn-box .video-btn {position:relative;margin-left:0;}
+.tokenpage .page-title-bg1, .vestingpage .page-title-bg1 {background:none ! important;}
+.tokenpage, .vestingpage {background:url(images/fear-token-background-2.jpg) no-repeat #181818 ! important;background-size:contain ! important;}
+.tokenpage h2 {color:red;}
+.navbar-area.is-sticky {background-color:rgba(0,0,0,0.8) ! important;}
+
+
+
+@media only screen and (min-width: 1200px) and (max-width: 1355px){
+.home-slides .main-banner-content .sub-title {
+letter-spacing: 5px;
+}}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px){
+.home-slides .main-banner-content .sub-title {
+    letter-spacing: 5px;
+}}
+
+.cryptvideobutton {background-image:url(games/the-crypt/images/skull.png);background-repeat:no-repeat;padding-left:0px;background-size:40px;height:40px;}
+.cryptvideobutton:hover {background-image:url(games/the-crypt/images/skull-2.png);background-repeat:no-repeat;padding-left:0px;}
+
+
+.main-banner-content .wolf-button a.default-btn {background-image:url(images/icons/fear-wolf-icon-laid-down.svg) ! important;background-size:60px ! important;padding-left:80px ! important;background-repeat:no-repeat ! important;background-position:10px 13px ! important;padding-top:15px ! important;padding-bottom:15px ! important;background-color:rgba(0,0,0,0.5) ! important;border:1px solid #c0565a;font-family:Wolfs Bane;font-size:14pt ! important;letter-spacing:2px ! important;box-shadow: 0 5px 15px 5px rgba(235, 47, 60, 1);}
+.main-banner-content .wolf-button a.default-btn:hover {background-color:rgba(0,0,0,0.5) ! important;border:1px solid #fff ! important;}
+
+.transak_modal, .app-theme-white.app-container, .bg-white {background:black ! important;}
+.transak_modal {margin-top:100px ! important;}
+.items-start, .transak-calculator-container .transak-calculator-breakdown--inverse .transak-calculator-breakdown-item__left, .transak-calculator-container .transak-calculator-breakdown--inverse .transak-calculator-breakdown-item__right, .transak-calculator-container .transak-calculator-breakdown--inverse strong {color:white ! important;}
+.trans-ease, .sweet-alert button.cancel {color:black ! important;}
+.items-start {padding-bottom:99px ! important;background:url(https://www.fear.io/images/fear/logos/fear-logo-new-3.svg) no-repeat 133px 33px;}
+.text-xl {ftext-align: center ! important;display: block ! important; width: 100%! important;font-family: Woodbone ! important;    font-family: woodbone;color: red;font-size: 16pt;}
+
+.ladda-button, .ladda-button .ladda-label, .ladda-button .ladda-spinner {background: red;padding: 10px 20px;font-family: Woodbone;border-radius: 20px;font-weight: bold;}
+.sweet-alert button, .sweet-alert button.cancel:active, .sweet-alert button:active {background:red ! important;border:1px solid red ! important;}
+#transakLink {font-family:Horror Memories;border-radius:5px ! important;font-size:11pt;border:2px solid black;margin-top:5px ! important;}
+#transakLink:hover {background:black;color:#fff;border:2px solid #fff;}
+
+
+@media only screen and (max-width: 1000px) {
+	.transak_modal{margin-top:100px ! important;}
+	#transakLink {margin-left:10px ! important;}
+}
+
+
+/* Countdown */
+
+/* End Countdown */
+
+
+.videoback {position:absolute;z-index:0;top:0;}
+.videoback {width:100% ! important;}
+.main-banner-content {position:relative;z-index:0;}
+
+.arayagamepage .videobehind {top:0;}
+.arayagamepage .arayacon {padding-top:300px;}
+.videobehind {overflow:hidden;}
+.rowgallery {position:relative;z-index:0;}
+.owl-carousel.owl-drag .owl-item {overflow:hidden;}
+
+
+@media only screen and (max-width: 1300px) {
+.arayagamepage .arayacon {padding-top:200px;}
+.videoback {left:-150px;}
+.videoback {width:127% ! important;}
+}
+
+@media only screen and (max-width: 1200px) {
+.arayagamepage .arayacon {padding-top:140px;}
+}
+
+@media only screen and (max-width: 1100px) {
+.videoback {left:-120px;}
+.videoback {width:167% ! important;}
+}
+
+.bloodrealmspage h1 img  {max-width:300px;padding-bottom:100px;}
+
+@media only screen and (max-width: 1000px) {
+.arayagamepage .arayacon {padding-top:100px;}
+.bloodrealmspage h1 img {max-width:300px;}
+}
+
+
+@media only screen and (max-width: 700px) {
+.videoback {width:180% ! important;}
+.videoback {left:-200px;}
+.wyungamepage h1 img, .whackthedemongamepage h1 img {max-width:300px ! important;}
+.bloodrealmspage h1 img {max-width:250px;}
+}
+
+.imagecenter {width:100%;text-align:center;margin-bottom:20px;}
+.imageleft {width:100%;text-align:left;margin-bottom:20px;}
+
+
+@media only screen and (max-width: 650px) {
+.videoback {width:234% ! important;}
+.banner-bg1 {background:none ! important;}
+.arayagamepage .arayacon {padding-top:50px;}
+.arayagamepage .featurevideo {width:150% ! important;left:-130px;}
+}
+
+@media only screen and (max-width: 550px) {
+.videoback {width:232% ! important;}
+.cluckinghellpage h2, .subpage h2 {font-size:14pt;}
+.arayagamepage h1 {font-size:16pt ! important;}
+.arayagamepage .featurevideo {left:-100px;}
+}
+
+@media only screen and (max-width: 450px) {
+.videoback {width:272% ! important;top:0px;left:-360px;}
+}
+
+.arayagamepage h1 {font-size:20pt;}
+
+@media only screen and (max-width: 400px) {
+.videoback {width:351% ! important;}
+.arayagamepage .ptb-100 {padding-top:30px;}
+}
+
+@media only screen and (max-width: 350px) {
+.videoback {width:371% ! important;}
+.arayagamepage .featurevideo {left:-70px;}
+.videoback {top:0px;left:-415px;}
+}
+
+.gamercoverage li a {color:white ! important;}
+.gamercoverage li a:hover {color:red ! important;}
+.gamercoverage li a span {margin-right:10px;text-decoration:underline ! important;}
+.gamercoverage li a span.killcount {text-decoration:none ! important;}
+
+
+
+.banner-bg1 .main-banner-content div.logo img, 
+.banner-bg1 .main-banner-content div.logo,
+.banner-bg1 .main-banner-content,
+.banner-bg1 h6.comingdate
+{float:left;}
+
+.banner-bg1 .main-banner-content div.logo {margin-bottom:0;}
+.banner-bg1 h6.comingdate {margin-left:70px;margin-bottom:40px;font-family:Wolfs Bane ! important;}
+
+.banner-bg1 .main-banner-content {margin-left:50px;}
+.banner-bg1 .default-btn {margin-right:40px ! important;}
+.banner-bg1 .main-banner-content .wolf-button a.default-btn {margin-bottom:160px ! important;float:left;margin-left:30px;}
+
+
+@media only screen and (max-width: 1000px) {
+.banner-bg1 .main-banner-content {width:300px ! important;}
+.banner-bg1 .main-banner-content .logo img {width:200px ! important;}
+.banner-bg1 .main-banner-content .wolf-button a.default-btn {font-size:11pt ! important;background-size:40px ! important;padding-left:60px ! important;float:left;margin-bottom:260px ! important;}
+.banner-bg1 h6.comingdate {margin-left:20px;}
+.banner-bg1 .main-banner-content .wolf-button a.default-btn {margin-left:0;}
+}
+
+
+@media only screen and (max-width: 800px) {
+.banner-bg1 .main-banner-content .wolf-button a.default-btn {margin-bottom:160px ! important;}
+}
+
+
+@media only screen and (max-width: 767px) {
+.banner-bg1 h6.comingdate {margin-left:40px;}
+.main-banner-content div.logo img.fearwolflogo, .main-banner-content div.logo img.bloodrealmslogo {width:200px ! important;padding-top:0 ! important;}
+.main-banner-content div.logo img.bloodrealmslogo {margin-bottom:100px;}
+}
+
+
+@media only screen and (max-width: 400px) {
+.banner-bg1 .main-banner-content .wolf-button a.default-btn {margin-bottom:180px ! important;}
+.banner-bg1 .main-banner-content div.logo img, 
+.banner-bg1 .main-banner-content div.logo,
+.banner-bg1 .main-banner-content
+{float:none;}
+.banner-bg1 .main-banner-content {margin-left:20px;}
+.banner-bg1 .main-banner-content .wolf-button a.default-btn, .home-slides h6.comingdate {margin-right:0 ! important;float:none;}
+.banner-bg1 h6.comingdate {margin-left:0px;}
+}
+
+.whiteitalic {font-style:italic;color:white ! important;font-size:13pt;}
+.reditalic {font-style:italic;color:red ! important;font-size:13pt;}
+.textboxblood {border:1px solid red;padding:10px;margin-bottom:20px;border-radius:10px;position:relative;background:url(images/blood/blood-bottom-left-1-60.png) no-repeat bottom left;background-size:140px;}
+.textbloodspan {position:absolute;top:0;right:0;width:140px;height:134px;background:url(images/blood/blood-top-right-1-60.png) no-repeat;background-size:140px;}
+.textboxblood p {color:white;font-size:12pt;position:relative;}
+
+.blocksalign {position:relative;}
+.thumbgallerycon {position:absolute;top:0;right:0;}
+
+
+@media only screen and (max-width: 992px) {
+.thumbgallerycon {position:relative;top:0;right:0;}
+}
+
+.watchandearn h1 {font-size:25pt ! important;}
+.watchandearn p a {color:white;}
+.watchandearn .products-details-desc img {margin-bottom:20px;}
+
+.uspoints h2 {font-size:15pt;line-height:22pt;text-align:center;}
+.uspoints .datetag {text-transform:uppercase;font-family:Horror Memories;}
+.uspoints .con1 p {margin-top:15px;padding:0 5% ! important;text-align:center;}
+.uspoints p {color:#ccc;}
+.uspoints .single-services-box p {padding:0 5%;}
+.uspoints .single-services-box .icon {width:100%;}
+.uspoints img {max-height:70px;}
+.uspoints .bx-flag:before {content:none;}
+.uspoints ul li a span {font-family:Horror Memories;}
+.uspoints .faq-accordion-tab .tabs li a {background:none;}
+.uspoints .faq-accordion-tab .tabs li.current a {background:rgba(0,0,0,0.5);border:2px solid red;}
+.uspoints .faq-accordion-tab .tabs li.current a span {color:red;}
+.uspoints {padding-bottom:40px;text-align:left;}
+.uspheader {max-width: 90%;margin-top:50px;}
+.uspheader h2 {margin-bottom:15px;}
+.usptabs {padding-top:40px ! important;}
+.uspoints p a {color:red;}
+.uspoints p a:hover {color:white;}
+.uspoints p, .uspheader p {font-size:13pt;}
+.uspheader p {max-width:700px;margin:0 auto;color:#ccc;}
+.uspoints .tab-content {max-width:700px;margin:0 auto;}
+.tabs-item {background:rgba(0,0,0,0.5);padding:20px 2%;border-radius:5px;}
+.faq-area {background:url(images/backgrounds/red-blood-3.jpg);}
+.uspoints {margin-bottom:80px;}
+
+
+@media only screen and (max-width: 800px) {
+.uspoints .tab-content {max-width:100%;margin:0 auto;}
+.uspoints p, .uspheader p {font-size:11pt;}
+.uspheader, .uspheader p {max-width:100%;}
+.uspheader {padding:0 5%;}
+}
+
+
+@media only screen and (max-width: 575px) {
+.uspoints p {padding:0 5%;}
+.uspheader p {text-align:left;}
+}
+
+@media only screen and (max-width: 500px) {
+.uspheader h2 {line-height:25px;}
+}
+
+@media only screen and (max-width: 450px) {
+.uspoints img {max-height:50px;}
+.uspoints ul li a span {font-size:8pt;}
+.faq-accordion-tab .tabs li a {padding:5px;}
+}
+
+@media only screen and (max-width: 440px) {
+.uspoints ul li a span {font-size:8pt;}
+}
+
+@media only screen and (max-width: 350px) {
+.faq-accordion-tab .tabs li {margin:0 5px;}
+}
+
+
+.comment-reply-link {
+  border: 1px dashed #ded9d9;
+  color: var(--whiteColor);
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 30px;
+  text-transform: uppercase;
+  font-size: 12pt;
+  font-weight: 600;
+}
+
+.comment-reply-link:hover {
+  color: white ! important;
+  background-color: var(--mainColor);
+  border-color: var(--mainColor);
+}
+
+.cluckinghellpage .comment-reply-link {background-color:#70ccd5;color:black;}
+.cluckinghellpage p a {color:#70ccd5;}
+.cluckinghellpage .products-details-desc {padding-top:40px;}
+
+.completeroadmap {width:140px;display:inline-block;}
+
+.fearwolficon {width:50px;float:left;margin-right:15px;}
+
+.endorsement {position:absolute;top:200px;left:200px;max-width:300px;}
+.endorsement img {float:left;border:1px solid #299f5d;}
+.mobileonlyendorsement img {display:none ! important;}
+.mobileonlyendorsement {padding:0 ! important;display:none ! important;}
+
+@media only screen and (max-width: 1500px) {
+.endorsement {max-width:250px;left:13%;}
+}
+@media only screen and (max-width: 1350px) {
+.endorsement {max-width:250px;left:10%;}
+}
+@media only screen and (max-width: 1250px) {
+.endorsement {max-width:250px;left:7%;}
+}
+@media only screen and (max-width: 1150px) {
+.endorsement {max-width:200px;left:6%;}
+}
+@media only screen and (max-width: 1000px) {
+.endorsement {max-width:170px;left:7%;}
+}
+@media only screen and (max-width: 900px) {
+.endorsement {max-width:170px;left:5%;}
+}
+@media only screen and (max-width: 840px) {
+.endorsement {max-width:170px;left:4%;top:150px;}
+.endorsement img {display:none ! important;}
+.endorsement .mobileonlyendorsement img {display:block ! important;}
+.endorsement .mobileonlyendorsement {padding-left:0 ! important;}
+.arayahomebanner .gameslogan, .arayahomebanner .logo {padding-left:20% ! important;}
+}
+
+
+@media only screen and (max-width: 650px) {
+.endorsement {max-width:120px;left:4%;top:150px;}
+}
+@media only screen and (max-width: 550px) {
+.endorsement {display:none ! important;padding-left:0% ! important;}
+.arayahomebanner .gameslogan, .arayahomebanner .logo {padding-left:0% ! important;}
+}

@@ -1,0 +1,42 @@
+body {
+    background-color: black;
+    color: white;
+    padding-top:10px;
+}
+
+.nav-link.active.nav-link{
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.nav-link {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.nav-link:hover {
+    color: red;
+}
+
+.nav-link:focus {
+    color: white;
+}
+
+.table-stats {
+    margin-top:10px;
+}
+
+.table-stats th{
+    font-weight: normal;
+}
+
+.table-stats th.table-header {
+    font-weight:bold;
+}
+
+a.disabled {
+    pointer-events: none;
+    opacity: .65;
+}

@@ -1,0 +1,566 @@
+@font-face {
+  font-family: "Carter One";
+  src: url("https://www.fear.io/images/fonts/carter-one.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Frightmare";
+  src: url("https://www.fear.io/images/fonts/frightmare-reg.otf") format("truetype");
+}
+@font-face {
+  font-family: "In the wood";
+  src: url("https://www.fear.io/images/fonts/inthewood.otf") format("truetype");
+}
+@font-face {
+  font-family: "Nightscary";
+  src: url("https://www.fear.io/images/fonts/Nightscary.otf") format("truetype");
+}
+
+
+.woodbonemenu {font-family:horroroid;font-size:14pt;font-weight:bold ! important;}
+
+span.scarynow {color:red ! important;font-family:Nightscary ! important;font-weight:bold ! important;}
+
+p.backtotop {float:right;}
+p.backtotop a {color:red ! important;}
+p.backtotop a:hover {color:white ! important;}
+
+body {font-family:arial;}
+a.logolink {margin-left:36%;margin-bottom:30px;}
+
+.blog ul.fearnav li.blog a, .single-post ul.fearnav li.blog a {background-image:url(https://www.fear.io/images/news-button-hover.svg);}
+.page-id-18 ul.fearnav li.blog a {background-position:0 0;}
+.site-logo .custom-logo-link {
+	width:115px ! important;height:115px ! important;}
+.site-title {display:none ! important;}
+.site-description {display:inline-block;margin-top:30px;color:white;}
+.button, button, input[type="button"], input[type="reset"], input[type="submit"] {background:black;}
+.entry .entry-title a , .widget .widget-title {color:#ccc;}
+a:hover {color:#b20000 ! important;}
+.entry .entry-title, .entry .entry-content p, .entry .entry-content ul li, .entry .entry-content p a, .entry .entry-content li a {color:#ccc;}
+h3, .ninja-forms-form-wrap *, .ninja-forms-form-wrap :after, .ninja-forms-form-wrap :before{color:white;}
+.nf-response-msg {background:white;padding:10px;color:#b20000;}
+.entry-content .nf-response-msg p {color:#b20000;}
+.nf-response-msg p {padding:0;margin:0 0 15px 0;}
+
+.site-header {height:130px;text-align:center;}
+
+a, a:visited, .main-navigation .main-menu > li, .main-navigation ul.main-menu > li > a, .post-navigation .post-title, .entry .entry-meta a:hover, .entry .entry-footer a:hover, .entry .entry-content .more-link:hover, .main-navigation .main-menu > li > a + svg, .comment .comment-metadata > a:hover, .comment .comment-metadata .comment-edit-link:hover, #colophon .site-info a:hover, .widget a, .entry .entry-content .wp-block-button.is-style-outline .wp-block-button__link:not(.has-text-color), .entry .entry-content > .has-primary-color, .entry .entry-content > *[class^="wp-block-"] .has-primary-color, .entry .entry-content > *[class^="wp-block-"].is-style-solid-color blockquote.has-primary-color, .entry .entry-content > *[class^="wp-block-"].is-style-solid-color blockquote.has-primary-color p {color:white;}
+h1.entry-title {font-size:22pt;}
+h3 {font-size:14pt;}
+p.site-description, .site-logo {float:left;}
+.site-title:not(:empty) + .site-description:not(:empty):before {content:none;}
+.main-navigation {clear:left;}
+.site-description {margin-bottom:60px;}
+.main-navigation .main-menu > li > a{font-size:15pt;}
+
+@media only screen and (max-width: 1000px){
+.entry .entry-header {margin:20px;}
+.page-id-18 p, .page-id-91 p {font-size:14pt;}
+}
+
+@media only screen and (max-width: 768px){
+.site-header {margin: 0;padding: 20px;}
+p.site-description{font-size:15pt;}
+.entry .entry-header {margin:20px;}
+}
+
+.entry .entry-content, .entry .entry-summary,  {width: 94%;margin: 0 ! important;padding: 0 3%;max-width: 94%;}
+.entry .entry-title {text-align:center;padding:0 3%;}
+
+@media only screen and (max-width:600px){
+.site-logo .custom-logo-link{margin-right:20px}
+p.site-description{font-size:13pt;}
+.entry .entry-title {padding:0 7%;}
+.entry .entry-content, .entry .entry-summary {width:84%;max-width:84%;padding:0 7%;}
+}
+
+@media only screen and (max-width:450px){
+p.site-description{font-size:10pt;}
+}
+
+#page {width: 100%;max-width: 1000px;margin: 0 auto;text-align: center;}
+.main-navigation {clear:none;float:left;}
+.site-branding {width:100% ! important;margin: 0;}
+body {background:black;}
+.site-header {margin-top:10px ! important;padding:0;position: relative;z-index:1;}
+.site-logo {right:auto ! important;position:relative;margin:2px 0 0 20px;top:auto;}
+.hfeed .entry .entry-header {margin:0;}
+p, .entry .entry-content > * {max-width:100% ! important;}
+*, *:before, *:after {box-sizing:content-box;}
+.entry .entry-title:before {height:0px;}
+p {text-align:left ! important;}
+.entry .entry-title a, .widget .widget-title, .entry .entry-title {font-size:15pt;font-family:arial;}
+.main-navigation .main-menu {display:none;}
+img.slogan {height: 44px;float: left;margin-top: 60px;margin-left: 30px;}
+
+ul.fearnav {margin:32px 0 0 0;padding:0;}
+ul.fearnav li {list-style:none;display:inline-block;margin-bottom:10px;position:relative;clear:none;}
+ul.fearnav li a {display:block;height:40px;width:115px;background-repeat:no-repeat;}
+ul.fearnav li.nfts a {background-image:url(https://www.fear.io/images/nft-button.svg);}
+.nftpage ul.fearnav li.nfts a {background-image:url(https://www.fear.io/images/nft-button-hover.svg);}
+ul.fearnav li.token a {background-image:url(https://www.fear.io/images/token-button.svg);}
+.tokenpage ul.fearnav li.token a {background-image:url(https://www.fear.io/images/token-button-hover.svg);}
+ul.fearnav li.games a {background-image:url(https://www.fear.io/images/games-button.svg);}
+.gamepage ul.fearnav li.games a {background-image:url(https://www.fear.io/images/games-button-hover.svg);}
+ul.fearnav li.blog {margin-right:0;}
+ul.fearnav li.blog a {background-image:url(https://www.fear.io/images/news-button.svg);}
+ul.fearnav li.blog a:hover {background-image:url(https://www.fear.io/images/news-button-hover.svg);}
+ul.fearnav li ul li a {background:none ! important;font-size:10pt;} 
+ul.fearnav li ul {display:none;top:40px;left:0;margin:0;position:absolute;background:black;border:1px solid red;z-index:0;}
+ul.fearnav li:hover ul {display:block;}
+ul.fearnav li.nfts ul {width:200px;}
+ul.fearnav li.games ul {width:170px;}
+ul.fearnav li ul li a {width:100% ! important;text-align:center;}
+ul.fearnav li.contact a {background-image:url(/images/contact-button.png);}
+ul.fearnav li ul li a {display:block;color:white;text-decoration:none;text-align:center;padding:10px 0;height:auto;}
+ul.fearnav li.games li a:hover, ul.fearnav li.nfts li a:hover {background:red ! important;color:white !important;}
+ul.fearnav li ul li {margin:0;padding-bottom:0;clear:left;float:left;width:100%;}
+.site-branding {overflow:hidden;float:left;margin:0;}
+p.site-description {display:none;}
+.bannergroup {float: right;width: 85%;margin-top: 38px;}
+.site-branding-container {float:left;}
+li > ul {padding-left:0 ! important;}
+
+
+a.logolink {height:125px;width:150px;float:left;}
+a.logolink span.mobilelogo {display:none;}
+
+
+@media only screen and (max-width:1800px){
+a.logolink {margin-left:35%;}
+}
+@media only screen and (max-width:1600px){
+a.logolink {margin-left:33%;}
+}
+@media only screen and (max-width:1600px){
+a.logolink {margin-left:32%;}
+}
+@media only screen and (max-width:1400px){
+a.logolink {margin-left:31%;}
+}
+@media only screen and (max-width:1300px){
+a.logolink {margin-left:30%;}
+}
+@media only screen and (max-width:1200px){
+a.logolink {margin-left:28%;}
+}
+
+
+
+@media only screen and (max-width: 1000px){
+#page {overflow:hidden;}
+ul.fearnav {width: auto;clear: left;margin:17px 0 0 0;}
+img.slogan {height: 39px;float: left;margin-top: 59px;margin-left: 35px;}
+a.logolink {margin-left:25%;}
+}
+@media only screen and (max-width: 900px){
+a.logolink {margin-left:21%;}
+}
+@media only screen and (max-width: 850px){
+ul.fearnav {margin-left:0;}
+}
+@media only screen and (max-width: 800px){
+ul.fearnav {margin-left:0;}
+ul.fearnav li {margin-right:0;}
+a.logolink {margin-left:19%;}
+}
+
+@media only screen and (max-width: 700px){
+ul.fearnav {margin-left:0;}
+a.logolink {margin-left:12%;}
+}
+
+@media only screen and (max-width: 650px){
+ul.fearnav {margin:17px 0 0 0;}
+}
+
+@media only screen and (max-width: 615px){
+ul.fearnav li.nfts, ul.fearnav li.games {width: 90px;}
+ul.fearnav li.blog {margin-right:0;}
+}
+
+@media only screen and (max-width: 610px){
+ul.fearnav {margin:17px 0 0 0;}
+a.logolink {margin-left:15%;}
+}
+
+@media only screen and (max-width: 600px){
+ul.fearnav {margin:17px 0 0 0;}
+.entry .entry-content {margin:0;}
+a.logolink {margin-left:9%;}
+}
+
+@media only screen and (max-width: 550px){
+ul.fearnav {margin:17px 0 0 0;}
+}
+
+@media only screen and (max-width: 520px){
+ul.fearnav {margin:17px 0 0 0;}
+}
+
+
+@media only screen and (max-width: 500px){
+ul.fearnav li.nfts {width:92px;}
+ul.fearnav li.games {width:104px;}
+ul.fearnav li.blog {width:82px;}
+ul.fearnav li:hover ul {top:30px;}
+ul.fearnav li ul li a {height:auto ! important;}
+a.logolink {margin-left:7%;width:120px;}
+img.slogan {margin-top:48px;height:35px;}
+}
+
+@media only screen and (max-width: 450px){
+ul.fearnav {margin:17px 0 0 0;}
+}
+@media only screen and (max-width: 430px){
+ul.fearnav li.token {width:93px;}
+ul.fearnav li.nfts {width:84px;}
+ul.fearnav li.games {width:93px;}
+ul.fearnav li.blog {width:82px;}
+}
+
+@media only screen and (max-width: 400px){
+ul.fearnav {margin:17px 0 0 0;}
+img.slogan {clear:left;height:37px;margin-left:18%;margin-top:14px;}
+a.logolink {margin-left:33%;}
+}
+@media only screen and (max-width: 370px){
+a.logolink {margin-left:29%;}
+img.slogan {margin-left:14%;}
+}
+@media only screen and (max-width: 300px){
+a.logolink {margin-left:26%;}
+img.slogan {margin-left:8%;}
+}
+
+@media only screen and (max-width: 380px){
+ul.fearnav {margin:17px 0 0 0;}
+ul.fearnav li.token {width:88px;}
+ul.fearnav li.nfts {width:79px;}
+ul.fearnav li.games {width:86px;}
+}
+
+@media only screen and (max-width: 350px){
+ul.fearnav {margin:17px 0 0 0;}
+
+}
+
+@media only screen and (max-width: 340px){
+ul.fearnav li a {width:68px;}
+ul.fearnav li.token, ul.fearnav li.nfts, ul.fearnav li.games {width:75px;}
+ul.fearnav {margin:17px 0 0 0;}
+}
+
+.site-logo .custom-logo-link {display:none ! important;}
+
+.entry .entry-content .more-link {color:white;}
+
+article ul {text-align:left;}
+article ul li {margin-bottom:10px;}
+article ul li ul {margin-left:40px;}
+h2 {color:#ccc;}
+#nf-form-title-3 h3 {color:red;font-size:21pt;}
+.nf-form-content .list-select-wrap .nf-field-element>div, .nf-form-content input:not([type=button]), .nf-form-content textarea {
+    background: #f7f7f7;
+    border: 1px solid #c4c4c4;
+    border-radius: 0;
+    box-shadow: none;
+    color: #000;
+    font-weight: bold;
+    font-size: 15pt;
+    transition: all .5s;
+}
+.page-id-254 ul li strong {color:white;}
+.entry .entry-title a, .widget .widget-title, .entry .entry-title {font-size:31pt;color:red;}
+article ul {text-align:left;}
+article ul li {margin-bottom:10px;}
+article ul li ul {margin-left:40px;}
+h2 {color:#ccc;}
+#nf-form-title-3 h3 {color:red;font-size:21pt;}
+.nf-form-content .list-select-wrap .nf-field-element>div, .nf-form-content input:not([type=button]), .nf-form-content textarea {
+    background: #f7f7f7;
+    border: 1px solid #c4c4c4;
+    border-radius: 0;
+    box-shadow: none;
+    color: #000;
+    font-weight: bold;
+    font-size: 15pt;
+    transition: all .5s;
+}
+.page-id-254 ul li strong {color:white;}
+
+
+@media only screen and (max-width:800px){
+.entry .entry-title, .entry .entry-content p, .entry .entry-content ul li, .entry .entry-content p a, .entry .entry-content li a, .entry-content ol li {font-size:14pt;}
+}
+
+@media only screen and (max-width:550px){
+.nf-response-msg p span {width:500px;display:block;}
+}
+
+@media only screen and (max-width:450px){
+.entry .entry-title a, .widget .widget-title, .entry .entry-title {font-size:17pt;}
+.nf-response-msg p span {width:400px;display:block;}
+}
+
+@media only screen and (max-width:400px){
+.nf-response-msg p span {width:350px;display:block;}
+}
+
+@media only screen and (max-width:350px){
+.nf-response-msg p span {width:300px;display:block;}
+}
+
+.entry-content p, .entry-content ul {margin-bottom:20px;margin-top:0;}
+.nf-response-msg p b {color:black;}
+
+.entry .entry-content .wp-block-image figcaption {color:red;}
+
+#nf-field-33 option {color:#333333 ! important;}
+
+
+.site-header{z-index:1;}
+.site-content {position:relative;z-index:0;clear:left;}
+
+.navmenu {clear:left;margin:0 auto;}
+.navmenu li a {color:white;font-family:Nightscary;font-size:13pt;padding:10px 10px 10px 45px;background:url(/images/fear/blood-bullet.svg) no-repeat;text-transform:uppercase;letter-spacing:4pt;display:block;}
+.navmenu li ul {display:none;}
+
+.navmenu li {display:inline-block;list-style:none;}
+
+h1:not(.site-title):before, h2:before {background:black;}
+
+
+
+.site-content {margin-top:80px;}
+
+
+
+@media only screen and (max-width:800px){
+h1.entry-title, .entry .entry-title a, .widget .widget-title, .entry .entry-title {margin-top:30px;}
+.entry .entry-content, .entry .entry-summary {padding:20px 4%;}
+ul.navmenu {display:none;}
+.site-content {margin-top:20px;}
+.entry .entry-content, .entry .entry-summary {padding:20px 8%;}
+}
+
+
+@media only screen and (max-width:750px){
+.site-header {height:180px;}
+}
+
+@media only screen and (max-width:450px){
+.navmenu li a {font-size:8pt;}
+img.slogan {margin-left:18px;}
+}
+
+
+@media only screen and (max-width:400px){
+img.slogan {margin-left:16%;}
+}
+@media only screen and (max-width:356px){
+img.slogan {margin-left:11%;}
+}
+
+.entry-content .imagereduce300 {max-width:300px ! important;margin-bottom:0 ! important;}
+
+.single-post 
+{background-image:url("https://www.fear.io/images/whack-the-demon-outside-cabin-scene.png"); 
+background-color:#000;
+background-position:top; 
+background-attachment:fixed; 
+-o-background-size:contain; 
+-moz-background-size:contain; 
+-webkit-background-size:contain; 
+background-size:contain; 
+background-repeat:no-repeat;}
+.entry-content {background:rgba(0, 0, 0, 0.8);
+border-radius:20px;
+}
+
+
+@media only screen and (max-width:1000px){
+.single-post {
+background-image:url("https://www.fear.io/images/whack-the-demon-background-portrait.jpg"); 
+background-color:#000;
+background-position:top; 
+background-attachment:scroll; 
+-o-background-size:contain; 
+-moz-background-size:contain; 
+-webkit-background-size:contain; 
+background-size:contain; 
+background-repeat:no-repeat;
+}
+}
+
+
+@media screen and (max-width: 500px) {
+.single-post {
+background-image:url("https://www.fear.io/images/whack-the-demon-background-portrait-2.jpg"); 
+background-color:#000;
+background-position:top; 
+background-attachment:fixed; 
+-o-background-size:contain; 
+-moz-background-size:contain; 
+-webkit-background-size:contain; 
+background-size:contain; 
+background-repeat:no-repeat;
+}
+}
+
+.entry-content strong {color:red;}
+#page {max-width:1920px;}
+
+.entry .entry-content .wp-block-image {text-align:center ! important;}
+.entry .entry-content .wp-block-image img {display:inline-block ! important;}
+
+.entry .entry-title a, .widget .widget-title, .entry .entry-title {font-family:roboto;display:inline-block;}
+.entry .entry-title {margin-bottom:40px;background:rgba(0, 0, 0, 0.6);padding:10px;border-radius:10px;}
+.entry .entry-title:before {display:none;}
+
+.entry-content h2 {font-size:21pt;}
+
+
+@media screen and (max-width: 1000px) {
+.entry .entry-header {margin-top:56px;}
+.entry .entry-content, .entry .entry-summary {margin:90px ​0 0 0;}
+}
+
+
+@media screen and (max-width: 800px) {
+.entry .entry-title {font-size:21pt;}
+.entry .entry-header {margin-top:0;}
+.site-header {height:126px;}
+}
+
+
+#menuToggle {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#menuToggle input
+{
+  display: flex;
+  width: 40px;
+  height: 32px;
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 2;
+}
+
+#menuToggle span
+{
+  display: flex;
+  width: 29px;
+  height: 2px;
+  margin-bottom: 5px;
+  position: relative;
+  background: #ffffff;
+  border-radius: 3px;
+  z-index: 1;
+  transform-origin: 5px 0px;
+  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+              background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+              opacity 0.55s ease;
+}
+
+#menuToggle span:first-child
+{
+  transform-origin: 0% 0%;
+}
+
+#menuToggle span:nth-last-child(2)
+{
+  transform-origin: 0% 100%;
+}
+
+#menuToggle input:checked ~ span
+{
+  opacity: 1;
+  transform: rotate(45deg) translate(-3px, -1px);
+  background: #36383F;
+}
+#menuToggle input:checked ~ span:nth-last-child(3)
+{
+  opacity: 0;
+  transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+#menuToggle input:checked ~ span:nth-last-child(2)
+{
+  transform: rotate(-45deg) translate(0, -1px);
+}
+
+#menu
+{
+  position: absolute;
+  width: 277px;
+  height: 530px;
+  box-shadow: 0 0 10px #85888C;
+  margin: -50px 0 0 -30px;
+  padding: 50px;
+  padding-top: 85px;
+  background-color: #F5F6FA;
+  -webkit-font-smoothing: antialiased;
+  transform-origin: 0% 0%;
+  transform: translate(-100%, 0);
+  transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+  border-right:2px solid red;
+  border-bottom:2px solid red;
+  background:rgba(0, 0, 0, 0.7);
+}
+
+#menu li
+{
+  padding: 10px 0;
+  transition-delay: 2s;
+  text-align:center;
+}
+
+#menu li a {font-family:source sans, roboto,arial;}
+
+#menuToggle input:checked ~ ul
+{
+  transform: none;
+}
+
+#menu li a {color:white;}
+#menu li a:hover {color:red;}
+#page {position:relative;}
+
+.widget_search .search-submit {display:inline-block;}
+h1.entry-title, .entry .entry-title a, .widget .widget-title, .entry .entry-title {font-size:41pt;font-family:In the wood;letter-spacing:7px;}
+.entry-content h2, .entry-content h3 {font-family:In the wood;font-size:34pt;letter-spacing:4px;}
+.entry-content h3 {font-size:25pt;}
+h2:before, h3:before {display:none;}
+
+.entry .entry-content > *, .entry .entry-summary > *, .entry .entry-summary > .wp-block-group > .wp-block-group__inner-container > *, .entry .entry-content > .wp-block-group > .wp-block-group__inner-container > * {margin:25px 0 15px;}
+
+
+@media screen and (max-width: 600px) {
+h1.entry-title, .entry .entry-title a, .widget .widget-title, .entry .entry-title {font-size:29pt;color:white;}
+.entry-content h2, .entry-content h3 {font-size:26pt;}
+}
+
+ol li {color:#ccc ! important;text-align:left;}
+
+.list-box {padding:20px;border:2px solid red;margin:20px ! important;}
+.list-box li {margin-bottom:15px ! important;margin-left:30px ! important;padding-bottom:15px;border-bottom:1px dashed red;}
+
+.sticky-post {display:none;}
+
+.postid-680 h2 {border-top:1px solid red;padding-top:40px;text-decoration:none;}
+.entry .entry-content .wp-block-image .aligncenter {width:100% ! important;max-width:100% ! important;}
+
+.ninja-forms-form-wrap * {color:red ! important;}
+.nf-form-content label {color:#fff ! important;}
+
+.entry-meta a {color:white ! important;}

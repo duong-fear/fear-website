@@ -1,0 +1,625 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+		<title>Fear Vesting | Fear</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="../assets/css/bootstrap.min.css?v3">
+        <link rel="stylesheet" href="css/styles.css?v3"/>
+        <link rel="stylesheet" href="../assets/css/animate.min.css?v3">
+        <link rel="stylesheet" href="../assets/css/boxicons.min.css?v3">
+        <link rel="stylesheet" href="../assets/css/meanmenu.min.css?v3">
+        <link rel="stylesheet" href="../assets/css/flaticon.css?v3">
+        <link rel="stylesheet" href="../assets/css/fancybox.min.css?v3">
+        <link rel="stylesheet" href="../assets/css/owl.carousel.min.css?v3">
+        <link rel="stylesheet" href="../assets/css/magnific-popup.min.css?v3">
+        <link rel="stylesheet" href="../assets/css/style.css?v3">
+        <link rel="stylesheet" href="../assets/css/responsive.css?v3">
+        <link rel="stylesheet" href="../updates.css?v110">
+    <link rel="shortcut icon" href="../images/fear-icon.svg" type="image/x-icon" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
+        <script type="text/javascript" src="scripts/ethers-5.2.umd.min.js"></script>
+        <script type="text/javascript" src="scripts/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="scripts/web3.min.js"></script>
+        <script type="text/javascript" src="scripts/bundle-min.js"></script>
+        <script type="text/javascript" src="scripts/bootstrap.bundle.min.js"></script>
+        <script type="text/javascript" src="scripts/bundle.umd.js"></script>
+        <script defer src="https://unpkg.com/alpinejs@3.2.3/dist/cdn.min.js"></script>
+        <script type="text/javascript" src="scripts/wallet.js"></script>
+        <script type="text/javascript" src="scripts/blockchain.js"></script>
+        <script type="text/javascript" src="scripts/abi.js"></script>
+        <script type="text/javascript" src="scripts/api.js"></script>
+        <script type="text/javascript" src="scripts/wallet-connect.min.js"></script>
+        <script type="text/javascript" src="scripts/web3-modal.js"></script>
+        <script type="text/javascript">
+            document.addEventListener("alpine:init", () => {
+                Alpine.store("wallet", wallet);
+                Alpine.store("blockchain", blockchain);
+                                                
+                Alpine.store("vm", {
+                    tabs: ["Claim your FEAR", "How to Claim?", "Claim ALL your FEAR now!"],
+                    selectedTab: "Claim your FEAR",
+                    busy: false,
+                    setBusy: function(val, statusText) {
+                        this.busy = val;
+                        this.progressStatus = statusText;
+                    },
+                    selectTab: function(tab) {
+                        this.selectedTab = tab;
+                    },
+                    warning: "",
+                    progressStatus: "",
+                    status: "",
+                    walletConnected: false,
+                    addressSummary: null,
+                    uiRefreshTokenStats: async function(){
+                        await this.refreshTokenStats();
+                    },
+                    refreshTokenStats: async function(){
+                        let totalTokens = await blockchain.totalTokens();
+                        let earned = await blockchain.earned();
+                        let claimed = await blockchain.claimed();
+
+                        this.tokenStats.totalTokens = blockchain.formatFear(totalTokens);
+                        this.tokenStats.earned = blockchain.formatFear(earned);
+                        this.tokenStats.claimed = blockchain.formatFear(claimed);
+                        this.tokenStats.availableToClaim = blockchain.formatFear(earned.sub(claimed));
+                        this.setBusy(false, "");
+                    },
+                    claimTokens: async function() {
+                        this.setBusy(true, "Claiming your FEAR (If it's taking a little long check the activity tab on your MetaMask Wallet)");
+                        await blockchain.claimTokens();
+                    },
+                    canClaim: function(){
+                        return !this.busy && this.walletConnected && this.tokenStats.availableToClaim !== "" && this.tokenStats.availableToClaim > 0;
+                    },
+                    canRefreshStats: function(){
+                        return !this.bus && this.walletConnect;
+                    },
+                    setWarning: function(e) {
+                        let message = $.type(e) === "string" ? e : e.data && e.data.message ? e.data.message : e.message;
+                        this.warning = message;
+                    },
+                    setProgressStatus: function(ps){
+                        this.progressStatus = ps;
+                    },
+                    setStatus: function(st){
+                        this.status = st;
+                    },
+                    showWarning: function(){
+                        return this.warning !== null && this.warning.length > 0;
+                    },
+                    showProgressStatus: function(){
+                        return this.progressStatus !== null && this.progressStatus.length > 0;
+                    },
+                    showStatus: function() {
+                        return this.status !== null && this.status.length > 0;
+                    },
+                    walletConnect: async function(){
+                        this.setBusy(true, "1. Connecting your Wallet...");
+                        await wallet.connect();
+                    },
+                    tokenStats: {
+                        totalTokens: "",
+                        earned: "",
+                        claimed: "",
+                        availableToClaim: ""
+                    }
+                });
+            });
+        </script>
+    </head>
+
+    <body class="subpage gamespage vestingpage">
+
+                       <!-- Start Navbar Area -->
+        <div class="navbar-area">
+            <div class="fear-responsive-nav">
+                <div class="container">
+                    <div class="fear-responsive-menu">
+                        <div class="logo">
+                            <span><a href="https://www.fear.io/">
+                                <img src="../images/fear-logo.svg" alt="Fear NFT Horror Games">
+                            </a></span>
+							<span class="fearslogan"><img src="../images/fear-slogan.svg" alt="Your Worst Nightmares Tokenised"/></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fear-nav">
+                <div class="container-fluid">
+                    <nav class="navbar navbar-expand-md navbar-light">
+                        <a class="navbar-brand" href="https://www.fear.io/">
+                                <img src="../images/fear-logo.svg" alt="logo">
+                        </a>
+							<span class="fearslogan"><img src="../images/fear-slogan.svg" alt="Your Worst Nightmares Tokenised"/></span>
+
+                        <div class="collapse navbar-collapse mean-menu">
+                            <ul class="navbar-nav">
+                                <li class="nav-item nav-item-1"><a href="#" class="nav-link">Play <i class="flaticon-down-arrow"></i></a>
+                                    <ul class="dropdown-menu">
+
+                                        <li class="nav-item araya-link"><a href="/games/araya/" class="nav-link">Araya</a></li>
+                                        
+<li class="nav-item the-crypt-link"><a href="/games/the-crypt/" class="nav-link">The Crypt</a></li>
+
+                                        <li class="nav-item fear-museum-link"><a href="/games/blood-realms/" class="nav-link">Blood Realms</a></li>
+										
+										 <li class="nav-item cluck-sub-menu clucking-hell-link"><a href="/games/clucking-hell/" class="nav-link nav-cluck-original">Clucking Hell</a></li>
+
+                                        
+                                    </ul>
+                                </li>
+
+<li class="nav-item nav-item-watch"><a href="/watch/" class="nav-link">WATCH <i class="flaticon-down-arrow"></i></a>
+<ul class="dropdown-menu">
+<li class="nav-item cluck-chest"><a href="/watch/wyun/" class="nav-link wyun-link">Whack Your UND. Neighbour</a></li>
+<li class="nav-item cluck-chest"><a href="/watch/whack-the-demon/" class="nav-link wtdlink">Whack the Demon</a></li>
+</ul>
+</li>
+
+                                <!--<li class="nav-item"><a href="#" class="nav-link">NFTS <i class="flaticon-down-arrow"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item"><a href="/opensea" class="nav-link" rel="nofollow" target="_blank">SECONDARY MARKET</a></li>
+                                    </ul>
+                                </li>-->
+
+                                <li class="nav-item"><a href="#" class="nav-link">TOKEN <i class="flaticon-down-arrow"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item fear-token-link"><a href="/token.html" class="nav-link">FEAR TOKEN</a></li>           
+
+                                        <li class="nav-item"><a href="https://www.fear.io/staking" class="nav-link">STAKING</a></li>
+
+                                        <li class="nav-item holders-link"><a href="/utility.html" class="nav-link">UTILITY</a></li>
+                                    </ul>
+                                </li>
+
+                               
+	 <li class="nav-item"><a href="#" class="nav-link">ABOUT <i class="flaticon-down-arrow"></i></a>
+                                    <ul class="dropdown-menu">
+
+                                        <li class="nav-item team-link"><a href="/about.html" class="nav-link">Company</a></li>
+                                        <li class="nav-item news-link"><a href="https://medium.com/@FEAROFFICIAL/" class="nav-link" rel="nofollow" target="_blank">NEWS &amp; HELP</a></li>
+
+                                        <!--<li class="nav-item jobs-link"><a href="#" class="nav-link">JOBS</a></li>-->
+                                    </ul>
+                                </li>
+                            			<li class="nav-item nav-item-5"><span class="transactlink"><button id="transakLink">Buy Fear</button></span></li>
+
+</ul>
+				
+
+                            <div class="others-option d-flex align-items-center">
+                              
+
+                                <div class="option-item">
+                                    <div class="side-menu-btn">
+                                        <i class="flaticon-null-2" data-bs-toggle="modal" data-bs-target="#sidebarModal"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="others-option-for-responsive">
+                <div class="container">
+                    <div class="dot-menu">
+                        <div class="inner">
+                            <div class="circle circle-one"></div>
+                            <div class="circle circle-two"></div>
+                            <div class="circle circle-three"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="container">
+                        <div class="option-inner">
+                            <div class="others-option">
+                                <div class="option-item">
+                                    <div class="search-box">
+                                        <i class="flaticon-search-1"></i>
+                                    </div>
+                                </div>
+
+                                <div class="option-item">
+                                    <div class="side-menu-btn">
+                                        <i class="flaticon-null-2" data-bs-toggle="modal" data-bs-target="#sidebarModal"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Navbar Area -->
+
+        <!-- Sidebar Modal -->
+        <div class="sidebarModal modal right fade" id="sidebarModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <button type="button" class="close" data-bs-dismiss="modal"><i class='bx bx-x'></i></button>
+
+                    <div class="modal-body">
+                        <div class="logo">
+                            <a href="https://www.fear.io/" class="d-inline-block"><img src="https://www.fear.io/images/fear-logo.svg" alt="image"></a>
+                        </div>
+
+                      <div class="instagram-list">
+                            <div class="row">
+
+                                
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/games/araya-logo.png" alt="araya">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/games/araya/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+<div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/the-crypt-logo-500.png" alt="The Crypt">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/games/the-crypt/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+                               <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/games/blood-realms/blood-realms-logo-square.png" alt="Blood Realms">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/games/blood-realms/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/games/clucking-hell-logo.svg" alt="clucking hell">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/games/clucking-hell/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-6">
+                                    <div class="box">
+                                        <img src="https://www.fear.io/images/games/whack-the-demon-logo.svg" alt="whack the demon">
+                                        <i class='bx'></i>
+                                        <a href="https://www.fear.io/watch/whack-the-demon/" class="link-btn"></a>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="sidebar-contact-info">
+                            <h2>
+                                <a href="#" class="emailus"><img src="https://www.fear.io/images/email.svg" alt="email"/></a>
+                            </h2>
+                        </div>
+
+                        <ul class="social-list">
+                            <li><span>Follow Us On:</span></li>
+                            <li><a href="https://www.fear.io/discord" target="_blank"><i class='bx bxl-discord'></i></a></li>
+                            <li><a href="https://twitter.com/fearnfts" target="_blank"><i class='bx bxl-twitter'></i></a></li>
+                            <li><a href="https://t.me/fearcoin" target="_blank"><i class='bx bxl-telegram'></i></a></li>
+                            <li><a href="https://www.youtube.com/channel/UCHRX3sh3G8sxvHLLQ21vNiQ" target="_blank"><i class='bx bxl-youtube'></i></a></li>
+                            <li><a href="https://www.instagram.com/fearnfts/" target="_blank"><i class='bx bxl-instagram'></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Sidebar Modal -->
+
+        <!-- Start Page Title Area -->
+        <section class="page-title-area page-title-bg1">
+            <div class="container">
+                <div class="page-title-content">
+                    <h1 title="Fear Vesting">Fear Vesting</h1>
+                </div>
+            </div>
+        </section>
+        <!-- End Page Title Area -->
+
+        <!-- Start Products Details Area -->
+        <section class="products-details-area ptb-100">
+            <div class="container">
+                <div class="row align-items-center">
+             
+
+                    <div class="col-md-12">
+                        <div class="products-details-desc">
+                            <h2>Extract Your Fear Tokens Here</h2>
+							<p>When claiming your tokens consider <a href="https://tokensfarm.com/fear/staking/3" target="_blank" style="text-decoration:underline;">staking them here</a>  for an excellent APY.</p>
+							
+			<div class="divsep"></div>
+		
+				<p>Your remaining FEAR Tokens are paid out on a block by block basis via the Polygon Network spanning a 15 month period due to finish approx 25th November 2022</p>
+			
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </symbol>
+            <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+            </symbol>
+            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </symbol>
+        </svg>
+        <div class="container-fluid" x-data="$store.vm">
+            <div class="alert alert-danger" role="alert" x-show="showWarning()">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                <span x-text="warning"></span>
+                <button style="float:right" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div class="alert alert-success" role="alert" x-show="showStatus()">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                <span x-text="status"></span>
+                <button style="float:right" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div class="alert alert-info" role="alert" x-show="busy">
+                <svg style="float:left" class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+                <div style="float:left" x-text="progressStatus"></div>
+                <div class="clearfix">
+                    <div class="spinner-border float-end" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            <ul class="nav nav-pills justify-content-end">
+                <li class="nav-item">
+                  <a x-bind:class="busy ? 'disabled' : ''" class="nav-link active nav-link-fear walletconnect" aria-current="page" href="#" x-show="!walletConnected" @click="walletConnect()">Connect</a>
+                  <a class="nav-link active nav-link-fear" aria-current="page" href="#" x-show="walletConnected" x-text="'Connected: ' + addressSummary"></a>
+                </li>
+            </ul>
+            <ul class="nav nav-tabs">
+                <template x-for="tab in tabs">
+                    <li class="nav-item nav-link-fear">
+                        <a :class="selectedTab === tab ? 'nav-link active' : 'nav-link'" aria-current="page" x-text="tab" x-on:click="selectTab(tab)"></a>
+                    </li>
+                </template>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="https://tokensfarm.com/FEAR/STAKING/2">Stake FEAR on Polygon</a>
+                </li>
+            </ul>
+            <div x-show="selectedTab === 'How to Claim?'" class="tab">
+                <ol>
+                    <li>1. Claiming FEAR should be done via MetaMask or Wallet Connect. For Desktop browsers head on over to <a href="https://metamask.io/download">Metamask</a> to install the extension.</li>
+                    <li>2. Meta mask extension on the desktop and Wallet Connect with Metamask on the mobile should both work</li>
+                    <li>3. If your Ethereum address is linked to a Wallet Client other than MetaMask or one not compatible with Wallet Connect you will need to import your Wallet into a compatible Wallet client.</li>
+                    <li>4. If you don't have the Polygon network added to your Wallet Client the Connect Button will do it for you on the desktop! For mobile please follow this <a href="https://autofarm.gitbook.io/autofarm-network/how-tos/polygon-chain-matic/metamask-add-polygon-matic-network">guide</a>.</li>
+                    <li>5. In order to Claim tokens on the Polygon Mainnet you need to have Matic in your wallet. The Quickest way to get Matic in your Wallet is by buying it on a large exchange and withdrawing it to your Wallet address
+                        over the POLYGON/MATIC network (do not withdraw over the Ethereum network). You only need a small amount of MATIC to run multiple claims (1 will do!)
+                    </li>
+                    <li>6. Click the Claim button. The transaction should take a few seconds after which the Polygon version of FEAR will now be in your Wallet.</li>
+                    <li>7. To sell your FEAR head on over to <a href="https://quickswap.exchange/#/swap?inputCurrency=0x2791bca1f2de4661ed88a30c99a7a9449aa84174&outputCurrency=0xa2CA40DBe72028D3Ac78B5250a8CB8c404e7Fb8C">Quickswap</a> and swap it out for USDC</li>
+                    <li>8. If you wish to Migrate your FEAR to the Ethereum network head on over to the official <a href="https://wallet.matic.network/bridge">Polygon Bridge</a>
+                    and switch the Networks around ensuring Polygon is selected as the From network and Ethereum as the To network.</li>
+                </ol>
+            </div>
+            <div x-show="selectedTab === 'Claim your FEAR' && walletConnected" class="claimtable tab">
+                <table class="table table-dark table-striped table-stats">
+                    <tbody>
+                      <tr>
+                        <th>Available to Claim</th>
+                        <td x-text="tokenStats.availableToClaim"></td>
+                        <td>
+                            <button x-bind:class="!canClaim() ? 'disabled' : ''"  class="btn btn-danger" @click="claimTokens()">Claim</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Claimed to Date</th>
+                        <td colspan="2" x-text="tokenStats.claimed"></td>
+                      </tr>
+                      <tr>
+                        <th>Total</th>
+                        <td colspan="2" x-text="tokenStats.totalTokens"></td>
+                      </tr>
+                      <tr>
+                          <td colspan="3">
+                            <button x-bind:class="!canRefreshStats() ? 'disabled' : ''"  class="btn btn-danger" @click="uiRefreshTokenStats()">Refresh Stats</button>
+                          </th>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+            <div x-show="selectedTab === 'Claim ALL your FEAR now!'" class="tab">
+                <h2>Claim ALL your FEAR now!</h2>
+
+                <p style="padding-top:10px;">At any point in the vesting schedule you can claim 40% of your remaining amount of FEAR whilst burning the remaining 60%</p>
+
+                <p>e.g. You have 100k Fear remaining to claim, you contact the FEAR team via our <a href="https://telegram.me/collablandbot?start=VFBDI1RFTCNDT01NIy0xMDAxNTUzMjkwMDUx">Claim Telegram Group</a>, You will receive 40k of fear in a one off transaction and 60K will be burnt</p>
+
+                <p>If you are interested in this option please join the <a href="https://telegram.me/collablandbot?start=VFBDI1RFTCNDT01NIy0xMDAxNTUzMjkwMDUx">FEAR Telegram group</a> using the wallet assigned to your allocation.</p>
+
+                <p>How do we know you are who you say you are? We have dropped into your wallet a lovely Private/Seed/SHO NFT without you knowing it. Keep this NFT in your wallet and you'll be able to join our Telegram group!</p>
+            </div>
+        </div>	
+						
+                         
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- End Products Details Area -->
+
+         <!-- Start Social Area -->
+        <section class="social-area pt-100 pb-70">
+            <div class="container">
+                <div class="section-title stayconnected">
+                    <span class="sub-title">Official</span>
+                    <h2>Stay Connected</h2>
+                </div>
+
+                <div class="row socialrow">
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-discord'></i>
+                                Discord
+                            </div>
+                            <div class="shape">
+                                <img src="../assets/img/social-shape1.png" alt="image">
+                                <img src="../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://www.fear.io/discord" class="link-btn"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-twitter'></i>
+                                Twitter
+                            </div>
+                            <div class="shape">
+                                <img src="../assets/img/social-shape1.png" alt="image">
+                                <img src="../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://twitter.com/fearnfts" class="link-btn"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-telegram'></i>
+                                Telegram
+                            </div>
+                            <div class="shape">
+                                <img src="../assets/img/social-shape1.png" alt="image">
+                                <img src="../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://t.me/fearcoin" class="link-btn"></a>
+                        </div>
+                    </div>
+<div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-medium'></i>
+                                Medium
+                            </div>
+                            <div class="shape">
+                                <img src="../assets/img/social-shape1.png" alt="image">
+                                <img src="../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://medium.com/@FEAROFFICIAL" class="link-btn" target="_blank"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-youtube'></i>
+                                YouTube
+                            </div>
+                            <div class="shape">
+                                <img src="../assets/img/social-shape1.png" alt="image">
+                                <img src="../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://www.youtube.com/channel/UCHRX3sh3G8sxvHLLQ21vNiQ" class="link-btn"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4 col-md-4 col-6">
+                        <div class="single-social-box">
+                            <div class="content">
+                                <i class='bx bxl-instagram'></i>
+                                Instagram
+                            </div>
+                            <div class="shape">
+                                <img src="../assets/img/social-shape1.png" alt="image">
+                                <img src="../assets/img/social-shape5.png" alt="image">
+                            </div>
+                            <a href="https://www.instagram.com/fearnfts/" class="link-btn"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Social Area -->
+
+         <!-- Start Footer Area -->
+        <footer class="footer-area">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="logo">
+                        <a href="https://www.fear.io/" class="d-inline-block"><img src="../images/fear-logo.svg" alt="Fear"></a>
+                        <ul class="footer-menu">
+                            <li class="nav-item"><a class="nav-link" href="https://www.fear.io/terms-of-use.html">Terms of Use</a></li>
+                            <li class="nav-item"><a class="nav-link" href="https://www.fear.io/privacy-policy.html">Privacy policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+       <div class="copyright-area">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6 col-sm-5">
+                        <p><i class='bx bx-copyright'></i>2022 <a href="https://www.fear.io/">FEAR</a> All rights reserved.</p>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-7">
+                        <div class="lang-switcher">
+                            <span>Select your language</span>
+                            <select>
+                                <option>English</option>
+                              </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Footer Area -->
+
+        <div class="go-top"><i class='bx bx-up-arrow-alt'></i></div>
+
+        <div class="fear-cursor"></div>
+        <div class="fear-cursor2"></div>
+
+        <!-- Links of JS files -->
+        <script src="../assets/js/jquery.min.js?v4"></script>
+        <script src="../assets/js/popper.min.js?v4"></script>
+        <script src="../assets/js/bootstrap.min.js?v4"></script>
+        <script src="../assets/js/owl.carousel.min.js?v4"></script>
+        <script src="../assets/js/magnific-popup.min.js?v4"></script>
+        <script src="../assets/js/parallax.min.js?v4"></script>
+        <script src="../assets/js/meanmenu.min.js?v4"></script>
+        <script src="../assets/js/isotope.pkgd.min.js?v4"></script>
+        <script src="../assets/js/cursor.min.js?v4"></script>
+        <script src="../assets/js/fancybox.min.js?v4"></script>
+        <script src="../assets/js/wow.min.js?v4"></script>
+        <script src="../assets/js/form-validator.min.js?v4"></script>
+        <script src="../assets/js/contact-form-script.js?v4"></script>
+        <script src="../assets/js/ajaxchimp.min.js?v4"></script>
+        <script src="../assets/js/main.js?v4"></script>
+   
+<script type="text/javascript">
+var sc_project=12412733; 
+var sc_invisible=1; 
+var sc_security="af2ceb8d"; 
+var sc_remove_link=1; 
+</script>
+<script type="text/javascript"
+src="https://www.statcounter.com/counter/counter.js"
+async></script>
+<noscript><div class="statcounter"><img class="statcounter"
+src="https://c.statcounter.com/12412733/0/af2ceb8d/1/"
+alt="Web Analytics"
+referrerPolicy="no-referrer-when-downgrade"></div></noscript>
+
+</body>
+</html>

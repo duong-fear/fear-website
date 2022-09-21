@@ -1,0 +1,987 @@
+@font-face {
+  font-family: "White wood";
+  src: url("../fonts/White wood.otf") format("OpenType");
+}
+
+
+a:hover {color:#ff0000;}
+
+
+.ext {font-size:14pt;color:#ffffff;margin:29px 0 0 10px;float:left;}
+
+h2, h3, h4, h5, .listheader {font-family: 'White wood', sans-serif;}
+
+.websitetitle, .websitetitle a, .slogan {color:red;font-size:17pt;width:auto;text-align:left;line-height:32px;font-family: 'Open Sans', sans-serif;}
+.websitetitle {margin:10px 0 0 0;line-height:32px;position:relative;}
+.websitetitle span {display:block;margin:10px 0 0 10px;}
+.websitetitle a:hover {color:#ff0000;}
+.home .websitetitle {margin-top:10px;}
+.websitetitle img {position:absolute;top:0px;left:0px;}
+.slogan {position:absolute;margin:0;top:70px;left:88px;font-size:11pt;color:#990000;line-height:15px;font-family:White wood;}
+
+.column1 {width:100%;margin-right:0;}
+.column1 .gameslist li {width:17.3%;height:170px;}
+
+p.emailpadding {overflow:hidden;}
+.emailpadding strong {padding-top:5px;}
+.emailpadding img, .emailpadding strong {float:left;}
+
+.gamepage .section2 ul li a {width:92%;color:#666666;padding:7px 5px 7px 5px;background-color:#ffffff;-webkit-border-radius:10px; -moz-border-radius:10px; border-radius:10px;border:1px solid #666666;}
+.gamepage .section2 {margin:-20px 1% 0 1%;width:17%;}
+
+.textright {float:left;width:60%;}
+.textleft {float:left;width:38%;margin-right:2%;}
+
+.downloadforandroidad {position:absolute;top:10px;left:400px;width:500px;height:100px;float:left;}
+
+.catlist .comingsoon .gameslist li {width:100%;height:auto;margin-bottom:5px;}
+.catlist .comingsoon ul.gameslist {margin-bottom:35px;}
+.catlist .comingsoon .gameslist li a {text-decoration:underline;}
+	
+.android .navigation li.navigationl2 ul li.androidgames a,
+.android li.androidgames a,
+.ios .navigation li.navigationl2 ul li.iosgames a,
+.ios li.iosgames a,
+.tablet .navigation li.navigationl2 ul li.tabletgames a,
+.tablet li.tabletgames a
+{color:#991b1e;font-weight:bold;}
+
+.navigation li.followustext {color:white;padding-top:10px;padding-left:10px;font-weight:bold;}
+
+.footer {background-color:#cccccc;}
+.footer a {color:#ffffff;}
+.footer a:hover {color:#cccccc;}
+
+.gameslist span {float:left;width:100%;margin:5px 0 0 0;text-align:center;font-size:16pt;font-weight:bold;}
+.home .gameslist span {font-size:14pt;font-family: 'White wood', sans-serif;}
+.gameslist li {width:44.3%;margin:0 0 57px 4%;clear:none;height:160px;}
+.gameslist {margin-bottom:0px;}
+.gameslist li a img {width:100%;}
+
+.mobile .gameslist li, .tablet .gameslist li, .browser .gameslist li, .download .gameslist li , .comingsoonpage .gameslist li {height:170px;margin-left:1.7%;width:142px;}
+
+.continuebutton a {font-weight:bold;padding:5px 10px;display:inline-block;text-decoration:none;background:#000;font-size:14pt;border:2px solid black;color:white;}
+.continuebutton a:hover {background:#fff;color:black;}
+
+div.sep {height:2px;border-top:1px solid #ccc;margin:30px 10px;}
+
+.comingsoonpage .gameslist li.listad {width:336px;height:280px;}
+
+.privacy .addthis, .privacy .googleplus {left:-9999px;}
+	
+.navigation li a {color:#000000;font-size:11pt;padding:10px;text-decoration:none;white-space:nowrap;}
+	
+.gamepage .addthis, .gamepage .googleplus {top:295px;}
+.opengame .addthis, .opengame .googleplus {top:314px;}
+
+.socials {float:right;width:60%;padding:0% 1% 0 0;height:50px;}
+.playgamebrowser .socials {width:75%;}
+.socialadjust .socials {width:57%;}
+.socialadjust2 .socials  {width:50%;}
+.downloadablegame .socials  {width:75% ! important;}
+.socialadjust2 .adcon  {position:relative ! important;top:auto ! important;}
+.socialadjust3 .socials  {width:76%;}
+.textpad {padding:20px 3%;width:94%;}
+.mobile .addthis, .mobile .googleplus, 
+.tablet .addthis, .tablet .googleplus, 
+.comingsoonpage .addthis, .comingsoonpage .googleplus,
+.browser .addthis, .browser .googleplus, 
+.download .addthis, .download .googleplus, 
+.home .addthis, .home .googleplus
+{float:left;margin-right:10px;left:auto ! important;top:auto ! important;position:relative;}
+.home .addthis, .home .googleplus 
+{margin-left:195px;display:inline;clear:none;margin-top:70px;}
+.home .googleplus {clear:none;margin-left:10px;}
+
+.mobile .section1 .back {width:96%;margin-top:30px;padding-left:10px;}
+.whackyourneighbour  .section1 {position:relative;}
+.section1, .section2 {margin-right:1%;}
+.mobile .section1 .playbutton3 a {padding: 20px 20px 16px 60px;width:49%;margin-right:2%;}
+.mobile .section1 .text .playbutton3 a {font-size:19pt;}
+.mobile .section1 .back img {width:auto;max-width:100%;}
+.mobile .section1 {width:73%;}
+.mobile .text object, .download .text object, .tablet .text object, 
+.mobile .text iframe, .download .text iframe, .tablet .text iframe
+{max-width:100%;}
+.gamepage #game {margin-top:0px;}
+
+.text .playbutton3 a {width:200px;font-size:14pt;margin-right:10px;padding:1em 11%;text-align:right;}
+.text img, #game img {max-width:100%;}
+.slogan {clear:left;}
+.footer {width:97.8%;background-color:#000031;}
+.addthis {left:69.7%;}
+.googleplus {left:49.7%;}
+.browserhome .adcon, .browserhome .adcon2 {margin-left:15px;}
+.navigation li.searchbox {float:right;padding:8px 1% 0 0;}
+.searchbutton {width:60px;}
+.navigation li.gamesearch {color:#ffffff;font-weight:bold;position:absolute;right:146px;top:-25px;}
+.navigation {position:relative;}
+.browser .maincon {margin:15px 0 0 0;text-align:center;}
+.comingsoonpage .gameslist li {margin-left:1.7%;}
+.standard {float:left;width:100%;}
+.mobile .gameslist li.listad, .tablet .gameslist li.listad, .browser .gameslist li.listad, .download .gameslist li.listad  {height:600px;width:300px;}
+.downloadablegame .gameslist li.listad {width:336px;height:280px;}
+.navigation li:hover ul,
+.navigation li a:hover ul {top:2.4em;}
+
+.maincon {margin-top:15px;}
+.home .maincon {margin-top:20px;}
+
+.backwhite {background-color:#ffffff ! important;}
+
+.category #game {background-color:#ffffff;}
+
+.comments {font-weight:bold;font-size:9pt;font-style:italic;margin-top:5px;float:left;width:100%;}
+
+.categorylist {float:left;margin:1.5%;width:97%;}
+.categorylist li {float:left;margin-right:10px;clear:none;}
+.categorylist li a {font-size:12pt;text-decoration:underline;}
+.listcatlabel {font-size:12pt;font-weight:bold;}
+
+.section2 h2 {font-size:12pt;}
+
+.imgcon {float:left;width:100%;margin:10px 0;}
+.imgcon p {font-weight:bold;font-size:9pt;font-style:italic;text-align:center;margin-top:5px;width:100%;}
+
+.category .googleplus, .category .addthis {position:relative;left:auto;top:auto;float:left;}
+.category .addthis {margin-right:15px;}
+.category .adcon, .category .adcon2 {margin-left:15px;}
+
+.standardlist li a {
+text-decoration: underline;
+font-size: 12pt;
+}
+
+#game img {margin-bottom:15px;}
+
+.text .gameslist li a img {margin-bottom:0px;}
+
+/* New Styles Added 17-03-2014*/
+
+.unityplugin a {float:left;width:250px;background-image:url(images/unity-3d-logo-3.jpg);background-repeat:no-repeat;padding:5px 5px 8px 110px;text-align:center;font-size:9pt;font-weight:bold;border:1px solid #cccccc;margin-right:10px;margin-bottom:10px;}
+
+.comment {width:48%;float:left;margin:15px 2% 0 0;}
+.comment2 {width:100%;float:left;margin-top:15px;}
+.review {float:right;width:50%;}
+
+.comingsoon img {margin-bottom:15px;max-width:100%;}
+.comingsoon .gameslist li a img {margin-bottom:0;}
+
+h2.featureheader {font-size:17pt;color:#555555;margin:0 0 20px 0;text-align:center;}
+.text h2.featureheader {margin-left:0;}
+
+.backwhite {background-color:#ffffff ! important;}
+
+.category #game {background-color:#ffffff;}
+
+.userrating, .gameslist li span.userrating, .gameslist li span.sales {
+color:#000000;
+padding: 2px 2%;
+border: 1px dotted #ff0000;
+background:#f46b6b;
+width:96%;
+}
+
+.gamedescription {
+padding: 10px;
+border: 1px dashed #ff0000;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+color: #333333;
+}
+
+.gamedescriptionList li {
+padding-left: 39px;
+margin-bottom: 10px;
+padding-bottom:10px;
+}
+
+.text p.ratingp {margin-top:10px;}
+
+.flashgame  .gamelinks li {margin-right:0;height:147px;}
+.headerbfg {text-align:left;}
+
+.downloadablegame .playbutton a {
+width: 44%;
+margin-right: 1%;
+font-size: 17pt;
+border: 1px solid #ff0000;
+padding:10px 2%;
+}
+
+.wyn .downloadablegame .playbutton a {
+font-size:14pt;
+}
+.downloadablegame .playbutton2 a {width:auto;float:none;display:inline-block;margin-top:0;}
+
+blockquote {margin:0 ! important;}
+.downloadablegame .gameslist li:first-child {margin-left:0;}
+.downloadablegame .listheader {color:#ff0000;width:100%;margin:0 0 15px 0;padding:5px 0;border-top:1px dashed #ff0000;border-bottom:1px dashed #ff0000;}
+
+.text .gameslist {width:100%;float:left;}
+.text .gameslist li {width:110px;height:135px;}
+.text .gameslist li img {margin-bottom:0;}
+.text .gameslist li:first-child {margin-left:0;}
+.text h2.moreoptions, .gamereel h2.moreoptions {font-size:13pt;font-family:arial, verdana;margin-top:0;border-top:1px dotted #ff0000;border-bottom:1px dotted #ff0000;padding:5px 0;}
+
+.gamereel h2.moreoptions {font-size:11pt;}
+
+.gamereel {float:left;margin-left:15px;width:150px;}
+.gamereel ul {margin:0;padding:0;}
+.browser .gamereel .gameslist li {list-style:none;margin:0 0 10px 0;float:left;width:100%;}
+.gamereel ul li span {display:block;margin-top:5px;padding:2px 0;text-align:center;}
+.gamereel ul li a {text-decoration:none;color:#000000;float:left;}
+.gamereel ul li a img {max-width:100%;}
+.gamereel ul li a:hover {text-decoration:none;background-color:#ff0000;color:#ffffff;}
+
+.gamereel2 {width:120px;}
+.gamereel3 {width:113px;}
+.gamereel4 {width:93px;}
+.gamereel5 {width:230px;}
+.gamereel6 {width:144px;}
+
+.browser .gamereel5 .gameslist li {width:110px;height:130px;}
+
+.section2 li h2 {font-size:12pt;margin:0;}
+
+.category .googleplus, .category .addthis {position:relative;left:auto;top:auto;float:left;}
+.category .addthis {margin-right:15px;}
+.category .adcon, .category .adcon2 {margin-left:15px;}
+
+.gamepage .text {margin-top:0;}
+
+.column1 .gameslist li.speciallist, .comingsoon .gameslist li.speciallist {width: 45%;height:205px;}
+.column1 .gameslist li.speciallist2, .comingsoon .gameslist li.speciallist2 {width:37%;height:263px;}
+.comingsoon .gameslist li.speciallist2 a span.newtitle {color:#444444;font-weight:bold;font-style:italic;}
+.comingsoon .gameslist li.speciallist2 a span.specialname {color:#ff0000;font-size:14pt;}
+
+.wtedt #game img {max-width:100%;}
+.wtedt #game {overflow:hidden;}
+#game .imagefeature {float:right;width:550px;margin-left:15px;}
+#game .imagedescription {float:left;width:415px;}
+p.pateonsupport a {display:block;padding:10px 5px;background:#ff0000;font-size:16pt;text-decoration:none;color:#ffffff;text-align:center;}
+p.pateonsupport a:hover {background:#000000;}
+#game .imagedescription h2 {font-size:16pt;}
+
+.column1 .gameslist li span.specialdesc, .column1 .gameslist li span.specialtitle, 
+.comingsoon .gameslist li span.specialdesc, .comingsoon .gameslist li span.specialtitle 
+{float: right;width: 45%;text-align: left;}
+
+.column1 .gameslist li.speciallist a img, .comingsoon .gameslist li.speciallist a img {max-width: 100%;width: auto;}
+
+.wtedt #game .patreonstyle img {border:3px solid #be490d;max-width:97%;}
+.wtedt #game a.patreonstyle:hover img {border:3px solid black;}
+.wtedt img {max-width:100%;}
+
+.navigation {
+background-color: #990000;
+background: -moz-linear-gradient(#ff0000, #990000);
+	background: -o-linear-gradient(#ff0000, #990000);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff0000), to(#990000));
+	background: -webkit-linear-gradient(#ff0000, #990000);color:#000000;margin-bottom:15px;}
+	
+.navigation li a {color:#ffffff;font-size:11pt;}
+
+.navigation li a:hover,
+.cat1 .navigationl1 a,
+.cat2 .navigationl2 a,
+.cat3 .navigationl3 a,
+.cat4 .navigationl4 a,
+.cat5 .navigationl5 a,
+.cat6 .navigationl6 a,
+.cat7 .navigationl7 a,
+.cat8 .navigationl8 a,
+.home .homel a {
+	background: -moz-linear-gradient(#f46b6b, #ff0000);
+	background: -o-linear-gradient(#f46b6b, #ff0000);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f46b6b), to(#ff0000));
+	background: -webkit-linear-gradient(#f46b6b, #ff0000);}
+
+.subnav {margin:0 0 15px 2%;padding:0;width:98%;}
+.subnav li {list-style:none;display:inline-block;margin-right:5px;clear:none;}
+.subnav li a {display:block;background:#990000;color:#ffffff;padding:3px 5px;font-size:11pt;border:1px solid #ff0000;}
+.subnav li a:hover, .latest .subnav li.sublink1 a, .bestgames .subnav li.sublink2 a, .mostplayed .subnav li.sublink3 a {background:#ffffff;border:1px solid #ff0000;color:#555555;}
+
+.hackedpage #game h2 {font-size:12pt;color:#ffa800;margin:0 0 15px;}
+
+.gamepage .section2 ul li.wtedts a {background: url(images/wtedt-website-side-nav-link.png) no-repeat;width:100%;height:53px;border:none;padding:0;}
+.gamepage .section2 ul li.wtedts a:hover {color:red;}
+
+#game p, .text ul li, #game ul li, .wtedt .section1 p {line-height: 20px;}
+#game p {margin:0 0 15px 0;}
+.text ul li, #game ul li {border-bottom:1px dotted #ff0000;padding-bottom:10px;width:100%;}
+.text ul li strong, #game ul li strong{color:#ff0000;}
+.text ul.tags li {list-style:none;border:none;width:auto;}
+
+.downloadablegame .adcon {margin-bottom:15px;}
+.home .adcon8 {width:100%;}
+
+.text ul {float:none;}
+
+.rightcolumn img {margin-bottom:15px;}
+
+.commentp {font-size:11pt;font-style:italic;color:#555555;text-align:center;}
+
+#game h2 {margin:0 0 15px 0;font-size:13pt;}
+#game h2.adjustopm {margin-top:15px;}
+
+.downloadablegame {background:#ffffff ! important;}
+.leftcolumn {float:left;width:300px;}
+.downloadablegame .adconleft {margin-right:0;width:300px;float:none;margin-bottom:20px;}
+.leftcolumn .gamedescriptionbox {margin-top:15px;}
+.rightcolumn {float:right;width:447px;}
+
+.bestgames .gameslist li, .latest .gameslist li {height:230px;}
+.comingsoonpage .gameslist li {height:177px;}
+.mostplayed .gameslist li {height:250px;}
+.gameslist li span.gamename {height:36px;}
+.gameslist li span.releasedate {color:#555555;font-style:italic;}
+#game .gameratings li, .text .gameratings li {list-style:none;}
+#game .gameratings li img, .text .gameratings li img  {margin:0 5px 5px 0;}
+#game .gameratings li span.ratingspan, .text .gameratings li span.ratingspan {font-size:12pt;color:#990000;font-weight:bold;}
+#game .gameratings li span.gamequote, .text .gameratings li span.gamequote {display:block;color:#555555;font-size:13pt;clear:left;}
+#game .gameratings li span.ortitle, .text .gameratings li span.ortitle {border:2px solid #000000;padding:3px 10px;font-size:16pt;float:left;width:auto;font-weight:bold;text-align:center;margin-right:5px;}
+#game ul.gameratings li span.orrating, .text ul.gameratings li span.orrating {border:2px solid #990000;background-color:#ff0000;color:#ffffff;padding:10px;font-size:22pt;float:left;}
+#game ul li.overallrating, .text ul li.overallrating {line-height:normal;}
+
+.discussion {width:100%;margin-top:25px;}
+.discussion2 {width:48%;margin-top:25px;margin-right:2%;}
+
+.home .adcon {margin-bottom:15px;}
+
+.downloadablegame2 #game {background:white ! important;}
+.downloadablegame2 #game ul li {float:none;margin-bottom:10px;}
+.downloadablegame2 .adcon3 {margin-bottom:20px;}
+.downloadablegame2 .section1 {width:98%;}
+.downloadablegame2 .rightcolumn {width:610px;}
+.downloadablegame2 .rightcolumn .adcon {width:100%;}
+
+#videoplayer {margin-bottom:15px;}
+
+.textlinks {width:100%;overflow:hidden;}
+
+.embedad {position:relative;}
+.adbanner {position:absolute;top:0;left:0;}
+.adbanner a {display:block;}
+
+.adoverride #game, .adoverride .adcon {margin-bottom:10px;}
+
+.navigation li.followus a {padding:3px 10px;}
+
+.category .adcon {margin-bottom:15px;}
+
+.category .text h2 a span, .text h3 a span {display:block;margin-bottom:5px;}
+.category .text h2 a {font-size:12pt;text-decoration:none;}
+.category .text h2 img {margin-bottom:0;}
+
+.screenshotadjust img {max-width:400px;}
+
+.flamered {color:red;}
+.ad {margin:0 0 15px 0;}
+
+/* Region Affiliate Codes */
+.splashad .div2 {width:98%;padding:0 1%;background:none;}
+.splashad h1 {font-size:18pt;}
+.splashad  p {font-size:12pt;line-height:1.3em;}
+.splashad .imagetrailer {float:left;margin-bottom:20px;}
+.splashad .imagetrailer img{float:left;margin-right:20px;width:460px;}
+.splashad .trailer {float:left;}
+.splashad h2, .splashad h3{font-size:13pt;color:#ffd984;margin-top:15px;font-style:italic;font-weight:normal;background:url(images/foe-header-background-500.png) no-repeat;padding:5px 20px;width:460px;}
+.splashad h3 {width:940px;background:url(images/foe-header-background-980.png) no-repeat;color:#ffffff;}
+
+.splashad {background:url(images/background0-foe-medieval-city.1430914422.jpg) no-repeat fixed;}
+
+.playcon p a  {background-color:#ff0000;font-size:12pt;background: -moz-linear-gradient(#ff0000, #990000);
+	background: -o-linear-gradient(#ff0000, #990000);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff0000), to(#990000));
+	background: -webkit-linear-gradient(#ff0000, #990000);margin:10px 0;-webkit-border-radius:10px; -moz-border-radius:10px; border-radius:10px;color:#ffffff;}
+.playcon p a:hover  {background-color:#bb0808;background: -moz-linear-gradient(#bb0808, #990000);
+	background: -o-linear-gradient(#bb0808, #990000);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#bb0808), to(#990000));
+	background: -webkit-linear-gradient(#bb0808, #990000);color:#ffd984;}
+
+.flag a {font-size:13pt;padding:5px 10px 7px 5px;margin-top:0;}
+.flag a span {margin-top: 10px;float: right;margin-left: 10px;}
+.playnow {font-weight: bold;color: #000000;font-size: 13pt;border: 1px dashed #888888;padding: 5px 10px;margin-top: 10px;}
+.playcon .introexp, div.introexp {color:#222222;}
+div.introexp p {color:#cccccc;}
+div.introexp {padding:5px 10px;background:rgba(0, 0, 0, 0.8);}
+.playcon p.playnow {margin-top: 10px;clear:left;}
+.playcon p.playbuttons, .playcon p.playbuttons {margin-top:5px;margin-bottom:0;}
+.playcon {overflow:hidden;width:100%;margin:0;border-bottom:1px dashed #888888;}
+.playcon p a {margin-bottom: 15px;width: auto;margin-right: 15px;float:left;text-align:center;text-decoration:none;font-weight:bold;-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;}
+.whitecon {background:#ffffff;float:left;padding:0 1%;width:98%;}
+.whitecon img {max-width:100%;}
+
+
+.bannerad {position: absolute;
+  width: 500px;
+  overflow: hidden;
+  height: 60px;
+  top: 20px;
+  right: 10px;}
+.bannerad2 {position:relative;float:left;}
+.bannerad img {position:absolute;top:0;left:0;}
+
+
+.banneradd {position: absolute;
+  width: 728px;
+  overflow: hidden;
+  height: 90px;
+  top: 15px;
+  left: 271px;}
+.banneradd2 {position:relative;float:left;width:728px;}
+.banneradd div {top:0;left:0;position:absolute;}
+.banneradd img {max-width:100%;}
+
+
+
+.videopreroll {position:absolute;}
+
+.navigation li.navigationl4 a {padding:0;}
+.navigation li.navigationl4 {float:right;}
+
+.wynwalkthrough {float:right;margin:-51px 5px 5px 0;width:300px;}
+.wynwalkthrough a img {border:1px solid #000000;margin-right:5px;float:left;}
+.wtcwalkthrough a img {margin-right:5px;float:left;border:none;}
+.wynhelp, .wynwalkthrough2 {display:block;}
+.wynhelp {margin-bottom:5px;}
+.wynwalkthrough a {text-decoration:none;font-weight:bold;display:block;}
+.wynwalkthrough a:hover {color:red;}
+
+.urlstamp {display:block;position:absolute;top:101px;left:0;font-size:11pt;font-weight:bold;height:72px;width:215px;}
+
+.whackyourneighbourmobileadvert img {max-width:100%;}
+
+.advert5 {width:100%;margin:10px 0;}
+
+.home .column1 {width:42%;float:left;}
+.home .column2 {width:54%;float:right;margin-right:0;}
+.home .column1 .gameslist li {width:44.3%;}
+.home .column1 .gameslist li.listad {width:336px;height:280px;}
+.home .columncon {width:100%;}
+.home .column2 h2.featureheader {margin-left:0;}
+.home .column2 article h2 {margin-top:0;}
+
+.category div.sideadvertdiv, .category div.sideadvertdiv4, .category .bannerad {position:absolute;top:-9999px;left:0px;}
+.latestbrowser div.sideadvertdiv {position:absolute;top:202px;left:-172px;}
+
+.wtsk div.sideadvertdiv {top:163px;}
+
+.linkunitcon {margin:0 0 15px 0;}
+.downloadablegame2 .linkunitcon {width:100%;float:left;}
+.mobiledownloadlink {float:left;width:62%;}
+.linkadmobile {width:100%;overflow:hidden;}
+
+div.sideadvertdivm span.sideadvertautom {position: relative;float: left;}
+div.sideadvertdivm span.sideadvertautom div {position: absolute;top: auto;left: auto;}
+div.sideadvertdivm a {float: left;}
+
+#sideadplace3m, #sideadplace4m, #sideadplace5m {position: absolute;top: -9999px;left: 0px;}
+
+
+
+
+@media only screen and (max-width: 1000px) {
+div.sideadvertdivm, div.sideadvertdivm span.sideadvertautom img {width: 728px;height:90px;}
+div.sideadvertdivm a {width:728px;}
+#sideadplace3m, #sideadplace4m {position: absolute;top: -9999px;left: 0px;}
+div.sideadvertdivm a {width: 728px;}
+#sideadplace5m {position: relative;top: auto;left: auto;}
+}
+
+@media only screen and (max-width: 599px){
+div.sideadvertdivm, div.sideadvertdivm span.sideadvertautom img {width: 400px;height:67px;}
+}
+@media only screen and (max-width: 650px){
+div.sideadvertdivm, div.sideadvertdivm span.sideadvertautom img {width: 640px;height:100px;}
+div.sideadvertdivm a {width:640px;}
+#sideadplace3m, #sideadplace5m {position: absolute;top: -9999px;left: 0px;}
+#sideadplace4m {
+    position: relative;
+    top: auto;
+    left: auto;}}
+	
+@media only screen and (max-width: 540px){
+div.sideadvertdivm, div.sideadvertdivm span.sideadvertautom img {width:320px;height:50px;}
+div.sideadvertdivm a {width:320px;height:50px;}
+#sideadplace3m {position: relative;top: auto;left: auto;}
+#sideadplace4m, #sideadplace5m {position:absolute;top:-9999px;left:0px;}
+}
+
+/* Site Specific */
+.extads #game {margin:100px 0 100px 0;}
+div.sideadvertdiv2 {top:295px;}
+/* 400px High */.adjust400 div.sideadvertdiv3 {top:590px;}
+/* 425px High */.targetyourboss div.sideadvertdiv3 {top:605px;}
+/* 450px High */.whackyourneighbour div.sideadvertdiv3, .whackyourcomputer div.sideadvertdiv3, .hobogame div.sideadvertdiv3, .whackyourcomp div.sideadvertdiv3 {top:770px;}
+/* 550px High */.whackthecheater div.sideadvertdiv3 {top:876px;}
+/* 480px High */.whackthethief div.sideadvertdiv3, .whackyourteacher div.sideadvertdiv3, .celebrityfight div.sideadvertdiv3, .whackthecreeps div.sideadvertdiv3, .adjust480 div.sideadvertdiv3 {top:805px;}
+/* 500px High */.whackyourboss div.sideadvertdiv3, .siegiusarena div.sideadvertdiv3, .whackyourex div.sideadvertdiv3, .adjust500 div.sideadvertdiv3  {top:930px;}
+/* 562px High */.whackyourboss2 div.sideadvertdiv3  {top:890px;}
+/* 600px High */.adjust600 div.sideadvertdiv3  {top:800px;}
+/* End of Site Specific */
+
+.gamepage .adcon3, .home .adcon3 {width:100%;}
+
+.rightcolumn2 {float:left;width:400px;margin-right:15px;}
+.adcon4 {float:left;width:160px;}
+.adcon5 {width:100%;}
+
+ul li.featuread img {max-width:100%;}
+.gamepage .section2 ul li.featuread a {border:none;padding:0;margin:0;width:100%;}
+
+div.sideadvertdiv, div.sideadvertdiv4, div.sideadvertdiv5 {width:120px;height:600px;position:absolute;top:176px;left:-125px;overflow:hidden;}
+div.sideadvertdiv4, div.sideadvertdiv5 {left:auto;right:-121px;}
+div.sideadvertdiv a, div.sideadvertdiv4 a {width:120px;}
+div.sideadvertdiv span.sideadvert, div.sideadvertdiv4 span.sideadvert4, div.sideadvertdiv5  span.sideadvert5 {position:relative;float:left;}
+div.sideadvertdiv span.sideadvert div, div.sideadvertdiv4 span.sideadvert4 div, ul li.featuread div {position:absolute;top:0;left:0;}
+div.sideadvertdiv a, div.sideadvertdiv4 a, div.sideadvertdiv5  a {float:left;height:600px;}
+
+div.sideadvertdiv4 span.amazonmobilebutton {top:424px;position:absolute;left:0;}
+div.sideadvertdiv4 span.amazonmobilebutton img {top:auto;}
+div.sideadvertdiv4 span.amazonmobilebutton a {height:auto;width:160px;}
+.whackyourneighbour div.sideadvertdiv4 {top:-9999px;left:0px;}
+.whackyourneighbour div.sideadvertdiv5, .whackthecreeps div.sideadvertdiv5 {top:200px;left:auto;}
+
+div.sideadvertdiv2, div.sideadvertdiv3 {width:728px;height:90px;position:absolute;left:190px;}
+div.sideadvertdiv3 {top:750px;}
+div.sideadvertdiv2 span.sideadvert2, 
+div.sideadvertdiv3 span.sideadvert3 
+{position:relative;float:left;}
+div.sideadvertdiv2 span.sideadvert2 img, 
+div.sideadvertdiv3 span.sideadvert3 img, 
+div.sideadvertdiv2 span.sideadvert2 div,
+div.sideadvertdiv3 span.sideadvert2 div
+{position:absolute;top:0;left:0;width:728px;height:90px;max-width:none;}
+div.sideadvertdiv2 a, div.sideadvertdiv3 a {float:left;width:728px;height:90px;}
+
+div#adchange728 div {position:absolute;}
+div#adchange728 {position:relative;}
+
+.comingsoonpage div.sideadvertdiv2, .comingsoonpage div.sideadvertdiv3 {display:none ! important;}
+
+@media only screen and (min-width:1250px){
+.gamepage .adcon3, .home .adcon3, .category .adcon3 {width:120px;height:600px;position:absolute;top:200px;left:-125px;text-align:right;}
+.home .adcon3 {top:120px;}
+.category .adcon3 {top:300px;}
+#sideadplace2, #sideadplace4 {position:absolute;top:-9999px;left:0px;}
+#sideadplace1 {position:relative;top:auto;left:auto;}
+}
+
+@media only screen and (max-width:1250px){
+div.sideadvertdiv, div.sideadvertdiv4, div.sideadvertdiv5, .whackyourneighbour div.sideadvertdiv5, .downloadablegame2 div.sideadvertdiv, .downloadablegame2 div.sideadvertdiv4, #sideadplace2, #sideadplace1, #sideadplace4  {position:absolute;top:-9999px;left:0;}
+}
+
+@media only screen and (min-width:1340px){
+.gamepage .adcon3, .home .adcon3, .category .adcon3 {width:160px;height:600px;position:absolute;top:200px;left:-170px;}
+.externalgame .adcon3 {top:200px;}
+.home .adcon3 {top:120px;}
+.category .adcon3 {top:300px;}
+div.sideadvertdiv, div.sideadvertdiv4, div.sideadvertdiv5 {width:160px;height:600px;position:absolute;top:342px;left:-172px;}
+div.sideadvertdiv5 {width:162px;}
+div.sideadvertdiv4, div.sideadvertdiv5  {left:auto;right:-172px;}
+div.sideadvertdiv a, div.sideadvertdiv4 a{width:160px;}
+#sideadplace1 {position:absolute;top:-9999px;left:0px;}
+#sideadplace2, #sideadplace4 {position:relative;top:auto;left:auto;}
+}
+
+ /* All Mobile Sizes (devices and browser) */@media only screen and (min-width:1620px){
+.gamepage .adcon3, .home .adcon3, .wyn .adcon3, .category .adcon3 {width:300px;height:600px;position:absolute;left:-310px;}
+.externalgame .adcon3 {top:200px;}
+.home .adcon3 {top:120px;}
+.category .adcon3 {top:200px;}
+}
+
+.downloadablegame2 .sideadvertdiv2, .downloadablegame2 .sideadvertdiv3, .category  .sideadvertdiv2, .category  .sideadvertdiv3{top:-9999px;}
+
+h2 a span, h3 a span {display:block;margin-bottom:20px;text-align:center;}
+h2 a, h3 a {text-decoration:none;display:block;font-family:White wood;}
+
+p.imagecaption {font-weight:bold;}
+
+.featuredgames, .featuredgames2, .featuredgames3 {float:left;width:336px;margin-left:10px;}
+.featuredgames, .featuredgames3 {width:317px;}
+
+.latestbrowser .gameslist li {height:150px;}
+.latestbrowser .gameslist li.listad {height:600px;width:300px;}
+
+div.sideadvertdiv6 {width:120px;height:600px;position:absolute;top:176px;left:-125px;overflow:hidden;}
+ul.navigation li.navigationl4 img {position:absolute;top:0;left:0;width:600px;height:38px;}
+
+ul.navigation li.navigationl4 {width:600px;height:38px;overflow:hidden;position:relative;}
+#sideadplace7, #sideadplace8 {position:absolute;top:-9999px;left:0px;}
+div.sideadvertdiv6 a {width:120px;}
+ul.navigation li.navigationl4 a {width:600px;float:left;height:38px;}
+.home div.sideadvertdiv6, .category div.sideadvertdiv6, .downloadablegame2 div.sideadvertdiv6 {top:140px;}
+div.sideadvertdiv6 span.sideadvert6, ul.navigation li.navigationl4 span.sideadvert6 {position:relative;float:left;}
+div.sideadvertdiv6 span.sideadvert6 div, ul.navigation li.navigationl4 span.sideadvert6 div {position:absolute;top:auto;left:auto;}
+div.sideadvertdiv6 a {float:left;height:600px;}
+
+#sideadplace6 {position:relative;top:0;left:0;}
+
+@media only screen and (min-width:1340px){
+div.sideadvertdiv6 {width:160px;height:600px;position:absolute;top:202px;left:-172px;}
+div.sideadvertdiv6 a {width:160px;}
+#sideadplace7 {position:relative;top:auto;left:auto;}
+}
+
+@media only screen and (min-width:1920px){
+div.sideadvertdiv6 {width:450px;left:-460px;}
+div.sideadvertdiv6 a {width:450px;}
+#sideadplace7 {position:absolute;top:-9999px;left:0px;}
+#sideadplace8 {position:relative;top:auto;left:auto;}
+}
+
+@media only screen and (max-width:1250px){
+div.sideadvertdiv6, .downloadablegame2 div.sideadvertdiv6, #sideadplace7, #sideadplace8  {position:absolute;top:-9999px;left:0;}
+}
+
+
+@media only screen and (max-width:1000px){
+div.sideadvertdiv2, div.sideadvertdiv3 {left:187px;}
+div.bannerad {position:absolute;top:-9999px;left:0;}
+.adcon, .adcon2, .downloadablegame2 .leftcolumn, .downloadablegame2 .rightcolumn{width:100%;height:auto;}
+}
+
+@media only screen and (max-width:767px){
+div.sideadvertdiv2, div.sideadvertdiv3 {left:0px;width:100%;}
+.div2 {overflow:hidden;}
+p a {font-size:12pt;}
+body {background-image:none;}
+.banner {background-position:right;}
+.websitetitle  {margin-left:10px;margin-top:10px;line-height:21px;}
+.websitetitle, .websitetitle a {font-size:14pt;}
+.slogan {font-size:11pt;margin-left:10px;}
+.slogan {font-size:10pt;}
+.navigation li.navigationl3,
+.navigation li.navigationl4,
+.navigation li.navigationl5,
+.navigation li.navigationl6
+{position:absolute;top:-9999px;}
+.socials {width:98%;}
+.gamepage .section2, .leftcolumn, .rightcolumn {width:100%;margin-right:0;}
+.gamepage .section1 {width:98%;}
+.headtitle {margin-left:10px;}
+.adconleft {height:auto;}
+.downloadablegame2 .adcon {position:absolute;top:-9999px;}
+.socialadjust2 .socials  {width:98%;}
+}
+.gamecon {width:1890px;height:950px;}
+@media only screen and (max-width: 1900px) {
+.gamecon {width:1890px;height:950px;}
+}
+@media only screen and (max-width: 1600px) {
+.gamecon {width:1580px;height:770px;}
+}
+@media only screen and (max-width: 1400px) {
+.gamecon {width:1380px;height:770px;}
+}
+@media only screen and (max-width: 1366px) {
+.gamecon {width:1346px;height:630px;}
+}
+@media only screen and (max-width: 1280px) {
+.gamecon {width:1260px;height:600px;}
+}
+@media only screen and (max-width: 1200px) {
+.gamecon {width:1200px;height:900px;}
+}
+@media only screen and (max-width: 800px) {
+.gamecon {width:800px;height:600px;}
+}
+
+.numberclass {font-weight:bold;font-style:italic;color:#990000;}
+
+.home .column2 img {width:100%;}
+.home .column2 h2 {padding-top:0;margin-top:0;}
+
+#game ul li strong.exclusive {color:black;}
+
+.adconsquare {width:100%;height:auto;text-align:center;}
+.imagecentre {text-align:center;width:100%;}
+
+#game {overflow:hidden;}
+.downloadablegame2 #game {width:90%;margin-left:7%;}
+.downloadablegame2 .rightcolumn {width:58%;}
+.downloadablegame2 .leftcolumn {margin-right:5%;}
+.leftcolumn ul.gameslist {float:none;width:60%;padding-left:20%;}
+#game .leftcolumn h2 {text-align:center;}
+#game .leftcolumn .gameslist img {margin-bottom:0;float:none;}
+.browser #game .leftcolumn .gameslist li {height:185px;margin-bottom:15px;overflow:hidden;}
+.browser #game .leftcolumn .gameslist li a {float:none;}
+
+
+@media only screen and (max-width: 1000px) {
+.browser #game .leftcolumn .gameslist li {height:auto ! important;}
+.downloadablegame2 .rightcolumn {width:100%;}
+.headtitle {margin-left:0;}
+.downloadablegame2 #game {margin-left:0;width:100%;}
+.gamepage .section1 {width:94%;padding:0 3%;}
+.div1 {overflow:hidden;}
+.section1, .section2 {margin-right:0;}
+.downloadablegame2 .adcon {position:relative;top:auto;}
+.headtitle {margin-bottom:20px;}
+.leftcolumn ul.gameslist {padding-left:0;width:100%;}
+.downloadablegame2 .leftcolumn {margin-left:0;}
+.downloadablegame2 #game ul li {float:left;width:29%;margin-right:3%;}
+}
+
+.bannercpmmobile {display:none;}
+.playgamebrowser .maincon {width:100%;padding:0;}
+
+@media only screen and (max-width:1000px){
+.bannercpmmobile {display:block;position:fixed;top:0;text-align:center;width:100%;z-index:1;background:white;padding-bottom:5px;border-bottom:2px solid #990000;}
+.maincon {position:relative;z-index:0;}
+.banneradd {display:none;}
+}
+
+.whackyourgames .gameslist {width:100%;float:right;}
+.whackyourgames .gamesadright {width:33%;float:left;}
+.wtedt #adremove {display:none ! important;}
+#game {clear:both;}
+
+.maincon {width:92%;padding:0 4%;}
+h2 a span {font-size:16pt;}
+p {font-size:12pt;line-height:17pt;}
+
+@media only screen and (max-width:1000px){
+.home .column1, .home .column2 {width:100%;padding:0;margin-right:0;}
+.home .column1 h2.featureheader {margin:0 0 20px 0;}
+.home .column1 .gameslist li {margin-left:0;margin-right:3%;width:29.3%;height:210px;}
+.gameslist span {font-size:12pt;}
+}
+
+@media only screen and (max-width:767px){
+.column1 .gameslist li.speciallist2, .comingsoon .gameslist li.speciallist2 {width:100%;height:auto;margin:0 0 20px 0;}
+.comingsoon .gameslist li.specialad {display:none;}
+.comingsoonpage .gameslist li {width:41%;margin:0 2% 20px 2%;height:200px;}
+.gameslist span {height:auto;}
+div.adoverlay {display:none ! important;}
+.whackyourgames .gameslist {width:100%;margin-right:0;float:none;}
+.whackyourgames .gamesadright {width:100%;float:none;clear:both;}
+.text {float:none;}
+.headtitle {width:92%;padding:0 4%;font-size:14pt;}
+.slogan {left:89px;top:67px;}
+.banner {height:96px;}
+.websitetitle img {position:absolute;top:0px;left:0px;width:161px;}
+h2 a span, .home .column1 h2 a {font-size:14pt;}
+.home .column2 h2 {font-size:13pt;}
+.navigation li.followus, .navigation li.followustext {font-size:10pt;}
+.wtedtmobile li.followustext, .wtedtmobile li.homelink, .wtedtmobile li.contactlist, .wtedtmobile li.guideslist, .wtedtmobile li.followus, li.guideslist {display:none ! important;}
+.wtedtmobile  .adconleft {text-align:center;width:100%;}
+.navigation li a {font-size:10pt;}
+.wtedtmobile .navigation li a {font-size:9pt;}
+.wtedtmobile .maincon {margin-top:0;}
+.wtedtmobile .headtitle {font-size:16pt;}
+}
+
+.contactrow {width:100%;overflow:hidden;margin-bottom:20px;}
+.td1, .td2 {float:left;}
+.td1 {width:23%;margin-right:2%;padding-top:10px;}
+.td2 {width:68%;}
+.td2 span {clear:left;color:red;font-weight:bold;float:left;}
+.td2 input, .td2 #Message {padding:5px;}
+#form_submit_button, #custom_antispam_field {padding:10px;font-size:1.2em;}
+#custom_antispam_field {width:200px;}
+.contactrow label {font-size:1.2em;}
+
+@media only screen and (max-width:750px){
+.wtedt #adremove {top:100px;display:block ! important;}
+.wtedt #adremove #innoadvert a div {position:absolute;top:0;left:0;}
+.wtedt #adremove #innoadvert {background-color: #fff;height:550px ! important;
+box-shadow:
+0 0 20px 15px #990000,  /* inner white */
+0 0 20px 15px #990000, /* middle */
+0 0 20px 15px #990000; /* outer */}
+.wtedt #adremove #innoadvert a {top:0px ! important;}
+.td1, .td2 {float:none;width:100%;margin-right:0;}
+.td1 {margin-bottom:10px;padding-top:0px;}
+}
+@media only screen and (max-width:730px){
+.wtedt #adremove #innoadvert {height:535px ! important;}
+}
+@media only screen and (max-width:715px){
+.wtedt #adremove #innoadvert {height:525px ! important;}
+}
+@media only screen and (max-width:700px){
+.wtedt #adremove #innoadvert {height:520px ! important;}
+}
+@media only screen and (max-width:685px){
+.wtedt #adremove #innoadvert {height:505px ! important;}
+}
+@media only screen and (max-width:670px){
+.wtedt #adremove #innoadvert {height:495px ! important;}
+}
+@media only screen and (max-width:660px){
+.wtedt #adremove #innoadvert {height:480px ! important;}
+}
+@media only screen and (max-width:650px){
+.wtedt #adremove #innoadvert {height:470px ! important;}
+}
+@media only screen and (max-width:635px){
+.wtedt #adremove #innoadvert {height:465px ! important;}
+}
+@media only screen and (max-width:620px){
+.wtedt #adremove #innoadvert {height:445px ! important;}
+}
+@media only screen and (max-width:605px){
+.wtedt #adremove #innoadvert {height:440px ! important;}
+}
+@media only screen and (max-width:590px){
+.wtedt #adremove #innoadvert {height:430px ! important;}
+}
+@media only screen and (max-width:580px){
+.wtedt #adremove #innoadvert {height:422px ! important;}
+}
+@media only screen and (max-width:550px){
+.wtedt #adremove #innoadvert {height:405px ! important;}
+}
+@media only screen and (max-width:535px){
+.wtedt #adremove #innoadvert {height:387px ! important;}
+}
+@media only screen and (max-width:525px){
+.wtedt #adremove #innoadvert {height:385px ! important;}
+}
+@media only screen and (max-width:515px){
+.wtedt #adremove #innoadvert {height:375px ! important;}
+}
+@media only screen and (max-width:500px){
+.wtedt #adremove #innoadvert {height:365px ! important;}
+.home .column1 .gameslist li {margin-left:0;margin-right:3%;width:45.3%;height:190px;}
+.downloadablegame2 #game ul li, .comingsoonpage .gameslist li {width:45.3%;margin-right:3%;height:190px;margin-left:0;}
+}
+@media only screen and (max-width:485px){
+.wtedt #adremove #innoadvert {height:355px ! important;}
+}
+@media only screen and (max-width:475px){
+.wtedt #adremove #innoadvert {height:345px ! important;}
+}
+@media only screen and (max-width:460px){
+.wtedt #adremove #innoadvert {height:337px ! important;}
+}
+@media only screen and (max-width:450px){
+.wtedt #adremove #innoadvert {height:330px ! important;}
+}
+@media only screen and (max-width:440px){
+.wtedt #adremove #innoadvert {height:325px ! important;}
+}
+@media only screen and (max-width:430px){
+.wtedt #adremove #innoadvert {height:315px ! important;}
+}
+@media only screen and (max-width:420px){
+.wtedt #adremove #innoadvert {height:305px ! important;}
+}
+@media only screen and (max-width:410px){
+.wtedt #adremove #innoadvert {height:290px ! important;}
+.td2 #Message, .td2 input {width:250px;}
+}
+@media only screen and (max-width:395px){
+.wtedt #adremove #innoadvert {height:282px ! important;}
+}
+@media only screen and (max-width:385px){
+.wtedt #adremove #innoadvert {height:275px ! important;}
+}
+@media only screen and (max-width:375px){
+.wtedt #adremove #innoadvert {height:270px ! important;}
+}
+@media only screen and (max-width:365px){
+.wtedt #adremove #innoadvert {height:260px ! important;}
+}
+@media only screen and (max-width:355px){
+.wtedt #adremove #innoadvert {height:250px ! important;}
+}
+@media only screen and (max-width:340px){
+.wtedt #adremove #innoadvert {height:245px ! important;}
+}
+@media only screen and (max-width:330px){
+.wtedt #adremove #innoadvert {height:235px ! important;}
+}
+@media only screen and (max-width:320px){
+.wtedt #adremove #innoadvert {height:230px ! important;}
+}
+@media only screen and (max-width:310px){
+.wtedt #adremove #innoadvert {height:220px ! important;}
+}
+
+p.imagecomment {font-size:10pt;font-weight:bold;font-style:italic;margin-top:-10px;}
+.column1 img {max-width:100%;}
+
+@media only screen and (max-width:450px){
+.navigation li a {font-size:10pt;padding:12px 10px;}
+.comingsoonpage .gameslist li.specialad {width:100% ! important;text-align:center;height:auto ! important;}
+}
+
+div.gamedivider {height:5px;border-bottom:2px dashed #ccc;margin:20px 0;}
+div.gamedivider {height:5px;border-bottom:2px dashed #ccc;}
+
+.wtd #game {width:100% ! important;margin-left:0 ! important;}
+.wtd .rightcolumn {width:71% ! important;margin-left:0 ! important;}
+.wtd .adconleft {width:100% ! important;}
+.wtd .leftcolumn {width:24% ! important;margin-right:2%;}
+.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.navigation li.fearcoin  a {padding-bottom:0;}
+
+@media only screen and (max-width:1000px){
+.wtd #game {width:100% ! important;margin-left:0 ! important;}
+.wtd .rightcolumn {width:100% ! important;margin-left:0 ! important;}
+.wtd .adconleft {width:100% ! important;}
+.wtd .leftcolumn {width:100% ! important;margin-right:0%;}
+}
+
+.home .column1 .gameslist li {margin-left:0;}
+
+.navigation li.fearcoin, .navigation li.whackitblockchain {position:absolute;top:-105px;left:400px;width:100px;}
+.navigation li.fearcoin {top:-108px;left:266px;}
+.navigation li.whackitblockchain {left:500px;width:261px;top:-110px;}
+.navigation li.fearcoin img, .navigation li.whackitblockchain img {max-width:100%;}
+.navigation li.fearcoin a:hover, .navigation li.whackitblockchain a:hover {background:none;}
+.navigation li.followus, .navigation li.followustext {display:none;}
+
+@media only screen and (max-width:800px){
+.navigation li.whackitblockchain {left:269px;width:203px;top:-83px;}
+}
+@media only screen and (max-width:767px){
+.navigation li.fearcoin {top:-107px;}
+}
+@media only screen and (max-width:600px){
+.navigation li.instalink {display:none;}
+}
+@media only screen and (max-width:500px){
+.navigation li.instalink {display:none;}
+.navigation li.whackitblockchain {left:245px;width:120px;top:-64px;}
+}
+@media only screen and (max-width:400px){
+.navigation li.fearcoin {left:245px;}
+}
+
+.whackthedemonfull .rightcolumn {width:100% ! important;}
+
+.wtd #game h2 {text-align:center;font-size:12pt;}
+.wtd #game iframe {margin-top:-30px;}
+
+@media only screen and (max-width:1000px){
+.headtitle {margin-bottom:0;}
+}
+
+@media only screen and (max-width:950px){
+.wtd #game iframe {height:450px;}
+}
+
+@media only screen and (max-width:900px){
+.wtd #game iframe {height:400px;}
+}
+
+@media only screen and (max-width:750px){
+.wtd #game iframe {height:350px;}
+}
+
+@media only screen and (max-width:650px){
+.wtd #game iframe {height:300px;}
+}
+@media only screen and (max-width:550px){
+.wtd #game iframe {height:250px;}
+}
+@media only screen and (max-width:400px){
+.wtd #game iframe {height:200px;}
+}
