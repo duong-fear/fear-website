@@ -24,8 +24,11 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.js" integrity="sha512-tyQHGhqSiH/wW31W22IYEXVwL7Rh9pQ5oDedxPkXEftX/woKF5l/qswBaQ1Ohre7OyiLk1ypnYBBzmSZ/ZZk1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/js/lodash@4.17.15.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/js/alpinejs@3.10.4.min.js" defer></script>
+    <script src="/js/abi.js"></script>
     <script src="/js/bloodbank.js"></script>
     <script src="https://global.transak.com/sdk/v1.1/widget.js" async></script>
     <script>
@@ -359,7 +362,7 @@
         <div class="row align-items-center">
 
           <!-- Start Products Details Area -->
-          <div class="mt-8 bg-zinc-800 rounded-lg" x-data="$store.vm">
+          <div class="mt-8 bg-zinc-800 rounded-md mb-4 pt-2 pb-4" x-data="$store.vm">
             <!-- tab container -->
             <div class="flex text-center w-full bg-gray-700 rounded-3xl items-center py-1 mt-2">
               <div class="flex-1 mx-2 py-1 bg-red-400 rounded-2xl cursor-pointer">
@@ -380,19 +383,27 @@
                 <div class="flex w-full mt-4">
                   <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
                     <div>TVL ($FEAR)</div>
-                    <div>1.841.925</div>
+                    <div>
+                      <span x-text="_.get(stakingStats, 'global.tvl', 'n/a')"></span>
+                    </div>
                   </div>
                   <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
                     <div>Total Stakers</div>
-                    <div>348</div>
+                    <div>
+                      <span x-text="_.get(stakingStats, 'global.stakerCount', 'n/a')"></span>
+                    </div>
                   </div>
                   <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
                     <div>APR</div>
-                    <div>10%</div>
+                    <div>
+                      <span x-text="_.get(stakingStats, 'global.apr', 'n/a')+ '%'"></span>
+                    </div>
                   </div>
                   <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
                     <div>Release time</div>
-                    <div>28 days</div>
+                    <div>
+                      <span x-text="_.get(stakingStats, 'global.releaseTimeDays', 'n/a')+ ' days'"></span>
+                    </div>
                   </div>
                 </div>
                 <!-- staking stats by user -->
@@ -401,18 +412,18 @@
                   <div class="flex mt-3">
                     <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-4 mx-2">
                       <div>
-                        <span>Staked: 43.088 FEAR</span>
+                        <span>Staked: <span x-text="_.get(stakingStats, 'global.mine.stakedAmount', 'n/a')"></span> FEAR</span>
                       </div>
                       <div>
-                        <button class="rounded-lg bg-green-600 px-2 py-1 shadow">Unstake</button>
+                        <button class="rounded-lg bg-green-600 px-2 py-1 shadow mt-2">Unstake</button>
                       </div>
                     </div>
                     <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-4 mx-2">
                       <div>
-                        <span>Reward: 31.743 FEAR</span>
+                        <span>Reward: <span x-text="_.get(stakingStats, 'global.mine.rewardAmount', 'n/a')"></span> FEAR</span>
                       </div>
                       <div>
-                        <button class="rounded-lg bg-green-600 px-2 py-1 shadow">Claim</button>
+                        <button class="rounded-lg bg-green-600 px-2 py-1 shadow mt-2">Claim</button>
                       </div>
                     </div>
                   </div>
@@ -420,18 +431,18 @@
                   <div class="flex mt-3">
                     <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-4 mx-2">
                       <div>
-                        <span>Locked: 40.177 FEAR</span>
+                        <span>Locked: <span x-text="_.get(stakingStats, 'global.mine.lockedAmount', 'n/a')"></span> FEAR</span>
                       </div>
                       <div>
-                        <button class="rounded-lg bg-red-600 px-2 py-1 shadow">Instant Unstake</button>
+                        <button class="rounded-lg bg-red-600 px-2 py-1 shadow mt-2">Instant Unstake</button>
                       </div>
                     </div>
                     <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-4 mx-2">
                       <div>
-                        <span>Unlocked: 6844.1 FEAR</span>
+                        <span>Unlocked: <span x-text="_.get(stakingStats, 'global.mine.unlockedAmount', 'n/a')"></span> FEAR</span>
                       </div>
                       <div>
-                        <button class="rounded-lg bg-green-600 px-2 py-1 shadow">Withdraw</button>
+                        <button class="rounded-lg bg-green-600 px-2 py-1 shadow mt-2">Withdraw</button>
                       </div>
                     </div>
                   </div>
@@ -466,8 +477,6 @@
 
               </div>
             </template>
-
-            <div class="h-screen"></div>
           </div>
 
           
