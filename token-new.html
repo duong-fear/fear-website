@@ -18,8 +18,30 @@
         <link rel="stylesheet" href="updates.css?v176">
     <link rel="shortcut icon" href="images/fear-icon.svg" type="image/x-icon" />
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
-    
+<style>
+    #chart {
+        height: 400px;
+        /* width: 300px; */
+    }
+    #chart text {
+        fill: #eee;
+        font-family: 'Poppins', sans-serif;
+        font-size: larger;
+        text-align:left;
+    }
+    .c3-chart-arc path {
+        stroke: red !important;
+    }
+    .c3-tooltip-container {
+        color: black;
+    }
+</style>  
+<link href="css/c3-eb4b9be8.css" media="screen" rel="stylesheet" type="text/css" />  
+
+
 <script src="https://global.transak.com/sdk/v1.1/widget.js" async></script>
+<script src="js/c3.min-d2a1f852.js?ffwefwfw" type="text/javascript"></script>
+<script src="js/d3-5.8.2.min-c5268e33.js?ffwefwfw" type="text/javascript"></script>
 <script>
     function launchTransak(){let n=new TransakSDK.default({apiKey:"80f00610-32cc-4d01-8eb0-dfc825c2ef53",environment:"PRODUCTION",defaultCryptoCurrency:"FEAR",themeColor:"000000",email:"",redirectURL:"",hostURL:window.location.origin,widgetHeight:"550px",widgetWidth:"450px"});n.init(),n.on(n.EVENTS.TRANSAK_WIDGET_CLOSE,()=>{n.close()})}window.onload=function(){$("#transakLink").on("click",function(){launchTransak()})};
   </script>
@@ -307,7 +329,7 @@
                 <div class="col-md-2">
 				</div>
 			</div>
-            <div class="row" style="margin-top:50px;">
+            <div class="row" style="margin-top:80px;">
 				<div class="col-md-12">
 					<h2 style="font-family:Horror Memories;text-align:center;color:white;margin-bottom:20px">TOKEN DISTRIBUTION</h2>
 				</div>
@@ -316,12 +338,12 @@
 				<div class="col-md-2">
 				</div>
                 <div class="col-md-8">
-					<img src="images/token-metrics.png" alt="Token Distribution"/>
+					<div id="chart"></div>
 				</div>
                 <div class="col-md-2">
 				</div>
 			</div>
-            <div class="row" style="margin-top:50px;">
+            <div class="row" style="margin-top:80px;">
 				<div class="col-md-12">
 					<h2 style="font-family:Horror Memories;text-align:center;color:white;margin-bottom:20px">TOKEN RELEASE SCHEDULE</h2>
 				</div>
@@ -551,6 +573,52 @@ var sc_remove_link=1;
 <script type="text/javascript"
 src="https://www.statcounter.com/counter/counter.js"
 async></script>
+
+<script>
+	const tokenomics = [
+		['Seed Round', 3.25, '#240d0d'],
+		['Private Round', 17.5, '#3c0100'],
+		['Liquidity', 15, '#810806'],
+		['Ecosystem Incentives', 24.25, '#a00b09'],
+		['Team', 20, '#be100d'],
+		['Partners & Advisors', 5, '#e4221e'],
+		['Marketing', 15, '#ff4c49']
+	];
+	const columns = tokenomics.map(_ => [
+		`${_[1].toFixed(2).padStart(5, ' ')}% ${_[0]}`, // U+2003 from https://emptycharacter.com/, for spacing purpose xD
+		_[1],
+	]);
+	const colors = tokenomics.map(_ => [
+		`${_[1].toFixed(2).padStart(5, ' ')}% ${_[0]}`, // U+2003 from https://emptycharacter.com/, for spacing purpose xD
+		_[2],
+	]);
+	var chart = c3.generate({
+		data: {
+			order: null,
+			columns,
+			colors: Object.fromEntries(colors),
+			type: 'pie',
+			labels: false,
+		},
+		pie: {
+			label: {
+				show: false,
+			}
+		},
+		legend: {
+			position: 'right',
+			item: {
+				onclick: () => {},
+			}
+		},
+		tooltip: {
+			format: {
+				name: function (name, ratio, id, index) { return name.split("%")[1]; }
+			}
+		}
+	});
+</script>
+
 <noscript><div class="statcounter"><img class="statcounter"
 src="https://c.statcounter.com/12412733/0/af2ceb8d/1/"
 alt="Web Analytics"
