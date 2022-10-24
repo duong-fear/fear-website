@@ -408,47 +408,66 @@
                 </div>
                 <!-- staking stats by user -->
                 <div class="bg-gray-600 rounded-xl mt-4 p-2">
-                  <!-- staked + reward -->
-                  <div class="flex mt-3">
-                    <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-4 mx-2">
-                      <div>
-                        <span>Staked: <span x-text="_.get(stakingStats, 'global.mine.stakedAmount', 'n/a')"></span> FEAR</span>
+                  <div class="relative">
+                    <template x-if="!_.get(vm, 'wallet.address')">
+                      <div class="absolute w-full h-full bg-gray-600 flex items-center justify-center">
+                        <div>
+                          <!-- <div><span>Connect your wallet:</span></div> -->
+                          <button class="flex justify-center items-center bg-cyan-100 text-cyan-900 py-2 px-3 rounded-md" @click="connectMetamask">
+                            <img src="/images/metamask.svg" alt="" class="w-8 h-8 mr-2">
+                            <span>Connect Wallet</span>
+                          </button>
+                        </div>
                       </div>
-                      <div>
-                        <button class="rounded-lg bg-green-600 px-2 py-1 shadow mt-2">Unstake</button>
+                    </template>
+                    <!-- connected wallet info -->
+                    <template x-if="_.get(vm, 'wallet.shortAddress')">
+                      <div class="flex justify-center items-center select-none font-mono mt-2">
+                        <span x-text="`${vm.wallet.shortAddress} connected / balance: ${formatEther(vm.wallet.fearBalanceBN || ZeroBN)} FEAR`"></span>
+                      </div>
+                    </template>
+                    <!-- staked + reward -->
+                    <div class="flex mt-3">
+                      <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
+                        <div>
+                          <span>Staked: <span x-text="formatEther(_.get(wallet, 'stakedAmountBN'))"></span> FEAR</span>
+                        </div>
+                        <div>
+                          <button class="rounded-lg bg-green-100 text-green-800 px-2 py-1 mt-2" @click="unstakeFear">Unstake</button>
+                        </div>
+                      </div>
+                      <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
+                        <div>
+                          <span>Reward: <span x-text="formatEther(_.get(wallet, 'rewardAmountBN'))"></span> FEAR</span>
+                        </div>
+                        <div>
+                          <button class="rounded-lg bg-green-100 text-green-800 px-2 py-1 mt-2">Claim</button>
+                        </div>
                       </div>
                     </div>
-                    <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-4 mx-2">
-                      <div>
-                        <span>Reward: <span x-text="_.get(stakingStats, 'global.mine.rewardAmount', 'n/a')"></span> FEAR</span>
+                    <!-- locked + unlocked -->
+                    <div class="flex mt-3">
+                      <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
+                        <div>
+                          <span>Locked: <span x-text="formatEther(_.get(wallet, 'lockedAmountBN'))"></span> FEAR</span>
+                        </div>
+                        <div>
+                          <button class="rounded-lg bg-red-100 text-red-800 px-2 py-1 mt-2" @click="instantUnstake">Instant Unstake</button>
+                        </div>
                       </div>
-                      <div>
-                        <button class="rounded-lg bg-green-600 px-2 py-1 shadow mt-2">Claim</button>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- locked + unlocked -->
-                  <div class="flex mt-3">
-                    <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-4 mx-2">
-                      <div>
-                        <span>Locked: <span x-text="_.get(stakingStats, 'global.mine.lockedAmount', 'n/a')"></span> FEAR</span>
-                      </div>
-                      <div>
-                        <button class="rounded-lg bg-red-600 px-2 py-1 shadow mt-2">Instant Unstake</button>
-                      </div>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-4 mx-2">
-                      <div>
-                        <span>Unlocked: <span x-text="_.get(stakingStats, 'global.mine.unlockedAmount', 'n/a')"></span> FEAR</span>
-                      </div>
-                      <div>
-                        <button class="rounded-lg bg-green-600 px-2 py-1 shadow mt-2">Withdraw</button>
+                      <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
+                        <div>
+                          <span>Unlocked: <span x-text="formatEther(_.get(wallet, 'unlockedAmountBN'))"></span> FEAR</span>
+                        </div>
+                        <div>
+                          <button class="rounded-lg bg-green-100 text-green-800 px-2 py-1 mt-2" @click="withdrawUnlockedFear">Withdraw</button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <!-- stake button -->
-                  <div class="flex justify-center pt-3 pb-2">
-                    <button class="rounded-lg bg-green-600 px-3 py-2 shadow">Stake $FEAR</button>
+                    <!-- stake button -->
+                    <div class="flex justify-center pt-3 pb-2">
+                      <button class="rounded-lg bg-green-300 text-green-900 px-3 py-2 shadow" @click="stakeFear">Stake $FEAR</button>
+                    </div>
                   </div>
                 </div>
                 <!-- guide -->

@@ -3,6 +3,11 @@ const MUMBAI_CHAINID = 80001;
 const BSC_CHAINID = 56;
 
 let ACTIVATED_CHAINID = MUMBAI_CHAINID;
+const SUPPORTED_CHAINS = [
+  POLYGON_CHAINID,
+  MUMBAI_CHAINID,
+  BSC_CHAINID,
+];
 
 const RPC_URL = {
   [BSC_CHAINID]: 'https://rpc.ankr.com/bsc',
@@ -10,12 +15,130 @@ const RPC_URL = {
   [MUMBAI_CHAINID]: 'https://rpc.ankr.com/polygon_mumbai',
 };
 
+const formatEther = (amountBN) => (amountBN instanceof ethers.BigNumber) ? ethers.utils.formatEther(amountBN).replace(/\.0$/, '') : 'n/a';
+const parseEther = ethers.utils.parseEther;
+const ZeroBN = ethers.constants.Zero;
+
 const RPC_PROVIDER = {
   [BSC_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[BSC_CHAINID]),
   [POLYGON_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[POLYGON_CHAINID]),
   [MUMBAI_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[MUMBAI_CHAINID]),
 }
 
+// wallet connect functions
+const connectMetamask = async () => {
+  if(vm.wallet.address) return;
+  const metamaskProvider = _.get(window, 'web3.currentProvider');
+  if(!metamaskProvider) throw new Error("Metamask not avaiable");
+  const provider = new ethers.providers.Web3Provider(metamaskProvider);
+  const { name, chainId, } = await provider.getNetwork();
+  let accountList = await provider.listAccounts();
+  if(accountList.length == 0) {
+    await metamaskProvider.request({ method: 'eth_requestAccounts' });
+  }
+  const signer = provider.getSigner();
+  window.provider = provider;
+  window.signer = signer;
+  accountList = await provider.listAccounts();
+  console.log(`accountList`, accountList, `chainId`, chainId);
+  const walletAddress = accountList.shift();
+  await updateBalances(walletAddress);
+  vm.wallet.address = walletAddress;
+  vm.wallet.shortAddress = `${walletAddress.substr(0, 6)}..${walletAddress.substr(-4)}`;
+}
+
+const updateBalances = async (_walletAddress) => {
+  const walletAddress = _walletAddress || vm.wallet.address;
+  const [
+    fearBalanceBN,
+    stakedAmountBN,
+    rewardAmountBN,
+    lockedAmountBN,
+    unlockedAmountBN
+  ] = await Promise.all([
+    CONTRACT.FEAR_TOKEN.instance.balanceOf(walletAddress),
+    CONTRACT.STAKE_POOL.instance.getMyStakeAmount({ from: walletAddress }),
+    CONTRACT.STAKE_POOL.instance.getMyRewardAmount({ from: walletAddress }),
+    CONTRACT.STAKE_POOL.instance.getMyLockedAmount({ from: walletAddress }),
+    CONTRACT.STAKE_POOL.instance.getMyClaimableAmount({ from: walletAddress }),
+  ]);
+  vm.wallet.fearBalanceBN = fearBalanceBN;
+  vm.wallet.stakedAmountBN = stakedAmountBN;
+  vm.wallet.rewardAmountBN = rewardAmountBN;
+  vm.wallet.lockedAmountBN = lockedAmountBN;
+  vm.wallet.unlockedAmountBN = unlockedAmountBN;
+}
+
+// stake + unstake function
+const stakeFear = async ($event, amount = '1') => {
+  const amountBN = ethers.utils.parseEther(amount);
+  const walletAddress = vm.wallet.address;
+  const [
+    allowanceBN,
+  ] = await Promise.all([
+    CONTRACT.FEAR_TOKEN.instance.allowance(walletAddress, CONTRACT.STAKE_POOL.instance.address),
+    await updateBalances(),
+  ]);
+  if(amountBN.gt(vm.wallet.fearBalanceBN)) {
+    throw new Error("Insufficient FEAR balance");
+  }
+  console.log(`allowanceBN`, formatEther(allowanceBN));
+  if(allowanceBN.lt(amountBN)) {
+    const tx = await CONTRACT.FEAR_TOKEN.instance.approve(CONTRACT.STAKE_POOL.instance.address, ethers.constants.MaxUint256);
+    await tx.wait();
+  }
+  console.log('staking');
+  const tx = await CONTRACT.STAKE_POOL.instance.stake(amountBN);
+  await tx.wait();
+  console.log('staked');
+  await Promise.all([
+    updateGlobalStakingStats(),
+    updateBalances(),
+  ]);
+}
+
+const unstakeFear = async ($event, amount = '1') => {
+  const amountBN = ethers.utils.parseEther(amount);
+  await updateBalances();
+  if(vm.wallet.stakedAmountBN.lt(amountBN)) throw new Error("Unstake amount greater than staked amount");
+  console.log("unstaking");
+  const tx = await CONTRACT.STAKE_POOL.instance.unstake(amountBN);
+  await tx.wait();
+  console.log("unstaked");
+  await Promise.all([
+    updateGlobalStakingStats(),
+    updateBalances(),
+  ]);
+}
+
+// withdraw
+const withdrawUnlockedFear = async ($event) => {
+  await updateBalances();
+  if(vm.wallet.unlockedAmountBN.eq(ZeroBN)) throw new Error("Nothing to withdraw");
+  console.log("withdraw in progress");
+  const tx = await CONTRACT.STAKE_POOL.instance.claimUnlocked();
+  await tx.wait();
+  console.log("withdraw-ed");
+  await Promise.all([
+    updateGlobalStakingStats(),
+    updateBalances(),
+  ]);
+}
+
+// instant unstake
+const instantUnstake = async ($event, amount = '3') => {
+  const amountBN = ethers.utils.parseEther(amount);
+  await updateBalances();
+  if(vm.wallet.lockedAmountBN.eq(ZeroBN)) throw new Error("You have no locked token");
+  if(amountBN.gt(vm.wallet.lockedAmountBN)) throw new Error("Unstake amount greater than locked amount");
+  const tx = await CONTRACT.STAKE_POOL.instance.flashUnstake(amountBN);
+  await tx.wait();
+  console.log("instantUnstake done");
+  await Promise.all([
+    updateGlobalStakingStats(),
+    updateBalances(),
+  ]);
+}
 
 const CONTRACT = {
   FEAR_TOKEN: {
@@ -27,7 +150,7 @@ const CONTRACT = {
       return new ethers.Contract(
         CONTRACT.FEAR_TOKEN[ACTIVATED_CHAINID],
         CONTRACT.FEAR_TOKEN.ABI,
-        RPC_PROVIDER[ACTIVATED_CHAINID],
+        window.signer || RPC_PROVIDER[ACTIVATED_CHAINID],
       );
     }
   },
@@ -40,7 +163,7 @@ const CONTRACT = {
       return new ethers.Contract(
         CONTRACT.STAKE_POOL[ACTIVATED_CHAINID],
         CONTRACT.STAKE_POOL.ABI,
-        RPC_PROVIDER[ACTIVATED_CHAINID],
+        window.signer || RPC_PROVIDER[ACTIVATED_CHAINID],
       );
     }
   },
@@ -49,7 +172,7 @@ const CONTRACT = {
 const updateGlobalStakingStats = async () => {
   const [
     stakerCountBN,
-    getTotalStakedAmountBN,
+    totalStakedAmountBN,
     currentStakingEpoch,
   ] = await Promise.all([
     CONTRACT.STAKE_POOL.instance.getStakersCount(),
@@ -58,7 +181,7 @@ const updateGlobalStakingStats = async () => {
 
   ]);
   vm.stakingStats.global.stakerCount = stakerCountBN.toNumber();
-  vm.stakingStats.global.tvl = getTotalStakedAmountBN.toNumber();
+  vm.stakingStats.global.tvl = formatEther(totalStakedAmountBN);
   vm.stakingStats.global.apr = +(currentStakingEpoch.apr.toNumber() / 100);
   vm.stakingStats.global.releaseTimeDays = currentStakingEpoch.lockParts.toNumber() * currentStakingEpoch.lockPeriod.toNumber() / (24*3600);
 }
@@ -81,19 +204,30 @@ const boostrapApp = () => {
         apr: undefined,
         releaseTimeDays: undefined,
       },
-      mine: {
-        walletAddress: undefined,
-        fearBalance: undefined,
-        etherBalance: undefined,
+      user: {
         stakedAmount: undefined,
         rewardAmount: undefined,
         lockedAmount: undefined,
         unlockedAmount: undefined,
       },
     },
+    loading: {
+
+    },
+    wallet: {
+      address: null,
+      shortAddress: null,
+      fearBalance: null,
+      fearBalanceBN: null,
+      stakedAmountBN: null,
+      rewardAmountBN: null,
+      lockedAmountBN: null,
+      unlockedAmountBN: null,
+    },
     bootstrap: async () => {
       console.log(`bootstrap app`);
       window.ethers = ethers.ethers;
+      await connectMetamask();
       await Promise.all([
         updateGlobalStakingStats(),
       ]);
