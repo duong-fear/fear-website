@@ -413,9 +413,10 @@
                       <div class="absolute w-full h-full bg-gray-600 flex items-center justify-center z-10">
                         <div>
                           <!-- <div><span>Connect your wallet:</span></div> -->
-                          <button class="flex justify-center items-center bg-cyan-100 text-cyan-900 py-2 px-3 rounded-md" @click="connectMetamask">
+                          <button class="flex justify-center items-center bg-cyan-100 text-cyan-900 py-2 px-3 rounded-md select-none" @click="connectMetamask">
                             <img src="/images/metamask.svg" alt="" class="w-8 h-8 mr-2">
                             <span>Connect Wallet</span>
+                            <i x-html="createSpinner('ml-2 text-cyan-900')" :class="LOADING.CONNECT_WALLET ? 'auto' : 'hidden'"></i>
                           </button>
                         </div>
                       </div>

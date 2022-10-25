@@ -40,23 +40,32 @@ const RPC_PROVIDER = {
 
 // wallet connect functions
 const connectMetamask = async () => {
-  if(vm.wallet.address) return;
-  const metamaskProvider = _.get(window, 'web3.currentProvider');
-  if(!metamaskProvider) throw new Error("Metamask not avaiable");
-  const provider = new ethers.providers.Web3Provider(metamaskProvider);
-  const { name, chainId, } = await provider.getNetwork();
-  let accountList = await provider.listAccounts();
-  if(accountList.length == 0) {
-    await metamaskProvider.request({ method: 'eth_requestAccounts' });
+  vm.LOADING.CONNECT_WALLET = true;
+  try {
+    if(vm.wallet.address) return;
+    const metamaskProvider = _.get(window, 'web3.currentProvider');
+    if(!metamaskProvider) throw new Error("Metamask not avaiable");
+    const provider = new ethers.providers.Web3Provider(metamaskProvider);
+    const { name, chainId, } = await provider.getNetwork();
+    let accountList = await provider.listAccounts();
+    if(accountList.length == 0) {
+      await metamaskProvider.request({ method: 'eth_requestAccounts' });
+    }
+    const signer = provider.getSigner();
+    window.provider = provider;
+    window.signer = signer;
+    accountList = await provider.listAccounts();
+    const walletAddress = accountList.shift();
+    await updateBalances(walletAddress);
+    vm.wallet.address = walletAddress;
+    vm.wallet.shortAddress = `${walletAddress.substr(0, 6)}..${walletAddress.substr(-4)}`;
+  } catch (exception) {
+    console.error("connectMetamask error", exception);
+    // throw exception;
+    fearError(getExceptionDetails(exception));
+  } finally {
+    vm.LOADING.CONNECT_WALLET = false;
   }
-  const signer = provider.getSigner();
-  window.provider = provider;
-  window.signer = signer;
-  accountList = await provider.listAccounts();
-  const walletAddress = accountList.shift();
-  await updateBalances(walletAddress);
-  vm.wallet.address = walletAddress;
-  vm.wallet.shortAddress = `${walletAddress.substr(0, 6)}..${walletAddress.substr(-4)}`;
 }
 
 const updateBalances = async (_walletAddress) => {
@@ -120,9 +129,11 @@ const stakeFear = async ($event) => {
       updateGlobalStakingStats(),
       updateBalances(),
     ]);
+    fearSuccess(`${formatEther(amountBN)} FEAR staked`);
   } catch(exception) {
     console.error("stakeFear error", exception);
-    throw exception;
+    // throw exception;
+    fearError(getExceptionDetails(exception));
   }
   finally {
     vm.LOADING.STAKE = false;
@@ -144,6 +155,7 @@ const unstakeFear = async ($event) => {
     const amountBN = ethers.utils.parseEther(amount);
     await updateBalances();
     if(amountBN.gt(vm.wallet.stakedAmountBN)) throw new Error("Unstake amount greater than staked amount");
+    // const estGasLimit = await CONTRACT.STAKE_POOL.instance.estimateGas.unstake(amountBN);
     const tx = await CONTRACT.STAKE_POOL.instance.unstake(amountBN);
     console.log(`unstakeFear txHash`, tx.hash);
     await tx.wait();
@@ -151,9 +163,11 @@ const unstakeFear = async ($event) => {
       updateGlobalStakingStats(),
       updateBalances(),
     ]);
+    fearSuccess(`${formatEther(amountBN)} FEAR unstaked`);
   } catch (exception) {
     console.error("unstakeFear error", exception);
-    throw exception;
+    // throw exception;
+    fearError(getExceptionDetails(exception));
   } finally {
     vm.LOADING.UNSTAKE = false;
   }
@@ -171,9 +185,11 @@ const claimReward = async ($event) => {
       updateGlobalStakingStats(),
       updateBalances(),
     ]);
+    fearSuccess(`FEAR reward claimed`);
   } catch (exception) {
     console.error("claimReward error", exception);
-    throw exception;
+    // throw exception;
+    fearError(getExceptionDetails(exception));
   } finally {
     vm.LOADING.CLAIM = false;
   }
@@ -219,9 +235,11 @@ const instantUnstake = async ($event) => {
       updateGlobalStakingStats(),
       updateBalances(),
     ]);
+    fearSuccess(`${formatEther(amountBN)} FEAR unstaked`);
   } catch (exception) {
     console.error("instantUnstake error", exception);
-    throw exception;
+    // throw exception;
+    fearError(getExceptionDetails(exception));
   } finally {
     vm.LOADING.INSTANT_UNSTAKE = false;
   }
@@ -331,7 +349,7 @@ const boostrapApp = () => {
   vm.bootstrap();
 }
 
-const fearAsk = async (title, message, inputValidator, options) => {
+const fearAsk = async (title, message, inputValidator, options = {}) => {
   const { isConfirmed, value, } = await Swal.fire({
     title,
     input: 'text',
@@ -346,6 +364,34 @@ const fearAsk = async (title, message, inputValidator, options) => {
   return isConfirmed ? value : undefined;
 }
 
+const fearSuccess = async (message, options = {}) => {
+  await Swal.fire({
+    icon: 'success',
+    title: 'Done',
+    text: message,
+    confirmButtonText: 'Great 🎉',
+    ...options
+  });
+}
+
+const fearError = async (message, options = {}) => {
+  const msg = _.get(message, 'message') || message;
+  const stack = _.get(message, 'stack');
+  const code = _.get(message, 'code');
+  if(code === 4001) return; // metamask reject error
+  await Swal.fire({
+    icon: 'error',
+    title: typeof message === "string" ? 'Error' : msg,
+    text: msg,
+    showCancelButton: true,
+    showConfirmButton: false,
+    allowOutsideClick: false,
+    cancelButtonText: 'Dismiss',
+    html: stack ? `<pre class='text-left whitespace-normal'>${stack}</pre>`.trim() : undefined,
+    ...options
+  });
+}
+
 const formatTVL = tvlBN => {
   try {
     if(!(tvlBN instanceof ethers.BigNumber)) return 'n/a';
@@ -358,6 +404,14 @@ const formatTVL = tvlBN => {
     console.error(`formatTVL`, exception);
     return 'n/a';
   }
+}
+
+const getExceptionDetails = (ex) => {
+	const message = _.get(ex, "reason") || _.get(ex, "error.data.message") || _.get(ex, "error.message") || _.get(ex, "data.message") || _.get(ex, "message") || (typeof ex == "string" && ex) || (Object.hasOwn(ex, 'toString') ? ex.toString() : '<unknown exception>');
+	const stack = _.get(ex, "error.stack") || _.get(ex, "stack") || "<no stack>";
+  const code = _.get(ex, code);
+  return { message, stack, code, };
+	//.replace(/^execution reverted\: /i, '');
 }
 
 const createSpinner = (classes = 'text-white') => `
