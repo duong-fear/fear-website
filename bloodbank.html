@@ -364,8 +364,8 @@
           <!-- Start Products Details Area -->
           <div class="mt-8 bg-zinc-800 rounded-md mb-4 pt-2 pb-4" x-data="$store.vm">
             <!-- tab container -->
-            <div class="flex text-center w-full bg-gray-700 rounded-3xl items-center py-1 mt-2">
-              <div class="flex-1 mx-2 py-1 bg-red-400 rounded-2xl cursor-pointer">
+            <div class="flex text-center w-full bg-gray-700 rounded-lg items-center py-2 mt-2 px-2">
+              <div class="flex-1 py-2 bg-red-400 rounded-lg cursor-pointer">
                 <span>The Crypt</span>
               </div>
               <div class="flex-1 mx-2 py-1 rounded-lg cursor-not-allowed">
@@ -384,19 +384,19 @@
                   <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
                     <div>TVL ($FEAR)</div>
                     <div>
-                      <span x-text="_.get(stakingStats, 'global.tvl', 'n/a')"></span>
-                    </div>
-                  </div>
-                  <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
-                    <div>Total Stakers</div>
-                    <div>
-                      <span x-text="_.get(stakingStats, 'global.stakerCount', 'n/a')"></span>
+                      <b><span x-text="formatTVL(_.get(stakingStats, 'global.tvlBN'))"></span></b>
                     </div>
                   </div>
                   <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
                     <div>APR</div>
                     <div>
                       <span x-text="_.get(stakingStats, 'global.apr', 'n/a')+ '%'"></span>
+                    </div>
+                  </div>
+                  <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
+                    <div>Total Stakers</div>
+                    <div>
+                      <span x-text="_.get(stakingStats, 'global.stakerCount', 'n/a')"></span>
                     </div>
                   </div>
                   <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
@@ -410,7 +410,7 @@
                 <div class="bg-gray-600 rounded-xl mt-4 p-2">
                   <div class="relative">
                     <template x-if="!_.get(vm, 'wallet.address')">
-                      <div class="absolute w-full h-full bg-gray-600 flex items-center justify-center">
+                      <div class="absolute w-full h-full bg-gray-600 flex items-center justify-center z-10">
                         <div>
                           <!-- <div><span>Connect your wallet:</span></div> -->
                           <button class="flex justify-center items-center bg-cyan-100 text-cyan-900 py-2 px-3 rounded-md" @click="connectMetamask">
@@ -433,7 +433,11 @@
                           <span>Staked: <span x-text="formatEther(_.get(wallet, 'stakedAmountBN'))"></span> FEAR</span>
                         </div>
                         <div>
-                          <button class="rounded-lg bg-green-100 text-green-800 px-2 py-1 mt-2" @click="unstakeFear">Unstake</button>
+                          <button
+                            class="rounded-md bg-green-100 text-green-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40"
+                            @click="unstakeFear"
+                            :disabled="bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
+                          >Unstake</button>
                         </div>
                       </div>
                       <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
@@ -441,7 +445,11 @@
                           <span>Reward: <span x-text="formatEther(_.get(wallet, 'rewardAmountBN'))"></span> FEAR</span>
                         </div>
                         <div>
-                          <button class="rounded-lg bg-green-100 text-green-800 px-2 py-1 mt-2">Claim</button>
+                          <button
+                            class="rounded-md bg-green-100 text-green-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40"
+                            :disabled="bn(_.get(wallet, 'rewardAmountBN')).eq(ZeroBN)"
+                            @click="claimReward"
+                          >Claim</button>
                         </div>
                       </div>
                     </div>
@@ -452,7 +460,11 @@
                           <span>Locked: <span x-text="formatEther(_.get(wallet, 'lockedAmountBN'))"></span> FEAR</span>
                         </div>
                         <div>
-                          <button class="rounded-lg bg-red-100 text-red-800 px-2 py-1 mt-2" @click="instantUnstake">Instant Unstake</button>
+                          <button
+                            class="rounded-md bg-red-100 text-red-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40"
+                            @click="instantUnstake"
+                            :disabled="bn(_.get(wallet, 'lockedAmountBN')).eq(ZeroBN)"
+                          >Instant Unstake</button>
                         </div>
                       </div>
                       <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
@@ -460,7 +472,11 @@
                           <span>Unlocked: <span x-text="formatEther(_.get(wallet, 'unlockedAmountBN'))"></span> FEAR</span>
                         </div>
                         <div>
-                          <button class="rounded-lg bg-green-100 text-green-800 px-2 py-1 mt-2" @click="withdrawUnlockedFear">Withdraw</button>
+                          <button
+                            class="rounded-md bg-green-100 text-green-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40"
+                            @click="withdrawUnlockedFear"
+                            :disabled="bn(_.get(wallet, 'unlockedAmountBN')).eq(ZeroBN)"
+                          >Withdraw</button>
                         </div>
                       </div>
                     </div>
@@ -473,11 +489,11 @@
                 <!-- guide -->
                 <div class="bg-gray-600 rounded-xl mt-4 px-3 py-3">
                   <span><b class="text-cyan-400">Staking Rules</b>:</span>
-                  <ol class="list-decimal pl-8">
-                    <li>10% APY yeild</li>
-                    <li>Unstake anytime</li>
-                    <li>Unstaking period of 1 month (28 days) (25% of staked tokens will be released each week)</li>
-                    <li><b>Instant Unstake</b> to get half of staked amount </li>
+                  <ol class="pl-2">
+                    <li><i class="bx bx-badge-check text-red-200"></i> 10% APY yeild</li>
+                    <li><i class="bx bx-badge-check text-red-300"></i> Unstake anytime</li>
+                    <li><i class="bx bx-badge-check text-red-400"></i> Unstaking period of 1 month (28 days) (25% of staked tokens will be released each week)</li>
+                    <li><i class="bx bx-badge-check text-red-500"></i> <b>Instant Unstake</b> to get half of staked amount </li>
                   </ol>
 
                   <span><b class="text-cyan-400">Explanation</b>:</span>
@@ -683,6 +699,7 @@
           <script src="assets/js/jquery.min.js?v4"></script>
           <script src="assets/js/popper.min.js?v4"></script>
           <script src="assets/js/bootstrap.min.js?v4"></script>
+          <script src="js/sweetalert2@11.js"></script>
           <script src="assets/js/owl.carousel.min.js?v4"></script>
           <script src="assets/js/magnific-popup.min.js?v4"></script>
           <script src="assets/js/parallax.min.js?v4"></script>

@@ -18,6 +18,19 @@ const RPC_URL = {
 const formatEther = (amountBN) => (amountBN instanceof ethers.BigNumber) ? ethers.utils.formatEther(amountBN).replace(/\.0$/, '') : 'n/a';
 const parseEther = ethers.utils.parseEther;
 const ZeroBN = ethers.constants.Zero;
+const OneEtherBN = ethers.utils.parseEther("1");
+const OneFinneyBN = ethers.utils.parseUnits('1', 'finney');
+
+const bn = input => {
+  try {
+    if(input instanceof ethers.BigNumber) return input;
+    if(typeof input == 'number') return ethers.BigNumber.from(Number.parseInt(input));
+    if(typeof input == 'string') return ethers.utils.parseEther(input);
+  } catch(exception) {
+    console.error(`bn() invalid input`, input);
+  }
+  return ZeroBN;
+};
 
 const RPC_PROVIDER = {
   [BSC_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[BSC_CHAINID]),
@@ -40,7 +53,6 @@ const connectMetamask = async () => {
   window.provider = provider;
   window.signer = signer;
   accountList = await provider.listAccounts();
-  console.log(`accountList`, accountList, `chainId`, chainId);
   const walletAddress = accountList.shift();
   await updateBalances(walletAddress);
   vm.wallet.address = walletAddress;
@@ -69,8 +81,21 @@ const updateBalances = async (_walletAddress) => {
   vm.wallet.unlockedAmountBN = unlockedAmountBN;
 }
 
+const bnInputValidator = (input, max) => {
+  try {
+    const bnValue = ethers.utils.parseEther(input);
+    if(!bnValue.gt(ZeroBN)) return "Amount must greater than zero";
+    if(max && bnValue.gt(bn(max))) return `Amount excess maximum value (${formatEther(bn(max))})`;
+    return null;
+  } catch {
+    return input.trim() === '' ? "Please enter an amount" : "Invalid amount";
+  }
+}
+
 // stake + unstake function
-const stakeFear = async ($event, amount = '1') => {
+const stakeFear = async ($event) => {
+  const amount = await fearAsk("Stake FEAR", "Enter the amount you want to stake:", input => bnInputValidator(input, vm.wallet.fearBalanceBN), { inputValue: formatEther(vm.wallet.fearBalanceBN) });
+  if(!amount) return;
   const amountBN = ethers.utils.parseEther(amount);
   const walletAddress = vm.wallet.address;
   const [
@@ -97,7 +122,9 @@ const stakeFear = async ($event, amount = '1') => {
   ]);
 }
 
-const unstakeFear = async ($event, amount = '1') => {
+const unstakeFear = async ($event) => {
+  const amount = await fearAsk("Unstake FEAR", "Enter the amount you want to unstake:", input => bnInputValidator(input, vm.wallet.stakedAmountBN), { inputValue: formatEther(vm.wallet.stakedAmountBN) });
+  if(!amount) return;
   const amountBN = ethers.utils.parseEther(amount);
   await updateBalances();
   if(vm.wallet.stakedAmountBN.lt(amountBN)) throw new Error("Unstake amount greater than staked amount");
@@ -109,6 +136,10 @@ const unstakeFear = async ($event, amount = '1') => {
     updateGlobalStakingStats(),
     updateBalances(),
   ]);
+}
+
+const claimReward = async ($event) => {
+  alert("Not implemented");
 }
 
 // withdraw
@@ -126,7 +157,18 @@ const withdrawUnlockedFear = async ($event) => {
 }
 
 // instant unstake
-const instantUnstake = async ($event, amount = '3') => {
+const instantUnstake = async ($event) => {
+  const instantUnstakeFeePercentage = vm.stakingStats.global.instantUnstakeFeePercentage;
+  const amount = await fearAsk(
+    "⚠️ Instant Unstake",
+    null,
+    input => bnInputValidator(input, vm.wallet.lockedAmountBN),
+    {
+      inputValue: formatEther(vm.wallet.lockedAmountBN),
+      html: `Enter the amount you want to unstake:<br/><span class='text-red-400'>⛔️ You will only get ${100 - instantUnstakeFeePercentage}% of your unstake amount (the rest will be burned 🔥)</span>`,
+    },
+  );
+  if(!amount) return;
   const amountBN = ethers.utils.parseEther(amount);
   await updateBalances();
   if(vm.wallet.lockedAmountBN.eq(ZeroBN)) throw new Error("You have no locked token");
@@ -174,16 +216,18 @@ const updateGlobalStakingStats = async () => {
     stakerCountBN,
     totalStakedAmountBN,
     currentStakingEpoch,
+    instantUnstakeFeePercentageBN,
   ] = await Promise.all([
     CONTRACT.STAKE_POOL.instance.getStakersCount(),
     CONTRACT.STAKE_POOL.instance.getTotalStakedAmount(),
     CONTRACT.STAKE_POOL.instance.getCurrentStakingEpoch(),
-
+    CONTRACT.STAKE_POOL.instance.flashUnstakeFeePercentage(),
   ]);
   vm.stakingStats.global.stakerCount = stakerCountBN.toNumber();
-  vm.stakingStats.global.tvl = formatEther(totalStakedAmountBN);
+  vm.stakingStats.global.tvlBN = totalStakedAmountBN;
   vm.stakingStats.global.apr = +(currentStakingEpoch.apr.toNumber() / 100);
   vm.stakingStats.global.releaseTimeDays = currentStakingEpoch.lockParts.toNumber() * currentStakingEpoch.lockPeriod.toNumber() / (24*3600);
+  vm.stakingStats.global.instantUnstakeFeePercentage = instantUnstakeFeePercentageBN.toNumber() / 100;
 }
 
 
@@ -197,12 +241,13 @@ const boostrapApp = () => {
     stakingStats: {
       global: {
         // total value locked
-        tvl: undefined,
+        tvlBN: undefined,
         // number of stakers
         stakerCount: undefined,
         // annual percent yeild
         apr: undefined,
         releaseTimeDays: undefined,
+        instantUnstakeFeePercentage: null,
       },
       user: {
         stakedAmount: undefined,
@@ -225,7 +270,6 @@ const boostrapApp = () => {
       unlockedAmountBN: null,
     },
     bootstrap: async () => {
-      console.log(`bootstrap app`);
       window.ethers = ethers.ethers;
       await connectMetamask();
       await Promise.all([
@@ -235,4 +279,33 @@ const boostrapApp = () => {
   })
   window.vm = Alpine.store('vm');
   vm.bootstrap();
+}
+
+const fearAsk = async (title, message, inputValidator, options) => {
+  const { isConfirmed, value, } = await Swal.fire({
+    title,
+    input: 'text',
+    inputLabel: message,
+    inputValue: "",
+    showCancelButton: true,
+    confirmButtonText: "Confirm",
+    inputValidator: typeof inputValidator === 'function' ? inputValidator : () => false,
+    allowOutsideClick: false,
+    ...options,
+  });
+  return isConfirmed ? value : undefined;
+}
+
+const formatTVL = tvlBN => {
+  try {
+    if(!(tvlBN instanceof ethers.BigNumber)) return 'n/a';
+    const OneThousandEtherBN = ethers.utils.parseEther("1000");
+    const OneMillionEtherBN = ethers.utils.parseEther("1000000");
+    if(tvlBN.gte(OneMillionEtherBN)) return formatEther(tvlBN.div(1_000_000).div(OneFinneyBN).mul(OneFinneyBN)) + "M";
+    if(tvlBN.gte(OneThousandEtherBN)) return formatEther(tvlBN.div(1_000).div(OneFinneyBN).mul(OneFinneyBN)) + "K";
+    return formatEther(tvlBN.div(OneFinneyBN).mul(OneFinneyBN));
+  } catch(exception) {
+    console.error(`formatTVL`, exception);
+    return 'n/a';
+  }
 }
