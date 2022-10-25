@@ -434,10 +434,13 @@
                         </div>
                         <div>
                           <button
-                            class="rounded-md bg-green-100 text-green-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40"
+                            class="rounded-md bg-green-100 text-green-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
                             @click="unstakeFear"
                             :disabled="bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
-                          >Unstake</button>
+                          >
+                            <span>Unstake</span>
+                            <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.UNSTAKE ? 'auto' : 'hidden'"></i>
+                          </button>
                         </div>
                       </div>
                       <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
@@ -446,10 +449,13 @@
                         </div>
                         <div>
                           <button
-                            class="rounded-md bg-green-100 text-green-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40"
+                            class="rounded-md bg-green-100 text-green-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
                             :disabled="bn(_.get(wallet, 'rewardAmountBN')).eq(ZeroBN)"
                             @click="claimReward"
-                          >Claim</button>
+                          >
+                            <span>Claim</span>
+                            <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.CLAIM ? 'auto' : 'hidden'"></i>  
+                        </button>
                         </div>
                       </div>
                     </div>
@@ -461,10 +467,13 @@
                         </div>
                         <div>
                           <button
-                            class="rounded-md bg-red-100 text-red-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40"
+                            class="rounded-md bg-red-100 text-red-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
                             @click="instantUnstake"
                             :disabled="bn(_.get(wallet, 'lockedAmountBN')).eq(ZeroBN)"
-                          >Instant Unstake</button>
+                          >
+                            <span>Instant Unstake</span>
+                            <i x-html="createSpinner('ml-1 text-red-800')" :class="LOADING.INSTANT_UNSTAKE ? 'auto' : 'hidden'"></i> 
+                          </button>
                         </div>
                       </div>
                       <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
@@ -482,7 +491,10 @@
                     </div>
                     <!-- stake button -->
                     <div class="flex justify-center pt-3 pb-2">
-                      <button class="rounded-lg bg-green-300 text-green-900 px-3 py-2 shadow" @click="stakeFear">Stake $FEAR</button>
+                      <button class="rounded-lg bg-green-300 text-green-900 px-3 py-2 shadow flex items-center select-none" @click="stakeFear">
+                        <span>Stake $FEAR</span>
+                        <i x-html="createSpinner('ml-2 text-green-900')" :class="LOADING.STAKE ? 'auto' : 'hidden'"></i>
+                      </button>
                     </div>
                   </div>
                 </div>

@@ -1021,7 +1021,7 @@ letter-spacing: 5px;
   background-color: #262626 !important; /* bg-neutral-800 */
 }
 .swal2-container {
-  backdrop-filter: blur(0.25rem);
+  backdrop-filter: brightness(0.25);
 }
 .swal2-popup.swal2-modal {
   background-color: #44475a;

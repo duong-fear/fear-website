@@ -66,19 +66,22 @@ const updateBalances = async (_walletAddress) => {
     stakedAmountBN,
     rewardAmountBN,
     lockedAmountBN,
-    unlockedAmountBN
+    unlockedAmountBN,
+    stakePoolAllowanceBN,
   ] = await Promise.all([
     CONTRACT.FEAR_TOKEN.instance.balanceOf(walletAddress),
     CONTRACT.STAKE_POOL.instance.getMyStakeAmount({ from: walletAddress }),
     CONTRACT.STAKE_POOL.instance.getMyRewardAmount({ from: walletAddress }),
     CONTRACT.STAKE_POOL.instance.getMyLockedAmount({ from: walletAddress }),
     CONTRACT.STAKE_POOL.instance.getMyWithdrawableAmount({ from: walletAddress }),
+    CONTRACT.FEAR_TOKEN.instance.allowance(walletAddress, CONTRACT.STAKE_POOL.instance.address),
   ]);
   vm.wallet.fearBalanceBN = fearBalanceBN;
   vm.wallet.stakedAmountBN = stakedAmountBN;
   vm.wallet.rewardAmountBN = rewardAmountBN;
   vm.wallet.lockedAmountBN = lockedAmountBN;
   vm.wallet.unlockedAmountBN = unlockedAmountBN;
+  vm.wallet.stakePoolAllowanceBN = stakePoolAllowanceBN;
 }
 
 const bnInputValidator = (input, max) => {
@@ -94,62 +97,86 @@ const bnInputValidator = (input, max) => {
 
 // stake + unstake function
 const stakeFear = async ($event) => {
-  const amount = await fearAsk("Stake FEAR", "Enter the amount you want to stake:", input => bnInputValidator(input, vm.wallet.fearBalanceBN), { inputValue: formatEther(vm.wallet.fearBalanceBN) });
-  if(!amount) return;
-  const amountBN = ethers.utils.parseEther(amount);
-  const walletAddress = vm.wallet.address;
-  const [
-    allowanceBN,
-  ] = await Promise.all([
-    CONTRACT.FEAR_TOKEN.instance.allowance(walletAddress, CONTRACT.STAKE_POOL.instance.address),
-    await updateBalances(),
-  ]);
-  if(amountBN.gt(vm.wallet.fearBalanceBN)) {
-    throw new Error("Insufficient FEAR balance");
-  }
-  console.log(`allowanceBN`, formatEther(allowanceBN));
-  if(allowanceBN.lt(amountBN)) {
-    const tx = await CONTRACT.FEAR_TOKEN.instance.approve(CONTRACT.STAKE_POOL.instance.address, ethers.constants.MaxUint256);
+  vm.LOADING.STAKE = true;
+  try {
+    const amount = await fearAsk("Stake FEAR", "Enter the amount you want to stake:", input => bnInputValidator(input, vm.wallet.fearBalanceBN), { inputValue: formatEther(vm.wallet.fearBalanceBN) });
+    if(!amount) return;
+    const amountBN = ethers.utils.parseEther(amount);
+    await updateBalances();
+    const { fearBalanceBN, stakePoolAllowanceBN } = vm.wallet;
+    if(amountBN.gt(fearBalanceBN)) {
+      throw new Error(`Stake amount greater than your balance (${formatEther(fearBalanceBN)})`);
+    }
+    if(stakePoolAllowanceBN.lt(amountBN)) {
+      const tx = await CONTRACT.FEAR_TOKEN.instance.approve(CONTRACT.STAKE_POOL.instance.address, ethers.constants.MaxUint256);
+      console.log(`approving FEAR spend txHash`, tx.hash);
+      await tx.wait();
+    }
+    console.log('staking');
+    const tx = await CONTRACT.STAKE_POOL.instance.stake(amountBN);
     await tx.wait();
+    console.log('staked');
+    await Promise.all([
+      updateGlobalStakingStats(),
+      updateBalances(),
+    ]);
+  } catch(exception) {
+    console.error("stakeFear error", exception);
+    throw exception;
   }
-  console.log('staking');
-  const tx = await CONTRACT.STAKE_POOL.instance.stake(amountBN);
-  await tx.wait();
-  console.log('staked');
-  await Promise.all([
-    updateGlobalStakingStats(),
-    updateBalances(),
-  ]);
+  finally {
+    vm.LOADING.STAKE = false;
+  }
 }
 
 const unstakeFear = async ($event) => {
-  const amount = await fearAsk("Unstake FEAR", "Enter the amount you want to unstake:", input => bnInputValidator(input, vm.wallet.stakedAmountBN), { inputValue: formatEther(vm.wallet.stakedAmountBN) });
-  if(!amount) return;
-  const amountBN = ethers.utils.parseEther(amount);
-  await updateBalances();
-  if(vm.wallet.stakedAmountBN.lt(amountBN)) throw new Error("Unstake amount greater than staked amount");
-  console.log("unstaking");
-  const tx = await CONTRACT.STAKE_POOL.instance.unstake(amountBN);
-  await tx.wait();
-  console.log("unstaked");
-  await Promise.all([
-    updateGlobalStakingStats(),
-    updateBalances(),
-  ]);
+  vm.LOADING.UNSTAKE = true;
+  try {
+    const amount = await fearAsk(
+      "Unstake FEAR",
+      "Enter the amount you want to unstake:",
+      input => bnInputValidator(input, vm.wallet.stakedAmountBN),
+      {
+        inputValue: formatEther(vm.wallet.stakedAmountBN),
+      },
+    );
+    if(!amount) return;
+    const amountBN = ethers.utils.parseEther(amount);
+    await updateBalances();
+    if(amountBN.gt(vm.wallet.stakedAmountBN)) throw new Error("Unstake amount greater than staked amount");
+    const tx = await CONTRACT.STAKE_POOL.instance.unstake(amountBN);
+    console.log(`unstakeFear txHash`, tx.hash);
+    await tx.wait();
+    await Promise.all([
+      updateGlobalStakingStats(),
+      updateBalances(),
+    ]);
+  } catch (exception) {
+    console.error("unstakeFear error", exception);
+    throw exception;
+  } finally {
+    vm.LOADING.UNSTAKE = false;
+  }
 }
 
 const claimReward = async ($event) => {
-  await updateBalances();
-  if(vm.wallet.rewardAmountBN.eq(ZeroBN)) throw new Error("You have no reward to claim");
-  console.log("claim in progress");
-  const tx = await CONTRACT.STAKE_POOL.instance.claimReward();
-  console.log(`claimReward txHash`, tx.hash);
-  await tx.wait();
-  console.log("claim done");
-  await Promise.all([
-    updateGlobalStakingStats(),
-    updateBalances(),
-  ]);
+  vm.LOADING.CLAIM = true;
+  try {
+    await updateBalances();
+    if(vm.wallet.rewardAmountBN.eq(ZeroBN)) throw new Error("You have no reward to claim");
+    const tx = await CONTRACT.STAKE_POOL.instance.claimReward();
+    console.log(`claimReward txHash`, tx.hash);
+    await tx.wait();
+    await Promise.all([
+      updateGlobalStakingStats(),
+      updateBalances(),
+    ]);
+  } catch (exception) {
+    console.error("claimReward error", exception);
+    throw exception;
+  } finally {
+    vm.LOADING.CLAIM = false;
+  }
 }
 
 // withdraw
@@ -168,28 +195,36 @@ const withdrawUnlockedFear = async ($event) => {
 
 // instant unstake
 const instantUnstake = async ($event) => {
-  const instantUnstakeFeePercentage = vm.stakingStats.global.instantUnstakeFeePercentage;
-  const amount = await fearAsk(
-    "⚠️ Instant Unstake",
-    null,
-    input => bnInputValidator(input, vm.wallet.lockedAmountBN),
-    {
-      inputValue: formatEther(vm.wallet.lockedAmountBN),
-      html: `Enter the amount you want to unstake:<br/><span class='text-red-400'>⛔️ You will only get ${100 - instantUnstakeFeePercentage}% of your unstake amount (the rest will be burned 🔥)</span>`,
-    },
-  );
-  if(!amount) return;
-  const amountBN = ethers.utils.parseEther(amount);
-  await updateBalances();
-  if(vm.wallet.lockedAmountBN.eq(ZeroBN)) throw new Error("You have no locked token");
-  if(amountBN.gt(vm.wallet.lockedAmountBN)) throw new Error("Unstake amount greater than locked amount");
-  const tx = await CONTRACT.STAKE_POOL.instance.instantUnstake(amountBN);
-  await tx.wait();
-  console.log("instantUnstake done");
-  await Promise.all([
-    updateGlobalStakingStats(),
-    updateBalances(),
-  ]);
+  vm.LOADING.INSTANT_UNSTAKE = true;
+  try {
+    const instantUnstakeFeePercentage = vm.stakingStats.global.instantUnstakeFeePercentage;
+    const amount = await fearAsk(
+      "⚠️ Instant Unstake",
+      null,
+      input => bnInputValidator(input, vm.wallet.lockedAmountBN),
+      {
+        inputValue: formatEther(vm.wallet.lockedAmountBN),
+        html: `Enter the amount you want to unstake:<br/><span class='text-red-400'>⛔️ You will only get ${100 - instantUnstakeFeePercentage}% of your unstake amount (the rest will be burned 🔥)</span>`,
+      },
+    );
+    if(!amount) return;
+    const amountBN = ethers.utils.parseEther(amount);
+    await updateBalances();
+    if(vm.wallet.lockedAmountBN.eq(ZeroBN)) throw new Error("You have no locked token");
+    if(amountBN.gt(vm.wallet.lockedAmountBN)) throw new Error("Unstake amount greater than locked amount");
+    const tx = await CONTRACT.STAKE_POOL.instance.instantUnstake(amountBN);
+    console.log(`instantUnstake txHash`, tx.hash);
+    await tx.wait();
+    await Promise.all([
+      updateGlobalStakingStats(),
+      updateBalances(),
+    ]);
+  } catch (exception) {
+    console.error("instantUnstake error", exception);
+    throw exception;
+  } finally {
+    vm.LOADING.INSTANT_UNSTAKE = false;
+  }
 }
 
 const CONTRACT = {
@@ -266,18 +301,23 @@ const boostrapApp = () => {
         unlockedAmount: undefined,
       },
     },
-    loading: {
-
+    LOADING: {
+      CONNECT_WALLET: false,
+      STAKE: false,
+      UNSTAKE: false,
+      INSTANT_UNSTAKE: false,
+      CLAIM: false, // ... reward
+      WITHDRAW: false, // ... unlocked
     },
     wallet: {
       address: null,
       shortAddress: null,
-      fearBalance: null,
       fearBalanceBN: null,
       stakedAmountBN: null,
       rewardAmountBN: null,
       lockedAmountBN: null,
       unlockedAmountBN: null,
+      stakePoolAllowanceBN: null,
     },
     bootstrap: async () => {
       window.ethers = ethers.ethers;
@@ -319,3 +359,10 @@ const formatTVL = tvlBN => {
     return 'n/a';
   }
 }
+
+const createSpinner = (classes = 'text-white') => `
+<svg class="h-4 w-4 animate-spin ${classes}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+</svg>
+`.trim();
