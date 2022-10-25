@@ -378,7 +378,7 @@ const fearError = async (message, options = {}) => {
   const msg = _.get(message, 'message') || message;
   const stack = _.get(message, 'stack');
   const code = _.get(message, 'code');
-  if(code === 4001) return; // metamask reject error
+  if(code === 4001 || code === "ACTION_REJECTED") return; // metamask reject error
   await Swal.fire({
     icon: 'error',
     title: typeof message === "string" ? 'Error' : msg,
@@ -409,7 +409,7 @@ const formatTVL = tvlBN => {
 const getExceptionDetails = (ex) => {
 	const message = _.get(ex, "reason") || _.get(ex, "error.data.message") || _.get(ex, "error.message") || _.get(ex, "data.message") || _.get(ex, "message") || (typeof ex == "string" && ex) || (Object.hasOwn(ex, 'toString') ? ex.toString() : '<unknown exception>');
 	const stack = _.get(ex, "error.stack") || _.get(ex, "stack") || "<no stack>";
-  const code = _.get(ex, code);
+  const code = _.get(ex, "code");
   return { message, stack, code, };
 	//.replace(/^execution reverted\: /i, '');
 }
