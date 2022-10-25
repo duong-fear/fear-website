@@ -448,6 +448,25 @@ const FEAR_STAKE_POOL_ABI = [
   {
     anonymous: false,
     inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "caller",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "RewardClaimed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
       { indexed: true, internalType: "bytes32", name: "role", type: "bytes32" },
       {
         indexed: true,
@@ -509,6 +528,31 @@ const FEAR_STAKE_POOL_ABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: "address",
+        name: "caller",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "epochId",
+        type: "uint256",
+      },
+    ],
+    name: "Staked",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: "address",
         name: "account",
@@ -516,6 +560,76 @@ const FEAR_STAKE_POOL_ABI = [
       },
     ],
     name: "Unpaused",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "caller",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "reward",
+        type: "uint256",
+      },
+    ],
+    name: "Unstaked",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "caller",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "reward",
+        type: "uint256",
+      },
+      { indexed: false, internalType: "uint256", name: "fee", type: "uint256" },
+    ],
+    name: "UnstakedInstantly",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "caller",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "Withdrawn",
     type: "event",
   },
   {
@@ -568,7 +682,7 @@ const FEAR_STAKE_POOL_ABI = [
   },
   {
     inputs: [],
-    name: "claimUnlocked",
+    name: "claimReward",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -590,20 +704,6 @@ const FEAR_STAKE_POOL_ABI = [
     inputs: [],
     name: "fearContract",
     outputs: [{ internalType: "contract IERC20", name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
-    name: "flashUnstake",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "flashUnstakeFeePercentage",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
@@ -735,13 +835,6 @@ const FEAR_STAKE_POOL_ABI = [
   },
   {
     inputs: [],
-    name: "getMyClaimableAmount",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "getMyLockedAmount",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
@@ -757,6 +850,13 @@ const FEAR_STAKE_POOL_ABI = [
   {
     inputs: [],
     name: "getMyStakeAmount",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getMyWithdrawableAmount",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -791,13 +891,6 @@ const FEAR_STAKE_POOL_ABI = [
   },
   {
     inputs: [{ internalType: "address", name: "user", type: "address" }],
-    name: "getUserClaimableAmount",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "address", name: "user", type: "address" }],
     name: "getUserLockedAmount",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
@@ -813,6 +906,13 @@ const FEAR_STAKE_POOL_ABI = [
   {
     inputs: [{ internalType: "address", name: "user", type: "address" }],
     name: "getUserStakeAmount",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "user", type: "address" }],
+    name: "getUserWithdrawableAmount",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -834,6 +934,20 @@ const FEAR_STAKE_POOL_ABI = [
     ],
     name: "hasRole",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
+    name: "instantUnstake",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "instantUnstakeFeePercentage",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
@@ -883,7 +997,7 @@ const FEAR_STAKE_POOL_ABI = [
       { internalType: "uint256", name: "feePercentage", type: "uint256" },
       { internalType: "address", name: "feeReciever", type: "address" },
     ],
-    name: "setFlashUnstakeParams",
+    name: "setInstantUnstakeParams",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -912,6 +1026,13 @@ const FEAR_STAKE_POOL_ABI = [
   {
     inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
     name: "unstake",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "withdrawUnlocked",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

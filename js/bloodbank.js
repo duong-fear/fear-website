@@ -72,7 +72,7 @@ const updateBalances = async (_walletAddress) => {
     CONTRACT.STAKE_POOL.instance.getMyStakeAmount({ from: walletAddress }),
     CONTRACT.STAKE_POOL.instance.getMyRewardAmount({ from: walletAddress }),
     CONTRACT.STAKE_POOL.instance.getMyLockedAmount({ from: walletAddress }),
-    CONTRACT.STAKE_POOL.instance.getMyClaimableAmount({ from: walletAddress }),
+    CONTRACT.STAKE_POOL.instance.getMyWithdrawableAmount({ from: walletAddress }),
   ]);
   vm.wallet.fearBalanceBN = fearBalanceBN;
   vm.wallet.stakedAmountBN = stakedAmountBN;
@@ -139,7 +139,17 @@ const unstakeFear = async ($event) => {
 }
 
 const claimReward = async ($event) => {
-  alert("Not implemented");
+  await updateBalances();
+  if(vm.wallet.rewardAmountBN.eq(ZeroBN)) throw new Error("You have no reward to claim");
+  console.log("claim in progress");
+  const tx = await CONTRACT.STAKE_POOL.instance.claimReward();
+  console.log(`claimReward txHash`, tx.hash);
+  await tx.wait();
+  console.log("claim done");
+  await Promise.all([
+    updateGlobalStakingStats(),
+    updateBalances(),
+  ]);
 }
 
 // withdraw
@@ -147,7 +157,7 @@ const withdrawUnlockedFear = async ($event) => {
   await updateBalances();
   if(vm.wallet.unlockedAmountBN.eq(ZeroBN)) throw new Error("Nothing to withdraw");
   console.log("withdraw in progress");
-  const tx = await CONTRACT.STAKE_POOL.instance.claimUnlocked();
+  const tx = await CONTRACT.STAKE_POOL.instance.withdrawUnlocked();
   await tx.wait();
   console.log("withdraw-ed");
   await Promise.all([
@@ -173,7 +183,7 @@ const instantUnstake = async ($event) => {
   await updateBalances();
   if(vm.wallet.lockedAmountBN.eq(ZeroBN)) throw new Error("You have no locked token");
   if(amountBN.gt(vm.wallet.lockedAmountBN)) throw new Error("Unstake amount greater than locked amount");
-  const tx = await CONTRACT.STAKE_POOL.instance.flashUnstake(amountBN);
+  const tx = await CONTRACT.STAKE_POOL.instance.instantUnstake(amountBN);
   await tx.wait();
   console.log("instantUnstake done");
   await Promise.all([
@@ -199,7 +209,7 @@ const CONTRACT = {
   STAKE_POOL: {
     [BSC_CHAINID]: undefined,
     [POLYGON_CHAINID]: undefined,
-    [MUMBAI_CHAINID]: '0xE229da8F5619538D57d6D5970dbcd9A174B570ff',
+    [MUMBAI_CHAINID]: '0xcEDec5902C5491b1A50057FC30f8717AcF3052e4',
     ABI: FEAR_STAKE_POOL_ABI,
     get instance() {
       return new ethers.Contract(
@@ -221,7 +231,7 @@ const updateGlobalStakingStats = async () => {
     CONTRACT.STAKE_POOL.instance.getStakersCount(),
     CONTRACT.STAKE_POOL.instance.getTotalStakedAmount(),
     CONTRACT.STAKE_POOL.instance.getCurrentStakingEpoch(),
-    CONTRACT.STAKE_POOL.instance.flashUnstakeFeePercentage(),
+    CONTRACT.STAKE_POOL.instance.instantUnstakeFeePercentage(),
   ]);
   vm.stakingStats.global.stakerCount = stakerCountBN.toNumber();
   vm.stakingStats.global.tvlBN = totalStakedAmountBN;
