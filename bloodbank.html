@@ -400,7 +400,7 @@
                     </div>
                   </div>
                   <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
-                    <div>Release time</div>
+                    <div>Unstake Time</div>
                     <div>
                       <span x-text="_.get(stakingStats, 'global.releaseTimeDays', 'n/a')+ ' days'"></span>
                     </div>
@@ -424,16 +424,29 @@
                     <!-- connected wallet info -->
                     <template x-if="_.get(vm, 'wallet.shortAddress')">
                       <div class="flex justify-center items-center select-none font-mono mt-2">
-                        <span x-text="`${vm.wallet.shortAddress} connected / balance: ${formatEther(vm.wallet.fearBalanceBN || ZeroBN)} FEAR`"></span>
+                        <span x-text="`${vm.wallet.shortAddress} connected`"></span>
                       </div>
                     </template>
                     <!-- staked + reward -->
                     <div class="flex mt-3">
                       <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
                         <div>
-                          <span>Staked: <span x-text="formatEther(_.get(wallet, 'stakedAmountBN'))"></span> FEAR</span>
+                          <span>Balance: <span x-text="formatEther(_.get(wallet, 'fearBalanceBN'))"></span> FEAR</span>
                         </div>
                         <div>
+                          <button
+                            class="rounded-md bg-gray-100 text-gray-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
+                            :disabled="true"
+                          >
+                            <span>useless button</span>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
+                        <div>
+                          <span>Staked: <span x-text="formatEther(_.get(wallet, 'stakedAmountBN'))"></span> FEAR</span>
+                        </div>
+                        <div class="flex">
                           <button
                             class="rounded-md bg-green-100 text-green-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
                             @click="unstakeFear"
@@ -442,8 +455,20 @@
                             <span>Unstake</span>
                             <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.UNSTAKE ? 'auto' : 'hidden'"></i>
                           </button>
+                          &nbsp;
+                          <button
+                            class="rounded-md bg-red-100 text-red-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
+                            @click="instantUnstake"
+                            :disabled="bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
+                          >
+                            <span>Instant Unstake</span>
+                            <i x-html="createSpinner('ml-1 text-red-800')" :class="LOADING.INSTANT_UNSTAKE ? 'auto' : 'hidden'"></i> 
+                          </button>
                         </div>
                       </div>
+                    </div>
+                    <!-- locked + unlocked -->
+                    <div class="flex mt-3">
                       <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
                         <div>
                           <span>Reward: <span x-text="formatEther(_.get(wallet, 'rewardAmountBN'))"></span> FEAR</span>
@@ -459,26 +484,10 @@
                         </button>
                         </div>
                       </div>
-                    </div>
-                    <!-- locked + unlocked -->
-                    <div class="flex mt-3">
                       <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
                         <div>
                           <span>Locked: <span x-text="formatEther(_.get(wallet, 'lockedAmountBN'))"></span> FEAR</span>
-                        </div>
-                        <div>
-                          <button
-                            class="rounded-md bg-red-100 text-red-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
-                            @click="instantUnstake"
-                            :disabled="bn(_.get(wallet, 'lockedAmountBN')).eq(ZeroBN)"
-                          >
-                            <span>Instant Unstake</span>
-                            <i x-html="createSpinner('ml-1 text-red-800')" :class="LOADING.INSTANT_UNSTAKE ? 'auto' : 'hidden'"></i> 
-                          </button>
-                        </div>
-                      </div>
-                      <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
-                        <div>
+                          <span>/</span>
                           <span>Unlocked: <span x-text="formatEther(_.get(wallet, 'unlockedAmountBN'))"></span> FEAR</span>
                         </div>
                         <div>

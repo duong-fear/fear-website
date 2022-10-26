@@ -212,22 +212,22 @@ const withdrawUnlockedFear = async ($event) => {
 // instant unstake
 const instantUnstake = async ($event) => {
   vm.LOADING.INSTANT_UNSTAKE = true;
+  const { stakedAmountBN } = vm.wallet;
   try {
     const instantUnstakeFeePercentage = vm.stakingStats.global.instantUnstakeFeePercentage;
     const amount = await fearAsk(
       "⚠️ Instant Unstake",
       null,
-      input => bnInputValidator(input, vm.wallet.lockedAmountBN),
+      input => bnInputValidator(input, stakedAmountBN),
       {
-        inputValue: formatEther(vm.wallet.lockedAmountBN),
+        inputValue: formatEther(stakedAmountBN),
         html: `Enter the amount you want to unstake:<br/><span class='text-red-400'>⛔️ You will only get ${100 - instantUnstakeFeePercentage}% of your unstake amount (the rest will be burned 🔥)</span>`,
       },
     );
     if(!amount) return;
     const amountBN = ethers.utils.parseEther(amount);
     await updateBalances();
-    if(vm.wallet.lockedAmountBN.eq(ZeroBN)) throw new Error("You have no locked token");
-    if(amountBN.gt(vm.wallet.lockedAmountBN)) throw new Error("Unstake amount greater than locked amount");
+    if(amountBN.gt(stakedAmountBN)) throw new Error("Unstake amount greater than staked amount");
     const tx = await CONTRACT.STAKE_POOL.instance.instantUnstake(amountBN);
     console.log(`instantUnstake txHash`, tx.hash);
     await tx.wait();
@@ -262,7 +262,7 @@ const CONTRACT = {
   STAKE_POOL: {
     [BSC_CHAINID]: undefined,
     [POLYGON_CHAINID]: undefined,
-    [MUMBAI_CHAINID]: '0xcEDec5902C5491b1A50057FC30f8717AcF3052e4',
+    [MUMBAI_CHAINID]: '0x0C27ea4d7B5C9f0d6Ae2C164D182f22D3B41b242',
     ABI: FEAR_STAKE_POOL_ABI,
     get instance() {
       return new ethers.Contract(
@@ -339,7 +339,7 @@ const boostrapApp = () => {
     },
     bootstrap: async () => {
       window.ethers = ethers.ethers;
-      await connectMetamask();
+      // await connectMetamask();
       await Promise.all([
         updateGlobalStakingStats(),
       ]);
