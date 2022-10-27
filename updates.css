@@ -1045,3 +1045,7 @@ letter-spacing: 5px;
   background-color: #d1fae5 !important;
   color: #065f46 !important;
 }
+
+.font-horror {
+  font-family: 'Horror Memories', serif;
+}

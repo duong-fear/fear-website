@@ -362,9 +362,9 @@
         <div class="row align-items-center">
 
           <!-- Start Products Details Area -->
-          <div class="mt-8 bg-zinc-800 rounded-md mb-4 pt-2 pb-4" x-data="$store.vm">
+          <div class="mt-8 rounded-md mb-4 pt-2 pb-4" x-data="$store.vm">
             <!-- tab container -->
-            <div class="flex text-center w-full bg-gray-700 rounded-lg items-center py-2 mt-2 px-2">
+            <div class="flex text-center w-full bg-gray-700 rounded-lg items-center py-2 mt-2 px-2 font-horror">
               <div class="flex-1 py-2 bg-red-400 rounded-lg cursor-pointer">
                 <span>The Crypt</span>
               </div>
@@ -434,7 +434,7 @@
                           <span>Balance: <span x-text="formatEther(_.get(wallet, 'fearBalanceBN'))"></span> FEAR</span>
                         </div>
                         <div>
-                          <button class="rounded-lg bg-green-300 text-green-900 px-3 py-2 mt-2 shadow flex items-center select-none" @click="stakeFear">
+                          <button class="rounded-lg bg-green-300 text-green-900 px-3 py-2 mt-2 flex items-center select-none" @click="stakeFear">
                             <span>Stake $FEAR</span>
                             <i x-html="createSpinner('ml-2 text-green-900')" :class="LOADING.STAKE ? 'auto' : 'hidden'"></i>
                           </button>
