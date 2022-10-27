@@ -235,7 +235,7 @@ const instantUnstake = async ($event) => {
       updateGlobalStakingStats(),
       updateBalances(),
     ]);
-    fearSuccess(`${formatEther(amountBN)} FEAR unstaked`);
+    fearSuccess(`${formatEther(amountBN.div(2))} FEAR unstaked & ${ formatEther(amountBN.sub(amountBN.div(2))) } FEAR burnt`);
   } catch (exception) {
     console.error("instantUnstake error", exception);
     // throw exception;

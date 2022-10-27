@@ -381,25 +381,25 @@
               <div>
                 <!-- staking global stats -->
                 <div class="flex w-full mt-4">
-                  <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
+                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-3 py-4">
                     <div>TVL ($FEAR)</div>
                     <div>
                       <b><span x-text="formatTVL(_.get(stakingStats, 'global.tvlBN'))"></span></b>
                     </div>
                   </div>
-                  <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
+                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-3 py-4">
                     <div>APR</div>
                     <div>
                       <span x-text="_.get(stakingStats, 'global.apr', 'n/a')+ '%'"></span>
                     </div>
                   </div>
-                  <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
+                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-3 py-4">
                     <div>Total Stakers</div>
                     <div>
                       <span x-text="_.get(stakingStats, 'global.stakerCount', 'n/a')"></span>
                     </div>
                   </div>
-                  <div class="flex-1 text-center text-gray-100 rounded-xl bg-gray-600 mx-3 py-4">
+                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-3 py-4">
                     <div>Unstake Time</div>
                     <div>
                       <span x-text="_.get(stakingStats, 'global.releaseTimeDays', 'n/a')+ ' days'"></span>
@@ -407,7 +407,7 @@
                   </div>
                 </div>
                 <!-- staking stats by user -->
-                <div class="bg-gray-600 rounded-xl mt-4 p-2">
+                <div class="bg-gray-600 rounded-xl mt-4 p-2 pb-3">
                   <div class="relative">
                     <template x-if="!_.get(vm, 'wallet.address')">
                       <div class="absolute w-full h-full bg-gray-600 flex items-center justify-center z-10">
@@ -434,11 +434,9 @@
                           <span>Balance: <span x-text="formatEther(_.get(wallet, 'fearBalanceBN'))"></span> FEAR</span>
                         </div>
                         <div>
-                          <button
-                            class="rounded-md bg-gray-100 text-gray-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
-                            :disabled="true"
-                          >
-                            <span>useless button</span>
+                          <button class="rounded-lg bg-green-300 text-green-900 px-3 py-2 mt-2 shadow flex items-center select-none" @click="stakeFear">
+                            <span>Stake $FEAR</span>
+                            <i x-html="createSpinner('ml-2 text-green-900')" :class="LOADING.STAKE ? 'auto' : 'hidden'"></i>
                           </button>
                         </div>
                       </div>
@@ -448,7 +446,7 @@
                         </div>
                         <div class="flex">
                           <button
-                            class="rounded-md bg-green-100 text-green-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
+                            class="rounded-md bg-green-100 text-green-800 px-3 py-2 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
                             @click="unstakeFear"
                             :disabled="bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
                           >
@@ -457,7 +455,7 @@
                           </button>
                           &nbsp;
                           <button
-                            class="rounded-md bg-red-100 text-red-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
+                            class="rounded-md bg-red-100 text-red-800 px-3 py-2 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
                             @click="instantUnstake"
                             :disabled="bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
                           >
@@ -467,7 +465,7 @@
                         </div>
                       </div>
                     </div>
-                    <!-- locked + unlocked -->
+                    <!-- reward + unlocked -->
                     <div class="flex mt-3">
                       <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
                         <div>
@@ -475,7 +473,7 @@
                         </div>
                         <div>
                           <button
-                            class="rounded-md bg-green-100 text-green-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
+                            class="rounded-md bg-green-100 text-green-800 px-3 py-2 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
                             :disabled="bn(_.get(wallet, 'rewardAmountBN')).eq(ZeroBN)"
                             @click="claimReward"
                           >
@@ -492,7 +490,7 @@
                         </div>
                         <div>
                           <button
-                            class="rounded-md bg-green-100 text-green-800 px-2 py-1 mt-2 disabled:cursor-not-allowed disabled:opacity-40"
+                            class="rounded-md bg-green-100 text-green-800 px-3 py-2 mt-2 disabled:cursor-not-allowed disabled:opacity-40"
                             @click="withdrawUnlockedFear"
                             :disabled="bn(_.get(wallet, 'unlockedAmountBN')).eq(ZeroBN)"
                           >Withdraw</button>
@@ -500,12 +498,12 @@
                       </div>
                     </div>
                     <!-- stake button -->
-                    <div class="flex justify-center pt-3 pb-2">
+                    <!-- <div class="flex justify-center pt-3 pb-2">
                       <button class="rounded-lg bg-green-300 text-green-900 px-3 py-2 shadow flex items-center select-none" @click="stakeFear">
                         <span>Stake $FEAR</span>
                         <i x-html="createSpinner('ml-2 text-green-900')" :class="LOADING.STAKE ? 'auto' : 'hidden'"></i>
                       </button>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <!-- guide -->
