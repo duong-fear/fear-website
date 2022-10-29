@@ -248,6 +248,14 @@
                         <h2 style="font-family:Horror Memories;text-align:center;color:white;margin-bottom:50px">FEAR TOKEN</h2>
                     </div>
                 </div>
+                <div class="row" style="margin-top:30px;margin-bottom:60px;">
+                    <div class="col-md-12" style="text-align: center;">
+                        <font style="color:red">Max Supply:</font> 65,000,000
+                        <font style="color:red;margin-left:20px;">Circ Supply:</font> <span id="circ-supply"></span> 
+                        <font style="color:red;margin-left:20px;">Price:</font> <span id="price"></span>
+                        <font style="color:red;margin-left:20px;">Market Cap:</font> <span id="market-cap"></span>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="blog-details-desc">
@@ -351,19 +359,6 @@
 					<h2 style="font-family:Horror Memories;text-align:center;color:white;margin-bottom:20px">TOKEN DISTRIBUTION</h2>
 				</div>
 			</div>
-            <div class="row" style="margin-top:30px;">
-				<div class="col-md-2"></div>
-                <div class="col-md-8" style="text-align: center;">
-					<div class="blog-details-desc">
-						<div class="article-content">
-							<font style="color:red">Max Supply:</font> 65,000,000
-							<font style="color:red;margin-left:20px;">Circ Supply:</font> <span id="circ-supply"></span> 
-							<font style="color:red;margin-left:20px;">Price:</font> <span id="price"></span>
-						</div>
-					</div>
-				</div>
-                <div class="col-md-2"></div>
-			</div>
             <div class="row" style="margin-top:50px;">
 				<div class="col-md-2">
 				</div>
@@ -380,17 +375,11 @@
 			</div>
             <div class="row" style="margin-top:30px;">
 				<div class="row" style="margin-top:30px;">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8" style="text-align: center;">
-                        <div class="blog-details-desc">
-                            <div class="article-content">
-                                <font style="color:red">TGE:</font> 25th MAY 2021<br/>
-                                <font style="color:red;margin-left:20px;">Private/Seed End Date:</font> 25th NOV 2022<br/> 
-                                <font style="color:red;margin-left:20px;">Release End Date:</font> 25th JULY 2023 (Month 26)
-                            </div>
-                        </div>
+                    <div class="col-md-12" style="text-align: center;">
+                        <font style="color:red">TGE:</font> 25th MAY 2021<br/>
+                        <font style="color:red;margin-left:20px;">Private/Seed End Date:</font> 25th NOV 2022<br/> 
+                        <font style="color:red;margin-left:20px;">Release End Date:</font> 25th JULY 2023 (Month 26)        
                     </div>
-                    <div class="col-md-2"></div>
                 </div>
 			</div>
             <div class="row" style="margin-top:50px;">
@@ -668,13 +657,35 @@ async></script>
     
     const circSupplyUrl = "https://api.fear.io/api/circulatingsupply";
     const priceUrl = "https://api.fear.io/api/cp";
+    var circSupply = 0;
+    var price = 0;
     
+    var fetched = false;
+    
+    function calcMc(){
+        $("#market-cap").text("$" + (circSupply * price).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    }
+
     $.get(circSupplyUrl, function(data, status) {
+        circSupply = data;
         $("#circ-supply").text(data.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    
+        if (fetched){
+            calcMc();
+        }
+
+        fetched = true;
     });
     
     $.get(priceUrl, function(data, status) {
-        $("#price").text(data.toFixed(5));
+        price = data;
+        $("#price").text("$" + data.toFixed(5));
+        
+        if (fetched){
+            calcMc();
+        }
+
+        fetched = true;
     });
 
     function handleCopy(e, address){
