@@ -82,8 +82,10 @@ const RPC_PROVIDER = {
 }
 
 const switchToNetwork = async (chainId) => {
-  const provider = vm.network.provider;
+  const web3Provider = new ethers.providers.Web3Provider(window.web3ModalInstance);
+  const { provider } = web3Provider;
   try {
+    vm.LOADING.SWITCH_NETWORK = true;
     await provider.request({
       method: "wallet_switchEthereumChain",
       params: [
@@ -94,19 +96,18 @@ const switchToNetwork = async (chainId) => {
     });
   } catch (e) {
     let network = CHAINS.find((c) => +c.chainId == +chainId);
-    const params = [
-      {
-        chainId: network.chainId,
-        chainName: network.name,
-        nativeCurrency: network.nativeCurrency,
-        rpcUrls: [network.rpc],
-        blockExplorerUrls: [network.blockExplorer],
-      },
-    ];
     if (e.code === 4902) {
       await provider.request({
         method: "wallet_addEthereumChain",
-        params,
+        params: [
+          {
+            chainId: network.chainId,
+            chainName: network.name,
+            nativeCurrency: network.nativeCurrency,
+            rpcUrls: [network.rpc],
+            blockExplorerUrls: [network.blockExplorer],
+          },
+        ],
       });
       await provider.request({
         method: "wallet_switchEthereumChain",
@@ -119,51 +120,74 @@ const switchToNetwork = async (chainId) => {
       return;
     }
     throw e;
+  } finally {
+    vm.LOADING.SWITCH_NETWORK = false;
   }
 };
 
 // execute on connected to supported network 
 const connectAccount = async (web3Provider) => {
-  let accountList = await web3Provider.listAccounts();
-  if(accountList.length == 0) {
-    await web3Provider.provider.request({ method: 'eth_requestAccounts' });
+  try {
+    vm.LOADING.CONNECT_WALLET = true;
+    let accountList = await web3Provider.listAccounts();
+    if(accountList.length == 0) {
+      await web3Provider.provider.request({ method: 'eth_requestAccounts' });
+    }
+    accountList = await web3Provider.listAccounts();
+    const walletAddress = accountList.shift();
+    await updateBalances(walletAddress);
+    vm.wallet.address = walletAddress;
+    vm.wallet.shortAddress = `${walletAddress.substr(0, 6)}..${walletAddress.substr(-4)}`;
+    window.provider = web3Provider;
+    window.signer = web3Provider.getSigner();
+    web3Provider.provider.on("accountsChanged", (params) => {
+      console.info("accountsChanged", params);
+      reloadPage();
+    });
+    web3Provider.provider.on("chainChanged", async (chainIdHex) => {
+      console.info("chainId", +chainIdHex);
+      reloadPage();
+    });
   }
-  web3Provider.provider.on("accountsChanged", (params) => {
-    console.info("metamask accountsChanged", params);
-    reloadPage();
-  });
-  const signer = web3Provider.getSigner();
-  window.provider = web3Provider;
-  window.signer = signer;
-  accountList = await web3Provider.listAccounts();
-  const walletAddress = accountList.shift();
-  await updateBalances(walletAddress);
-  vm.wallet.address = walletAddress;
-  vm.wallet.shortAddress = `${walletAddress.substr(0, 6)}..${walletAddress.substr(-4)}`;
+  finally {
+    vm.LOADING.CONNECT_WALLET = false;
+  }
 }
+
 // wallet connect functions
 const connectMetamask = async () => {
   vm.LOADING.CONNECT_WALLET = true;
   try {
-    if(vm.wallet.address) return;
-    const metamaskProvider = _.get(window, 'web3.currentProvider');
-    if(!metamaskProvider) throw new Error("Metamask not avaiable");
-    const web3Provider = new ethers.providers.Web3Provider(metamaskProvider);
+    const Web3Modal = window.Web3Modal.default;
+    const WalletConnectProvider = window.WalletConnectProvider.default;
+    const providerOptions = {
+      walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+          infuraId: "9aa3d95b3bc440fa88ea12eaa4456161",
+        }
+      },
+    };
+    const web3Modal = new Web3Modal({
+      cacheProvider: false,
+      providerOptions,
+      disableInjectedProvider: false,
+    });
+    const web3ModalInstance = await web3Modal.connect();
+    window.web3ModalInstance = web3ModalInstance;
+    const web3Provider = new ethers.providers.Web3Provider(web3ModalInstance);
     const { chainId } = await web3Provider.getNetwork();
     vm.network.chainId = +chainId;
-    vm.network.provider = metamaskProvider;
-    metamaskProvider.on("chainChanged", async (chainIdHex) => {
-      console.info(`chainChanged`, +chainIdHex);
+    if(SUPPORTED_CHAINS.includes(chainId)) {
+      return await connectAccount(web3Provider);
+    }
+    web3Provider.provider.on("chainChanged", async (chainIdHex) => {
       const chainId = +chainIdHex;
-      if(vm.wallet.address) {
-        return reloadPage();
-      } else {
-        vm.network.chainId = chainId;
-      }
-      await connectAccount(new ethers.providers.Web3Provider(metamaskProvider));
+      console.info(`chainChanged`, chainId);
+      vm.network.chainId = chainId;
+      if(!SUPPORTED_CHAINS.includes(chainId)) return;
+      await connectAccount(new ethers.providers.Web3Provider(web3ModalInstance));
     });
-    if(!SUPPORTED_CHAINS.includes(chainId)) return;
-    await connectAccount(web3Provider);
   } catch (exception) {
     console.error("connectMetamask error", exception);
     // throw exception;
@@ -429,6 +453,7 @@ const boostrapApp = () => {
       },
     },
     LOADING: {
+      SWITCH_NETWORK: false,
       CONNECT_WALLET: false,
       STAKE: false,
       UNSTAKE: false,

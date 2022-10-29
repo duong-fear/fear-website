@@ -1049,3 +1049,6 @@ letter-spacing: 5px;
 .font-horror {
   font-family: 'Horror Memories', serif;
 }
+.web3modal-modal-lightbox {
+  z-index: 20 !important;
+}
