@@ -351,6 +351,19 @@
 					<h2 style="font-family:Horror Memories;text-align:center;color:white;margin-bottom:20px">TOKEN DISTRIBUTION</h2>
 				</div>
 			</div>
+            <div class="row" style="margin-top:30px;">
+				<div class="col-md-2"></div>
+                <div class="col-md-8" style="text-align: center;">
+					<div class="blog-details-desc">
+						<div class="article-content">
+							<font style="color:red">Max Supply:</font> 65,000,000
+							<font style="color:red;margin-left:20px;">Circ Supply:</font> <span id="circ-supply"></span> 
+							<font style="color:red;margin-left:20px;">Price:</font> <span id="price"></span>
+						</div>
+					</div>
+				</div>
+                <div class="col-md-2"></div>
+			</div>
             <div class="row" style="margin-top:50px;">
 				<div class="col-md-2">
 				</div>
@@ -366,26 +379,19 @@
 				</div>
 			</div>
             <div class="row" style="margin-top:30px;">
-				<div class="col-md-12">
-					<div class="blog-details-desc">
-						<div class="article-content">
-							<ul class="features-list">
-								<li>
-									<i class='bx bx-badge-check'></i>
-									<font style="color:red">TGE:</font> 25th MAY 2021
-								</li>
-                                <li>
-									<i class='bx bx-badge-check'></i>
-									<font style="color:red">Private/Seed Vesting End Date:</font> 25th NOV 2022
-								</li>
-                                <li>
-									<i class='bx bx-badge-check'></i>
-									<font style="color:red">Token Release End Date:</font> 25th JULY 2023 (Month 26)
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
+				<div class="row" style="margin-top:30px;">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8" style="text-align: center;">
+                        <div class="blog-details-desc">
+                            <div class="article-content">
+                                <font style="color:red">TGE:</font> 25th MAY 2021<br/>
+                                <font style="color:red;margin-left:20px;">Private/Seed End Date:</font> 25th NOV 2022<br/> 
+                                <font style="color:red;margin-left:20px;">Release End Date:</font> 25th JULY 2023 (Month 26)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
 			</div>
             <div class="row" style="margin-top:50px;">
 				<div class="col-md-12">
@@ -399,15 +405,15 @@
 			</div>
 			<div class="row" style="margin-top:50px;">
                 <div class="col-md-12" style="text-align:center">
-					<p><font style="color:red;">ETH</font>: 0x88a9a52f944315d5b4e917b9689e65445c401e83
+					<p><font style="color:red;">ETH</font>: 0x88a9a52f944315d5b4e917b9689e65445c401e83<img src="images/copy-svgrepo-com.svg" style="margin-left:5px;" id="eth-address-copy" class="copy-address"/>
 </p>
-<p><font style="color:red;">POLYGON</font>: 0xa2CA40DBe72028D3Ac78B5250a8CB8c404e7Fb8C
-</p>
-<p>
-    <font style="color:red;">BSC</font>: 0x9ba6a67a6f3b21705a46b380a1b97373a33da311
+<p><font style="color:red;">POLYGON</font>: 0xa2CA40DBe72028D3Ac78B5250a8CB8c404e7Fb8C<img src="images/copy-svgrepo-com.svg" style="margin-left:5px;" id="polygon-address-copy"  class="copy-address"/>
 </p>
 <p>
-    <font style="color:red;">FTM</font>: 0x14418C22165553251B002b289F8AbE4D1Ed41d76
+    <font style="color:red;">BSC</font>: 0x9ba6a67a6f3b21705a46b380a1b97373a33da311<img src="images/copy-svgrepo-com.svg" style="margin-left:5px;" id="bsc-address-copy"  class="copy-address"/>
+</p>
+<p>
+    <font style="color:red;">FTM</font>: 0x14418C22165553251B002b289F8AbE4D1Ed41d76<img src="images/copy-svgrepo-com.svg" style="margin-left:5px;" id="ftm-address-copy"  class="copy-address"/>
 </p>			</div>
 			</div>
             <div class="row" style="margin-top:70px;">
@@ -613,15 +619,18 @@ var sc_remove_link=1;
 src="https://www.statcounter.com/counter/counter.js"
 async></script>
 
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery-3.6.1.min.js"></script>
+
 <script>
 	const tokenomics = [
-		['Seed Round', 3.25, '#240d0d'],
-		['Private Round', 17.5, '#3c0100'],
-		['Liquidity', 15, '#810806'],
-		['Ecosystem Incentives', 24.25, '#a00b09'],
-		['Team', 20, '#be100d'],
-		['Partners & Advisors', 5, '#e4221e'],
-		['Marketing', 15, '#ff4c49']
+		[' - 2,112,500 - Seed Round', 3.25, '#240d0d'],
+		['- 11,375,000 - Private Round', 17.5, '#3c0100'],
+		['- 9,750,000 - Liquidity', 15, '#810806'],
+		['- 15,762,500 - Ecosystem Incentives', 24.25, '#a00b09'],
+		['- 13,000,000 - Team', 20, '#be100d'],
+		['- 3,250,000 - Partners & Advisors', 5, '#e4221e'],
+		['- 9,750,000 - Marketing', 15, '#ff4c49']
 	];
 	const columns = tokenomics.map(_ => [
 		`${_[1].toFixed(2).padStart(5, ' ')}% ${_[0]}`, // U+2003 from https://emptycharacter.com/, for spacing purpose xD
@@ -656,6 +665,28 @@ async></script>
 			}
 		}
 	});
+    
+    const circSupplyUrl = "https://api.fear.io/api/circulatingsupply";
+    const priceUrl = "https://api.fear.io/api/cp";
+    
+    $.get(circSupplyUrl, function(data, status) {
+        $("#circ-supply").text(data.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+    });
+    
+    $.get(priceUrl, function(data, status) {
+        $("#price").text(data.toFixed(5));
+    });
+
+    function handleCopy(e, address){
+        navigator.clipboard.writeText(address);
+        $(".copy-address").attr("src", "images/copy-svgrepo-com.svg");
+        $(e.target).attr("src", "images/circle-tick-svgrepo-com.svg");
+    }
+
+    $("#eth-address-copy").click(function(e){ handleCopy(e, "0x88a9a52f944315d5b4e917b9689e65445c401e83"); });    
+    $("#polygon-address-copy").click(function(e){ handleCopy(e, "0xa2CA40DBe72028D3Ac78B5250a8CB8c404e7Fb8C"); });
+    $("#bsc-address-copy").click(function(e){ handleCopy(e, "0x9ba6a67a6f3b21705a46b380a1b97373a33da311"); });
+    $("#ftm-address-copy").click(function(e){ handleCopy(e, "0x14418C22165553251B002b289F8AbE4D1Ed41d76"); });
 </script>
 
 <noscript><div class="statcounter"><img class="statcounter"
