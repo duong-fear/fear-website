@@ -19,6 +19,11 @@
   src: url("https://www.fear.io/fonts/wolfsbane2.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "The Macabre";
+  src: url("https://www.fear.io/fonts/the-macabre.otf") format("truetype");
+}
+
 
 .wolfred {color:#ae303a;}
 #header {border-bottom:none;}
@@ -123,7 +128,7 @@
 .cluckinghellpage .page-title-content h1, .cluckinghellpage h3 {font-family:Carter One;}
 .products-details-tabs .nav {min-height:70px;}
 .page-title-content h1 {color:red;}
-.page-title-content h1 {font-size:50px;font-family:Horror Memories;font-weight:normal;}
+.page-title-content h1 {font-size:50px;font-family:The Macabre;font-weight:normal;}
 .blog h1 {font-size:30pt;}
 .subpage h3 {color:white;font-size:24pt;}
 .products-add-to-cart {margin-bottom:30px;}
@@ -134,17 +139,17 @@
 .cluckinghellpage .page-title-bg1 {background: url(images/backgrounds/clucking-hell-2.jpg) center no-repeat;}
 .subpage h2, .subpage h3, .single-products-item h3 a {text-transform:capitalize;font-family:DM Sans;font-size:15pt;}
 .single-products-item h3 a {letter-spacing:3px;}
-a#description-tab {font-family:Horror Memories;font-size:20pt;}
+a#description-tab {font-family:The Macabre;font-size:20pt;}
 .cluckinghellpage h2, .cluckinghellpage h3, .cluckinghellpage a#description-tab {font-family:carter one;}
-.moregames h2, .moregames h3  {font-family:Horror Memories ! important;letter-spacing:2px ! important;}
+.moregames h2, .moregames h3  {font-family:The Macabre ! important;letter-spacing:2px ! important;}
 .cluckinghellpage h2, .subpage h2 {color:red;font-size:17pt;}
 .cluckinghellpage h2 {font-size:26pt;}
 .cluckinghellpage .tab-pane h3 {font-size:16pt;}
 .frostbitepage h2 {color:#70ccd5;}
 .products-details-desc ul li {font-size:15px;color:#c2bcc6;}
 .moregames .single-products-item h3 a {font-family:DM Sans;letter-spacing:1px;}
-.moregames .section-title h2 {font-size:20pt;font-family:Horror Memories ! important;}
-.section-title h2 {font-family:Horror Memories;}
+.moregames .section-title h2 {font-size:20pt;font-family:The Macabre ! important;}
+.section-title h2 {font-family:The Macabre;}
 .central {width:100%;text-align:center;}
 .central2 {text-align:center;width:auto;margin:0 auto;}
 .cluckinghellpage .products-details-desc .products-add-to-cart .default-btn {padding:10px 0;margin-right:10px;}
@@ -242,7 +247,7 @@ background-position:0px 10px;
 .aboutuspage .dropdown-menu li.team-link a
 {color:red ! important;background-image:url(images/blood-bullet.svg);background-size:40px;padding-left:35px ! important;background-repeat:no-repeat;}
 
-.frostbitepage .products-details-tabs .nav .nav-item .nav-link:hover, .frostbitepage .products-details-tabs .nav .nav-item .nav-link.active {color:#70ccd5;font-family:Horror Memories;}
+.frostbitepage .products-details-tabs .nav .nav-item .nav-link:hover, .frostbitepage .products-details-tabs .nav .nav-item .nav-link.active {color:#70ccd5;font-family:The Macabre;}
 .frostbitepage .products-details-tabs .nav .nav-item .nav-link:hover::before, .frostbitepage .products-details-tabs .nav .nav-item .nav-link.active::before {border-bottom:2px solid white ! important;}
 .tab-pane h3 {margin-bottom:20px ! important;}
 .moregames h2 {color:red ! important;}
@@ -267,7 +272,7 @@ background-position:0px 10px;
 .frostbitelink:hover {color:#70ccd5 ! important;background:#fff ! important;}
 .frostbiteitem h3 a:hover {color:#70ccd5;}
 
-.youtuberlinks a {display:inline-block;font-family:Horror Memories;font-size:11pt;color:white ! important;text-decoration:none;background:black;padding:2px 5px;border:2px solid red;border-radius:5px;margin-right:5px;}
+.youtuberlinks a {display:inline-block;font-family:The Macabre;font-size:11pt;color:white ! important;text-decoration:none;background:black;padding:2px 5px;border:2px solid red;border-radius:5px;margin-right:5px;}
 .youtuberlinks a:hover {background:red ! important;color:white;}
 .mean-container .mean-nav {background:black;}
 .mean-container .mean-nav ul li a, .mean-container .mean-nav ul li ul li a {border-top:1px solid #333;}
@@ -611,7 +616,7 @@ span.datetag {color:white;font-size:15pt;font-weight:bold;display:inline-block;m
 .copyright-area .lang-switcher select {padding:5px;}
 .entry .entry-title a {font-family:DM Sans;}
 
-.main-banner-content .sub-title {letter-spacing:2px;font-family:Horror Memories;}
+.main-banner-content .sub-title {letter-spacing:2px;font-family:The Macabre;}
 .home-slides .main-banner-content {text-align:center;}
 
 
@@ -655,7 +660,7 @@ span.gameslogan {font-family:DM Sans;}
 .thecryptgamepage h2, .thecryptgamepage h3, .thecryptgamepage h1, .thecryptgamepage .sub-title {font-family:Blatant ! important;text-shadow: 2px 2px 4px #000000;}
 .thecryptgamepage h2 {font-size:15pt;text-shadow: 2px 2px 4px #000000;}
 .thecryptgamepage h1 {font-size:15pt ! important;line-height:25pt ! important;color:red;text-shadow: 2px 2px 4px #000000;}
-.social-area h2 {font-family:Horror Memories ! important;font-size:20pt;}
+.social-area h2 {font-family:The Macabre ! important;font-size:20pt;}
 .thecryptgamepage .services-area h2, .thecryptgamepage .services-area h3 {color:red;font-size:11pt;}
 .section-crypt p {font-size:12pt;color:red;}
 .thecryptgamepage h1 {font-size:20pt;}
@@ -730,7 +735,7 @@ letter-spacing: 5px;
 
 .ladda-button, .ladda-button .ladda-label, .ladda-button .ladda-spinner {background: red;padding: 10px 20px;font-family: Woodbone;border-radius: 20px;font-weight: bold;}
 .sweet-alert button, .sweet-alert button.cancel:active, .sweet-alert button:active {background:red ! important;border:1px solid red ! important;}
-#transakLink {font-family:Horror Memories;border-radius:5px ! important;font-size:11pt;border:2px solid black;margin-top:5px ! important;}
+#transakLink {font-family:The Macabre;border-radius:5px ! important;font-size:11pt;border:2px solid black;margin-top:5px ! important;}
 #transakLink:hover {background:black;color:#fff;border:2px solid #fff;}
 
 
@@ -893,14 +898,14 @@ letter-spacing: 5px;
 .watchandearn .products-details-desc img {margin-bottom:20px;}
 
 .uspoints h2 {font-size:15pt;line-height:22pt;text-align:center;}
-.uspoints .datetag {text-transform:uppercase;font-family:Horror Memories;}
+.uspoints .datetag {text-transform:uppercase;font-family:The Macabre;}
 .uspoints .con1 p {margin-top:15px;padding:0 5% ! important;text-align:center;}
 .uspoints p {color:#ccc;}
 .uspoints .single-services-box p {padding:0 5%;}
 .uspoints .single-services-box .icon {width:100%;}
 .uspoints img {max-height:70px;}
 .uspoints .bx-flag:before {content:none;}
-.uspoints ul li a span {font-family:Horror Memories;}
+.uspoints ul li a span {font-family:The Macabre;}
 .uspoints .faq-accordion-tab .tabs li a {background:none;}
 .uspoints .faq-accordion-tab .tabs li.current a {background:rgba(0,0,0,0.5);border:2px solid red;}
 .uspoints .faq-accordion-tab .tabs li.current a span {color:red;}
