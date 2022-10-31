@@ -142,6 +142,8 @@ const connectAccount = async (web3Provider) => {
     window.signer = web3Provider.getSigner();
     web3Provider.provider.on("accountsChanged", (params) => {
       console.info("accountsChanged", params);
+      const [address] = params;
+      if(address == vm.wallet.address) return;
       reloadPage();
     });
     web3Provider.provider.on("chainChanged", async (chainIdHex) => {
@@ -164,7 +166,7 @@ const connectMetamask = async () => {
       walletconnect: {
         package: WalletConnectProvider,
         options: {
-          infuraId: "9aa3d95b3bc440fa88ea12eaa4456161",
+          rpc: RPC_URL,
         }
       },
     };
