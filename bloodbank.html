@@ -366,25 +366,35 @@
           <!-- Start Products Details Area -->
           <div class="mt-8 rounded-md mb-4 pt-2 pb-4" x-data="$store.vm">
             <!-- tab container -->
-            <div class="flex text-center w-full bg-gray-700 rounded-lg items-center py-2 mt-2 px-2 font-horror">
-              <div class="flex-1 py-2 bg-red-400 rounded-lg cursor-pointer">
-                <span>The Crypt</span>
-              </div>
-              <div class="flex-1 mx-2 py-1 rounded-lg cursor-not-allowed">
-                <div>
-                  <span>The Tomb</span>
+            <template x-if="activeTabId != null">
+              <div class="flex text-center w-full mt-2 font-horror justify-between">
+                <button
+                  id="the-crypt-tab" 
+                  @click="activeTabId = 0"
+                  class="rounded-tl-md w-5/12 py-3 relative bg-gray-700"
+                  :class="activeTabId == 0 ? 'text-red-500 cursor-pointer' : 'cursor-not-allowed opacity-40'"
+                >
+                  <span class="drop-shadow-lg" style="font-size: 1.25rem;">The Crypt</span>
+                </button>
+                <button
+                  id="the-tomb-tab"
+                  @click="activeTabId = 1"
+                  disabled
+                  class="rounded-tr-md w-5/12 py-3 relative bg-gray-700"
+                  :class="activeTabId == 1 ? 'text-red-500 cursor-pointer' : 'cursor-not-allowed opacity-40'"
+                >
+                  <span class="drop-shadow-lg" style="font-size: 1.25rem;">The Tomb</span>
                   <span class="text-xs">(coming soon)</span>
-                </div>
+                </button>
               </div>
-            </div>
+            </template>
             <!-- tab content -->
             <!-- "the crypt" tab-->
             <template x-if="activeTabId == 0">
-              <div>
-              <div>
+              <div class="border-3 border-gray-700 px-2">
                 <!-- staking global stats -->
                 <div class="flex w-full mt-4">
-                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-3 py-4">
+                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4">
                     <div>
                       <span class="font-bold uppercase">TVL ($FEAR)</span>
                     </div>
@@ -392,7 +402,7 @@
                       <b><span x-text="formatTVL(_.get(stakingStats, 'global.tvlBN'))"></span></b>
                     </div>
                   </div>
-                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-3 py-4">
+                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4">
                     <div>
                       <span class="font-bold uppercase">APR</span>
                     </div>
@@ -400,7 +410,7 @@
                       <span x-text="_.get(stakingStats, 'global.apr', 'n/a')+ '%'"></span>
                     </div>
                   </div>
-                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-3 py-4">
+                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4">
                     <div>
                       <span class="font-bold uppercase">Total Stakers</span>
                     </div>
@@ -408,7 +418,7 @@
                       <span x-text="_.get(stakingStats, 'global.stakerCount', 'n/a')"></span>
                     </div>
                   </div>
-                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-3 py-4">
+                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4">
                     <div>
                       <span class="font-bold uppercase">Unstake Time</span>
                     </div>
@@ -418,7 +428,7 @@
                   </div>
                 </div>
                 <!-- wallet connected -->
-                <div x-show="vm.wallet.address" class="bg-gray-700 select-none border-l-8 border-gray-400 pl-2 py-1 mt-4 text-gray-200 flex justify-between items-center h-12">
+                <div x-show="vm.wallet.address" class="bg-gray-700 select-none border-l-8 border-gray-600 pl-2 py-1 mt-4 text-gray-200 flex justify-between items-center h-12">
                   <span class="font-mono" style="font-size: medium;">
                     <img src="images/icons/metamask.svg" class="w-6 h-6 inline-block" x-show="vm.wallet.isMetaMask" />
                     <img src="images/icons/walletconnect.svg" class="w-6 h-6 inline-block" x-show="vm.wallet.isWalletConnect" />
@@ -485,7 +495,7 @@
                       </div>
                     </div>
                     <!-- reward + unlocked -->
-                    <div class="flex mt-3 mb-3">
+                    <div class="flex mt-3 mb-2">
                       <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
                         <div>
                           <span>Reward: <span x-text="formatEther(_.get(wallet, 'rewardAmountBN'))"></span> FEAR</span>
@@ -526,7 +536,7 @@
                   </div>
                 </div>
                 <!-- guide -->
-                <div class="bg-gray-600 rounded-xl mt-4 px-3 py-3">
+                <div class="bg-gray-600 rounded-xl mt-4 mb-2 px-3 py-3">
                   <span><b class="text-cyan-400">Staking Rules</b>:</span>
                   <ol class="pl-2">
                     <li><i class="bx bx-badge-check text-red-200"></i> 10% APY yeild</li>
@@ -543,13 +553,12 @@
                   </ol>
                 </div>
               </div>
-              </div>
             </template>
 
             <!-- "the vault" tab-->
             <template x-if="activeTabId == 1">
               <div>
-
+                <span>The Vault</span>
               </div>
             </template>
             <!-- switch network modal -->

@@ -1052,3 +1052,29 @@ letter-spacing: 5px;
 .web3modal-modal-lightbox {
   z-index: 20 !important;
 }
+#the-crypt-tab:after {
+  content: "";
+  right: -2rem;
+  transform: skewX(20deg);
+  border-top-right-radius: 4px;
+  position: absolute;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+  transform-origin: bottom left;
+  width: 2rem;
+  top: 0rem;
+  bottom: 0rem;
+  transition: background-color .15s ease-in-out;
+}
+#the-tomb-tab:after {
+  content: "";
+  left: -2rem;
+  transform: skewX(-20deg);
+  border-top-left-radius: 4px;
+  position: absolute;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+  transform-origin: bottom right;
+  width: 2rem;
+  top: 0rem;
+  bottom: 0rem;
+  transition: background-color .15s ease-in-out;
+}
