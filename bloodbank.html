@@ -381,35 +381,58 @@
             <!-- "the crypt" tab-->
             <template x-if="activeTabId == 0">
               <div>
+              <div>
                 <!-- staking global stats -->
                 <div class="flex w-full mt-4">
                   <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-3 py-4">
-                    <div>TVL ($FEAR)</div>
+                    <div>
+                      <span class="font-bold uppercase">TVL ($FEAR)</span>
+                    </div>
                     <div>
                       <b><span x-text="formatTVL(_.get(stakingStats, 'global.tvlBN'))"></span></b>
                     </div>
                   </div>
                   <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-3 py-4">
-                    <div>APR</div>
+                    <div>
+                      <span class="font-bold uppercase">APR</span>
+                    </div>
                     <div>
                       <span x-text="_.get(stakingStats, 'global.apr', 'n/a')+ '%'"></span>
                     </div>
                   </div>
                   <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-3 py-4">
-                    <div>Total Stakers</div>
+                    <div>
+                      <span class="font-bold uppercase">Total Stakers</span>
+                    </div>
                     <div>
                       <span x-text="_.get(stakingStats, 'global.stakerCount', 'n/a')"></span>
                     </div>
                   </div>
                   <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-3 py-4">
-                    <div>Unstake Time</div>
+                    <div>
+                      <span class="font-bold uppercase">Unstake Time</span>
+                    </div>
                     <div>
                       <span x-text="_.get(stakingStats, 'global.releaseTimeDays', 'n/a')+ ' days'"></span>
                     </div>
                   </div>
                 </div>
+                <!-- wallet connected -->
+                <div x-show="vm.wallet.address" class="bg-gray-700 select-none border-l-8 border-gray-400 pl-2 py-1 mt-4 text-gray-200 flex justify-between items-center h-12">
+                  <span class="font-mono" style="font-size: medium;">
+                    <img src="images/icons/metamask.svg" class="w-6 h-6 inline-block" x-show="vm.wallet.isMetaMask" />
+                    <img src="images/icons/walletconnect.svg" class="w-6 h-6 inline-block" x-show="vm.wallet.isWalletConnect" />
+                    <span x-text="vm.wallet.shortAddress || vm.wallet.address"></span> connected                  
+                  </span>
+                  <button class="rounded-full bg-gray-900 text-gray-300 mr-2 px-3 py-1 flex items-center" x-show="vm.wallet.isWalletConnect" @click="disconnectWC">
+                    <span>disconnect</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-1 -mr-1">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
                 <!-- staking stats by user -->
-                <div class="bg-gray-600 rounded-xl mt-4 p-2 pb-3 shadow">
+                <div class="bg-gray-600 rounded-xl mt-4 p-1 shadow">
                   <div class="relative">
                     <template x-if="!_.get(vm, 'wallet.address')">
                       <div class="absolute w-full h-full bg-gray-600 flex items-center justify-center z-10">
@@ -421,12 +444,6 @@
                             <i x-html="createSpinner('ml-2 text-cyan-900')" :class="LOADING.CONNECT_WALLET ? 'auto' : 'hidden'"></i>
                           </button>
                         </div>
-                      </div>
-                    </template>
-                    <!-- connected wallet info -->
-                    <template x-if="_.get(vm, 'wallet.shortAddress')">
-                      <div class="flex justify-center items-center select-none font-mono mt-2">
-                        <span x-text="`${vm.wallet.shortAddress} connected`"></span>
                       </div>
                     </template>
                     <!-- staked + reward -->
@@ -468,7 +485,7 @@
                       </div>
                     </div>
                     <!-- reward + unlocked -->
-                    <div class="flex mt-3">
+                    <div class="flex mt-3 mb-3">
                       <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
                         <div>
                           <span>Reward: <span x-text="formatEther(_.get(wallet, 'rewardAmountBN'))"></span> FEAR</span>
@@ -525,6 +542,7 @@
                     <li><b>Unlocked</b>: your unlocked token</li>
                   </ol>
                 </div>
+              </div>
               </div>
             </template>
 

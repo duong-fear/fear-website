@@ -10,9 +10,13 @@ const SUPPORTED_CHAINS = [
   // BSC_CHAINID,
 ];
 
-
-
 const RPC_URL = {
+  1: 'https://rpc.ankr.com/eth',
+  10: 'https://rpc.ankr.com/optimism',
+  43114: 'https://rpc.ankr.com/avalanche',
+  42220: 'https://rpc.ankr.com/celo',
+  1666600000: 'https://rpc.ankr.com/harmony',
+  250: 'https://rpc.ankr.com/fantom',
   [BSC_CHAINID]: 'https://rpc.ankr.com/bsc',
   [POLYGON_CHAINID]: 'https://rpc.ankr.com/polygon',
   [MUMBAI_CHAINID]: 'https://rpc.ankr.com/polygon_mumbai',
@@ -138,6 +142,8 @@ const connectAccount = async (web3Provider) => {
     await updateBalances(walletAddress);
     vm.wallet.address = walletAddress;
     vm.wallet.shortAddress = `${walletAddress.substr(0, 6)}..${walletAddress.substr(-4)}`;
+    vm.wallet.isWalletConnect = !!_.get(window, 'web3ModalInstance.isWalletConnect');
+    vm.wallet.isMetaMask = !!_.get(window, 'web3ModalInstance.isMetaMask');
     window.provider = web3Provider;
     window.signer = web3Provider.getSigner();
     web3Provider.provider.on("accountsChanged", (params) => {
@@ -154,6 +160,11 @@ const connectAccount = async (web3Provider) => {
   finally {
     vm.LOADING.CONNECT_WALLET = false;
   }
+}
+
+const disconnectWC = async () => {
+  await window.web3ModalInstance.close();
+  reloadPage();
 }
 
 // wallet connect functions
@@ -472,6 +483,8 @@ const boostrapApp = () => {
       lockedAmountBN: null,
       unlockedAmountBN: null,
       stakePoolAllowanceBN: null,
+      isWalletConnect: false,
+      isMetaMask: false,
     },
     bootstrap: async () => {
       window.ethers = ethers.ethers;
