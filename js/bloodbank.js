@@ -343,16 +343,26 @@ const claimReward = async ($event) => {
 
 // withdraw
 const withdrawUnlockedFear = async ($event) => {
-  await updateBalances();
-  if(vm.wallet.unlockedAmountBN.eq(ZeroBN)) throw new Error("Nothing to withdraw");
-  console.log("withdraw in progress");
-  const tx = await CONTRACT.STAKE_POOL.instance.withdrawUnlocked();
-  await tx.wait();
-  console.log("withdraw-ed");
-  await Promise.all([
-    updateGlobalStakingStats(),
-    updateBalances(),
-  ]);
+  vm.LOADING.WITHDRAW = true;
+  try {
+    await updateBalances();
+    const unlockedAmountBN = vm.wallet.unlockedAmountBN;
+    if(unlockedAmountBN.eq(ZeroBN)) throw new Error("Can't withdraw Zero");
+    const tx = await CONTRACT.STAKE_POOL.instance.withdrawUnlocked();
+    console.log(`withdrawUnlockedFear txHash`, tx.hash);
+    await tx.wait();
+    await Promise.all([
+      updateGlobalStakingStats(),
+      updateBalances(),
+    ]);
+    fearSuccess(`${formatEther(unlockedAmountBN)} FEAR withdrawn`);
+  } catch (exception) {
+    console.error("withdrawUnlockedFear error", exception);
+    // throw exception;
+    fearError(getExceptionDetails(exception));
+  } finally {
+    vm.LOADING.WITHDRAW = false;
+  }
 }
 
 // instant unstake

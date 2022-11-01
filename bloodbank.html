@@ -7,7 +7,15 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-
+    <style>
+      @font-face {
+        font-family: "Averta";
+        src: url("fonts/Averta-Regular.otf") format("truetype");
+      }
+      .font-averta {
+        font-family: Averta !important;
+      }
+    </style>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css?v3" />
     <link rel="stylesheet" href="assets/css/animate.min.css?v3" />
     <link rel="stylesheet" href="assets/css/boxicons.min.css?v3" />
@@ -24,15 +32,6 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap"
       rel="stylesheet"
     />
-    <style>
-      @font-face {
-        font-family: "Averta";
-        src: url("fonts/Averta-Regular.otf") format("truetype");
-      }
-      .font-averta {
-        font-family: Averta !important;
-      }
-    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.js" integrity="sha512-tyQHGhqSiH/wW31W22IYEXVwL7Rh9pQ5oDedxPkXEftX/woKF5l/qswBaQ1Ohre7OyiLk1ypnYBBzmSZ/ZZk1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/lodash@4.17.15.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -380,8 +379,9 @@
                 <button
                   id="the-crypt-tab" 
                   @click="activeTabId = 0"
-                  class="rounded-tl-md w-5/12 py-3 relative bg-gray-700"
+                  class="rounded-tl-md w-5/12 relative bg-gray-700"
                   :class="activeTabId == 0 ? 'text-red-500 cursor-pointer' : 'cursor-not-allowed opacity-40'"
+                  style="padding-top: 0.75rem; padding-bottom: 0.75rem;"
                 >
                   <span class="drop-shadow-lg">The Crypt</span>
                 </button>
@@ -389,8 +389,9 @@
                   id="the-tomb-tab"
                   @click="activeTabId = 1"
                   disabled
-                  class="rounded-tr-md w-5/12 py-3 relative bg-gray-700"
+                  class="rounded-tr-md w-5/12 relative bg-gray-700"
                   :class="activeTabId == 1 ? 'text-red-500 cursor-pointer' : 'cursor-not-allowed opacity-40'"
+                  style="padding-top: 0.75rem; padding-bottom: 0.75rem;"
                 >
                   <span class="drop-shadow-lg">The Tomb</span>
                   <span class="text-xs">(coming soon)</span>
@@ -530,10 +531,13 @@
                         </div>
                         <div>
                           <button
-                            class="rounded-md bg-green-100 text-green-800 px-3 py-2 mt-2 disabled:cursor-not-allowed disabled:opacity-40"
+                            class="rounded-md bg-green-100 text-green-800 px-3 py-2 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
                             @click="withdrawUnlockedFear"
                             :disabled="bn(_.get(wallet, 'unlockedAmountBN')).eq(ZeroBN)"
-                          >Withdraw</button>
+                          >
+                            <span>Withdraw</span>
+                            <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.WITHDRAW ? 'auto' : 'hidden'"></i> 
+                          </button>
                         </div>
                       </div>
                     </div>
