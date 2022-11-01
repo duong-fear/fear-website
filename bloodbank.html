@@ -404,41 +404,41 @@
               <div class="border-3 border-gray-700 px-2 font-averta">
                 <!-- staking global stats -->
                 <div class="flex w-full mt-2">
-                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4">
+                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4 flex flex-col-reverse">
                     <div>
-                      <span class="font-bold uppercase">TVL ($FEAR)</span>
+                      <span class="uppercase text-sm">$FEAR Locked</span>
                     </div>
                     <div>
-                      <b><span x-text="formatTVL(_.get(stakingStats, 'global.tvlBN'))"></span></b>
-                    </div>
-                  </div>
-                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4">
-                    <div>
-                      <span class="font-bold uppercase">APR</span>
-                    </div>
-                    <div>
-                      <span x-text="_.get(stakingStats, 'global.apr', 'n/a')+ '%'"></span>
+                      <span class="text-4xl font-bold text-yellow-300" x-text="formatTVL(_.get(stakingStats, 'global.tvlBN'))"></span>
                     </div>
                   </div>
-                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4">
+                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4 flex flex-col-reverse">
                     <div>
-                      <span class="font-bold uppercase">Total Stakers</span>
+                      <span class="uppercase text-sm">APR</span>
                     </div>
                     <div>
-                      <span x-text="_.get(stakingStats, 'global.stakerCount', 'n/a')"></span>
+                      <span class="text-4xl font-bold text-yellow-300" x-text="_.get(stakingStats, 'global.apr', 'n/a')+ '%'"></span>
                     </div>
                   </div>
-                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4">
+                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4 flex flex-col-reverse">
                     <div>
-                      <span class="font-bold uppercase">Unstake Time</span>
+                      <span class="uppercase text-sm">Stakers</span>
                     </div>
                     <div>
-                      <span x-text="_.get(stakingStats, 'global.releaseTimeDays', 'n/a')+ ' days'"></span>
+                      <span class="text-4xl font-bold text-yellow-300" x-text="_.get(stakingStats, 'global.stakerCount', 'n/a')"></span>
+                    </div>
+                  </div>
+                  <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4 flex flex-col-reverse">
+                    <div>
+                      <span class="uppercase text-sm">Unstake Time</span>
+                    </div>
+                    <div>
+                      <span class="text-4xl font-bold text-yellow-300" x-text="_.get(stakingStats, 'global.releaseTimeDays', 'n/a')+ ' days'"></span>
                     </div>
                   </div>
                 </div>
                 <!-- wallet connected -->
-                <div x-show="vm.wallet.address" class="bg-gray-700 select-none border-l-8 border-gray-600 pl-2 py-1 mt-4 text-gray-200 flex justify-between items-center h-12">
+                <div x-show="vm.wallet.address" class="bg-gray-700 select-none border-l-8 border-gray-600 pl-2 py-1 mt-3 text-gray-200 flex justify-between items-center h-12">
                   <span class="font-mono" style="font-size: medium;">
                     <img src="images/icons/metamask.svg" class="w-6 h-6 inline-block" x-show="vm.wallet.isMetaMask" />
                     <img src="images/icons/walletconnect.svg" class="w-6 h-6 inline-block" x-show="vm.wallet.isWalletConnect" />
