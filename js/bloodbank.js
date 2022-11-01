@@ -163,8 +163,12 @@ const connectAccount = async (web3Provider) => {
 }
 
 const disconnectWC = async () => {
-  await window.web3ModalInstance.close();
-  reloadPage();
+  try {
+    await window.web3ModalInstance.close();
+  }
+  finally {
+    reloadPage();
+  }
 }
 
 // wallet connect functions
@@ -405,6 +409,7 @@ const CONTRACT = {
     [BSC_CHAINID]: undefined,
     [POLYGON_CHAINID]: undefined,
     [MUMBAI_CHAINID]: '0x0C27ea4d7B5C9f0d6Ae2C164D182f22D3B41b242',
+    // [MUMBAI_CHAINID]: '0x5F19Bd6d55C592548D17242B2304CDBedCa6E661',
     ABI: FEAR_STAKE_POOL_ABI,
     get instance() {
       return new ethers.Contract(
@@ -457,12 +462,6 @@ const boostrapApp = () => {
         apr: undefined,
         releaseTimeDays: undefined,
         instantUnstakeFeePercentage: null,
-      },
-      user: {
-        stakedAmount: undefined,
-        rewardAmount: undefined,
-        lockedAmount: undefined,
-        unlockedAmount: undefined,
       },
     },
     LOADING: {
