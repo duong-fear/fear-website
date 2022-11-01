@@ -139,7 +139,7 @@ const connectAccount = async (web3Provider) => {
     }
     accountList = await web3Provider.listAccounts();
     const walletAddress = accountList.shift();
-    await updateBalances(walletAddress);
+    await updateUserStats(walletAddress);
     vm.wallet.address = walletAddress;
     vm.wallet.shortAddress = `${walletAddress.substr(0, 6)}..${walletAddress.substr(-4)}`;
     vm.wallet.isWalletConnect = !!_.get(window, 'web3ModalInstance.isWalletConnect');
@@ -215,7 +215,7 @@ const connectWallet = async () => {
   }
 }
 
-const updateBalances = async (_walletAddress) => {
+const updateUserStats = async (_walletAddress) => {
   const walletAddress = _walletAddress || vm.wallet.address;
   const [
     fearBalanceBN,
@@ -258,7 +258,7 @@ const stakeFear = async ($event) => {
     const amount = await fearAsk("Stake FEAR", "Enter the amount you want to stake:", input => bnInputValidator(input, vm.wallet.fearBalanceBN), { inputValue: formatEther(vm.wallet.fearBalanceBN) });
     if(!amount) return;
     const amountBN = ethers.utils.parseEther(amount);
-    await updateBalances();
+    await updateUserStats();
     const { fearBalanceBN, stakePoolAllowanceBN } = vm.wallet;
     if(amountBN.gt(fearBalanceBN)) {
       throw new Error(`Stake amount greater than your balance (${formatEther(fearBalanceBN)})`);
@@ -274,7 +274,7 @@ const stakeFear = async ($event) => {
     console.log('staked');
     await Promise.all([
       updateGlobalStakingStats(),
-      updateBalances(),
+      updateUserStats(),
     ]);
     fearSuccess(`${formatEther(amountBN)} FEAR staked`);
   } catch(exception) {
@@ -300,7 +300,7 @@ const unstakeFear = async ($event) => {
     );
     if(!amount) return;
     const amountBN = ethers.utils.parseEther(amount);
-    await updateBalances();
+    await updateUserStats();
     if(amountBN.gt(vm.wallet.stakedAmountBN)) throw new Error("Unstake amount greater than staked amount");
     // const estGasLimit = await CONTRACT.STAKE_POOL.instance.estimateGas.unstake(amountBN);
     const tx = await CONTRACT.STAKE_POOL.instance.unstake(amountBN);
@@ -308,7 +308,7 @@ const unstakeFear = async ($event) => {
     await tx.wait();
     await Promise.all([
       updateGlobalStakingStats(),
-      updateBalances(),
+      updateUserStats(),
     ]);
     fearSuccess(`${formatEther(amountBN)} FEAR unstaked`);
   } catch (exception) {
@@ -323,14 +323,14 @@ const unstakeFear = async ($event) => {
 const claimReward = async ($event) => {
   vm.LOADING.CLAIM = true;
   try {
-    await updateBalances();
+    await updateUserStats();
     if(vm.wallet.rewardAmountBN.eq(ZeroBN)) throw new Error("You have no reward to claim");
     const tx = await CONTRACT.STAKE_POOL.instance.claimReward();
     console.log(`claimReward txHash`, tx.hash);
     await tx.wait();
     await Promise.all([
       updateGlobalStakingStats(),
-      updateBalances(),
+      updateUserStats(),
     ]);
     fearSuccess(`FEAR reward claimed`);
   } catch (exception) {
@@ -346,7 +346,7 @@ const claimReward = async ($event) => {
 const withdrawUnlockedFear = async ($event) => {
   vm.LOADING.WITHDRAW = true;
   try {
-    await updateBalances();
+    await updateUserStats();
     const unlockedAmountBN = vm.wallet.unlockedAmountBN;
     if(unlockedAmountBN.eq(ZeroBN)) throw new Error("Can't withdraw Zero");
     const tx = await CONTRACT.STAKE_POOL.instance.withdrawUnlocked();
@@ -354,7 +354,7 @@ const withdrawUnlockedFear = async ($event) => {
     await tx.wait();
     await Promise.all([
       updateGlobalStakingStats(),
-      updateBalances(),
+      updateUserStats(),
     ]);
     fearSuccess(`${formatEther(unlockedAmountBN)} FEAR withdrawn`);
   } catch (exception) {
@@ -383,14 +383,14 @@ const instantUnstake = async ($event) => {
     );
     if(!amount) return;
     const amountBN = ethers.utils.parseEther(amount);
-    await updateBalances();
+    await updateUserStats();
     if(amountBN.gt(stakedAmountBN)) throw new Error("Unstake amount greater than staked amount");
     const tx = await CONTRACT.STAKE_POOL.instance.instantUnstake(amountBN);
     console.log(`instantUnstake txHash`, tx.hash);
     await tx.wait();
     await Promise.all([
       updateGlobalStakingStats(),
-      updateBalances(),
+      updateUserStats(),
     ]);
     fearSuccess(`${formatEther(amountBN.div(2))} FEAR unstaked & ${ formatEther(amountBN.sub(amountBN.div(2))) } FEAR burnt`);
   } catch (exception) {
