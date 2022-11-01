@@ -172,7 +172,7 @@ const disconnectWC = async () => {
 }
 
 // wallet connect functions
-const connectMetamask = async () => {
+const connectWallet = async () => {
   vm.LOADING.CONNECT_WALLET = true;
   try {
     const Web3Modal = window.Web3Modal.default;
@@ -206,7 +206,8 @@ const connectMetamask = async () => {
       await connectAccount(new ethers.providers.Web3Provider(web3ModalInstance));
     });
   } catch (exception) {
-    console.error("connectMetamask error", exception);
+    if(typeof exception === "string" && exception.toLowerCase() === "modal closed by user") return; // emitted by Web3Modal 
+    console.error("connectWallet error", exception);
     // throw exception;
     fearError(getExceptionDetails(exception));
   } finally {
@@ -497,7 +498,7 @@ const boostrapApp = () => {
     },
     bootstrap: async () => {
       window.ethers = ethers.ethers;
-      // await connectMetamask();
+      // await connectWallet();
       await Promise.all([
         updateGlobalStakingStats(),
       ]);
