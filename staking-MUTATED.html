@@ -4,7 +4,18 @@
         <meta charset="utf-8">
 		<title>Token | Fear</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+        <style>
+            @font-face {
+              font-family: "Averta";
+              src: url("fonts/Averta-Regular.otf") format("truetype");
+            }
+            .font-averta {
+              font-family: Averta !important;
+            }
+            .text-main-color {
+                color: var(--mainColor);
+            }
+        </style>
         <link rel="stylesheet" href="assets/css/bootstrap.min.css?v3">
         <link rel="stylesheet" href="assets/css/animate.min.css?v3">
         <link rel="stylesheet" href="assets/css/boxicons.min.css?v3">
@@ -16,41 +27,46 @@
         <link rel="stylesheet" href="assets/css/style.css?v3">
         <link rel="stylesheet" href="assets/css/responsive.css?v3">
         <link rel="stylesheet" href="updates.css?v176">
-    <link rel="shortcut icon" href="images/fear-icon.svg" type="image/x-icon" />
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
-<style>
-    #chart {
-        height: 400px;
-        /* width: 300px; */
-    }
-    #chart text {
-        fill: #eee;
-        font-family: 'Poppins', sans-serif;
-        font-size: larger;
-        text-align:left;
-    }
-    .c3-chart-arc path {
-        stroke: red !important;
-    }
-    .c3-tooltip-container {
-        color: black;
-    }
-</style>  
-<link href="css/c3-eb4b9be8.css" media="screen" rel="stylesheet" type="text/css" />  
-
-
+        <link rel="stylesheet" href="css/preflight.css">
+        <link rel="shortcut icon" href="images/fear-icon.svg" type="image/x-icon" />
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.js" integrity="sha512-tyQHGhqSiH/wW31W22IYEXVwL7Rh9pQ5oDedxPkXEftX/woKF5l/qswBaQ1Ohre7OyiLk1ypnYBBzmSZ/ZZk1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="js/lodash@4.17.15.min.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>tailwind.config = { corePlugins: { preflight: false } }</script>
+        <script src="js/alpinejs@3.10.4.min.js" defer></script>
+        <script src="js/walletconnect_web3-provider@1.7.8.umd.min.js"></script>
+        <script src="js/web3modal@1.9.8.min.js"></script>
+        <script src="js/abi.js"></script>
+        <script src="js/staking.js"></script>
+        <style>
+            #chart {
+                height: 400px;
+                /* width: 300px; */
+            }
+            #chart text {
+                fill: #eee;
+                font-family: 'Poppins', sans-serif;
+                font-size: larger;
+                text-align:left;
+            }
+            .c3-chart-arc path {
+                stroke: red !important;
+            }
+            .c3-tooltip-container {
+                color: black;
+            }
+        </style>
 <script src="https://global.transak.com/sdk/v1.1/widget.js" async></script>
-<script src="js/c3.min-d2a1f852.js?ffwefwfw" type="text/javascript"></script>
-<script src="js/d3-5.8.2.min-c5268e33.js?ffwefwfw" type="text/javascript"></script>
 <script>
     function launchTransak(){let n=new TransakSDK.default({apiKey:"80f00610-32cc-4d01-8eb0-dfc825c2ef53",environment:"PRODUCTION",defaultCryptoCurrency:"FEAR",themeColor:"000000",email:"",redirectURL:"",hostURL:window.location.origin,widgetHeight:"550px",widgetWidth:"450px"});n.init(),n.on(n.EVENTS.TRANSAK_WIDGET_CLOSE,()=>{n.close()})}window.onload=function(){$("#transakLink").on("click",function(){launchTransak()})};
   </script>
 
-</head>
+    </head>
 
     <body class="subpage gamespage templatepage">
 
-             <!-- Start Navbar Area -->
+        <!-- Start Navbar Area -->
         <div class="navbar-area">
             <div class="fear-responsive-nav">
                 <div class="container">
@@ -73,7 +89,7 @@
                         </a>
 							<span class="fearslogan"><img src="images/fear-slogan.svg" alt="Your Worst Nightmares Tokenised"/></span>
 
-                        <div class="collapse navbar-collapse mean-menu">
+                        <div class="navbar-collapse mean-menu">
                             <ul class="navbar-nav">
                                 <li class="nav-item nav-item-1"><a href="#" class="nav-link">Play <i class="flaticon-down-arrow"></i></a>
                                     <ul class="dropdown-menu">                                        
@@ -150,7 +166,7 @@
         </div>
         <!-- End Navbar Area -->
 
-<!-- Sidebar Modal -->
+        <!-- Sidebar Modal -->
         <div class="sidebarModal modal right fade" id="sidebarModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -242,13 +258,15 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                     <p>
                         Two Staking Farms will be launched in the coming weeks namely the “<font style="color:red">The Crypt</font>” and “<font style="color:red">The Tomb</font>”
                     </p>
+                </div>
             </div>
         </section>
         <!-- End Page Title Area -->
 
         <!-- Start Blog Details Area -->
-        <section class="blog-details-area ptb-100" style="padding-top:90px;">
+        <section class="blog-details-area">
             <div class="container">
+                <!--
                 <div class="row">
                     <div class="col-md-6">
                         <h2 style="font-family:The Macabre;text-align:center;color:white;margin-bottom:50px">THE CRYPT</h2>
@@ -314,13 +332,262 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                             </div>
                         </div>
                     </div>
+                </div>
+                -->
+                <!-- start staking UI -->
+                <div class="mt-8 rounded-md mb-4 pt-2 pb-4 antialiased" x-data="$store.vm">
+                    <!-- tab container -->
+                    <template x-if="activeTabId != null">
+                      <div class="flex text-center w-full mt-2 font-macabre justify-between">
+                        <button
+                          id="the-crypt-tab" 
+                          @click="activeTabId = 0"
+                          class="rounded-tl-md w-5/12 relative bg-gray-700"
+                          :class="activeTabId == 0 ? 'text-white cursor-pointer' : 'cursor-not-allowed opacity-50'"
+                          style="padding-top: 0.75rem; padding-bottom: 0.75rem;"
+                        >
+                          <span class="drop-shadow-lg text-2xl">The Crypt</span>
+                        </button>
+                        <button
+                          id="the-tomb-tab"
+                          @click="activeTabId = 1"
+                          class="rounded-tr-md w-5/12 relative bg-gray-700"
+                          :class="activeTabId == 1 ? 'text-white cursor-pointer' : 'cursor-not-allowed opacity-50'"
+                          style="padding-top: 0.75rem; padding-bottom: 0.75rem;"
+                        >
+                          <span class="drop-shadow-lg text-2xl">The Tomb &nbsp;(coming soon)</span>
+                        </button>
+                      </div>
+                    </template>
+                    <!-- tab content -->
+                    <!-- "the crypt" tab-->
+                    <template x-if="activeTabId == 0">
+                      <div class="border-3 border-gray-700 px-2 font-averta">
+                        <!-- staking global stats -->
+                        <div class="flex w-full mt-2">
+                          <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-800 mx-2 py-4 flex flex-col-reverse">
+                            <div>
+                              <span class="uppercase text-sm">$FEAR Locked</span>
+                            </div>
+                            <div>
+                              <span class="text-4xl font-bold text-yellow-300" x-text="formatTVL(_.get(global, 'tvlBN'))"></span>
+                            </div>
+                          </div>
+                          <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-800 mx-2 py-4 flex flex-col-reverse">
+                            <div>
+                              <span class="uppercase text-sm">APR</span>
+                            </div>
+                            <div>
+                              <span class="text-4xl font-bold text-yellow-300" x-text="_.get(global, 'apr', 'n/a')+ '%'"></span>
+                            </div>
+                          </div>
+                          <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-800 mx-2 py-4 flex flex-col-reverse">
+                            <div>
+                              <span class="uppercase text-sm">Stakers</span>
+                            </div>
+                            <div>
+                              <span class="text-4xl font-bold text-yellow-300" x-text="_.get(global, 'stakerCount', 'n/a')"></span>
+                            </div>
+                          </div>
+                          <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-800 mx-2 py-4 flex flex-col-reverse">
+                            <div>
+                              <span class="uppercase text-sm">Unstake Time</span>
+                            </div>
+                            <div>
+                              <span class="text-4xl font-bold text-yellow-300" x-text="_.get(global, 'releaseTimeDays', 'n/a')+ ' days'"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- wallet connected -->
+                        <div x-show="vm.wallet.address" class="bg-gray-700 select-none border-l-8 border-gray-600 pl-2 py-1 mt-3 text-gray-200 flex justify-between items-center h-12">
+                          <span class="font-mono" style="font-size: medium;">
+                            <img src="images/icons/metamask.svg" class="w-6 h-6 inline-block" x-show="vm.wallet.isMetaMask" />
+                            <img src="images/icons/walletconnect.svg" class="w-6 h-6 inline-block" x-show="vm.wallet.isWalletConnect" />
+                            <span x-text="vm.wallet.shortAddress || vm.wallet.address"></span> connected                  
+                          </span>
+                          <button class="rounded-full bg-gray-900 text-gray-300 mr-2 px-3 py-1 flex items-center" x-show="vm.wallet.isWalletConnect" @click="disconnectWC">
+                            <span>disconnect</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-1 -mr-1">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                        <!-- staking stats by user -->
+                        <div class="bg-gray-800 rounded-xl mt-3 p-1 shadow">
+                          <div class="relative">
+                            <template x-if="!_.get(vm, 'wallet.address')">
+                              <div class="absolute w-full h-full bg-gray-800 flex items-center justify-center z-10">
+                                <div>
+                                  <!-- <div><span>Connect your wallet:</span></div> -->
+                                  <button class="flex justify-center items-center bg-cyan-100 text-cyan-900 py-2 px-3 rounded-md select-none" @click="connectWallet">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
+                                    </svg>                            
+                                    <span>Connect Wallet</span>
+                                    <i x-html="createSpinner('ml-2 text-cyan-900')" :class="LOADING.CONNECT_WALLET ? 'auto' : 'hidden'"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </template>
+                            <!-- staked + reward -->
+                            <div class="flex mt-2">
+                              <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
+                                <div>
+                                  <span>Balance: <span x-text="formatEther(_.get(wallet, 'fearBalanceBN'))"></span> FEAR</span>
+                                </div>
+                                <div>
+                                  <button
+                                    class="rounded-lg bg-green-300 text-green-900 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                                    :disabled="LOADING.STAKE"
+                                    @click="stakeFear"
+                                  >
+                                    <span>Stake $FEAR</span>
+                                    <i x-html="createSpinner('ml-2 text-green-900')" :class="LOADING.STAKE ? 'auto' : 'hidden'"></i>
+                                  </button>
+                                </div>
+                              </div>
+                              <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
+                                <div>
+                                  <span>Staked: <span x-text="formatEther(_.get(wallet, 'stakedAmountBN'))"></span> FEAR</span>
+                                </div>
+                                <div class="flex">
+                                  <button
+                                    class="rounded-lg bg-green-100 text-green-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                                    @click="unstakeFear"
+                                    :disabled="LOADING.UNSTAKE || bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
+                                  >
+                                    <span>Unstake</span>
+                                    <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.UNSTAKE ? 'auto' : 'hidden'"></i>
+                                  </button>
+                                  &nbsp;
+                                  <button
+                                    class="rounded-lg bg-red-100 text-red-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50 "
+                                    @click="instantUnstake"
+                                    :disabled="LOADING.INSTANT_UNSTAKE || bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
+                                  >
+                                    <span>Instant Unstake</span>
+                                    <i x-html="createSpinner('ml-1 text-red-800')" :class="LOADING.INSTANT_UNSTAKE ? 'auto' : 'hidden'"></i> 
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- reward + unlocked -->
+                            <div class="flex mt-3 mb-2">
+                              <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
+                                <div>
+                                  <span>Reward: <span x-text="formatEther(_.get(wallet, 'rewardAmountBN'))"></span> FEAR</span>
+                                </div>
+                                <div>
+                                  <button
+                                    class="rounded-lg bg-green-100 text-green-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                                    :disabled="LOADING.CLAIM || bn(_.get(wallet, 'rewardAmountBN')).eq(ZeroBN)"
+                                    @click="claimReward"
+                                  >
+                                    <span>Claim</span>
+                                    <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.CLAIM ? 'auto' : 'hidden'"></i>  
+                                </button>
+                                </div>
+                              </div>
+                              <div class="flex-1 flex flex-col items-center border-gray-500 border-dashed border-2 rounded-md py-8 mx-2">
+                                <div>
+                                  <span>Locked: <span x-text="formatEther(_.get(wallet, 'lockedAmountBN'))"></span> FEAR</span>
+                                  <span>/</span>
+                                  <span>Unlocked: <span x-text="formatEther(_.get(wallet, 'unlockedAmountBN'))"></span> FEAR</span>
+                                </div>
+                                <div>
+                                  <button
+                                    class="rounded-lg bg-green-100 text-green-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                                    @click="withdrawUnlockedFear"
+                                    :disabled="LOADING.WITHDRAW || bn(_.get(wallet, 'unlockedAmountBN')).eq(ZeroBN)"
+                                  >
+                                    <span>Withdraw</span>
+                                    <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.WITHDRAW ? 'auto' : 'hidden'"></i> 
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- stake button -->
+                            <!-- <div class="flex justify-center pt-3 pb-2">
+                              <button class="rounded-lg bg-green-300 text-green-900 px-3 py-2 shadow flex items-center select-none" @click="stakeFear">
+                                <span>Stake $FEAR</span>
+                                <i x-html="createSpinner('ml-2 text-green-900')" :class="LOADING.STAKE ? 'auto' : 'hidden'"></i>
+                              </button>
+                            </div> -->
+                          </div>
+                        </div>
+                        <!-- guide -->
+                        <div class="bg-gray-800 rounded-xl mt-3 mb-2 px-3 py-3">
+                          <!-- <span><b class="text-cyan-400">Staking Rules</b>:</span> -->
+                          <ol>
+                            <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> 10% APR yield + Annual Treasury Rewards</li>
+                            <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> No minimum locking period</li>
+                            <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Unstaking period of one month (25% of tokens each week)</li>
+                            <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Instant Release option with 50% fee</li>
+                            <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Fees go to the FEAR DAO Treasury</li>
+                          </ol>
+                        </div>
+                      </div>
+                    </template>
+                    <!-- "the vault" tab-->
+                    <template x-if="activeTabId == 1">
+                      <div class="border-3 border-gray-700 px-2 font-averta">
+                        <div class="bg-gray-800 rounded-xl mt-2 mb-2 px-3 py-3">
+                            <ol>
+                              <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> 20-50% APR yield + Annual Treasury Rewards</li>
+                              <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> 1-4 Years locking period</li>
+                              <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Unclaimable Rewards until period ends</li>
+                              <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Instant Release option with 50% burn fee</li>
+                              <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Fees go to the FEAR DAO Treasury</li>
+                            </ol>
+                        </div>
+                      </div>
+                    </template>
+                    <!-- switch network modal -->
+                    <template x-if="network.chainId && !SUPPORTED_CHAINS.includes(network.chainId)">
+                      <div class="fixed top-0 left-0 flex items-center text-gray-50 z-[1000] h-screen w-screen" style="backdrop-filter: brightness(0.1) blur(0.25rem);">
+                        <div class="flex-1 flex flex-col items-center text-center">
+                          <div class="flex-1 flex justify-center font-bold mb-6">
+                            <button
+                              class="min-w-[11rem] min-h-[11rem] rounded-3xl p-4 mx-4 items-center flex flex-col bg-gray-800 enabled:hover:bg-gray-700 justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                              :disabled="!SUPPORTED_CHAINS.includes(POLYGON_CHAINID)"
+                              @click="switchToNetwork(POLYGON_CHAINID)"
+                              >
+                              <i x-html="polygonSVG" class="mb-2"></i>
+                              <span>Polygon</span>
+                            </button>
+                            <button
+                              class="min-w-[11rem] min-h-[11rem] rounded-3xl p-4 mx-4 items-center flex flex-col bg-gray-800 enabled:hover:bg-gray-700 justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                              :disabled="!SUPPORTED_CHAINS.includes(BSC_CHAINID)"
+                              @click="switchToNetwork(BSC_CHAINID)"
+                            >
+                              <i x-html="bscSVG" class="mb-2"></i>
+                              <span>BSC</span>
+                            </button>
+                            <button
+                              class="min-w-[11rem] min-h-[11rem] rounded-3xl p-4 mx-4 items-center flex flex-col bg-gray-800 enabled:hover:bg-gray-700 justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                              :disabled="!SUPPORTED_CHAINS.includes(MUMBAI_CHAINID)"
+                              @click="switchToNetwork(MUMBAI_CHAINID)"
+                              >
+                              <i x-html="polygonSVG" class="mb-2"></i>
+                              <span>Mumbai</span>
+                            </button>
+                          </div>
+                          <div>
+                            <b><span class="text-red-500 text-2xl">Unsupported network (<span x-text="network.chainId"></span>)</span></b><br/>
+                            <span>Please switch to one of supported networks above.</span>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                </div>
+                <!-- end staking UI -->
             </div>
         </section>
         <!-- End Blog Details Area -->
 
 
          <!-- Start Social Area -->
-        <section class="social-area pt-100 pb-70">
+        <section class="social-area p-8">
             <div class="container">
                 <div class="section-title stayconnected">
                     <span class="sub-title">Official</span>
@@ -454,26 +721,31 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
 
         <div class="go-top"><i class='bx bx-up-arrow-alt'></i></div>
 
-        <div class="fear-cursor"></div>
-        <div class="fear-cursor2"></div>
+        <!-- <div class="fear-cursor"></div>
+        <div class="fear-cursor2"></div> -->
 
         <!-- Links of JS files -->
         <script src="assets/js/jquery.min.js?v4"></script>
         <script src="assets/js/popper.min.js?v4"></script>
         <script src="assets/js/bootstrap.min.js?v4"></script>
+        <script src="js/sweetalert2@11.js"></script>
         <script src="assets/js/owl.carousel.min.js?v4"></script>
         <script src="assets/js/magnific-popup.min.js?v4"></script>
         <script src="assets/js/parallax.min.js?v4"></script>
         <script src="assets/js/meanmenu.min.js?v4"></script>
         <script src="assets/js/isotope.pkgd.min.js?v4"></script>
-        <script src="assets/js/cursor.min.js?v4"></script>
+        <!-- <script src="assets/js/cursor.min.js?v4"></script> -->
         <script src="assets/js/fancybox.min.js?v4"></script>
         <script src="assets/js/wow.min.js?v4"></script>
         <script src="assets/js/form-validator.min.js?v4"></script>
         <script src="assets/js/contact-form-script.js?v4"></script>
         <script src="assets/js/ajaxchimp.min.js?v4"></script>
         <script src="assets/js/main.js?v4"></script>
-   
+
+<script>
+    document.addEventListener('alpine:init', boostrapApp);
+</script>
+
 <script type="text/javascript">
 var sc_project=12412733; 
 var sc_invisible=1; 
@@ -483,51 +755,6 @@ var sc_remove_link=1;
 <script type="text/javascript"
 src="https://www.statcounter.com/counter/counter.js"
 async></script>
-
-<script>
-	const tokenomics = [
-		['Seed Round', 3.25, '#240d0d'],
-		['Private Round', 17.5, '#3c0100'],
-		['Liquidity', 15, '#810806'],
-		['Ecosystem Incentives', 24.25, '#a00b09'],
-		['Team', 20, '#be100d'],
-		['Partners & Advisors', 5, '#e4221e'],
-		['Marketing', 15, '#ff4c49']
-	];
-	const columns = tokenomics.map(_ => [
-		`${_[1].toFixed(2).padStart(5, ' ')}% ${_[0]}`, // U+2003 from https://emptycharacter.com/, for spacing purpose xD
-		_[1],
-	]);
-	const colors = tokenomics.map(_ => [
-		`${_[1].toFixed(2).padStart(5, ' ')}% ${_[0]}`, // U+2003 from https://emptycharacter.com/, for spacing purpose xD
-		_[2],
-	]);
-	var chart = c3.generate({
-		data: {
-			order: null,
-			columns,
-			colors: Object.fromEntries(colors),
-			type: 'pie',
-			labels: false,
-		},
-		pie: {
-			label: {
-				show: false,
-			}
-		},
-		legend: {
-			position: 'right',
-			item: {
-				onclick: () => {},
-			}
-		},
-		tooltip: {
-			format: {
-				name: function (name, ratio, id, index) { return name.split("%")[1]; }
-			}
-		}
-	});
-</script>
 
 <noscript><div class="statcounter"><img class="statcounter"
 src="https://c.statcounter.com/12412733/0/af2ceb8d/1/"

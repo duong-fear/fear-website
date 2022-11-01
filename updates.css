@@ -23,6 +23,9 @@
   font-family: "The Macabre";
   src: url("https://www.fear.io/fonts/the-macabre.otf") format("truetype");
 }
+.font-macabre {
+  font-family: 'The Macabre', sans-serif;
+}
 
 
 .wolfred {color:#ae303a;}
@@ -1018,4 +1021,68 @@ letter-spacing: 5px;
 @media only screen and (max-width: 550px) {
 .endorsement {display:none ! important;padding-left:0% ! important;}
 .arayahomebanner .gameslogan, .arayahomebanner .logo {padding-left:0% ! important;}
+}
+
+/* sweet alert */
+
+.swal2-confirm {
+  background-color: #262626 !important; /* bg-neutral-800 */
+}
+.swal2-container {
+  backdrop-filter: brightness(0.25);
+}
+.swal2-popup.swal2-modal {
+  background-color: #44475a;
+  color: #f8f8f2;
+}
+.swal2-title {
+  color: #f3f4f6 !important; /* text-gray-100 */
+}
+.swal2-input-label {
+  color: #d1d5db !important; /* text-gray-100 */
+}
+.swal2-confirm, .swal2-deny, .swal2-cancel {
+  padding: 0.5rem 0.75rem !important;
+  border-radius: 0.375rem !important;
+}
+.swal2-cancel {
+  background-color: #fee2e2 !important;
+  color: #b91c1c !important;
+}
+.swal2-confirm {
+  background-color: #d1fae5 !important;
+  color: #065f46 !important;
+}
+
+.font-horror {
+  font-family: 'Horror Memories', serif;
+}
+.web3modal-modal-lightbox {
+  z-index: 20 !important;
+}
+#the-crypt-tab:after {
+  content: "";
+  right: -2rem;
+  transform: skewX(20deg);
+  border-top-right-radius: 4px;
+  position: absolute;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+  transform-origin: bottom left;
+  width: 2rem;
+  top: 0rem;
+  bottom: 0rem;
+  transition: background-color .15s ease-in-out;
+}
+#the-tomb-tab:after {
+  content: "";
+  left: -2rem;
+  transform: skewX(-20deg);
+  border-top-left-radius: 4px;
+  position: absolute;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+  transform-origin: bottom right;
+  width: 2rem;
+  top: 0rem;
+  bottom: 0rem;
+  transition: background-color .15s ease-in-out;
 }
