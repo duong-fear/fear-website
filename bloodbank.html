@@ -380,7 +380,7 @@
                   id="the-crypt-tab" 
                   @click="activeTabId = 0"
                   class="rounded-tl-md w-5/12 relative bg-gray-700"
-                  :class="activeTabId == 0 ? 'text-red-500 cursor-pointer' : 'cursor-not-allowed opacity-40'"
+                  :class="activeTabId == 0 ? 'text-gray-300 cursor-pointer' : 'cursor-not-allowed opacity-40'"
                   style="padding-top: 0.75rem; padding-bottom: 0.75rem;"
                 >
                   <span class="drop-shadow-lg">The Crypt</span>
@@ -390,7 +390,7 @@
                   @click="activeTabId = 1"
                   disabled
                   class="rounded-tr-md w-5/12 relative bg-gray-700"
-                  :class="activeTabId == 1 ? 'text-red-500 cursor-pointer' : 'cursor-not-allowed opacity-40'"
+                  :class="activeTabId == 1 ? 'text-gray-300 cursor-pointer' : 'cursor-not-allowed opacity-40'"
                   style="padding-top: 0.75rem; padding-bottom: 0.75rem;"
                 >
                   <span class="drop-shadow-lg">The Tomb</span>
@@ -409,7 +409,7 @@
                       <span class="uppercase text-sm">$FEAR Locked</span>
                     </div>
                     <div>
-                      <span class="text-4xl font-bold text-yellow-300" x-text="formatTVL(_.get(stakingStats, 'global.tvlBN'))"></span>
+                      <span class="text-4xl font-bold text-yellow-300" x-text="formatTVL(_.get(global, 'tvlBN'))"></span>
                     </div>
                   </div>
                   <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4 flex flex-col-reverse">
@@ -417,7 +417,7 @@
                       <span class="uppercase text-sm">APR</span>
                     </div>
                     <div>
-                      <span class="text-4xl font-bold text-yellow-300" x-text="_.get(stakingStats, 'global.apr', 'n/a')+ '%'"></span>
+                      <span class="text-4xl font-bold text-yellow-300" x-text="_.get(global, 'apr', 'n/a')+ '%'"></span>
                     </div>
                   </div>
                   <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4 flex flex-col-reverse">
@@ -425,7 +425,7 @@
                       <span class="uppercase text-sm">Stakers</span>
                     </div>
                     <div>
-                      <span class="text-4xl font-bold text-yellow-300" x-text="_.get(stakingStats, 'global.stakerCount', 'n/a')"></span>
+                      <span class="text-4xl font-bold text-yellow-300" x-text="_.get(global, 'stakerCount', 'n/a')"></span>
                     </div>
                   </div>
                   <div class="flex-1 text-center text-gray-100 rounded-2xl bg-gray-600 mx-2 py-4 flex flex-col-reverse">
@@ -433,7 +433,7 @@
                       <span class="uppercase text-sm">Unstake Time</span>
                     </div>
                     <div>
-                      <span class="text-4xl font-bold text-yellow-300" x-text="_.get(stakingStats, 'global.releaseTimeDays', 'n/a')+ ' days'"></span>
+                      <span class="text-4xl font-bold text-yellow-300" x-text="_.get(global, 'releaseTimeDays', 'n/a')+ ' days'"></span>
                     </div>
                   </div>
                 </div>
@@ -475,7 +475,11 @@
                           <span>Balance: <span x-text="formatEther(_.get(wallet, 'fearBalanceBN'))"></span> FEAR</span>
                         </div>
                         <div>
-                          <button class="rounded-lg bg-green-300 text-green-900 px-3 py-2 mt-2 flex items-center select-none" @click="stakeFear">
+                          <button
+                            class="rounded-lg bg-green-300 text-green-900 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                            :disabled="LOADING.STAKE"
+                            @click="stakeFear"
+                          >
                             <span>Stake $FEAR</span>
                             <i x-html="createSpinner('ml-2 text-green-900')" :class="LOADING.STAKE ? 'auto' : 'hidden'"></i>
                           </button>
@@ -487,18 +491,18 @@
                         </div>
                         <div class="flex">
                           <button
-                            class="rounded-md bg-green-100 text-green-800 px-3 py-2 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
+                            class="rounded-lg bg-green-100 text-green-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
                             @click="unstakeFear"
-                            :disabled="bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
+                            :disabled="LOADING.UNSTAKE || bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
                           >
                             <span>Unstake</span>
                             <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.UNSTAKE ? 'auto' : 'hidden'"></i>
                           </button>
                           &nbsp;
                           <button
-                            class="rounded-md bg-red-100 text-red-800 px-3 py-2 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
+                            class="rounded-lg bg-red-100 text-red-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50 "
                             @click="instantUnstake"
-                            :disabled="bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
+                            :disabled="LOADING.INSTANT_UNSTAKE || bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
                           >
                             <span>Instant Unstake</span>
                             <i x-html="createSpinner('ml-1 text-red-800')" :class="LOADING.INSTANT_UNSTAKE ? 'auto' : 'hidden'"></i> 
@@ -514,8 +518,8 @@
                         </div>
                         <div>
                           <button
-                            class="rounded-md bg-green-100 text-green-800 px-3 py-2 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
-                            :disabled="bn(_.get(wallet, 'rewardAmountBN')).eq(ZeroBN)"
+                            class="rounded-lg bg-green-100 text-green-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                            :disabled="LOADING.CLAIM || bn(_.get(wallet, 'rewardAmountBN')).eq(ZeroBN)"
                             @click="claimReward"
                           >
                             <span>Claim</span>
@@ -531,9 +535,9 @@
                         </div>
                         <div>
                           <button
-                            class="rounded-md bg-green-100 text-green-800 px-3 py-2 mt-2 disabled:cursor-not-allowed disabled:opacity-40 flex items-center select-none transition-all"
+                            class="rounded-lg bg-green-100 text-green-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
                             @click="withdrawUnlockedFear"
-                            :disabled="bn(_.get(wallet, 'unlockedAmountBN')).eq(ZeroBN)"
+                            :disabled="LOADING.WITHDRAW || bn(_.get(wallet, 'unlockedAmountBN')).eq(ZeroBN)"
                           >
                             <span>Withdraw</span>
                             <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.WITHDRAW ? 'auto' : 'hidden'"></i> 

@@ -206,10 +206,15 @@ const connectWallet = async () => {
       await connectAccount(new ethers.providers.Web3Provider(web3ModalInstance));
     });
   } catch (exception) {
-    if(typeof exception === "string" && exception.toLowerCase() === "modal closed by user") return; // emitted by Web3Modal 
+    const exceptionDetails = getExceptionDetails(exception);
+    const ignoredExceptionList = [
+      "Modal closed by user",
+      "User closed modal",
+    ];
+    if(ignoredExceptionList.includes(exceptionDetails.message)) return;
     console.error("connectWallet error", exception);
     // throw exception;
-    fearError(getExceptionDetails(exception));
+    fearError(exceptionDetails);
   } finally {
     vm.LOADING.CONNECT_WALLET = false;
   }
@@ -371,7 +376,7 @@ const instantUnstake = async ($event) => {
   vm.LOADING.INSTANT_UNSTAKE = true;
   const { stakedAmountBN } = vm.wallet;
   try {
-    const instantUnstakeFeePercentage = vm.stakingStats.global.instantUnstakeFeePercentage;
+    const instantUnstakeFeePercentage = vm.global.instantUnstakeFeePercentage;
     const amount = await fearAsk(
       "⚠️ Instant Unstake",
       null,
@@ -444,16 +449,25 @@ const updateGlobalStakingStats = async () => {
     CONTRACT.STAKE_POOL.instance.getCurrentStakingEpoch(),
     CONTRACT.STAKE_POOL.instance.instantUnstakeFeePercentage(),
   ]);
-  vm.stakingStats.global.stakerCount = stakerCountBN.toNumber();
-  vm.stakingStats.global.tvlBN = totalStakedAmountBN;
-  vm.stakingStats.global.apr = +(currentStakingEpoch.apr.toNumber() / 100);
-  vm.stakingStats.global.releaseTimeDays = currentStakingEpoch.lockParts.toNumber() * currentStakingEpoch.lockPeriod.toNumber() / (24*3600);
-  vm.stakingStats.global.instantUnstakeFeePercentage = instantUnstakeFeePercentageBN.toNumber() / 100;
+  vm.global.stakerCount = stakerCountBN.toNumber();
+  vm.global.tvlBN = totalStakedAmountBN;
+  vm.global.apr = +(currentStakingEpoch.apr.toNumber() / 100);
+  vm.global.releaseTimeDays = currentStakingEpoch.lockParts.toNumber() * currentStakingEpoch.lockPeriod.toNumber() / (24*3600);
+  vm.global.instantUnstakeFeePercentage = instantUnstakeFeePercentageBN.toNumber() / 100;
 }
 
 
 const boostrapApp = () => {
   Alpine.store('vm', {
+    LOADING: {
+      SWITCH_NETWORK: false,
+      CONNECT_WALLET: false,
+      STAKE: false,
+      UNSTAKE: false,
+      INSTANT_UNSTAKE: false,
+      CLAIM: false, // ... reward
+      WITHDRAW: false, // ... unlocked
+    },
     tabList: [
       "The Crypt",
       "The Tomb",
@@ -463,26 +477,12 @@ const boostrapApp = () => {
       provider: undefined,
     },
     activeTabId: 0,
-    stakingStats: {
-      global: {
-        // total value locked
-        tvlBN: undefined,
-        // number of stakers
-        stakerCount: undefined,
-        // annual percent yeild
-        apr: undefined,
-        releaseTimeDays: undefined,
-        instantUnstakeFeePercentage: null,
-      },
-    },
-    LOADING: {
-      SWITCH_NETWORK: false,
-      CONNECT_WALLET: false,
-      STAKE: false,
-      UNSTAKE: false,
-      INSTANT_UNSTAKE: false,
-      CLAIM: false, // ... reward
-      WITHDRAW: false, // ... unlocked
+    global: {
+      tvlBN: undefined,
+      stakerCount: undefined,
+      apr: undefined,
+      releaseTimeDays: undefined,
+      instantUnstakeFeePercentage: null,
     },
     wallet: {
       address: null,
