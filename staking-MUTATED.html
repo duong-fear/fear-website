@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html class="dark">
     <head>
         <meta charset="utf-8">
 		<title>Token | Fear</title>
@@ -47,6 +47,7 @@
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.js" integrity="sha512-tyQHGhqSiH/wW31W22IYEXVwL7Rh9pQ5oDedxPkXEftX/woKF5l/qswBaQ1Ohre7OyiLk1ypnYBBzmSZ/ZZk1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="js/lodash@4.17.15.min.js"></script>
+        <script src="js/dayjs.min.js"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <script>tailwind.config = { corePlugins: { preflight: false } }</script>
         <script src="js/alpinejs@3.10.4.min.js" defer></script>
@@ -299,7 +300,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                               <span class="uppercase text-sm">$FEAR Locked</span>
                             </div>
                             <div>
-                              <span class="text-4xl font-bold text-main-color" x-text="formatTVL(_.get(global, 'tvlBN'))"></span>
+                              <span class="text-4xl font-bold text-main-color" x-text="formatEtherHuman(_.get(global, 'tvlBN'))"></span>
                             </div>
                           </div>
                           <div class="flex-1 text-center text-gray-100 rounded-2xl bg-black-color mx-2 py-4 flex flex-col-reverse">
@@ -355,10 +356,10 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                               </div>
                             </template>
                             <!-- staked + reward -->
-                            <div class="flex mt-2">
+                            <div class="flex my-2">
                               <div class="flex-1 flex flex-col items-center border-zinc-700 border-dashed border-2 rounded-md py-8 mx-2">
                                 <div>
-                                  <span>Balance: <span x-text="formatEther(_.get(wallet, 'fearBalanceBN'))"></span> FEAR</span>
+                                  <span>Balance: <span x-text="formatEtherHuman(_.get(wallet, 'fearBalanceBN'))"></span> FEAR</span>
                                 </div>
                                 <div>
                                   <button
@@ -373,7 +374,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                               </div>
                               <div class="flex-1 flex flex-col items-center border-zinc-700 border-dashed border-2 rounded-md py-8 mx-2">
                                 <div>
-                                  <span>Staked: <span x-text="formatEther(_.get(wallet, 'stakedAmountBN'))"></span> FEAR</span>
+                                  <span>Staked: <span x-text="formatEtherHuman(_.get(wallet, 'stakedAmountBN'))"></span> FEAR</span>
                                 </div>
                                 <div class="flex">
                                   <button
@@ -395,12 +396,9 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                                   </button>
                                 </div>
                               </div>
-                            </div>
-                            <!-- reward + unlocked -->
-                            <div class="flex mt-3 mb-2">
                               <div class="flex-1 flex flex-col items-center border-zinc-700 border-dashed border-2 rounded-md py-8 mx-2">
                                 <div>
-                                  <span>Reward: <span x-text="formatEther(_.get(wallet, 'rewardAmountBN'))"></span> FEAR</span>
+                                  <span>Reward: <span x-text="formatEtherHuman(_.get(wallet, 'rewardAmountBN'))"></span> FEAR</span>
                                 </div>
                                 <div>
                                   <button
@@ -413,33 +411,78 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                                 </button>
                                 </div>
                               </div>
-                              <div class="flex-1 flex flex-col items-center border-zinc-700 border-dashed border-2 rounded-md py-8 mx-2">
-                                <div>
-                                  <span>Locked: <span x-text="formatEther(_.get(wallet, 'lockedAmountBN'))"></span> FEAR</span>
-                                  <span>/</span>
-                                  <span>Unlocked: <span x-text="formatEther(_.get(wallet, 'unlockedAmountBN'))"></span> FEAR</span>
-                                </div>
-                                <div>
-                                  <button
-                                    class="rounded-lg bg-green-100 text-green-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
-                                    @click="withdrawUnlockedFear"
-                                    :disabled="LOADING.WITHDRAW || bn(_.get(wallet, 'unlockedAmountBN')).eq(ZeroBN)"
-                                  >
-                                    <span>Withdraw</span>
-                                    <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.WITHDRAW ? 'auto' : 'hidden'"></i> 
-                                  </button>
-                                </div>
-                              </div>
                             </div>
-                            <!-- stake button -->
-                            <!-- <div class="flex justify-center pt-3 pb-2">
-                              <button class="rounded-lg bg-green-300 text-green-900 px-3 py-2 shadow flex items-center select-none" @click="stakeFear">
-                                <span>Stake $FEAR</span>
-                                <i x-html="createSpinner('ml-2 text-green-900')" :class="LOADING.STAKE ? 'auto' : 'hidden'"></i>
-                              </button>
-                            </div> -->
                           </div>
                         </div>
+                        <!-- unlock schedule table -->
+                        <template x-if="Array.isArray(wallet.allMyLocks) && wallet.allMyLocks.length > 0">
+                          <div class="rounded-lg bg-black-color mt-3">
+                            <div class="overflow-x-auto relative shadow-md rounded-lg">
+                              <table class="w-full text-sm text-left text-gray-400">
+                                <thead class="text-xs text-gray-50 uppercase bg-zinc-900">
+                                  <tr class="text-center">
+                                    <th scope="col" class="py-3 px-6">Amount (unstaked)</th>
+                                    <th scope="col" class="py-3 px-6">1st Unlock</th>
+                                    <th scope="col" class="py-3 px-6">2nd Unlock</th>
+                                    <th scope="col" class="py-3 px-6">3rd Unlock</th>
+                                    <th scope="col" class="py-3 px-6">4th Unlock</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <template x-for="(lock, index) in wallet.allMyLocks">
+                                    <tr class="bg-white border-b bg-gray-900 border-gray-700 text-gray-100 font-mono text-center">
+                                      <th scope="row" class="py-1 px-2 font-medium whitespace-nowrap text-white">
+                                        <span x-text="formatEtherHuman(lock[0])"></span>
+                                        <span>FEAR</span>
+                                      </th>
+                                      <td class="py-2 px-3" :class="epoch >= lock[1] && 'line-through opacity-40'">
+                                        <span x-text="formatDate(lock[1])"></span>
+                                      </td>
+                                      <td class="py-2 px-3" :class="epoch >= lock[2] && 'line-through opacity-40'">
+                                        <span x-text="formatDate(lock[2])"></span>
+                                      </td>
+                                      <td class="py-2 px-3" :class="epoch >= lock[3] && 'line-through opacity-40'">
+                                        <span x-text="formatDate(lock[3])"></span>
+                                      </td>
+                                      <td class="py-2 px-3" :class="epoch >= lock[4] && 'line-through opacity-40'">
+                                        <span x-text="formatDate(lock[4])"></span>
+                                      </td>
+                                    </tr>
+                                  </template>
+                                </tbody>
+                              </table>
+                              <div class="flex justify-center">
+                                <button
+                                  class="rounded-lg bg-green-100 text-green-800 px-3 py-2 my-3 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                                  :disabled="LOADING.WITHDRAW || bn(_.get(wallet, 'unlockedAmountBN')).eq(ZeroBN)"
+                                  @click="withdrawUnlockedFear"
+                                >
+                                  <span>Withdraw</span>
+                                  <template x-if="bn(_.get(wallet, 'unlockedAmountBN')).gt(ZeroBN)">
+                                    <span>
+                                      &nbsp;<span x-text="`${formatEtherHuman(wallet.unlockedAmountBN)}`"></span>&nbsp;<span>FEAR</span>
+                                    </span>
+                                  </template>
+                                  <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.WITHDRAW ? 'auto' : 'hidden'"></i>  
+                                </button>
+                                <span>&nbsp;</span>
+                                <button
+                                  class="rounded-lg bg-cyan-100 text-cyan-800 px-3 py-2 my-3 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                                  :disabled="LOADING.STAKE_BACK|| wallet.lockedAmountBN.eq(ZeroBN)"
+                                  @click="stakeBack"
+                                >
+                                  <span>Stake back</span>
+                                  <template x-if="bn(_.get(wallet, 'lockedAmountBN')).gt(ZeroBN)">
+                                    <span>
+                                      &nbsp;<span x-text="`${formatEtherHuman(wallet.lockedAmountBN)}`"></span>&nbsp;<span>FEAR</span>
+                                    </span>
+                                  </template>
+                                  <i x-html="createSpinner('ml-1 text-cyan-800')" :class="LOADING.STAKE_BACK ? 'auto' : 'hidden'"></i>  
+                                </button>
+                              </div>
+                            </div>
+                            </div>
+                        </template>
                         <!-- guide -->
                         <div class="bg-black-color rounded-xl mt-3 mb-2 px-3 py-3">
                           <ol>
@@ -505,7 +548,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                     </template>
                     
                     <!-- countdown UI -->
-                    <template x-if="epoch && !isStakingAvaiable()">
+                    <template x-if="epoch && STAKING_AVAILABLE_EPOCH && !isStakingAvaiable()">
                       <div class="flex flex-col items-center justify-center bg-main-color w-screen z-20 fixed bottom-0 left-0 select-none p-3">
                         <div class="font-averta text-lg uppercase">
                           <span>The Crypt Opens in:</span>

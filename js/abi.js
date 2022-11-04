@@ -413,31 +413,6 @@ const FEAR_STAKE_POOL_ABI = [
       {
         indexed: false,
         internalType: "address",
-        name: "userAddress",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address payable",
-        name: "relayerAddress",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "bytes",
-        name: "functionSignature",
-        type: "bytes",
-      },
-    ],
-    name: "MetaTransactionExecuted",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "address",
         name: "account",
         type: "address",
       },
@@ -641,13 +616,6 @@ const FEAR_STAKE_POOL_ABI = [
   },
   {
     inputs: [],
-    name: "ERC712_VERSION",
-    outputs: [{ internalType: "string", name: "", type: "string" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "MANAGER_ROLE",
     outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
     stateMutability: "view",
@@ -685,19 +653,6 @@ const FEAR_STAKE_POOL_ABI = [
     name: "claimReward",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "userAddress", type: "address" },
-      { internalType: "bytes", name: "functionSignature", type: "bytes" },
-      { internalType: "bytes32", name: "sigR", type: "bytes32" },
-      { internalType: "bytes32", name: "sigS", type: "bytes32" },
-      { internalType: "uint8", name: "sigV", type: "uint8" },
-    ],
-    name: "executeMetaTransaction",
-    outputs: [{ internalType: "bytes", name: "", type: "bytes" }],
-    stateMutability: "payable",
     type: "function",
   },
   {
@@ -779,13 +734,6 @@ const FEAR_STAKE_POOL_ABI = [
   },
   {
     inputs: [],
-    name: "getChainId",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "getCurrentStakingEpoch",
     outputs: [
       {
@@ -802,20 +750,6 @@ const FEAR_STAKE_POOL_ABI = [
         type: "tuple",
       },
     ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getDomainName",
-    outputs: [{ internalType: "string", name: "", type: "string" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getDomainSeperator",
-    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
     stateMutability: "view",
     type: "function",
   },
@@ -862,13 +796,6 @@ const FEAR_STAKE_POOL_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "user", type: "address" }],
-    name: "getNonce",
-    outputs: [{ internalType: "uint256", name: "nonce", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [{ internalType: "bytes32", name: "role", type: "bytes32" }],
     name: "getRoleAdmin",
     outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
@@ -878,6 +805,48 @@ const FEAR_STAKE_POOL_ABI = [
   {
     inputs: [],
     name: "getStakersCount",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "id", type: "uint256" }],
+    name: "getStakingEpoch",
+    outputs: [
+      {
+        components: [
+          { internalType: "uint256", name: "id", type: "uint256" },
+          { internalType: "uint256", name: "start", type: "uint256" },
+          { internalType: "uint256", name: "end", type: "uint256" },
+          { internalType: "uint256", name: "apr", type: "uint256" },
+          { internalType: "uint256", name: "lockParts", type: "uint256" },
+          { internalType: "uint256", name: "lockPeriod", type: "uint256" },
+        ],
+        internalType: "struct FearStaking.StakingEpoch",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getStakingEpochIds",
+    outputs: [{ internalType: "uint256[]", name: "", type: "uint256[]" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTotalLockedAmount",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTotalRewardAmount",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -1005,6 +974,13 @@ const FEAR_STAKE_POOL_ABI = [
   {
     inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
     name: "stake",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "stakeBack",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

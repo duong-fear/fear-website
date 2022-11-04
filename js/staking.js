@@ -1,4 +1,4 @@
-const STAKING_AVAILABLE_EPOCH = 1668164400;
+const STAKING_AVAILABLE_EPOCH = null; // 1668164400
 const getEpoch = () => Number.parseInt((new Date()).getTime()/1000);
 const isStakingAvaiable = () => {
   return !!vm && vm.epoch >= STAKING_AVAILABLE_EPOCH;
@@ -235,7 +235,7 @@ const updateUserStats = async (_walletAddress) => {
     lockedAmountBN,
     unlockedAmountBN,
     stakePoolAllowanceBN,
-    // allMyLocks,
+    allMyLocks,
   ] = await Promise.all([
     CONTRACT.FEAR_TOKEN.instance.balanceOf(walletAddress),
     CONTRACT.STAKE_POOL.instance.getMyStakeAmount({ from: walletAddress }),
@@ -243,7 +243,7 @@ const updateUserStats = async (_walletAddress) => {
     CONTRACT.STAKE_POOL.instance.getMyLockedAmount({ from: walletAddress }),
     CONTRACT.STAKE_POOL.instance.getMyWithdrawableAmount({ from: walletAddress }),
     CONTRACT.FEAR_TOKEN.instance.allowance(walletAddress, CONTRACT.STAKE_POOL.instance.address),
-    // CONTRACT.STAKE_POOL.instance.getAllMyLocks(),
+    CONTRACT.STAKE_POOL.instance.getAllMyLocks({ from: walletAddress }),
   ]);
   vm.wallet.fearBalanceBN = fearBalanceBN;
   vm.wallet.stakedAmountBN = stakedAmountBN;
@@ -251,14 +251,14 @@ const updateUserStats = async (_walletAddress) => {
   vm.wallet.lockedAmountBN = lockedAmountBN;
   vm.wallet.unlockedAmountBN = unlockedAmountBN;
   vm.wallet.stakePoolAllowanceBN = stakePoolAllowanceBN;
-  // vm.wallet.allMyLocks = _.chunk(
-  //   allMyLocks.map(e => [ethers.utils.formatEther(e.amount), e.unlockDate.toNumber()]),
-  //   4,
-  // )
-  // .map(l =>  [
-  //   l.map(t => t[0]).reduce((x, y) => parseEther(x).add(parseEther(y))),
-  //   ...l.map(t => t[1]),
-  // ]);
+  vm.wallet.allMyLocks = _.chunk(
+    allMyLocks.map(e => [e.amount, e.unlockDate.toNumber()]),
+    4,
+  )
+  .map(l =>  [
+    l.map(t => t[0]).reduce((x, y) => x.add(y)), // unstaked amount
+    ...l.map(t => t[1]), // release time array for each part
+  ]);
 }
 
 const bnInputValidator = (input, max) => {
@@ -387,6 +387,29 @@ const withdrawUnlockedFear = async ($event) => {
   }
 }
 
+const stakeBack = async () => {
+  vm.LOADING.STAKE_BACK = true;
+  try {
+    await updateUserStats();
+    const lockedAmountBN = vm.wallet.lockedAmountBN;
+    if(lockedAmountBN.eq(ZeroBN)) throw new Error("No locked token found");
+    const tx = await CONTRACT.STAKE_POOL.instance.stakeBack();
+    console.log(`stakeBack txHash`, tx.hash);
+    await tx.wait();
+    await Promise.all([
+      updateGlobalStakingStats(),
+      updateUserStats(),
+    ]);
+    fearSuccess(`${formatEtherHuman(lockedAmountBN)} FEAR staked back`);
+  } catch (exception) {
+    console.error("stakeBack error", exception);
+    // throw exception;
+    fearError(getExceptionDetails(exception));
+  } finally {
+    vm.LOADING.STAKE_BACK = false;
+  }
+}
+
 // instant unstake
 const instantUnstake = async ($event) => {
   vm.LOADING.INSTANT_UNSTAKE = true;
@@ -440,9 +463,9 @@ const CONTRACT = {
   STAKE_POOL: {
     [BSC_CHAINID]: undefined,
     [POLYGON_CHAINID]: undefined,
-    // [MUMBAI_CHAINID]: '0x0cb1680712b1ae4d51c9571ea81b98e18e577bfb',
-    [MUMBAI_CHAINID]: '0x38cbaDe25f11b42e400a826CC4A72967977550f3', // countdown
-    // [MUMBAI_CHAINID]: '0x5F19Bd6d55C592548D17242B2304CDBedCa6E661',
+    // [MUMBAI_CHAINID]: '0x0cb1680712b1ae4d51c9571ea81b98e18e577bfb', // small unlock time
+    // [MUMBAI_CHAINID]: '0x38cbaDe25f11b42e400a826CC4A72967977550f3', // countdown
+    [MUMBAI_CHAINID]: '0x603CdE51BEb30ae04FFD7f9332D6F101203dB832', // dimi
     ABI: FEAR_STAKE_POOL_ABI,
     get instance() {
       return new ethers.Contract(
@@ -485,6 +508,7 @@ const boostrapApp = () => {
       INSTANT_UNSTAKE: false,
       CLAIM: false, // ... reward
       WITHDRAW: false, // ... unlocked
+      STAKE_BACK: false,
     },
     tabList: [
       "The Crypt",
@@ -519,7 +543,7 @@ const boostrapApp = () => {
       setInterval(() => {
         vm.epoch = getEpoch();
       }, 1000);
-      window.ethers = ethers.ethers;
+      // window.ethers = ethers.ethers;
       // await connectWallet();
       await Promise.all([
         updateGlobalStakingStats(),
@@ -571,20 +595,6 @@ const fearError = async (message, options = {}) => {
     html: stack ? `<pre class='text-left whitespace-normal'>${stack}</pre>`.trim() : undefined,
     ...options
   });
-}
-
-const formatTVL = tvlBN => {
-  try {
-    if(!(tvlBN instanceof ethers.BigNumber)) return 'n/a';
-    const OneThousandEtherBN = ethers.utils.parseEther("1000");
-    const OneMillionEtherBN = ethers.utils.parseEther("1000000");
-    if(tvlBN.gte(OneMillionEtherBN)) return formatEther(tvlBN.div(1_000_000).div(OneFinneyBN).mul(OneFinneyBN)) + "M";
-    if(tvlBN.gte(OneThousandEtherBN)) return formatEther(tvlBN.div(1_000).div(OneFinneyBN).mul(OneFinneyBN)) + "K";
-    return formatEther(tvlBN.div(OneFinneyBN).mul(OneFinneyBN));
-  } catch(exception) {
-    console.error(`formatTVL`, exception);
-    return 'n/a';
-  }
 }
 
 const getExceptionDetails = (ex) => {
@@ -655,4 +665,17 @@ const countdownText = (delta) => {
 	// 	m: m,
 	// 	s: s,
 	// })
+}
+
+const formatDate = (epoch) => dayjs(epoch * 1000).format('DD MMM YYYY HH:mm:ss');
+
+const formatEtherHuman = (input) => {
+  if(!(input instanceof ethers.BigNumber)) return 'n/a';
+  const OneThousandEtherBN = ethers.utils.parseEther("1000");
+  const OneMillionEtherBN = ethers.utils.parseEther("1000000");
+  if(input.gte(OneMillionEtherBN)) return formatEther(input.div(1_000_000).div(OneFinneyBN).mul(OneFinneyBN)) + "M";
+  if(input.gte(OneThousandEtherBN)) return formatEther(input.div(1_000).div(OneFinneyBN).mul(OneFinneyBN)) + "K";
+  if(input.gte(OneFinneyBN)) return formatEther(input.div(OneFinneyBN).mul(OneFinneyBN));
+  if(input.eq(ZeroBN)) return "0";
+  return "~0.001";
 }
