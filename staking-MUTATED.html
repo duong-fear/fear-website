@@ -318,14 +318,6 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                               <span class="text-4xl font-bold text-main-color" x-text="_.get(global, 'stakerCount', 'n/a')"></span>
                             </div>
                           </div>
-                          <div class="flex-1 text-center text-gray-100 rounded-2xl bg-black-color mx-2 py-4 flex flex-col-reverse">
-                            <div>
-                              <span class="uppercase text-sm">Unstake Time</span>
-                            </div>
-                            <div>
-                              <span class="text-4xl font-bold text-main-color" x-text="_.get(global, 'releaseTimeDays', 'n/a')+ ' days'"></span>
-                            </div>
-                          </div>
                         </div>
                         <!-- wallet connected -->
                         <div x-show="vm.wallet.address" class="bg-black-color select-none border-l-8 border-gray-600 pl-2 py-1 mt-3 text-gray-200 flex justify-between items-center h-12">
@@ -516,7 +508,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                     <template x-if="epoch && !isStakingAvaiable()">
                       <div class="flex flex-col items-center justify-center bg-main-color w-screen z-20 fixed bottom-0 left-0 select-none p-3">
                         <div class="font-averta text-lg uppercase">
-                          <span>Staking available in:</span>
+                          <span>The Crypt Opens in:</span>
                         </div>
                         <div class="font-macabre text-5xl">
                           <span x-text="countdownText(STAKING_AVAILABLE_EPOCH - epoch)"></span>
