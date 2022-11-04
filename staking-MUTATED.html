@@ -348,7 +348,11 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                               <div class="absolute w-full h-full bg-black-color flex items-center justify-center z-10">
                                 <div>
                                   <!-- <div><span>Connect your wallet:</span></div> -->
-                                  <button class="flex justify-center items-center bg-main-color text-white-color py-2 px-3 rounded-md select-none" @click="connectWallet">
+                                  <button
+                                    class="flex justify-center items-center bg-main-color text-white-color py-2 px-3 rounded-md select-none disabled:cursor-not-allowed disabled:opacity-50"
+                                    @click="connectWallet"
+                                    :disabled="!isStakingAvaiable()"
+                                  >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1">
                                       <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
                                     </svg>                            
@@ -450,7 +454,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                             <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> 10% APR yield + Annual Treasury Rewards</li>
                             <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> No minimum locking period</li>
                             <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Unstaking period of one month (25% of tokens each week)</li>
-                            <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Instant Release option with 50% fee</li>
+                            <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Instant Release option with 20% fee</li>
                             <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Fees go to the FEAR DAO Treasury</li>
                           </ol>
                         </div>
@@ -464,7 +468,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                               <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> 20-50% APR yield + Annual Treasury Rewards</li>
                               <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> 1-4 Years locking period</li>
                               <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Unclaimable Rewards until period ends</li>
-                              <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Instant Release option with 50% burn fee</li>
+                              <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Instant Release option with 25% burn fee</li>
                               <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Fees go to the FEAR DAO Treasury</li>
                             </ol>
                         </div>
@@ -504,6 +508,18 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                             <b><span class="text-red-500 text-2xl">Unsupported network (<span x-text="network.chainId"></span>)</span></b><br/>
                             <span>Please switch to one of supported networks above.</span>
                           </div>
+                        </div>
+                      </div>
+                    </template>
+                    
+                    <!-- countdown UI -->
+                    <template x-if="epoch && !isStakingAvaiable()">
+                      <div class="flex flex-col items-center justify-center bg-main-color w-screen z-20 fixed bottom-0 left-0 select-none p-3">
+                        <div class="font-averta text-lg uppercase">
+                          <span>Staking available in:</span>
+                        </div>
+                        <div class="font-macabre text-5xl">
+                          <span x-text="countdownText(STAKING_AVAILABLE_EPOCH - epoch)"></span>
                         </div>
                       </div>
                     </template>

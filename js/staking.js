@@ -1,3 +1,9 @@
+const STAKING_AVAILABLE_EPOCH = 1668164400;
+const getEpoch = () => Number.parseInt((new Date()).getTime()/1000);
+const isStakingAvaiable = () => {
+  return !!vm && vm.epoch >= STAKING_AVAILABLE_EPOCH;
+}
+
 const POLYGON_CHAINID = 137;
 const MUMBAI_CHAINID = 80001;
 const BSC_CHAINID = 56;
@@ -229,6 +235,7 @@ const updateUserStats = async (_walletAddress) => {
     lockedAmountBN,
     unlockedAmountBN,
     stakePoolAllowanceBN,
+    // allMyLocks,
   ] = await Promise.all([
     CONTRACT.FEAR_TOKEN.instance.balanceOf(walletAddress),
     CONTRACT.STAKE_POOL.instance.getMyStakeAmount({ from: walletAddress }),
@@ -236,6 +243,7 @@ const updateUserStats = async (_walletAddress) => {
     CONTRACT.STAKE_POOL.instance.getMyLockedAmount({ from: walletAddress }),
     CONTRACT.STAKE_POOL.instance.getMyWithdrawableAmount({ from: walletAddress }),
     CONTRACT.FEAR_TOKEN.instance.allowance(walletAddress, CONTRACT.STAKE_POOL.instance.address),
+    // CONTRACT.STAKE_POOL.instance.getAllMyLocks(),
   ]);
   vm.wallet.fearBalanceBN = fearBalanceBN;
   vm.wallet.stakedAmountBN = stakedAmountBN;
@@ -243,6 +251,14 @@ const updateUserStats = async (_walletAddress) => {
   vm.wallet.lockedAmountBN = lockedAmountBN;
   vm.wallet.unlockedAmountBN = unlockedAmountBN;
   vm.wallet.stakePoolAllowanceBN = stakePoolAllowanceBN;
+  // vm.wallet.allMyLocks = _.chunk(
+  //   allMyLocks.map(e => [ethers.utils.formatEther(e.amount), e.unlockDate.toNumber()]),
+  //   4,
+  // )
+  // .map(l =>  [
+  //   l.map(t => t[0]).reduce((x, y) => parseEther(x).add(parseEther(y))),
+  //   ...l.map(t => t[1]),
+  // ]);
 }
 
 const bnInputValidator = (input, max) => {
@@ -424,7 +440,8 @@ const CONTRACT = {
   STAKE_POOL: {
     [BSC_CHAINID]: undefined,
     [POLYGON_CHAINID]: undefined,
-    [MUMBAI_CHAINID]: '0x0C27ea4d7B5C9f0d6Ae2C164D182f22D3B41b242',
+    // [MUMBAI_CHAINID]: '0x0cb1680712b1ae4d51c9571ea81b98e18e577bfb',
+    [MUMBAI_CHAINID]: '0x38cbaDe25f11b42e400a826CC4A72967977550f3', // countdown
     // [MUMBAI_CHAINID]: '0x5F19Bd6d55C592548D17242B2304CDBedCa6E661',
     ABI: FEAR_STAKE_POOL_ABI,
     get instance() {
@@ -459,6 +476,7 @@ const updateGlobalStakingStats = async () => {
 
 const boostrapApp = () => {
   Alpine.store('vm', {
+    epoch: null,
     LOADING: {
       SWITCH_NETWORK: false,
       CONNECT_WALLET: false,
@@ -495,8 +513,12 @@ const boostrapApp = () => {
       stakePoolAllowanceBN: null,
       isWalletConnect: false,
       isMetaMask: false,
+      allMyLocks: null,
     },
     bootstrap: async () => {
+      setInterval(() => {
+        vm.epoch = getEpoch();
+      }, 1000);
       window.ethers = ethers.ethers;
       // await connectWallet();
       await Promise.all([
@@ -615,3 +637,22 @@ const bscSVG = `
 		l-281.2-165.8L967.2,753.1L803.9,656.5L803.9,656.5z"/>
 </g>
 </svg>`.trim();
+
+const countdownText = (delta) => {
+	if(delta < 0) delta = 0;
+	const d = Math.floor( delta/86400 );
+	const h = Math.floor( (delta - 86400*d) / 3600);
+	const m = Math.floor( (delta - 86400*d - h*3600) / 60 );
+	const s = delta - 86400*d - h*3600 - 60*m;
+	return `${d}d ${h}h ${m}m ${s}s`
+		.replace(/^0d 0h 0m 0s/, '')
+		.replace(/^0d 0h 0m /, '')
+		.replace(/^0d 0h /, '')
+		.replace(/^0d /, '');
+	// return ({
+	// 	d: d,
+	// 	h: h,
+	// 	m: m,
+	// 	s: s,
+	// })
+}
