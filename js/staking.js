@@ -100,11 +100,9 @@ const RPC_PROVIDER = {
 }
 
 const switchToNetwork = async (chainId) => {
-  console.log(`switchToNetwork`, chainId);
   const web3Provider = new ethers.providers.Web3Provider(window.web3ModalInstance);
   const { provider } = web3Provider;
   try {
-    console.log(`provider`, provider);
     vm.LOADING.SWITCH_NETWORK = true;
     await provider.request({
       method: "wallet_switchEthereumChain",
@@ -493,8 +491,8 @@ const CONTRACT = {
     }
   },
   STAKE_POOL: {
-    [BSC_CHAINID]: "0x35ae9238f2eb224e239c710818aae7ecdb97ef59",
-    [POLYGON_CHAINID]: "0x35ae9238f2eb224e239c710818aae7ecdb97ef59",
+    [BSC_CHAINID]: "0xc15856F445c7FD7123fa11aCcB18d9b4829eD890",
+    [POLYGON_CHAINID]: "0xc15856F445c7FD7123fa11aCcB18d9b4829eD890",
     [MUMBAI_CHAINID]: '0x97EE14d79bdE9fc5301506c9610dD82F2b125cF8', // dimi
     ABI: FEAR_STAKE_POOL_ABI,
     get instance() {
