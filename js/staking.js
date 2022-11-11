@@ -187,7 +187,7 @@ const disconnectWC = async () => {
 }
 
 // wallet connect functions
-const connectWallet = async () => {
+const connectWallet = async (targetChainId) => {
   vm.LOADING.CONNECT_WALLET = true;
   try {
     const Web3Modal = window.Web3Modal.default;
@@ -210,7 +210,11 @@ const connectWallet = async () => {
     const web3Provider = new ethers.providers.Web3Provider(web3ModalInstance);
     const { chainId } = await web3Provider.getNetwork();
     vm.network.chainId = +chainId;
-    if(SUPPORTED_CHAINS.includes(chainId)) {
+    if(
+      // if targetChainId is not specified, connect to current network which is supported
+      // or if targetChainId is specified and is current connected chain
+      (targetChainId==0 && SUPPORTED_CHAINS.includes(chainId)) || (chainId == targetChainId)
+    ) {
       return await connectAccount(web3Provider);
     }
     web3Provider.provider.on("chainChanged", async (chainIdHex) => {
@@ -220,6 +224,8 @@ const connectWallet = async () => {
       if(!SUPPORTED_CHAINS.includes(chainId)) return;
       await connectAccount(new ethers.providers.Web3Provider(web3ModalInstance));
     });
+    // if targetChainId is specified, switch to it
+    if(targetChainId>0 && chainId != targetChainId) await switchToNetwork(targetChainId);
   } catch (exception) {
     const exceptionDetails = getExceptionDetails(exception);
     const ignoredExceptionList = [
@@ -233,6 +239,13 @@ const connectWallet = async () => {
   } finally {
     vm.LOADING.CONNECT_WALLET = false;
   }
+}
+
+const connectWalletTo = async (chainId) => {
+  if(window.web3ModalInstance) {
+    return await switchToNetwork(chainId);
+  }
+  await connectWallet(chainId);
 }
 
 const updateUserStats = async (_walletAddress) => {
