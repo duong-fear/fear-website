@@ -369,12 +369,12 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                             <div class="flex my-2">
                               <div class="flex-1 flex flex-col items-center border-zinc-700 border-dashed border-2 rounded-md py-8 mx-2">
                                 <div>
-                                  <span>Balance: <span x-text="formatEtherHuman(_.get(wallet, 'fearBalanceBN'))"></span> FEAR</span>
+                                  <span>Wallet Balance: <span x-text="formatEtherHuman(_.get(wallet, 'fearBalanceBN'))"></span> FEAR</span>
                                 </div>
                                 <div>
                                   <button
                                     class="rounded-lg bg-green-300 text-green-900 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
-                                    :disabled="LOADING.STAKE"
+                                    :disabled="isWaitingForTransaction()"
                                     @click="stakeFear"
                                   >
                                     <span>Stake $FEAR</span>
@@ -390,7 +390,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                                   <button
                                     class="rounded-lg bg-green-100 text-green-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
                                     @click="unstakeFear"
-                                    :disabled="LOADING.UNSTAKE || bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
+                                    :disabled="isWaitingForTransaction() || bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
                                   >
                                     <span>Unstake</span>
                                     <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.UNSTAKE ? 'auto' : 'hidden'"></i>
@@ -399,7 +399,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                                   <button
                                     class="rounded-lg bg-red-100 text-red-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50 "
                                     @click="instantUnstake"
-                                    :disabled="LOADING.INSTANT_UNSTAKE || bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
+                                    :disabled="isWaitingForTransaction() || bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
                                   >
                                     <span>Instant Unstake</span>
                                     <i x-html="createSpinner('ml-1 text-red-800')" :class="LOADING.INSTANT_UNSTAKE ? 'auto' : 'hidden'"></i> 
@@ -413,7 +413,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                                 <div>
                                   <button
                                     class="rounded-lg bg-green-100 text-green-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
-                                    :disabled="LOADING.CLAIM || bn(_.get(wallet, 'rewardAmountBN')).eq(ZeroBN)"
+                                    :disabled="isWaitingForTransaction() || bn(_.get(wallet, 'rewardAmountBN')).eq(ZeroBN)"
                                     @click="claimReward"
                                   >
                                     <span>Claim</span>
@@ -464,7 +464,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                               <div class="flex justify-center">
                                 <button
                                   class="rounded-lg bg-green-100 text-green-800 px-3 py-2 my-3 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
-                                  :disabled="LOADING.WITHDRAW || wallet.unlockedAmountBN.eq(ZeroBN)"
+                                  :disabled="isWaitingForTransaction() || wallet.unlockedAmountBN.eq(ZeroBN)"
                                   @click="withdrawUnlockedFear"
                                 >
                                   <span>Withdraw</span>
@@ -478,7 +478,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                                 <span>&nbsp;</span>
                                 <button
                                   class="rounded-lg bg-cyan-100 text-cyan-800 px-3 py-2 my-3 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
-                                  :disabled="LOADING.STAKE_BACK|| (wallet.lockedAmountBN.add(wallet.unlockedAmountBN)).eq(ZeroBN)"
+                                  :disabled="isWaitingForTransaction() || (wallet.lockedAmountBN.add(wallet.unlockedAmountBN)).eq(ZeroBN)"
                                   @click="stakeBack"
                                 >
                                   <span>Stake back</span>
@@ -560,7 +560,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                     </template>
                     
                     <!-- countdown UI -->
-                    <template x-if="!isStakingAvaiable()">
+                    <template x-if="!!STAKING_AVAILABLE_EPOCH && !isStakingAvaiable()">
                       <div class="flex flex-col items-center justify-center bg-main-color w-screen z-20 fixed bottom-0 left-0 select-none p-3">
                         <div class="font-averta text-lg uppercase">
                           <span>The Crypt Opens in:</span>

@@ -1,9 +1,9 @@
 const getEpoch = () => Number.parseInt((new Date()).getTime()/1000);
 
-let STAKING_AVAILABLE_EPOCH = 1668157200;
+let STAKING_AVAILABLE_EPOCH = window.location.hostname.endsWith("fear.io") ? 1668157200 : 0;
 
 const isStakingAvaiable = () => {
-  return !!vm && !!STAKING_AVAILABLE_EPOCH && vm.epoch >= STAKING_AVAILABLE_EPOCH;
+  return vm.epoch >= STAKING_AVAILABLE_EPOCH;
 }
 const NUMBER_OF_CONFIRMATIONS_NEEDED = 2;
 
@@ -709,4 +709,15 @@ const formatEtherHuman = (input) => {
   if(input.gte(OneFinneyBN)) return formatEther(input.div(OneFinneyBN).mul(OneFinneyBN));
   if(input.eq(ZeroBN)) return "0";
   return "~0.001";
+}
+
+const isWaitingForTransaction = () => {
+  return [
+    vm.LOADING.STAKE,
+    vm.LOADING.UNSTAKE,
+    vm.LOADING.INSTANT_UNSTAKE,
+    vm.LOADING.CLAIM,
+    vm.LOADING.WITHDRAW,
+    vm.LOADING.STAKE_BACK,
+  ].includes(true);
 }
