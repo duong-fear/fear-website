@@ -591,6 +591,92 @@ const FEAR_STAKE_POOL_ABI = [
   {
     anonymous: false,
     inputs: [
+      { indexed: false, internalType: "address", name: "to", type: "address" },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "reason",
+        type: "string",
+      },
+    ],
+    name: "Withdrawal",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "asset",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "ids",
+        type: "uint256[]",
+      },
+      { indexed: false, internalType: "address", name: "to", type: "address" },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "reason",
+        type: "string",
+      },
+    ],
+    name: "WithdrawalERC1155",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "asset",
+        type: "address",
+      },
+      { indexed: false, internalType: "address", name: "to", type: "address" },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "reason",
+        type: "string",
+      },
+    ],
+    name: "WithdrawalERC20",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "asset",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "ids",
+        type: "uint256[]",
+      },
+      { indexed: false, internalType: "address", name: "to", type: "address" },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "reason",
+        type: "string",
+      },
+    ],
+    name: "WithdrawalERC721",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
       {
         indexed: true,
         internalType: "address",
@@ -921,6 +1007,44 @@ const FEAR_STAKE_POOL_ABI = [
     type: "function",
   },
   {
+    inputs: [
+      { internalType: "address", name: "", type: "address" },
+      { internalType: "address", name: "", type: "address" },
+      { internalType: "uint256[]", name: "", type: "uint256[]" },
+      { internalType: "uint256[]", name: "", type: "uint256[]" },
+      { internalType: "bytes", name: "", type: "bytes" },
+    ],
+    name: "onERC1155BatchReceived",
+    outputs: [{ internalType: "bytes4", name: "", type: "bytes4" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "", type: "address" },
+      { internalType: "address", name: "", type: "address" },
+      { internalType: "uint256", name: "", type: "uint256" },
+      { internalType: "uint256", name: "", type: "uint256" },
+      { internalType: "bytes", name: "", type: "bytes" },
+    ],
+    name: "onERC1155Received",
+    outputs: [{ internalType: "bytes4", name: "", type: "bytes4" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "", type: "address" },
+      { internalType: "address", name: "", type: "address" },
+      { internalType: "uint256", name: "", type: "uint256" },
+      { internalType: "bytes", name: "", type: "bytes" },
+    ],
+    name: "onERC721Received",
+    outputs: [{ internalType: "bytes4", name: "", type: "bytes4" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "pause",
     outputs: [],
@@ -994,6 +1118,13 @@ const FEAR_STAKE_POOL_ABI = [
   },
   {
     inputs: [],
+    name: "totalSentToDaoAmount",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "unpause",
     outputs: [],
     stateMutability: "nonpayable",
@@ -1002,6 +1133,51 @@ const FEAR_STAKE_POOL_ABI = [
   {
     inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
     name: "unstake",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address payable", name: "to", type: "address" },
+      { internalType: "string", name: "reason", type: "string" },
+    ],
+    name: "withdraw",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "asset", type: "address" },
+      { internalType: "uint256[]", name: "ids", type: "uint256[]" },
+      { internalType: "address", name: "to", type: "address" },
+      { internalType: "string", name: "reason", type: "string" },
+    ],
+    name: "withdrawERC1155",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "asset", type: "address" },
+      { internalType: "address", name: "to", type: "address" },
+      { internalType: "string", name: "reason", type: "string" },
+    ],
+    name: "withdrawERC20",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "asset", type: "address" },
+      { internalType: "uint256[]", name: "ids", type: "uint256[]" },
+      { internalType: "address", name: "to", type: "address" },
+      { internalType: "string", name: "reason", type: "string" },
+    ],
+    name: "withdrawERC721",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -297,15 +297,16 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                         <div class="flex w-full mt-3">
                           <div class="flex-1 text-center text-gray-100 rounded-2xl bg-black-color mx-2 py-4 flex flex-col-reverse">
                             <div>
-                              <span class="uppercase text-sm">$FEAR Locked</span>
+                              <span class="uppercase md:text-sm text-xs">Total Staked</span>
                             </div>
-                            <div>
+                            <div class="flex justify-center items-center">
                               <span class="text-4xl font-bold text-main-color" x-text="formatEtherHuman(_.get(global, 'tvlBN'))"></span>
+                              <img src="/images/fear-icon.svg" class="ml-2 w-8 h-8 rounded-full border-2 border-gray-500" title="$FEAR">
                             </div>
                           </div>
                           <div class="flex-1 text-center text-gray-100 rounded-2xl bg-black-color mx-2 py-4 flex flex-col-reverse">
                             <div>
-                              <span class="uppercase text-sm">APR</span>
+                              <span class="uppercase md:text-sm text-xs">APR</span>
                             </div>
                             <div>
                               <span class="text-4xl font-bold text-main-color" x-text="_.get(global, 'apr', 'n/a')+ '%'"></span>
@@ -313,10 +314,19 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                           </div>
                           <div class="flex-1 text-center text-gray-100 rounded-2xl bg-black-color mx-2 py-4 flex flex-col-reverse">
                             <div>
-                              <span class="uppercase text-sm">Stakers</span>
+                              <span class="uppercase md:text-sm text-xs">Stakers</span>
                             </div>
                             <div>
                               <span class="text-4xl font-bold text-main-color" x-text="_.get(global, 'stakerCount', 'n/a')"></span>
+                            </div>
+                          </div>
+                          <div class="flex-1 text-center text-gray-100 rounded-2xl bg-black-color mx-2 py-4 flex flex-col-reverse">
+                            <div>
+                              <span class="uppercase md:text-sm text-xs">Fee Collected</span>
+                            </div>
+                            <div class="flex justify-center items-center">
+                              <span class="text-4xl font-bold text-main-color" x-text="formatEtherHuman(global.totalSentToDaoAmountBN)"></span>
+                              <img src="/images/fear-icon.svg" class="ml-2 w-8 h-8 rounded-full border-2 border-gray-500" title="$FEAR">
                             </div>
                           </div>
                         </div>
@@ -325,7 +335,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                           <span class="font-mono" style="font-size: medium;">
                             <img src="images/icons/metamask.svg" class="w-6 h-6 inline-block" x-show="vm.wallet.isMetaMask" />
                             <img src="images/icons/walletconnect.svg" class="w-6 h-6 inline-block" x-show="vm.wallet.isWalletConnect" />
-                            <span x-text="vm.wallet.shortAddress || vm.wallet.address"></span> connected                  
+                            <span x-text="vm.wallet.shortAddress || vm.wallet.address"></span> connected <span x-text="getChainNameById(network.chainId)"></span>                  
                           </span>
                           <button class="rounded-full bg-zinc-900 text-gray-300 mr-2 px-3 py-1 flex items-center" x-show="vm.wallet.isWalletConnect" @click="disconnectWC">
                             <span>disconnect</span>
@@ -335,7 +345,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                           </button>
                         </div>
                         <!-- staking stats by user -->
-                        <div class="bg-black-color rounded-xl mt-3 p-1 shadow">
+                        <div class="rounded-xl mt-3 p-1 shadow">
                           <div class="relative">
                             <template x-if="!_.get(vm, 'wallet.address')">
                               <div class="absolute w-full h-full bg-black-color flex items-center justify-center z-10">
@@ -454,13 +464,13 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                               <div class="flex justify-center">
                                 <button
                                   class="rounded-lg bg-green-100 text-green-800 px-3 py-2 my-3 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
-                                  :disabled="LOADING.WITHDRAW || bn(_.get(wallet, 'unlockedAmountBN')).eq(ZeroBN)"
+                                  :disabled="LOADING.WITHDRAW || wallet.unlockedAmountBN.eq(ZeroBN)"
                                   @click="withdrawUnlockedFear"
                                 >
                                   <span>Withdraw</span>
                                   <template x-if="bn(_.get(wallet, 'unlockedAmountBN')).gt(ZeroBN)">
                                     <span>
-                                      &nbsp;<span x-text="`${formatEtherHuman(wallet.unlockedAmountBN)}`"></span>&nbsp;<span>FEAR</span>
+                                      &nbsp;(<span x-text="`${formatEtherHuman(wallet.unlockedAmountBN)}`"></span>&nbsp;<span>FEAR</span>)
                                     </span>
                                   </template>
                                   <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.WITHDRAW ? 'auto' : 'hidden'"></i>  
@@ -468,13 +478,13 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                                 <span>&nbsp;</span>
                                 <button
                                   class="rounded-lg bg-cyan-100 text-cyan-800 px-3 py-2 my-3 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
-                                  :disabled="LOADING.STAKE_BACK|| wallet.lockedAmountBN.eq(ZeroBN)"
+                                  :disabled="LOADING.STAKE_BACK|| (wallet.lockedAmountBN.add(wallet.unlockedAmountBN)).eq(ZeroBN)"
                                   @click="stakeBack"
                                 >
                                   <span>Stake back</span>
-                                  <template x-if="bn(_.get(wallet, 'lockedAmountBN')).gt(ZeroBN)">
+                                  <template x-if="(wallet.lockedAmountBN.add(wallet.unlockedAmountBN)).gt(ZeroBN)">
                                     <span>
-                                      &nbsp;<span x-text="`${formatEtherHuman(wallet.lockedAmountBN)}`"></span>&nbsp;<span>FEAR</span>
+                                      &nbsp;(<span x-text="`${formatEtherHuman(wallet.lockedAmountBN.add(wallet.unlockedAmountBN))}`"></span>&nbsp;<span>FEAR</span>)
                                     </span>
                                   </template>
                                   <i x-html="createSpinner('ml-1 text-cyan-800')" :class="LOADING.STAKE_BACK ? 'auto' : 'hidden'"></i>  
@@ -491,6 +501,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                             <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Unstaking period of one month (25% of tokens each week)</li>
                             <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Instant Release option with 20% fee</li>
                             <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Fees go to the FEAR DAO Treasury</li>
+                            <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Staking available on Binance Smart Chain network and Polygon network</li>
                           </ol>
                         </div>
                       </div>
@@ -534,6 +545,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                               class="min-w-[11rem] min-h-[11rem] rounded-3xl p-4 mx-4 items-center flex flex-col bg-gray-800 enabled:hover:bg-gray-700 justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                               :disabled="!SUPPORTED_CHAINS.includes(MUMBAI_CHAINID)"
                               @click="switchToNetwork(MUMBAI_CHAINID)"
+                              x-show="SUPPORTED_CHAINS.includes(MUMBAI_CHAINID)"
                               >
                               <i x-html="polygonSVG" class="mb-2"></i>
                               <span>Mumbai</span>
@@ -548,7 +560,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                     </template>
                     
                     <!-- countdown UI -->
-                    <template x-if="epoch && STAKING_AVAILABLE_EPOCH && !isStakingAvaiable()">
+                    <template x-if="!isStakingAvaiable()">
                       <div class="flex flex-col items-center justify-center bg-main-color w-screen z-20 fixed bottom-0 left-0 select-none p-3">
                         <div class="font-averta text-lg uppercase">
                           <span>The Crypt Opens in:</span>

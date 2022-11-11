@@ -1032,11 +1032,12 @@ letter-spacing: 5px;
   backdrop-filter: brightness(0.25);
 }
 .swal2-popup.swal2-modal {
-  background-color: #44475a;
+  background-color: #171717;
   color: #f8f8f2;
 }
 .swal2-title {
   color: #f3f4f6 !important; /* text-gray-100 */
+  text-transform: none !important;
 }
 .swal2-input-label {
   color: #d1d5db !important; /* text-gray-100 */

@@ -1,19 +1,22 @@
-const STAKING_AVAILABLE_EPOCH = null; // 1668164400
 const getEpoch = () => Number.parseInt((new Date()).getTime()/1000);
+
+let STAKING_AVAILABLE_EPOCH = 1668157200;
+
 const isStakingAvaiable = () => {
-  return !!vm && vm.epoch >= STAKING_AVAILABLE_EPOCH;
+  return !!vm && !!STAKING_AVAILABLE_EPOCH && vm.epoch >= STAKING_AVAILABLE_EPOCH;
 }
+const NUMBER_OF_CONFIRMATIONS_NEEDED = 2;
 
 const POLYGON_CHAINID = 137;
 const MUMBAI_CHAINID = 80001;
 const BSC_CHAINID = 56;
 
-let ACTIVATED_CHAINID = MUMBAI_CHAINID;
+const DEFAULT_CHAINID = POLYGON_CHAINID;
 
 const SUPPORTED_CHAINS = [
-  // POLYGON_CHAINID,
+  POLYGON_CHAINID,
   MUMBAI_CHAINID,
-  // BSC_CHAINID,
+  BSC_CHAINID,
 ];
 
 const RPC_URL = {
@@ -33,7 +36,7 @@ const CHAINS = [
     mainnet: true,
     chainId: `0x${POLYGON_CHAINID.toString(16)}`,
     rpc: RPC_URL[POLYGON_CHAINID],
-    name: "Polygon",
+    name: "Polygon Mainnet",
     nativeCurrency: {
         name: "MATIC",
         symbol: "MATIC",
@@ -45,7 +48,7 @@ const CHAINS = [
     mainnet: true,
     chainId: `0x${BSC_CHAINID.toString(16)}`,
     rpc: RPC_URL[BSC_CHAINID],
-    name: "BSC",
+    name: "Binance Smart Chain",
     nativeCurrency: {
         name: "BNB",
         symbol: "BNB",
@@ -57,7 +60,7 @@ const CHAINS = [
     mainnet: false,
     chainId: `0x${MUMBAI_CHAINID.toString(16)}`,
     rpc: RPC_URL[MUMBAI_CHAINID],
-    name: "Mumbai",
+    name: "Mumbai Testnet",
     nativeCurrency: {
         name: "MATIC",
         symbol: "MATIC",
@@ -66,6 +69,11 @@ const CHAINS = [
     blockExplorer: "https://mumbai.polygonscan.com",
   },
 ];
+
+const getChainNameById = (chainId) => {
+  const c = CHAINS.find(c => +chainId == +c.chainId);
+  return c ? `(${c.name})` : ``;
+}
 
 const reloadPage = () => window.location.reload();
 const formatEther = (amountBN) => (amountBN instanceof ethers.BigNumber) ? ethers.utils.formatEther(amountBN).replace(/\.0$/, '') : 'n/a';
@@ -138,6 +146,7 @@ const switchToNetwork = async (chainId) => {
 // execute on connected to supported network 
 const connectAccount = async (web3Provider) => {
   try {
+    updateGlobalStakingStats();
     vm.LOADING.CONNECT_WALLET = true;
     let accountList = await web3Provider.listAccounts();
     if(accountList.length == 0) {
@@ -289,10 +298,9 @@ const stakeFear = async ($event) => {
       console.log(`approving FEAR spend txHash`, tx.hash);
       await tx.wait();
     }
-    console.log('staking');
     const tx = await CONTRACT.STAKE_POOL.instance.stake(amountBN);
-    await tx.wait();
-    console.log('staked');
+    console.log(`stakeFear txHash`, tx.hash);
+    await tx.wait(NUMBER_OF_CONFIRMATIONS_NEEDED);
     await Promise.all([
       updateGlobalStakingStats(),
       updateUserStats(),
@@ -326,7 +334,7 @@ const unstakeFear = async ($event) => {
     // const estGasLimit = await CONTRACT.STAKE_POOL.instance.estimateGas.unstake(amountBN);
     const tx = await CONTRACT.STAKE_POOL.instance.unstake(amountBN);
     console.log(`unstakeFear txHash`, tx.hash);
-    await tx.wait();
+    await tx.wait(NUMBER_OF_CONFIRMATIONS_NEEDED);
     await Promise.all([
       updateGlobalStakingStats(),
       updateUserStats(),
@@ -348,7 +356,7 @@ const claimReward = async ($event) => {
     if(vm.wallet.rewardAmountBN.eq(ZeroBN)) throw new Error("You have no reward to claim");
     const tx = await CONTRACT.STAKE_POOL.instance.claimReward();
     console.log(`claimReward txHash`, tx.hash);
-    await tx.wait();
+    await tx.wait(NUMBER_OF_CONFIRMATIONS_NEEDED);
     await Promise.all([
       updateGlobalStakingStats(),
       updateUserStats(),
@@ -372,7 +380,7 @@ const withdrawUnlockedFear = async ($event) => {
     if(unlockedAmountBN.eq(ZeroBN)) throw new Error("Can't withdraw Zero");
     const tx = await CONTRACT.STAKE_POOL.instance.withdrawUnlocked();
     console.log(`withdrawUnlockedFear txHash`, tx.hash);
-    await tx.wait();
+    await tx.wait(NUMBER_OF_CONFIRMATIONS_NEEDED);
     await Promise.all([
       updateGlobalStakingStats(),
       updateUserStats(),
@@ -391,11 +399,17 @@ const stakeBack = async () => {
   vm.LOADING.STAKE_BACK = true;
   try {
     await updateUserStats();
+    const unlockedAmountBN = vm.wallet.unlockedAmountBN;
     const lockedAmountBN = vm.wallet.lockedAmountBN;
-    if(lockedAmountBN.eq(ZeroBN)) throw new Error("No locked token found");
+    if(lockedAmountBN.eq(ZeroBN)) throw new Error("lockedAmount = 0");
+    const confirmed = await fearConfirm(
+      `This will bring <span class='text-green-500'>${formatEtherHuman(unlockedAmountBN)} unlocked</span> $FEAR and <span class='text-main-color'>${formatEtherHuman(lockedAmountBN)} locked</span> $FEAR back to stake`,
+      `Are you sure ?`,
+    );
+    if(!confirmed) return;
     const tx = await CONTRACT.STAKE_POOL.instance.stakeBack();
     console.log(`stakeBack txHash`, tx.hash);
-    await tx.wait();
+    await tx.wait(NUMBER_OF_CONFIRMATIONS_NEEDED);
     await Promise.all([
       updateGlobalStakingStats(),
       updateUserStats(),
@@ -422,7 +436,7 @@ const instantUnstake = async ($event) => {
       input => bnInputValidator(input, stakedAmountBN),
       {
         inputValue: formatEther(stakedAmountBN),
-        html: `Enter the amount you want to unstake:<br/><span class='text-red-400'>⛔️ You will only get ${100 - instantUnstakeFeePercentage}% of your unstake amount (the rest will be burned 🔥)</span>`,
+        html: `Enter the amount you want to unstake:<br/><span class='text-red-500'>⛔️ You will only get ${100 - instantUnstakeFeePercentage}% of your unstake amount (the rest will be burned 🔥)</span>`,
       },
     );
     if(!amount) return;
@@ -431,12 +445,12 @@ const instantUnstake = async ($event) => {
     if(amountBN.gt(stakedAmountBN)) throw new Error("Unstake amount greater than staked amount");
     const tx = await CONTRACT.STAKE_POOL.instance.instantUnstake(amountBN);
     console.log(`instantUnstake txHash`, tx.hash);
-    await tx.wait();
+    await tx.wait(NUMBER_OF_CONFIRMATIONS_NEEDED);
     await Promise.all([
       updateGlobalStakingStats(),
       updateUserStats(),
     ]);
-    fearSuccess(`${formatEther(amountBN.div(2))} FEAR unstaked & ${ formatEther(amountBN.sub(amountBN.div(2))) } FEAR burnt`);
+    fearSuccess(`${formatEtherHuman(amountBN.mul(100-instantUnstakeFeePercentage).div(100))} FEAR unstaked & ${ formatEtherHuman(amountBN.mul(instantUnstakeFeePercentage).div(100)) } FEAR burnt`);
   } catch (exception) {
     console.error("instantUnstake error", exception);
     // throw exception;
@@ -453,25 +467,27 @@ const CONTRACT = {
     [MUMBAI_CHAINID]: '0x9006Cf37B092C03f77e2428B1220968E6DA399E9',
     ABI: FEAR_TOKEN_ABI,
     get instance() {
+      const chainId = _.get(vm, 'network.chainId', DEFAULT_CHAINID);
       return new ethers.Contract(
-        CONTRACT.FEAR_TOKEN[ACTIVATED_CHAINID],
+        CONTRACT.FEAR_TOKEN[chainId],
         CONTRACT.FEAR_TOKEN.ABI,
-        window.signer || RPC_PROVIDER[ACTIVATED_CHAINID],
+        window.signer || RPC_PROVIDER[chainId],
       );
     }
   },
   STAKE_POOL: {
-    [BSC_CHAINID]: undefined,
-    [POLYGON_CHAINID]: undefined,
-    // [MUMBAI_CHAINID]: '0x0cb1680712b1ae4d51c9571ea81b98e18e577bfb', // small unlock time
+    [BSC_CHAINID]: "0x35ae9238f2eb224e239c710818aae7ecdb97ef59",
+    [POLYGON_CHAINID]: "0x35ae9238f2eb224e239c710818aae7ecdb97ef59",
+    // [MUMBAI_CHAINID]: '0x8Ae6CD7cDf43cC602F447e24ad8e0b08270FFF3D', // small unlock time
     // [MUMBAI_CHAINID]: '0x38cbaDe25f11b42e400a826CC4A72967977550f3', // countdown
-    [MUMBAI_CHAINID]: '0x603CdE51BEb30ae04FFD7f9332D6F101203dB832', // dimi
+    [MUMBAI_CHAINID]: '0x97EE14d79bdE9fc5301506c9610dD82F2b125cF8', // dimi
     ABI: FEAR_STAKE_POOL_ABI,
     get instance() {
+      const chainId = _.get(vm, 'network.chainId', DEFAULT_CHAINID);
       return new ethers.Contract(
-        CONTRACT.STAKE_POOL[ACTIVATED_CHAINID],
+        CONTRACT.STAKE_POOL[chainId],
         CONTRACT.STAKE_POOL.ABI,
-        window.signer || RPC_PROVIDER[ACTIVATED_CHAINID],
+        window.signer || RPC_PROVIDER[chainId],
       );
     }
   },
@@ -483,17 +499,20 @@ const updateGlobalStakingStats = async () => {
     totalStakedAmountBN,
     currentStakingEpoch,
     instantUnstakeFeePercentageBN,
+    totalSentToDaoAmountBN,
   ] = await Promise.all([
     CONTRACT.STAKE_POOL.instance.getStakersCount(),
     CONTRACT.STAKE_POOL.instance.getTotalStakedAmount(),
     CONTRACT.STAKE_POOL.instance.getCurrentStakingEpoch(),
     CONTRACT.STAKE_POOL.instance.instantUnstakeFeePercentage(),
+    CONTRACT.STAKE_POOL.instance.totalSentToDaoAmount(),
   ]);
   vm.global.stakerCount = stakerCountBN.toNumber();
   vm.global.tvlBN = totalStakedAmountBN;
   vm.global.apr = +(currentStakingEpoch.apr.toNumber() / 100);
   vm.global.releaseTimeDays = currentStakingEpoch.lockParts.toNumber() * currentStakingEpoch.lockPeriod.toNumber() / (24*3600);
   vm.global.instantUnstakeFeePercentage = instantUnstakeFeePercentageBN.toNumber() / 100;
+  vm.global.totalSentToDaoAmountBN = totalSentToDaoAmountBN;
 }
 
 
@@ -515,7 +534,7 @@ const boostrapApp = () => {
       "The Tomb",
     ],
     network: {
-      chainId: undefined,
+      chainId: DEFAULT_CHAINID,
       provider: undefined,
     },
     activeTabId: 0,
@@ -525,6 +544,7 @@ const boostrapApp = () => {
       apr: undefined,
       releaseTimeDays: undefined,
       instantUnstakeFeePercentage: null,
+      totalSentToDaoAmountBN: null,
     },
     wallet: {
       address: null,
@@ -567,6 +587,17 @@ const fearAsk = async (title, message, inputValidator, options = {}) => {
     ...options,
   });
   return isConfirmed ? value : undefined;
+}
+
+const fearConfirm = async (title, message) => {
+  const { isConfirmed } = await Swal.fire({
+    title,
+    text: message,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Confirm',
+  });
+  return isConfirmed;
 }
 
 const fearSuccess = async (message, options = {}) => {
