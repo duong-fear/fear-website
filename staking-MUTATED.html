@@ -577,7 +577,10 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                     
                     <!-- countdown UI -->
                     <template x-if="!!STAKING_AVAILABLE_EPOCH && !isStakingAvaiable()">
-                      <div class="flex flex-col items-center justify-center bg-main-color w-screen z-20 fixed bottom-0 left-0 select-none p-3">
+                      <div
+                        class="flex flex-col items-center justify-center bg-main-color w-screen z-20 fixed bottom-0 left-0 select-none p-3 hidden"
+                        :class="!!STAKING_AVAILABLE_EPOCH && !isStakingAvaiable() ? 'block': 'hidden'"
+                        >
                         <div class="font-averta text-lg uppercase">
                           <span>The Crypt Opens in:</span>
                         </div>

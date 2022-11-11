@@ -1,9 +1,11 @@
+const isProductEnv = window.location.hostname.endsWith("fear.io");
+
 const getEpoch = () => Number.parseInt((new Date()).getTime()/1000);
 
-let STAKING_AVAILABLE_EPOCH = window.location.hostname.endsWith("fear.io") ? 1668157200 : 0;
+let STAKING_AVAILABLE_EPOCH = isProductEnv ? 1668157200 : 0;
 
 const isStakingAvaiable = () => {
-  return vm.epoch >= STAKING_AVAILABLE_EPOCH;
+  return !!_.get(vm, 'epoch') && vm.epoch >= STAKING_AVAILABLE_EPOCH;
 }
 const NUMBER_OF_CONFIRMATIONS_NEEDED = 2;
 
@@ -308,6 +310,8 @@ const stakeFear = async ($event) => {
     if(amountBN.gt(fearBalanceBN)) {
       throw new Error(`Stake amount greater than your balance (${formatEther(fearBalanceBN)})`);
     }
+    // https://github.com/MetaMask/metamask-mobile/pull/5115
+    // on Metamask for iOS when reject approve request, there will be no error emited
     if(stakePoolAllowanceBN.lt(amountBN)) {
       const tx = await CONTRACT.FEAR_TOKEN.instance.approve(CONTRACT.STAKE_POOL.instance.address, ethers.constants.MaxUint256);
       console.log(`approving FEAR spend txHash`, tx.hash);
