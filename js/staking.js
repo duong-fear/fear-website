@@ -504,6 +504,23 @@ const CONTRACT = {
   },
 };
 
+const _getCurrentStakingEpoch = async () => {
+  try {
+    return await CONTRACT.STAKE_POOL.instance.getCurrentStakingEpoch();
+  } catch (exception){
+    console.log(`_getCurrentStakingEpoch`, JSON.stringify(exception));
+    const errorName = _.get(exception, 'errorName');
+    if(errorName === "Panic") return {
+      start: ethers.BigNumber.from(1668157140),
+      end: ethers.BigNumber.from(1699693200),
+      apr: ethers.BigNumber.from(1000),
+      lockParts: ethers.BigNumber.from(4),
+      lockPeriod: ethers.BigNumber.from(604800),
+    }
+    throw exception;
+  }
+}
+
 const updateGlobalStakingStats = async () => {
   const [
     stakerCountBN,
@@ -514,7 +531,7 @@ const updateGlobalStakingStats = async () => {
   ] = await Promise.all([
     CONTRACT.STAKE_POOL.instance.getStakersCount(),
     CONTRACT.STAKE_POOL.instance.getTotalStakedAmount(),
-    CONTRACT.STAKE_POOL.instance.getCurrentStakingEpoch(),
+    _getCurrentStakingEpoch(),
     CONTRACT.STAKE_POOL.instance.instantUnstakeFeePercentage(),
     CONTRACT.STAKE_POOL.instance.totalSentToDaoAmount(),
   ]);
@@ -573,6 +590,9 @@ const boostrapApp = () => {
     bootstrap: async () => {
       setInterval(() => {
         vm.epoch = getEpoch();
+        if(vm.epoch===STAKING_AVAILABLE_EPOCH) {
+          updateGlobalStakingStats();
+        }
       }, 1000);
       // window.ethers = ethers.ethers;
       // await connectWallet();
