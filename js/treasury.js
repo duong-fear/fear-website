@@ -231,7 +231,7 @@ const getDaoWalletBalanceBN = async () => {
 const getTotalFearWalletAccounts = async () => {
   const result = await axios.request({
     method: "GET",
-    url: "http://fearapi.azurewebsites.net/api/walletproxy/stats",
+    url: "https://fearapi.azurewebsites.net/api/walletproxy/stats",
     headers: {
       'x-session-id': walletProxySessionId,
     },
