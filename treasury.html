@@ -67,6 +67,9 @@
             .c3-tooltip tr, .c3-tooltip td {
                 border: none !important;
             }
+            .c3 text {
+                font-family: Averta, serif !important;
+            }
         </style>
         <link rel="stylesheet" href="assets/css/bootstrap.min.css?v3">
         <link rel="stylesheet" href="assets/css/animate.min.css?v3">
@@ -85,7 +88,7 @@
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.js" integrity="sha512-tyQHGhqSiH/wW31W22IYEXVwL7Rh9pQ5oDedxPkXEftX/woKF5l/qswBaQ1Ohre7OyiLk1ypnYBBzmSZ/ZZk1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="js/lodash@4.17.15.min.js"></script>
-        <!-- <script src="js/dayjs.min.js"></script> -->
+        <script src="js/dayjs.min.js"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <script>tailwind.config = { corePlugins: { preflight: false } }</script>
         <script src="js/alpinejs@3.10.4.min.js" defer></script>
@@ -294,40 +297,40 @@
                     </div>
                     <!-- stats -->
                     <div class="flex items-center justify-center text-center">
-                      <div class="flex-1 bg-zinc-800 rounded-lg mx-2 py-4 flex flex-col">
-                        <span class="text-5xl py-2">2371</span>
-                        <span>$FEAR holders</span>
+                      <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col">
+                        <span class="text-5xl py-2 font-bold text-main-color">1573</span>
+                        <span class="uppercase text-xs text-neutral-200">$FEAR holders</span>
                       </div>
-                      <div class="flex-1 bg-zinc-800 rounded-lg mx-2 py-4 flex flex-col">
-                        <span class="text-5xl py-2">2371</span>
-                        <span>FEAR Wallet Accounts</span>
+                      <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col">
+                        <span class="text-5xl py-2 py-2 font-bold text-main-color">2371</span>
+                        <span class="uppercase text-xs text-neutral-200">FEAR Wallet Accounts</span>
                       </div>
-                      <div class="flex-1 bg-zinc-800 rounded-lg mx-2 py-4 flex flex-col">
-                        <span class="text-5xl py-2">300K</span>
-                        <span>DAO Treasury balance ($FEAR)</span>
+                      <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col">
+                        <span class="text-5xl py-2 py-2 font-bold text-main-color">300K</span>
+                        <span class="uppercase text-xs text-neutral-200">$FEAR in Treasury</span>
                       </div>
-                      <div class="flex-1 bg-zinc-800 rounded-lg mx-2 py-4 flex flex-col">
-                        <span class="text-5xl py-2">TBD</span>
-                        <span>TBD</span>
+                      <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col">
+                        <span class="text-5xl py-2 py-2 font-bold text-main-color">13M</span>
+                        <span class="uppercase text-xs text-neutral-200">$FEAR in circulating</span>
                       </div>
                     </div>
                     <!-- charts -->
                     <!-- dao wallet -->
                     <div class="mt-2 px-2">
-                      <div>
-                        <span>DAO wallet balance chart</span>
-                      </div>
-                      <div class="bg-zinc-800 py-4">
-                        <div id="token-release-chart"/>
+                      <div class="bg-neutral-900 mt-4 py-2 pb-2 rounded-lg">
+                        <div id="dao-treasury-balance"></div>
+                        <!-- <div class="text-center pt-1 text-main-color text-lg">
+                            <span>DAO Treasury balance</span>
+                        </div> -->
                       </div>
                     </div>
                     <!-- circulation -->
                     <div class="mt-2 px-2">
-                      <div>
-                        <span>FEAR circulation chart</span>
-                      </div>
-                      <div class="bg-zinc-800">
-                        <!-- <div id="token-release-chart"/> -->
+                      <div class="bg-neutral-900 mt-4 py-2 pb-2 rounded-lg">
+                        <div id="fear-circulation-supply"></div>
+                        <!-- <div class="text-center pt-1 text-main-color text-lg">
+                            <span>$FEAR token circulation suply</span>
+                        </div> -->
                       </div>
                     </div>
                   </div>
