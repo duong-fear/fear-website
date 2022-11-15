@@ -1,4 +1,8 @@
+// config
+const daoWalletAddress = "0x3C821fea803e7376f223510e1a0117f6B4F01121";
+
 const formatter = Intl.NumberFormat('en', { notation: 'compact' });
+const ZeroBN = ethers.constants.Zero;
 const OneEtherBN = ethers.utils.parseEther("1");
 const OneFinneyBN = ethers.utils.parseUnits('1', 'finney');
 const formatEther = (amountBN) => (amountBN instanceof ethers.BigNumber) ? ethers.utils.formatEther(amountBN).replace(/\.0$/, '') : 'n/a';
@@ -12,6 +16,50 @@ const formatEtherHuman = (input) => {
   if(input.eq(ZeroBN)) return "0";
   return "~0.001";
 }
+
+const POLYGON_CHAINID = 137;
+const MUMBAI_CHAINID = 80001;
+const BSC_CHAINID = 56;
+const RPC_URL = {
+  1: 'https://rpc.ankr.com/eth',
+  10: 'https://rpc.ankr.com/optimism',
+  43114: 'https://rpc.ankr.com/avalanche',
+  42220: 'https://rpc.ankr.com/celo',
+  1666600000: 'https://rpc.ankr.com/harmony',
+  250: 'https://rpc.ankr.com/fantom',
+  [BSC_CHAINID]: 'https://rpc.ankr.com/bsc',
+  [POLYGON_CHAINID]: 'https://rpc.ankr.com/polygon',
+  [MUMBAI_CHAINID]: 'https://rpc.ankr.com/polygon_mumbai',
+};
+const RPC_PROVIDER = {
+  [BSC_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[BSC_CHAINID]),
+  [POLYGON_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[POLYGON_CHAINID]),
+  [MUMBAI_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[MUMBAI_CHAINID]),
+}
+
+const CONTRACT = {
+  FEAR_TOKEN: {
+    [BSC_CHAINID]: "0x9ba6a67a6f3b21705a46b380a1b97373a33da311",
+    [POLYGON_CHAINID]: '0xa2ca40dbe72028d3ac78b5250a8cb8c404e7fb8c',
+    [MUMBAI_CHAINID]: '0x9006Cf37B092C03f77e2428B1220968E6DA399E9',
+    ABI: FEAR_TOKEN_ABI,
+    // get instance() {
+    //   const chainId = _.get(vm, 'network.chainId', DEFAULT_CHAINID);
+    //   return new ethers.Contract(
+    //     CONTRACT.FEAR_TOKEN[chainId],
+    //     CONTRACT.FEAR_TOKEN.ABI,
+    //     window.signer || RPC_PROVIDER[chainId],
+    //   );
+    // },
+    instanceForChain(chainId) {
+      return new ethers.Contract(
+        CONTRACT.FEAR_TOKEN[chainId],
+        CONTRACT.FEAR_TOKEN.ABI,
+        RPC_PROVIDER[chainId],
+      );
+    }
+  },
+};
 
 const daoWalletData = [0];
 const addRandom = (multipler) => {
@@ -175,13 +223,20 @@ const drawCharts2 = () => {
   // chart.resize({height:100, width:300})
 }
 
+const getDaoWalletBalanceBN = async () => {
+  return await CONTRACT.FEAR_TOKEN.instanceForChain(POLYGON_CHAINID).balanceOf(daoWalletAddress);
+}
+
 const fetchAppState = async (callback) => {
   const [
-    circulatingsupply
+    circulatingsupply,
+    daoWalletBalanceBN,
   ] = await Promise.all([
     axios.get("https://api.fear.io/api/circulatingsupply").then(r => r.data),
+    getDaoWalletBalanceBN(),
   ]);
   vm.state.circulatingsupplyBN = ethers.utils.parseEther(`${circulatingsupply}`);
+  vm.state.daoWalletBalanceBN = daoWalletBalanceBN;
   vm.state.ready = true;
   setTimeout(callback, 50);
 }
@@ -203,7 +258,7 @@ const boostrapApp = () => {
     state: {
       ready: false,
       totalHolders: 2537,
-      daoWalletBalanceBN: ethers.utils.parseEther("3156"),
+      daoWalletBalanceBN: null,
       circulatingsupplyBN: null,
     },
   });
