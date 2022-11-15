@@ -1,5 +1,6 @@
 // config
 const daoWalletAddress = "0x3C821fea803e7376f223510e1a0117f6B4F01121";
+const walletProxySessionId = '1//0es3bUh6mNj_fCgYIARAAGA4SNwF-L9IrTlNCpCGkW--8QPwwuVUPpn_-_ctd7kPwvlhvTHScRLZMkWDH19BU226CTFFffs3w-sY';
 
 const formatter = Intl.NumberFormat('en', { notation: 'compact' });
 const ZeroBN = ethers.constants.Zero;
@@ -227,16 +228,30 @@ const getDaoWalletBalanceBN = async () => {
   return await CONTRACT.FEAR_TOKEN.instanceForChain(POLYGON_CHAINID).balanceOf(daoWalletAddress);
 }
 
+const getTotalFearWalletAccounts = async () => {
+  const result = await axios.request({
+    method: "GET",
+    url: "http://fearapi.azurewebsites.net/api/walletproxy/stats",
+    headers: {
+      'x-session-id': walletProxySessionId,
+    },
+  }).then(r => r.data);
+  return _.get(result, 'data.totalFearWalletAccounts');
+}
+
 const fetchAppState = async (callback) => {
   const [
     circulatingsupply,
     daoWalletBalanceBN,
+    totalFearWalletAccounts,
   ] = await Promise.all([
     axios.get("https://api.fear.io/api/circulatingsupply").then(r => r.data),
     getDaoWalletBalanceBN(),
+    getTotalFearWalletAccounts(),
   ]);
   vm.state.circulatingsupplyBN = ethers.utils.parseEther(`${circulatingsupply}`);
   vm.state.daoWalletBalanceBN = daoWalletBalanceBN;
+  vm.state.totalFearWalletAccounts = totalFearWalletAccounts;
   vm.state.ready = true;
   setTimeout(callback, 50);
 }
@@ -257,7 +272,7 @@ const boostrapApp = () => {
     },
     state: {
       ready: false,
-      totalHolders: 2537,
+      totalFearWalletAccounts: null,
       daoWalletBalanceBN: null,
       circulatingsupplyBN: null,
     },
