@@ -92,6 +92,7 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <script>tailwind.config = { corePlugins: { preflight: false } }</script>
         <script src="js/alpinejs@3.10.4.min.js" defer></script>
+        <script src="js/axios@1.1.3.js"></script>
         <!-- <script src="js/walletconnect_web3-provider@1.7.8.umd.min.js"></script> -->
         <!-- <script src="js/web3modal@1.9.8.min.js"></script> -->
         <!-- <script src="js/abi.js"></script> -->
@@ -291,6 +292,7 @@
         <section class="blog-details-area" x-data="$store.vm">
             <div class="container mt-32">
                 <!-- start treasury UI -->
+                <template x-if="state.ready">
                   <div class="rounded-md font-averta text-gray-100">
                     <div class="page-title-content text-center py-4">
                       <h1 class="" style="-webkit-animation: none; animation: none">DAO Treasury</h1>
@@ -310,7 +312,7 @@
                         <span class="uppercase text-xs text-neutral-200">$FEAR in Treasury</span>
                       </div>
                       <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col">
-                        <span class="text-5xl py-2 py-2 font-bold text-main-color">13M</span>
+                        <span class="text-5xl py-2 py-2 font-bold text-main-color" x-text="formatEtherHuman(state.circulatingsupplyBN)"></span>
                         <span class="uppercase text-xs text-neutral-200">$FEAR in circulating</span>
                       </div>
                     </div>
@@ -325,15 +327,26 @@
                       </div>
                     </div>
                     <!-- circulation -->
-                    <div class="mt-2 px-2">
+                    <!-- <div class="mt-2 px-2">
                       <div class="bg-neutral-900 mt-4 py-2 pb-2 rounded-lg">
                         <div id="fear-circulation-supply"></div>
-                        <!-- <div class="text-center pt-1 text-main-color text-lg">
-                            <span>$FEAR token circulation suply</span>
-                        </div> -->
                       </div>
-                    </div>
+                    </div> -->
                   </div>
+                </template>
+                <template x-if="!state.ready">
+                    <div class="flex flex-col h-96 text-neutral-400 justify-center items-center bg-neutral-900 rounded-lg select-none">
+                        <div>
+                            <svg class="animate-spin mb-2 h-5 w-5 text-white text-neutral-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <span>Fetching stats ...</span>
+                        </div>
+                    </div>
+                </template>
                 <!-- end treasury UI -->
             </div>
         </section>
