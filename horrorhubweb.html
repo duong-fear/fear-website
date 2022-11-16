@@ -1,0 +1,95 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Horror Hub | Fear</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- <script>tailwind.config = { corePlugins: { preflight: false } }</script> -->
+  <script src="js/lodash@4.17.15.min.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/horrorhubweb.js"></script>
+  <script src="js/abi.js"></script>
+  <script src="js/alpinejs@3.10.4.min.js" defer></script>
+  <script src="assets/js/jquery.min.js?v4"></script>
+  <script src="https://global.transak.com/sdk/v1.1/widget.js" async></script>
+  <script src="https://apis.google.com/js/client:platform.js?onload=boostrapAppGAPI" async defer></script>
+  
+  <style>
+    @font-face {
+      font-family: "Averta";
+      src: url("fonts/Averta-Regular.otf") format("truetype");
+    }
+    .font-averta {
+      font-family: Averta !important;
+    }
+  </style>
+  <script>
+    function launchTransak(){
+      let n = new TransakSDK.default({
+        apiKey: "80f00610-32cc-4d01-8eb0-dfc825c2ef53",
+        environment: "PRODUCTION",
+        defaultCryptoCurrency: "FEAR",
+        themeColor:"000000",
+        email: "",
+        redirectURL: "",
+        hostURL: window.location.origin,
+        widgetHeight:"550px",
+        widgetWidth:"450px",
+      });
+      n.init();
+      n.on(
+        n.EVENTS.TRANSAK_WIDGET_CLOSE,
+        () => {n.close()},
+      );
+    }
+    window.onload = function(){
+      $("#transakLink").on("click", launchTransak);
+    };
+  </script>
+</head>
+<body x-data="$store.vm" class="font-averta bg-neutral-700 antialiased">
+<div class="container bg-neutral-900 mx-auto flex flex-col min-h-screen">
+  <!-- header -->
+  <div class="bg-red-200 sticky top-0 flex justify-between items-center py-1 px-1 text-xs">
+    <div>[home]</div>
+    <div class="flex justify-center items-center select-none">
+      <button class="bg-neutral-700 text-gray-50 px-2 py-1 rounded-full" id="transakLink">buy $FEAR</button>
+      <template x-if="!_.get(state, 'user')">
+        <button class="bg-red-400 text-gray-50 px-2 py-1 rounded-full ml-1" @click="login">login</button>
+      </template>
+      <template x-if="_.get(state, 'user')">
+        <div class="bg-red-400 text-gray-50 px-1 py-1 rounded-full flex justify-center items-center ml-1">
+          <!-- <img class="rounded-full w-5 h-5 mr-1" :src="state.user.picture" /> -->
+          <span x-text="state.user.email + '&nbsp;'"></span>
+        </div>
+      </template>
+    </div>
+  </div>
+  <!-- main -->
+  <div class="flex-1">
+    <template x-if="!!state">
+      <div class="flex flex-wrap justify-center items-center">
+        <template x-for="g of state.games">
+          <div class="bg-neutral-800 rounded-lg text-center px-2 py-2 m-2">
+            <div>
+              <img :src="g.splash" class="rounded-md aspect-[4/3]">
+            </div>
+            <div class="py-2 text-neutral-200">
+              <span class="text-lg font-bold" x-text="g.name"></span>
+            </div>
+            <div class="text-center">
+              <button class="text-gray-50 bg-neutral-700 px-2 py-1 rounded-md">Buy Now</button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </template>
+  </div>
+  <!-- footer -->
+  <div class="bg-red-500">
+    footer
+  </div>
+</div>
+<script>
+  document.addEventListener('alpine:init', boostrapApp);
+</script>
+</body>

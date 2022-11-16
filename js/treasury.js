@@ -239,19 +239,30 @@ const getTotalFearWalletAccounts = async () => {
   return _.get(result, 'data.totalFearWalletAccounts');
 }
 
+const getTotalFearTokenHolders = async () => {
+  const result = await axios.request({
+    method: "GET",
+    url: "https://api.fear.io/api/nooftokenholders",
+  }).then(r => r.data);
+  return result;
+}
+
 const fetchAppState = async (callback) => {
   const [
     circulatingsupply,
     daoWalletBalanceBN,
     totalFearWalletAccounts,
+    totalFearTokenHolders
   ] = await Promise.all([
     axios.get("https://api.fear.io/api/circulatingsupply").then(r => r.data),
     getDaoWalletBalanceBN(),
     getTotalFearWalletAccounts(),
+    getTotalFearTokenHolders(),
   ]);
   vm.state.circulatingsupplyBN = ethers.utils.parseEther(`${circulatingsupply}`);
   vm.state.daoWalletBalanceBN = daoWalletBalanceBN;
   vm.state.totalFearWalletAccounts = totalFearWalletAccounts;
+  vm.state.totalFearTokenHolders = totalFearTokenHolders;
   vm.state.ready = true;
   setTimeout(callback, 50);
 }
@@ -265,13 +276,14 @@ const boostrapApp = () => {
       //   vm.epoch = getEpoch();
       // }, 1000);
       fetchAppState(() => {
-        drawCharts1();
+        // drawCharts1();
       });
       
       // drawCharts2();
     },
     state: {
       ready: false,
+      totalFearTokenHolders: null,
       totalFearWalletAccounts: null,
       daoWalletBalanceBN: null,
       circulatingsupplyBN: null,

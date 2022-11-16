@@ -506,6 +506,13 @@ const CONTRACT = {
         CONTRACT.STAKE_POOL.ABI,
         window.signer || RPC_PROVIDER[chainId],
       );
+    },
+    instanceForChain(chainId) {
+      return new ethers.Contract(
+        CONTRACT.STAKE_POOL[chainId],
+        CONTRACT.STAKE_POOL.ABI,
+        RPC_PROVIDER[chainId],
+      );
     }
   },
 };
@@ -527,26 +534,43 @@ const _getCurrentStakingEpoch = async () => {
   }
 }
 
-const updateGlobalStakingStats = async () => {
+const getTotalStakedAmountAllChains = async () => {
   const [
-    stakerCountBN,
-    totalStakedAmountBN,
-    currentStakingEpoch,
-    instantUnstakeFeePercentageBN,
-    totalSentToDaoAmountBN,
+    totalStakedPolygonBN,
+    totalStakedBSCBN,
   ] = await Promise.all([
-    CONTRACT.STAKE_POOL.instance.getStakersCount(),
-    CONTRACT.STAKE_POOL.instance.getTotalStakedAmount(),
-    _getCurrentStakingEpoch(),
-    CONTRACT.STAKE_POOL.instance.instantUnstakeFeePercentage(),
-    CONTRACT.STAKE_POOL.instance.totalSentToDaoAmount(),
+    CONTRACT.STAKE_POOL.instanceForChain(POLYGON_CHAINID).getTotalStakedAmount(),
+    CONTRACT.STAKE_POOL.instanceForChain(BSC_CHAINID).getTotalStakedAmount(),
   ]);
-  vm.global.stakerCount = stakerCountBN.toNumber();
-  vm.global.tvlBN = totalStakedAmountBN;
-  vm.global.apr = +(currentStakingEpoch.apr.toNumber() / 100);
-  vm.global.releaseTimeDays = currentStakingEpoch.lockParts.toNumber() * currentStakingEpoch.lockPeriod.toNumber() / (24*3600);
-  vm.global.instantUnstakeFeePercentage = instantUnstakeFeePercentageBN.toNumber() / 100;
-  vm.global.totalSentToDaoAmountBN = totalSentToDaoAmountBN;
+  return totalStakedPolygonBN.add(totalStakedBSCBN);
+}
+
+const updateGlobalStakingStats = async () => {
+  try {
+    const [
+      stakerCountBN,
+      totalStakedAmountBN,
+      currentStakingEpoch,
+      instantUnstakeFeePercentageBN,
+      totalSentToDaoAmountBN,
+    ] = await Promise.all([
+      CONTRACT.STAKE_POOL.instance.getStakersCount(),
+      getTotalStakedAmountAllChains(),
+      _getCurrentStakingEpoch(),
+      CONTRACT.STAKE_POOL.instance.instantUnstakeFeePercentage(),
+      CONTRACT.STAKE_POOL.instance.totalSentToDaoAmount(),
+    ]);
+    vm.global.stakerCount = stakerCountBN.toNumber();
+    vm.global.tvlBN = totalStakedAmountBN;
+    vm.global.apr = +(currentStakingEpoch.apr.toNumber() / 100);
+    vm.global.releaseTimeDays = currentStakingEpoch.lockParts.toNumber() * currentStakingEpoch.lockPeriod.toNumber() / (24*3600);
+    vm.global.instantUnstakeFeePercentage = instantUnstakeFeePercentageBN.toNumber() / 100;
+    vm.global.totalSentToDaoAmountBN = totalSentToDaoAmountBN;
+  } catch(exception) {
+    console.error("updateGlobalStakingStats error", exception);
+    // throw exception;
+    fearError(getExceptionDetails(exception));
+  }
 }
 
 

@@ -300,7 +300,7 @@
                     <!-- stats -->
                     <div class="flex items-center justify-center text-center">
                       <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col">
-                        <span class="text-5xl py-2 font-bold text-main-color">-</span>
+                        <span class="text-5xl py-2 font-bold text-main-color" x-text="state.totalFearTokenHolders"></span>
                         <span class="uppercase text-xs text-neutral-200">$FEAR holders</span>
                       </div>
                       <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col">
@@ -318,7 +318,7 @@
                     </div>
                     <!-- charts -->
                     <!-- dao wallet -->
-                    <div class="mt-2 px-2">
+                    <div class="mt-2 px-2 hidden">
                       <div class="bg-neutral-900 mt-4 py-2 pb-2 rounded-lg">
                         <div id="dao-treasury-balance"></div>
                         <!-- <div class="text-center pt-1 text-main-color text-lg">
