@@ -168,9 +168,6 @@
                                         <li class="nav-item fear-token-link"><a href="/token.html" class="nav-link">FEAR TOKEN</a></li>           
 
                                         <li class="nav-item"><a href="/dao.html" class="nav-link">FEAR DAO</a></li>
-
-                                        <li class="nav-item"><a href="https://www.fear.io/staking" class="nav-link">STAKING</a></li>
-										
 										
 <li class="nav-item"><a href="/staking-MUTATED.html" class="nav-link">STAKING <font style="color:green;">MUTATED</font></a></li>
 
@@ -302,26 +299,32 @@
                     </div>
                     <!-- stats -->
                     <div class="flex items-center justify-center text-center">
-                        <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col">
+                        <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col"  style="height:175px;">
                             <span class="text-5xl py-2 font-bold text-main-color" x-text="state.totalFearTokenHolders"></span>
                             <span class="uppercase text-xs text-neutral-200">$FEAR Holders</span>
+                            <div style="margin-top:5px;">
+                                <span style="font-size:9px;">UNIQUE HOLDERS ON</span>
+                                <a href="https://polygonscan.com/token/0xa2ca40dbe72028d3ac78b5250a8cb8c404e7fb8c#balances" target="_blank" style="margin-top:10px;font-size:9px; color:purple;font-weight;display:inline-block;">POLY</a>
+                                <a href="https://bscscan.com/token/0x9ba6a67a6f3b21705a46b380a1b97373a33da311#balances" target="_blank" style="margin-top:10px;font-size:9px; color:yellow;font-weight;display:inline-block;">BSC</a>
+                                <a href="https://etherscan.io/token/0x88a9a52f944315d5b4e917b9689e65445c401e83#balances" target="_blank" style="margin-top:10px;font-size:9px; color:silver;font-weight;display:inline-block;">ETH</a>
+                            </div>
                         </div>
-                        <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col">
+                        <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col" style="height:175px;">
                             <span class="text-5xl py-2 py-2 font-bold text-main-color" x-text="state.totalFearWalletAccounts">-</span>
                             <span class="uppercase text-xs text-neutral-200">FEAR Wallet Accounts</span>
                         </div>
                     </div>
                     <div class="flex items-center justify-center text-center" style="margin-top:50px;">
-                        <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col">
+                        <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col" style="height:175px;">
                             <span class="text-5xl py-2 py-2 font-bold text-main-color" x-text="formatEtherHuman(state.daoWalletBalanceBN)"></span>
                             <span class="uppercase text-xs text-neutral-200">$FEAR in DAO Treasury</span>
                             <div style="margin-top:5px;">
-                                <span style="font-size:10px;color:red;">VIEW ON</span>
-                                <a href="https://polygonscan.com/address/0x3C821fea803e7376f223510e1a0117f6B4F01121" target="_blank" style="margin-top:10px;font-size:10px; color:purple;font-weight;display:inline-block;">POLYGON</a>
-                                <a href="https://bscscan.com/address/0x3C821fea803e7376f223510e1a0117f6B4F01121" target="_blank" style="margin-top:10px;font-size:10px; color:yellow;font-weight;display:inline-block;">BSC</a>
+                                <span style="font-size:9px;">VIEW ON</span>
+                                <a href="https://polygonscan.com/address/0x3C821fea803e7376f223510e1a0117f6B4F01121" target="_blank" style="margin-top:9px;font-size:10px; color:purple;font-weight;display:inline-block;">POLY</a>
+                                <a href="https://bscscan.com/address/0x3C821fea803e7376f223510e1a0117f6B4F01121" target="_blank" style="margin-top:9px;font-size:10px; color:yellow;font-weight;display:inline-block;">BSC</a>
                             </div>
                         </div>
-                        <div class="flex-1 self-stretch bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col justify-center">
+                        <div class="flex-1 self-stretch bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col justify-center" style="height:175px;">
                             <span class="text-5xl py-2 py-2 font-bold text-main-color" x-text="formatEtherHuman(state.circulatingsupplyBN)"></span>
                             <span class="uppercase text-xs text-neutral-200">$FEAR in circulation</span>
                         </div>
