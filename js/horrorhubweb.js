@@ -45,46 +45,114 @@ const fetchInitialAppState = async () => {
       isDesktopGame: false,
       priceFear: "35",
     },
-  ]
+  ].map((g, index) => ({
+    ...g,
+    id: index,
+  }))
 }
 
-const login = async () => {
-  // if(!vm.state.user) throw new Error("Already logged-in");
-  const { code } = await auth2.grantOfflineAccess({
-    'redirect_uri': googleLoginRedirectURI,
-  });
-  // login via 
-  if(googleLoginRedirectURI) return;
-  // login via popup
-  const { id_token } = gapi.client.getToken();
-  const { email, name, picture, } = JSON.parse(atob(id_token.split(".")[1]));
-  console.log(`code email name picture`, code, email, name, picture);
-  vm.state = {
-    ...vm.state,
-    user: {
-      email,
-      name,
-      picture,
-      idToken: id_token,
-    }
+const purchaseGame = async id => {
+  if(vm.state.running.PURCHASE_GAME == id) return;
+  try {
+    vm.state.running.PURCHASE_GAME = id;
+    const { hubToken } = vm.state.user;
+    const game = vm.state.games.find(g => g.id == id);
+    const ownedGames = await getOwnedGames(vm.state.user.hubToken);
+    vm.state.user.ownedGames = ownedGames;
+    if(ownedGames.includes(id)) throw new Error("Already purchased");
+    const result = await axios.request({
+      method: "POST",
+      url: `https://hubfunctions-prd.azurewebsites.net/api/purchase/${id}`,
+      headers: {
+        "x-zumo-auth": hubToken,
+      },
+    }).then(r => r.data);
+    vm.state.user.ownedGames.push(id);
+    fearSuccess(`You owned '${game.name}'`);
+  } catch(exception) {
+    console.error("purchaseGame() error", exception);
+    fearError(getExceptionDetails(exception));
+  } finally {
+    vm.state.running.PURCHASE_GAME = false;
   }
 }
 
-// const automaticLogin = () => {
-//   const searchParams = new URLSearchParams(window.location.hash.substring(1));
-//   const code = searchParams.get('code');
-//   const idToken = searchParams.get('id_token');
-//   if(!code || !idToken) return;
-//   console.log(code, idToken)
-//   const { email, } = JSON.parse(atob(idToken.split(".")[1]));
-//   vm.state.user = {
-//     email,
-//     // name,
-//     // picture,
-//     idToken,
-//   };
-//   history.replaceState({}, '', window.location.pathname);
-// }
+const downloadGame = async () => {
+  await fearError("Download function is not implemented yet :D");
+}
+
+const getHubAPIToken = async (googleIdToken) => {
+  try {
+    const { authenticationToken } = await axios.request({
+      method: "POST",
+      url: `https://hubfunctions-prd.azurewebsites.net/.auth/login/google`,
+      data: {
+        id_token: googleIdToken,
+      },
+    }).then(r => r.data);
+    return authenticationToken;
+  } catch {
+    throw new Error("Can't contact Horror Hub app");
+  }
+}
+
+const getOwnedGames = async (hubToken) => {
+  const { Purchased } = await axios.request({
+    method: "GET",
+    url: `https://hubfunctions-prd.azurewebsites.net/api/getUser`,
+    headers: {
+      "x-zumo-auth": hubToken,
+    },
+  }).then(r => r.data);
+  return Purchased.map(id => +id);
+}
+
+const login = async () => {
+  if(vm.state.running.GOOGLE_LOGIN) return;
+  try {
+    vm.state.running.GOOGLE_LOGIN = true;
+    // if(!vm.state.user) throw new Error("Already logged-in");
+    const { code } = await auth2.grantOfflineAccess({
+      'redirect_uri': googleLoginRedirectURI,
+    });
+    // login via 
+    if(googleLoginRedirectURI) return;
+    // login via popup
+    const { id_token } = gapi.client.getToken();
+    const hubToken = await getHubAPIToken(id_token);
+    const ownedGames = await getOwnedGames(hubToken);
+    const profile = auth2.currentUser.get().getBasicProfile();
+    const [
+      name,
+      email,
+      picture
+    ] = [
+      profile.getName(),
+      profile.getEmail(),
+      profile.getImageUrl(),
+    ]
+    console.log(`code email name picture`, code, email, name, picture);
+    vm.state = {
+      ...vm.state,
+      user: {
+        email,
+        name,
+        picture,
+        refreshToken: code,
+        idToken: id_token,
+        hubToken,
+        ownedGames,
+      }
+    }
+  } catch(exception) {
+    console.error("login() error", exception);
+    // throw exception;
+    if(_.get(exception, 'error') == "popup_closed_by_user") return;
+    fearError(getExceptionDetails(exception));
+  } finally {
+    vm.state.running.GOOGLE_LOGIN = false;
+  }
+}
 
 // auto login
 function boostrapAppGAPI() {
@@ -118,15 +186,18 @@ const boostrapApp = () => {
     state: {
       games: null,
       user: null,
+      running: {
+        GOOGLE_LOGIN: false,
+        PURCHASE_GAME: false,
+        DOWNLOAD_GAME: false,
+      },
     },
     bootstrap: async () => {
       setInterval(() => {
         vm.epoch = getEpoch();
       }, 1000);
-      
       await Promise.all([
         fetchInitialAppState(),
-        // automaticLogin(),
       ]);
     },
   })

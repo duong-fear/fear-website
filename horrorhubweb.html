@@ -7,6 +7,8 @@
   <script src="js/lodash@4.17.15.min.js"></script>
   <script src="js/utils.js"></script>
   <script src="js/horrorhubweb.js"></script>
+  <script src="js/sweetalert2@11.js"></script>
+  <script src="js/axios@1.1.3.js"></script>
   <script src="js/abi.js"></script>
   <script src="js/alpinejs@3.10.4.min.js" defer></script>
   <script src="assets/js/jquery.min.js?v4"></script>
@@ -20,6 +22,35 @@
     }
     .font-averta {
       font-family: Averta !important;
+    }
+    .swal2-confirm {
+      background-color: #262626 !important; /* bg-neutral-800 */
+    }
+    .swal2-container {
+      backdrop-filter: brightness(0.25);
+    }
+    .swal2-popup.swal2-modal {
+      background-color: #171717;
+      color: #f8f8f2;
+    }
+    .swal2-title {
+      color: #f3f4f6 !important; /* text-gray-100 */
+      text-transform: none !important;
+    }
+    .swal2-input-label {
+      color: #d1d5db !important; /* text-gray-100 */
+    }
+    .swal2-confirm, .swal2-deny, .swal2-cancel {
+      padding: 0.5rem 0.75rem !important;
+      border-radius: 0.375rem !important;
+    }
+    .swal2-cancel {
+      background-color: #fee2e2 !important;
+      color: #b91c1c !important;
+    }
+    .swal2-confirm {
+      background-color: #d1fae5 !important;
+      color: #065f46 !important;
     }
   </style>
   <script>
@@ -54,10 +85,17 @@
     <div class="flex justify-center items-center select-none">
       <button class="bg-neutral-700 text-gray-50 px-2 py-1 rounded-full" id="transakLink">buy $FEAR</button>
       <template x-if="!_.get(state, 'user')">
-        <button class="bg-red-400 text-gray-50 px-2 py-1 rounded-full ml-1" @click="login">login</button>
+        <button
+          class="bg-red-400 text-gray-50 px-2 py-1 rounded-full ml-1 flex justify-center items-center disabled:opacity-70"
+          @click="login"
+          :disabled="state.running.GOOGLE_LOGIN"
+        >
+          <span>login</span>
+          <i x-show="state.running.GOOGLE_LOGIN" x-html="loadingSVG('w-3 h-3 ml-1')"></i>
+        </button>
       </template>
       <template x-if="_.get(state, 'user')">
-        <div class="bg-red-400 text-gray-50 px-1 py-1 rounded-full flex justify-center items-center ml-1">
+        <div class="bg-neutral-800 text-neutral-400 px-1 py-1 rounded-full flex justify-center items-center ml-1">
           <img class="rounded-full w-4 h-4 mr-1" :src="state.user.picture" />
           <span x-text="state.user.email + '&nbsp;'"></span>
         </div>
@@ -77,7 +115,36 @@
               <span class="text-lg font-bold" x-text="g.name"></span>
             </div>
             <div class="text-center">
-              <button class="text-gray-50 bg-neutral-700 px-2 py-1 rounded-md">Buy Now</button>
+              <template x-if="state.user && !state.user.ownedGames.includes(g.id)">
+                <button
+                  class="text-green-800 bg-green-200 px-3 py-1 rounded-md inline-flex justify-center items-center select-none transition-all disabled:opacity-70"
+                  @click="purchaseGame(g.id)"
+                  :disabled="state.running.PURCHASE_GAME === g.id"
+                >
+                  <span>Buy</span>
+                  <i x-html="loadingSVG('w-4 h-4 ml-1')" x-show="state.running.PURCHASE_GAME === g.id"></i>
+                  <i x-html="shoppingBagSVG('w-4 h-4 ml-1')" x-show="state.running.PURCHASE_GAME !== g.id"></i>
+                </button>
+              </template>
+              <template x-if="state.user && state.user.ownedGames.includes(g.id)">
+                <button
+                  class="text-cyan-800 bg-cyan-200 px-3 py-1 rounded-md inline-flex justify-center items-center select-none transition-all disabled:opacity-70"
+                  @click="downloadGame(g.id)"
+                  :disabled="state.running.DOWNLOAD_GAME === g.id"
+                >
+                  <span>Download</span>
+                  <i x-html="loadingSVG('w-4 h-4 ml-1')" x-show="state.running.DOWNLOAD_GAME == g.id"></i>
+                  <i x-html="downloadSVG('w-4 h-4 ml-1')" x-show="state.running.DOWNLOAD_GAME != g.id"></i>
+                </button>
+              </template>
+              <template x-if="!state.user">
+                <button
+                  class="bg-red-400 text-gray-50 px-3 py-1 rounded-md inline-flex justify-center items-center select-none transition-all"
+                  @click="login"
+                >
+                  Login to buy
+                </button>
+              </template>
             </div>
           </div>
         </template>
