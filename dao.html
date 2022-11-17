@@ -315,7 +315,11 @@
                         <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col">
                             <span class="text-5xl py-2 py-2 font-bold text-main-color" x-text="formatEtherHuman(state.daoWalletBalanceBN)"></span>
                             <span class="uppercase text-xs text-neutral-200">$FEAR in DAO Treasury</span>
-                            <a href="https://polygonscan.com/address/0x3C821fea803e7376f223510e1a0117f6B4F01121" target="_blank" style="margin-top:10px;font-size:10px; color:red;font-weight:red">VIEW ON POLYGON</a>
+                            <div style="margin-top:5px;">
+                                <span style="font-size:10px;color:red;">VIEW ON</span>
+                                <a href="https://polygonscan.com/address/0x3C821fea803e7376f223510e1a0117f6B4F01121" target="_blank" style="margin-top:10px;font-size:10px; color:purple;font-weight;display:inline-block;">POLYGON</a>
+                                <a href="https://bscscan.com/address/0x3C821fea803e7376f223510e1a0117f6B4F01121" target="_blank" style="margin-top:10px;font-size:10px; color:yellow;font-weight;display:inline-block;">BSC</a>
+                            </div>
                         </div>
                         <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col">
                             <span class="text-5xl py-2 py-2 font-bold text-main-color" x-text="formatEtherHuman(state.circulatingsupplyBN)"></span>
