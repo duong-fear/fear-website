@@ -1,5 +1,5 @@
 // config
-const googleLoginRedirectURI = window.location.href; // `undefined` accepted
+const googleLoginRedirectURI = undefined; //window.location.href
 
 const fetchInitialAppState = async () => {  
   sleep(0.5);
@@ -53,41 +53,61 @@ const login = async () => {
   const { code } = await auth2.grantOfflineAccess({
     'redirect_uri': googleLoginRedirectURI,
   });
-  // const { id_token } = gapi.client.getToken();
-  // const { email, name, picture, } = JSON.parse(atob(id_token.split(".")[1]));
-  // console.log(`code email name picture`, code, email, name, picture);
-  // vm.state = {
-  //   ...vm.state,
-  //   user: {
-  //     email,
-  //     name,
-  //     picture,
-  //     idToken: id_token,
-  //   }
-  // }
+  // login via 
+  if(googleLoginRedirectURI) return;
+  // login via popup
+  const { id_token } = gapi.client.getToken();
+  const { email, name, picture, } = JSON.parse(atob(id_token.split(".")[1]));
+  console.log(`code email name picture`, code, email, name, picture);
+  vm.state = {
+    ...vm.state,
+    user: {
+      email,
+      name,
+      picture,
+      idToken: id_token,
+    }
+  }
 }
 
-const automaticLogin = () => {
-  const searchParams = new URLSearchParams(window.location.hash.substring(1));
-  const code = searchParams.get('code');
-  const idToken = searchParams.get('id_token');
-  if(!code || !idToken) return;
-  console.log(code, idToken)
-  const { email, } = JSON.parse(atob(idToken.split(".")[1]));
-  vm.state.user = {
-    email,
-    // name,
-    // picture,
-    idToken,
-  };
-  history.replaceState({}, '', window.location.pathname);
-}
+// const automaticLogin = () => {
+//   const searchParams = new URLSearchParams(window.location.hash.substring(1));
+//   const code = searchParams.get('code');
+//   const idToken = searchParams.get('id_token');
+//   if(!code || !idToken) return;
+//   console.log(code, idToken)
+//   const { email, } = JSON.parse(atob(idToken.split(".")[1]));
+//   vm.state.user = {
+//     email,
+//     // name,
+//     // picture,
+//     idToken,
+//   };
+//   history.replaceState({}, '', window.location.pathname);
+// }
 
+// auto login
 function boostrapAppGAPI() {
   gapi.load('auth2', () => {
     auth2 = gapi.auth2.init({
       client_id: '701735735157-cdgkv7di5ihom5mdp0pflphvh2p7hjjq.apps.googleusercontent.com',
       fetch_basic_profile: true,
+    });
+    if(googleLoginRedirectURI) auth2.currentUser.listen((googleUser) => {
+      const searchParams = new URLSearchParams(window.location.hash.substring(1));
+      const code = searchParams.get('code');
+      if(!googleLoginRedirectURI || !code) return; // popup login or not being redirected
+      const profile = googleUser.getBasicProfile();
+      const name = profile.getName();
+      const email = profile.getEmail();
+      const picture = profile.getImageUrl();
+      vm.state.user = {
+        email,
+        name,
+        picture,
+        token: code,
+      };
+      history.replaceState({}, '', window.location.pathname);
     });
   });
 }
@@ -106,7 +126,7 @@ const boostrapApp = () => {
       
       await Promise.all([
         fetchInitialAppState(),
-        automaticLogin(),
+        // automaticLogin(),
       ]);
     },
   })

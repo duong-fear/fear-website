@@ -58,7 +58,7 @@
       </template>
       <template x-if="_.get(state, 'user')">
         <div class="bg-red-400 text-gray-50 px-1 py-1 rounded-full flex justify-center items-center ml-1">
-          <!-- <img class="rounded-full w-5 h-5 mr-1" :src="state.user.picture" /> -->
+          <img class="rounded-full w-4 h-4 mr-1" :src="state.user.picture" />
           <span x-text="state.user.email + '&nbsp;'"></span>
         </div>
       </template>
@@ -71,7 +71,7 @@
         <template x-for="g of state.games">
           <div class="bg-neutral-800 rounded-lg text-center px-2 py-2 m-2">
             <div>
-              <img :src="g.splash" class="rounded-md aspect-[4/3]">
+              <img :src="g.splash" class="rounded-md aspect-[4/3]" width="400px">
             </div>
             <div class="py-2 text-neutral-200">
               <span class="text-lg font-bold" x-text="g.name"></span>

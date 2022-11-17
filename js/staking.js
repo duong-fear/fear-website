@@ -545,6 +545,17 @@ const getTotalStakedAmountAllChains = async () => {
   return totalStakedPolygonBN.add(totalStakedBSCBN);
 }
 
+const getTotalFeeCollectedBN = async () => {
+  const [
+    totalFeePolygonBN,
+    totalFeeBSCBN,
+  ] = await Promise.all([
+    CONTRACT.STAKE_POOL.instanceForChain(POLYGON_CHAINID).totalSentToDaoAmount(),
+    CONTRACT.STAKE_POOL.instanceForChain(BSC_CHAINID).totalSentToDaoAmount(),
+  ]);
+  return totalFeePolygonBN.add(totalFeeBSCBN);
+}
+
 const updateGlobalStakingStats = async () => {
   try {
     const [
@@ -558,7 +569,7 @@ const updateGlobalStakingStats = async () => {
       getTotalStakedAmountAllChains(),
       _getCurrentStakingEpoch(),
       CONTRACT.STAKE_POOL.instance.instantUnstakeFeePercentage(),
-      CONTRACT.STAKE_POOL.instance.totalSentToDaoAmount(),
+      getTotalFeeCollectedBN(),
     ]);
     vm.global.stakerCount = stakerCountBN.toNumber();
     vm.global.tvlBN = totalStakedAmountBN;

@@ -225,7 +225,14 @@ const drawCharts2 = () => {
 }
 
 const getDaoWalletBalanceBN = async () => {
-  return await CONTRACT.FEAR_TOKEN.instanceForChain(POLYGON_CHAINID).balanceOf(daoWalletAddress);
+  const [
+    balanceBSCBN,
+    balancePolygonBN,
+  ] = await Promise.all([
+    CONTRACT.FEAR_TOKEN.instanceForChain(BSC_CHAINID).balanceOf(daoWalletAddress),
+    CONTRACT.FEAR_TOKEN.instanceForChain(POLYGON_CHAINID).balanceOf(daoWalletAddress),
+  ])
+  return balanceBSCBN.add(balancePolygonBN);
 }
 
 const getTotalFearWalletAccounts = async () => {
