@@ -81,7 +81,10 @@
 <div class="container bg-neutral-900 mx-auto flex flex-col min-h-screen">
   <!-- header -->
   <div class="bg-red-200 sticky top-0 flex justify-between items-center py-1 px-1 text-xs">
-    <div>[home]</div>
+    <div class="flex items-center justify-center gap-1">
+      <div>[home]</div>
+      <div>[guide]</div>
+    </div>
     <div class="flex justify-center items-center select-none">
       <button class="bg-neutral-700 text-gray-50 px-2 py-1 rounded-full" id="transakLink">buy $FEAR</button>
       <template x-if="!_.get(state, 'user')">
@@ -127,15 +130,16 @@
                 </button>
               </template>
               <template x-if="state.user && state.user.ownedGames.includes(g.id)">
-                <button
+                <a
+                  target="_blank"
+                  href="https://f004.backblazeb2.com/file/fear-public/2048/2048_3.0.apk"
                   class="text-cyan-800 bg-cyan-200 px-3 py-1 rounded-md inline-flex justify-center items-center select-none transition-all disabled:opacity-70"
-                  @click="downloadGame(g.id)"
                   :disabled="state.running.DOWNLOAD_GAME === g.id"
                 >
                   <span>Download</span>
                   <i x-html="loadingSVG('w-4 h-4 ml-1')" x-show="state.running.DOWNLOAD_GAME == g.id"></i>
                   <i x-html="downloadSVG('w-4 h-4 ml-1')" x-show="state.running.DOWNLOAD_GAME != g.id"></i>
-                </button>
+              </a>
               </template>
               <template x-if="!state.user">
                 <button
