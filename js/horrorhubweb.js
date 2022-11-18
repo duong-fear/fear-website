@@ -118,7 +118,7 @@ const login = async () => {
     // login via 
     if(googleLoginRedirectURI) return;
     // login via popup
-    const { id_token } = gapi.client.getToken();
+    const { id_token } = await gapi.client.getToken();
     const hubToken = await getHubAPIToken(id_token);
     const ownedGames = await getOwnedGames(hubToken);
     const profile = auth2.currentUser.get().getBasicProfile();
