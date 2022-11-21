@@ -101,9 +101,9 @@
         <script src="js/treasury.js"></script>
         <script src="js/c3.min-d2a1f852.js" type="text/javascript"></script>
         <script src="js/d3-5.8.2.min-c5268e33.js" type="text/javascript"></script>
-        <script>
-          function launchTransak(){let n=new TransakSDK.default({apiKey:"80f00610-32cc-4d01-8eb0-dfc825c2ef53",environment:"PRODUCTION",defaultCryptoCurrency:"FEAR",themeColor:"000000",email:"",redirectURL:"",hostURL:window.location.origin,widgetHeight:"550px",widgetWidth:"450px"});n.init(),n.on(n.EVENTS.TRANSAK_WIDGET_CLOSE,()=>{n.close()})}window.onload=function(){$("#transakLink").on("click",function(){launchTransak()})};
-        </script>
+        <script src="https://global.transak.com/sdk/v1.1/widget.js" async></script>
+        <script src="/js/transak.js"></script>
+        <script src="/js/sweetalert2@11.js"></script>
 
     </head>
 
@@ -511,7 +511,6 @@
         <script src="assets/js/jquery.min.js?v4"></script>
         <script src="assets/js/popper.min.js?v4"></script>
         <script src="assets/js/bootstrap.min.js?v4"></script>
-        <script src="js/sweetalert2@11.js"></script>
         <script src="assets/js/owl.carousel.min.js?v4"></script>
         <script src="assets/js/magnific-popup.min.js?v4"></script>
         <script src="assets/js/parallax.min.js?v4"></script>

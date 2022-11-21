@@ -56,9 +56,8 @@
         <script src="js/abi.js"></script>
         <script src="js/staking.js"></script>
         <script src="https://global.transak.com/sdk/v1.1/widget.js" async></script>
-        <script>
-          function launchTransak(){let n=new TransakSDK.default({apiKey:"80f00610-32cc-4d01-8eb0-dfc825c2ef53",environment:"PRODUCTION",defaultCryptoCurrency:"FEAR",themeColor:"000000",email:"",redirectURL:"",hostURL:window.location.origin,widgetHeight:"550px",widgetWidth:"450px"});n.init(),n.on(n.EVENTS.TRANSAK_WIDGET_CLOSE,()=>{n.close()})}window.onload=function(){$("#transakLink").on("click",function(){launchTransak()})};
-        </script>
+        <script src="/js/transak.js"></script>
+        <script src="/js/sweetalert2@11.js"></script>
 
     </head>
 
@@ -744,7 +743,7 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
         <script src="assets/js/jquery.min.js?v4"></script>
         <script src="assets/js/popper.min.js?v4"></script>
         <script src="assets/js/bootstrap.min.js?v4"></script>
-        <script src="js/sweetalert2@11.js"></script>
+        <script src="/js/sweetalert2@11.js"></script>
         <script src="assets/js/owl.carousel.min.js?v4"></script>
         <script src="assets/js/magnific-popup.min.js?v4"></script>
         <script src="assets/js/parallax.min.js?v4"></script>

@@ -29,9 +29,8 @@
 }
 </style>
 <script src="https://global.transak.com/sdk/v1.1/widget.js" async></script>
-<script>
-    function launchTransak(){let n=new TransakSDK.default({apiKey:"80f00610-32cc-4d01-8eb0-dfc825c2ef53",environment:"PRODUCTION",defaultCryptoCurrency:"FEAR",themeColor:"000000",email:"",redirectURL:"",hostURL:window.location.origin,widgetHeight:"550px",widgetWidth:"450px"});n.init(),n.on(n.EVENTS.TRANSAK_WIDGET_CLOSE,()=>{n.close()})}window.onload=function(){$("#transakLink").on("click",function(){launchTransak()})};
-  </script>
+<script src="/js/transak.js"></script>
+<script src="/js/sweetalert2@11.js"></script>
     </head>
 
     <body class="subpage gamespage thecryptgamepage">
