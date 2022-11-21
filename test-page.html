@@ -1,0 +1,21 @@
+<head>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Test | Fear.io</title>
+  <script src="https://global.transak.com/sdk/v1.1/widget.js" async></script>
+  <script src="/js/sweetalert2@11.js"></script>
+  <script src="/js/transak.js"></script>
+  <style>
+    @font-face {
+      font-family: "Averta";
+      src: url("fonts/Averta-Regular.otf") format("truetype");
+    }
+    .font-averta {
+      font-family: Averta !important;
+    }
+  </style>
+</head>
+<body class="font-averta bg-gray-300">
+  <div class="w-screen h-screen flex items-center justify-center">
+    <button onclick="showOrderSuccessNotification()" class="bg-cyan-200 text-cyan-800 rounded-lg px-2 py-1">show order success notification</button>
+  </div>
+</body>
