@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-		<title>Film | Fear</title>
+		<title>Film Application Submission Successful | Fear</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <link rel="stylesheet" href="assets/css/bootstrap.min.css?v3">
@@ -21,40 +21,9 @@
 
 <script src="https://global.transak.com/sdk/v1.1/widget.js" async></script>
 <script src="js/just-validate.production.min.js"></script>
-<script src="/js/transak.js"></script>
-<script src="/js/sweetalert2@11.js"></script>
-
-<style>
-    label {
-        float: left;
-        margin-top:5px;
-        margin-right: 10px;
-    }
-
-    .form-control {
-        height:40px;
-        width: 300px;
-        color:black;
-        background-color: white !important;
-        float:left;
-        margin-right:10px;
-        margin-top:-5px;
-    }
-
-    .field-container {
-        clear:both;
-        padding-top:20px;
-    }
-
-    .page-title-area{
-        padding-bottom: 0px;
-    }
-
-    .just-validate-error-label{
-        font-weight:bold;
-    }
-</style>
-
+<script>
+    function launchTransak(){let n=new TransakSDK.default({apiKey:"80f00610-32cc-4d01-8eb0-dfc825c2ef53",environment:"PRODUCTION",defaultCryptoCurrency:"FEAR",themeColor:"000000",email:"",redirectURL:"",hostURL:window.location.origin,widgetHeight:"550px",widgetWidth:"450px"});n.init(),n.on(n.EVENTS.TRANSAK_WIDGET_CLOSE,()=>{n.close()})}window.onload=function(){$("#transakLink").on("click",function(){launchTransak()})};
+</script>
 </head>
 
     <body class="subpage gamespage templatepage">
@@ -239,170 +208,20 @@
 
 
         <!-- Start Page Title Area -->
-        <section class="page-title-area page-title-bg1">
+        <section class="page-title-area page-title-bg1" style="padding-bottom:30px;">
             <div class="container">
                 <div class="page-title-content">
-                    <h1 style="-webkit-animation:none;margin-bottom:20px;">FEAR FILM APPLICATIONS</h1>
+                    <h1 style="-webkit-animation:none;margin-bottom:90px;">FEAR FILM APPLICATION SUBMITTED SUCCESSFULLY</h1>
                 </div>
         </section>
         <!-- End Page Title Area -->
 
         <!-- Start Blog Details Area -->
-        <section class="blog-details-area ptb-100" style="padding-top:0px;">
+        <section class="blog-details-area ptb-100" style="padding-top:90px;">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <form method="post" autocomplete="off" target="_self" action="https://api.fear.io/api/sfa" id="film-appplication-form">
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label style="width:100%;margin-bottom:10px;">Name: </label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input style="width:100%" class="form__input form-control" type="text" name="name" id="name"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label style="width:100%;margin-bottom:10px;">Email: </label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input style="width:100%" class="form__input form-control" type="text" name="email" id="email"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label style="width:100%;margin-bottom:10px;">Address: </label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input style="width:100%" class="form__input form-control" type="text" name="address" id="address"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label style="width:100%;margin-bottom:10px;">Your Website: </label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input style="width:100%" class="form__input form-control" type="text" name="website" id="website"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label style="width:100%;margin-bottom:10px;">Portfolio Link: </label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input style="width:100%" class="form__input form-control" type="text" name="portfolioLink" id="portfolioLink"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label style="width:100%;">Why you are passionate about horror?</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <textarea style="clear:left; margin-top:10px;width:100%;" id="horrorPassion" class="form__input form-control" rows="3" name="horrorPassion"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label style="width:100%;">Why do you want to work with FEAR?</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <textarea style="clear:left; margin-top:10px;width:100%;" id="workWithFear" class="form__input form-control" rows="3" name="workWithFear"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label style="width:100%;">What is the required level of funding to make/complete the short?</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <textarea style="clear:left; margin-top:10px;width:100%;" id="levelOfFunding" class="form__input form-control" rows="3" name="levelOfFunding"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <label>Please provide a link(s) to a cloud drive with the following support documents for your application...</label>
-                            </div>
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label style="width:100%;margin-bottom:10px;">Screenplay:</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input style="width:100%" class="form__input form-control" type="text" name="screenPlayLink" id="screenPlayLink"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label style="width:100%;margin-bottom:10px;">Budget Document:</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input style="width:100%" class="form__input form-control" type="text" name="budgetDocLink" id="budgetDocLink"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label style="width:100%;margin-bottom:10px;">Production Schedule:</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input style="width:100%" class="form__input form-control" type="text" name="prodScheduleLink" id="prodScheduleLink"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label style="width:100%;margin-bottom:10px;">Investment Pack:</label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input style="width:100%" class="form__input form-control" type="text" name="investmentPackLink" id="investmentPackLink"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <div class="row">
-                                    <div c;ass="col-md-1"></div>
-                                    <div class="col-md-2">
-                                        <label>Plan for how you would convert the short into a feature: </label>
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input style="width:100%;margin-top:10px;" class="form__input form-control" type="text" name="shortToFeaturePlanLink" id="shortToFeaturePlanLink"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="field-container">
-                                <button type="submit">Submit</button>
-                            </div>
-                        </form>
+                        Your film application was submitted successfully. We'll be in touch shortly.
                     </div>
                 </div>
         </section>
@@ -578,185 +397,23 @@ async></script>
 <script src="js/jquery-3.6.1.min.js"></script>
 
 <script>
-    
-    $(document).ready(function() {
-        const validate = new window.JustValidate("#film-appplication-form");
+    const validate = new window.JustValidate("#film-appplication-form");
 
-        validate.addField("#name", [
-        {
-            rule: "required",
-            errorMessage: "Name is required."
-        },
-        {
-        rule: "minLength",
-        value: 3
-        },
-        {
-        rule: "maxLength",
-        value: 100
-        }
-    ]).addField("#email", [
-        {
-            rule: "required",
-            errorMessage: "Email is required."
-        },
-        {
-        rule: "email",
-        errorMessage: "Email is invalid",
-        },
-        {
-        rule: "minLength",
-        value: 5
-        },
-        {
-        rule: "maxLength",
-        value: 100
-        }
-    ])
-    .addField("#address", [
-        {
-            rule: "required",
-            errorMessage: "Address is required."
-        },
-        {
-        rule: "minLength",
-        value: 5
-        },
-        {
-        rule: "maxLength",
-        value: 300
-        }
-    ])
-    .addField("#website", [
-        {
-            rule: "required",
-            errorMessage: "Website is required."
-        },
-        {
-        rule: "minLength",
-        value: 5
-        },
-        {
-        rule: "maxLength",
-        value: 300
-        }
-    ])
-    .addField("#horrorPassion", [
-        {
-            rule: "required",
-            errorMessage: "Passionate about Horror is required."
-        },
-        {
-        rule: "minLength",
-        value: 5
-        },
-        {
-        rule: "maxLength",
-        value: 300
-        }
-    ])
-    .addField("#workWithFear", [
-        {
-            rule: "required",
-            errorMessage: "Work with FEAR is required."
-        },
-        {
-        rule: "minLength",
-        value: 5
-        },
-        {
-        rule: "maxLength",
-        value: 300
-        }
-    ])
-    .addField("#levelOfFunding", [
-        {
-            rule: "required",
-            errorMessage: "Level of Funding is required."
-        },
-        {
-        rule: "minLength",
-        value: 5
-        },
-        {
-        rule: "maxLength",
-        value: 300
-        }
-    ])
-    .addField("#screenPlayLink", [
-        {
-            rule: "required",
-            errorMessage: "Link to Screenplay is required."
-        },
-        {
-        rule: "minLength",
-        value: 5
-        },
-        {
-        rule: "maxLength",
-        value: 300
-        }
-    ])
-    .addField("#budgetDocLink", [
-        {
-            rule: "required",
-            errorMessage: "Link to Budget Document is required."
-        },
-        {
-        rule: "minLength",
-        value: 5
-        },
-        {
-        rule: "maxLength",
-        value: 300
-        }
-    ])
-    .addField("#prodScheduleLink", [
-        {
-            rule: "required",
-            errorMessage: "Link to Production Schedule is required."
-        },
-        {
-        rule: "minLength",
-        value: 5
-        },
-        {
-        rule: "maxLength",
-        value: 300
-        }
-    ])
-    .addField("#investmentPackLink", [
-        {
-            rule: "required",
-            errorMessage: "Link to Investment Pack is required."
-        },
-        {
-        rule: "minLength",
-        value: 5
-        },
-        {
-        rule: "maxLength",
-        value: 300
-        }
-    ])
-    .addField("#shortToFeaturePlanLink", [
-        {
-            rule: "required",
-            errorMessage: "Link to Plan is required."
-        },
-        {
-        rule: "minLength",
-        value: 5
-        },
-        {
-        rule: "maxLength",
-        value: 300
-        }
-    ])
-    .onSuccess(event => {
-        $("#film-appplication-form").submit();
-    });
-    });
+    validate.addField('#name', [
+    {
+        rule: 'required'
+    },
+    {
+      rule: 'minLength',
+      value: 3,
+    },
+    {
+      rule: 'maxLength',
+      value: 30,
+    },
+  ]).onSuccess(event => {
+    $("#film-appplication-form").submit();
+  });
 </script>
 
 <noscript><div class="statcounter"><img class="statcounter"
