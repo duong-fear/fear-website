@@ -134,16 +134,17 @@
         </div>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
         <template x-for="(g, index) in state.games">
-          <div class="bg-neutral-800 rounded-sm text-center p-1 md:p-2 m-1 lg:m-2 cursor-pointer flex flex-col gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
+          <div class="bg-neutral-800 rounded-md text-center p-1 md:p-2 m-1 lg:m-2 cursor-pointer flex flex-col gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
             <div class="relative">
-              <img :src="g.splash" class="w-full rounded-sm aspect-[4/3]" width="400px">
+              <img :src="g.splash" class="w-full rounded-md aspect-[4/3]">
               <span class="text-xs font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2">
                 <span x-text="g.priceFear + ' $FEAR'"></span>
               </span>
+              <span class="text-xs sm:text-sm lg:text-base font-bold absolute bottom-0 px-1 py-1 text-neutral-50 bg-opacity-50 bg-neutral-800 -translate-x-1/2 w-full" x-text="g.name"></span>
             </div>
-            <div class="flex-1 text-neutral-200 text-center flex justify-center items-center">
-              <span class="text-xs sm:text-sm md:text-md font-bold" x-text="g.name"></span>
-            </div>
+            <!-- <div class="flex-1 text-neutral-200 text-center flex justify-center items-center">
+              <span class="text-xs sm:text-sm md:text-base font-bold" x-text="g.name"></span>
+            </div> -->
             <div class="text-center hidden">
               <!-- <template x-if="state.user && !state.user.ownedGames.includes(g.id)">
                 <button
