@@ -84,7 +84,7 @@
       <div>
         <span class="font-macabre text-2xl">Horror Hub</span>
       </div>
-      <div class="font-bold">Guide 📚</div>
+      <div class="font-bold">Guide</div>
       <div class="font-bold">FAQs</div>
     </div>
     <div class="flex justify-center items-center select-none mr-2">
@@ -122,7 +122,7 @@
                 <span class="text-2xl font-macabre">Whack The Demon</span>
                 <span>some description</span>
                 <div class="mt-1">
-                  <button class="px-2 py-1 rounded-sm bg-cyan-200 text-cyan-900 text-xs">Buy Now</button>
+                  <button class="px-2 py-1 rounded-sm bg-cyan-200 text-cyan-900 text-xs" @click="setSelectedGameIndex(1)">Buy Now</button>
                 </div>
               </div>
             </div>
@@ -134,14 +134,14 @@
         </div>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
         <template x-for="(g, index) in state.games">
-          <div class="bg-neutral-800 rounded-sm text-center px-2 py-2 m-2 cursor-pointer" @click="setSelectedGameIndex(index)">
+          <div class="bg-neutral-800 rounded-sm text-center p-1 md:p-2 m-1 lg:m-2 cursor-pointer flex flex-col gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
             <div class="relative">
               <img :src="g.splash" class="w-full rounded-sm aspect-[4/3]" width="400px">
               <span class="text-xs font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2">
                 <span x-text="g.priceFear + ' $FEAR'"></span>
               </span>
             </div>
-            <div class="pt-2 text-neutral-200 text-center">
+            <div class="flex-1 text-neutral-200 text-center flex justify-center items-center">
               <span class="text-xs sm:text-sm md:text-md font-bold" x-text="g.name"></span>
             </div>
             <div class="text-center hidden">
@@ -191,9 +191,10 @@
               </button>
             </div>
             <div class="flex-1 px-4">
-              <div class="mb-2">
+              <!-- <div class="mb-2">
                 <img :src="state.games[selectedGameIndex].splash" class="w-full rounded-md" />
-              </div>
+              </div> -->
+              <iframe width="100%" class="aspect-video mb-3" src="https://www.youtube.com/embed/k3Yoch8jhXA" title="FEAR Araya Thailand Metaverse Expo 2022" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
               <span x-text="loremText"></span>
             </div>
             <div class="px-2 py-2 flex gap-2">
