@@ -1,6 +1,7 @@
 // config
 const googleLoginRedirectURI = undefined; //window.location.href
 
+const loremText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
 const fetchInitialAppState = async () => {  
   sleep(0.5);
   vm.state.games = [
@@ -8,7 +9,7 @@ const fetchInitialAppState = async () => {
       name: "Clucking Hell",
       splash: "https://placekitten.com/400/300?image=1",
       isDesktopGame: true,
-      priceFear: "0",
+      priceFear: "10",
     },
     {
       name: "Whack The Demon",
@@ -199,8 +200,24 @@ const boostrapApp = () => {
       await Promise.all([
         fetchInitialAppState(),
       ]);
+      $(".owl-carousel").owlCarousel({
+        // animateOut: 'slideOutDown',
+        // animateIn: 'flipInX',
+        items: 1,
+        margin: 0,
+        stagePadding: 0,
+        smartSpeed: 250,
+        dots: true,
+    });
     },
+    selectedGameIndex: null,
   })
   window.vm = Alpine.store('vm');
   vm.bootstrap();
+}
+
+const setSelectedGameIndex = (index) => {
+  const htmlRootNode = document.querySelector("html");
+  htmlRootNode.style.overflow = index != null ? 'hidden' : 'auto';
+  vm.selectedGameIndex = index;
 }

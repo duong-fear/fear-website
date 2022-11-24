@@ -52,22 +52,46 @@
       background-color: #d1fae5 !important;
       color: #065f46 !important;
     }
+    @font-face {
+      font-family: "The Macabre";
+      src: url("/fonts/the-macabre.otf") format("truetype");
+    }
+    .font-macabre {
+      font-family: 'The Macabre', sans-serif;
+    }
+    div.owl-stage-outer {
+      border-radius: 0.375rem;
+    }
+    .text-red {
+      color: red;
+    }
+    .bg-red {
+      background-color: red;
+    }
   </style>
   <script src="/js/transak.js"></script>
+  <link rel="stylesheet" href="assets/css/animate.min.css">
+  <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="assets/css/owl.theme.default.css">
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/owl.carousel.min.js"></script>
 </head>
 <body x-data="$store.vm" class="font-averta bg-neutral-700 antialiased">
 <div class="container bg-neutral-900 mx-auto flex flex-col min-h-screen">
   <!-- header -->
-  <div class="bg-red-200 sticky top-0 flex justify-between items-center py-1 px-1 text-xs">
-    <div class="flex items-center justify-center gap-1">
-      <div>[home]</div>
-      <div>[guide]</div>
+  <div class="shadow bg-neutral-800 text-neutral-50 sticky top-0 flex justify-between items-center py-1 px-1 text-xs z-10">
+    <div class="flex items-center justify-center gap-3 ml-2 select-none">
+      <div>
+        <span class="font-macabre text-2xl">Horror Hub</span>
+      </div>
+      <div class="font-bold">Guide 📚</div>
+      <div class="font-bold">FAQs</div>
     </div>
-    <div class="flex justify-center items-center select-none">
-      <button class="bg-neutral-700 text-gray-50 px-2 py-1 rounded-full" id="transakLink">buy $FEAR</button>
+    <div class="flex justify-center items-center select-none mr-2">
+      <button class="text-neutral-50 px-2 py-1 rounded-sm border border-solid border-neutral-500" id="transakLink">buy $FEAR</button>
       <template x-if="!_.get(state, 'user')">
         <button
-          class="bg-red-400 text-gray-50 px-2 py-1 rounded-full ml-1 flex justify-center items-center disabled:opacity-70"
+          class="text-neutral-800 bg-neutral-50 px-2 py-1 rounded-sm ml-1 border border-solid border-neutral-500 flex justify-center items-center disabled:opacity-70"
           @click="login"
           :disabled="state.running.GOOGLE_LOGIN"
         >
@@ -76,9 +100,12 @@
         </button>
       </template>
       <template x-if="_.get(state, 'user')">
-        <div class="bg-neutral-800 text-neutral-400 px-1 py-1 rounded-full flex justify-center items-center ml-1">
+        <div class="bg-neutral-800 text-neutral-400 rounded-full flex justify-center items-center ml-2">
           <img class="rounded-full w-4 h-4 mr-1" :src="state.user.picture" referrerpolicy="no-referrer" />
-          <span x-text="state.user.email + '&nbsp;'"></span>
+          <div class="flex flex-col">
+            <span x-text="state.user.email"></span>
+            <!-- <span class="text-center">20.41 FEAR</span> -->
+          </div>
         </div>
       </template>
     </div>
@@ -86,17 +113,39 @@
   <!-- main -->
   <div class="flex-1">
     <template x-if="!!state">
-      <div class="flex flex-wrap justify-center items-center">
-        <template x-for="g of state.games">
-          <div class="bg-neutral-800 rounded-lg text-center px-2 py-2 m-2">
-            <div>
-              <img :src="g.splash" class="rounded-md aspect-[4/3]" width="400px">
+      <!-- slider -->
+      <div>
+        <div class="mt-2 mx-2">
+          <div class="fadeOut owl-carousel owl-theme">
+            <div class="item bg-red-200 h-40 rounded-md flex justify-end" style="background: url('https://picsum.photos/id/84/2000/160');">
+              <div class="flex flex-col self-end text-gray-50 mr-2 mb-2 text-right">
+                <span class="text-2xl font-macabre">Whack The Demon</span>
+                <span>some description</span>
+                <div class="mt-1">
+                  <button class="px-2 py-1 rounded-sm bg-cyan-200 text-cyan-900 text-xs">Buy Now</button>
+                </div>
+              </div>
             </div>
-            <div class="py-2 text-neutral-200">
-              <span class="text-lg font-bold" x-text="g.name"></span>
+            <div class="item bg-red-200 h-40 rounded-md" style="background: url('https://picsum.photos/id/14/2000/160');">
             </div>
-            <div class="text-center">
-              <template x-if="state.user && !state.user.ownedGames.includes(g.id)">
+            <div class="item bg-red-200 h-40 rounded-md" style="background: url('https://picsum.photos/id/60/2000/160');">
+            </div>
+          </div>
+        </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
+        <template x-for="(g, index) in state.games">
+          <div class="bg-neutral-800 rounded-sm text-center px-2 py-2 m-2 cursor-pointer" @click="setSelectedGameIndex(index)">
+            <div class="relative">
+              <img :src="g.splash" class="w-full rounded-sm aspect-[4/3]" width="400px">
+              <span class="text-xs font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2">
+                <span x-text="g.priceFear + ' $FEAR'"></span>
+              </span>
+            </div>
+            <div class="pt-2 text-neutral-200 text-center">
+              <span class="text-xs sm:text-sm md:text-md font-bold" x-text="g.name"></span>
+            </div>
+            <div class="text-center hidden">
+              <!-- <template x-if="state.user && !state.user.ownedGames.includes(g.id)">
                 <button
                   class="text-green-800 bg-green-200 px-3 py-1 rounded-md inline-flex justify-center items-center select-none transition-all disabled:opacity-70"
                   @click="purchaseGame(g.id)"
@@ -126,16 +175,55 @@
                 >
                   Login to buy
                 </button>
-              </template>
+              </template> -->
+            </div>
+          </div>
+        </template>
+        <template x-if="selectedGameIndex != null">
+          <div class="fixed top-0 left-0 w-screen h-screen z-20 flex flex-col justify-center backdrop-brightness-50 backdrop-blur-sm">
+            <div class="container mx-auto bg-neutral-900 text-neutral-50 flex flex-col h-screen sm:h-auto sm:max-w-lg md:max-w-xl sm:rounded-md">
+            <div class="p-4 pb-2 font-bold text-lg flex justify-between items-center">
+              <span x-text="state.games[selectedGameIndex].name"></span>
+              <button class="px-2 bg-neutral-700 text-white rounded-md py-2 rounded-full w-8 h-8 flex justify-center items-center" @click="setSelectedGameIndex(null)">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>                               
+              </button>
+            </div>
+            <div class="flex-1 px-4">
+              <div class="mb-2">
+                <img :src="state.games[selectedGameIndex].splash" class="w-full rounded-md" />
+              </div>
+              <span x-text="loremText"></span>
+            </div>
+            <div class="px-2 py-2 flex gap-2">
+              <button class="flex-1 bg-red-200 text-red-800 rounded-md py-2 flex justify-center items-center gap-1">
+                <span>Purchase</span>
+                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PURCHASE_GAME"></i>
+              </button>
+            </div>
             </div>
           </div>
         </template>
       </div>
+      </div>
     </template>
   </div>
   <!-- footer -->
-  <div class="bg-red-500">
-    footer
+  <div class="w-full mx-auto max-w-screen-xl text-gray-400 text-xs py-3">
+    <div class="text-center">
+      <span>© 2022 <a href="https://www.fear.io" target="_blank" rel="noreferrer" class="text-bnb">fear.io</a> All Rights Reserved.</span>
+    </div>
+    <div class="mx-auto max-w-screen-xl flex justify-center pt-2">
+      <div class="flex items-center">
+        <a href="mailto:hello@fear.io" target="_blank" rel="noreferrer"><img class="w-5 h-5 mx-1" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAFUElEQVRoge2WXWwUVRTHf3d2trvdtutKgQoUhYAofqGY+B0T5UVIeDEGg4EnEIyGEDTQiCEpPqgJkGiIBXnwC40PxhAiEBJ5KxAiBOwDxEA0wVqk1Jbdht12d2fv8WG/ZqYzy2679YWeh93Zu/fc+//97zkzA1MxFXd2qElZtfNCjFFzJ4o1aAHkIGndyadPxOu9Vf0BOnpWguoCaUdAIYCA0C/INnYt/bae29UPYNv52ajAXkReVQBSEG6/FkDJMZHA2+xZerUe204coFMMUj3rFbIboSUvtCDcfi1S2ExAJIWSD3Vv725+XJWbyPYTA+g4v0RpDgBP2YXanVdF57GdQhnsNw0b+Oz5s+OVMD6ALacbjWCoQzTbQYIuUQXR3kDFbxuYpZAuK6c/oOulW5MP8N755QrdBTLPQ4xTtMv5ymDSB7Ip9/myQ5MDsPlMm2EGdgmsHSPat+YrA3mCIUcsMd5i/7K+OgGI4t1f1xqoPSDTKzjoJcYXUrnyXGBxpenMzjmzl85OPX6ALacXKgL7FbLMX8xtS6M8x2uNSmDISWUZGzNfrbhUG8CGc0GjyXofke1AqOrS8BXjJbqcd5tyTIvWH1nB/o85sDHrlmp66TeaMvvQrCsea/fmx3hufoufCZMSp64M8fIn3SCEFLIzlJ0xNw1vuud5ApDTq/POACI8c18ErSf0vKk5nl1wF2hNsRxF5A2qBWhf0h4ZuHydTDINCLlcxT6avJA8QDgaYe4LiyMXvxk7xRMgMi3CvU/PJ/H3EINX+v9394thmgZtj8+j7ckFGMrwnuOXrJQi1t5K04wWDvdmWDnHd2rdQ4ATN+GRNS9iNoYQAV1qbmdUVCWA2RBkR88oh/8K0PFwkAXN3k7UKy6PwL5+uJgkL14LYr85ucIfoHBbK+adHbJ4/aTFa+0m7ywyaarzgQxZ8P2gwfEhRa4oWIriJd8OtQA4Ho4FCkvDD1eznLieZdMikxWzAxN+H7cEjiUMDv5rkso5BbshqgdwuQ9iezjCwCjs6LH46apFx0MB7m8ZX1n1jBh8MRCkN0OpVByuC6Bt19UCeLlfGqfszIWbsPqUxSv3wJYHTWLB6oRfyyq+HGrgXCpQUXBpTPKAVQP4uu8YzX9ogaN9Qnd/lvULDVbNVRg+dZXUcGi4gZ+Hg2RF5cvCIbhQKoKtee37Vwtgf1VxjRfdL+PkPxNZ2HMpx5Fe2LpY8WisnKaB7lQD3yXCxC1VECU+gm1jpV7wElMBoDTXfoQe7nuV2O/DsO6MZvks2PQADGHydaKRK1nTV7D7buPVC7XdhWp0vzQupakcvQa/9CuaZwaJTjdhPILdvVA1AOXkWtzPp0np/7SlSfelGB5M0zorQigSqE2wqxeqBpiI+478Ql4mlePaH8NEog1Ma2vEMFVVgktjNT/IbC5W4749zTsvv14yniEVT9MyPUy0NYRCVRRcbuYaT8DLxUrui23y2DznelogcWOU5M0MsZlhwk1BX8FSOBE/w/wBJsF9XCZkMzlu9CYJR4LE2sIEAmqMYMettpYSquxiDe671iubUJ47ksww8meGlrtDNMdChbWl8ICzl1YtJVTBRa9lnJC2PFsvOfFxmCNAYjBNMpEh2hom1GiWG3w870KODco/y7u5XCzJrqrE/PIEKyMM/pMi1BggOs1WVsXSqhbAz0VHKdghK7gvt3HfPl6cOpq0GE3eIhJtoDnaUDbAI7zfg4XE5LiPT56MMUEEbsXTDPQlGU1aiJZE9QBKtqJUvP7ui0ee7dthQv4fy9LEB0ckOZw54Kl1KqZiKqZiKu7o+A/gRPfqlm7e7AAAAABJRU5ErkJggg==" alt=""></a>
+        <a href="https://twitter.com/fearnfts" target="_blank" rel="noreferrer"><img class="w-5 h-5 mx-1" src="https://araya.fear.io/icon/twitter.svg" alt="twitter" title="twitter"></a>
+        <a href="https://discord.com/invite/nbrQMUXF57" target="_blank" rel="noreferrer"><img class="w-5 h-5 mx-1" src="https://araya.fear.io/icon/discord.svg" alt="discord" title="discord"></a>
+        <a href="https://t.me/fearcoin" target="_blank" rel="noreferrer"><img class="w-5 h-5 mx-1" src="https://araya.fear.io/icon/telegram.svg" alt="telegram" title="telegram"></a>
+        <a href="https://www.instagram.com/fearnfts/" target="_blank" rel="noreferrer"><img class="w-5 h-5 mx-1" src="https://araya.fear.io/icon/instagram.svg" alt="instagram" title="instagram"></a>
+        <a href="https://www.youtube.com/channel/UCHRX3sh3G8sxvHLLQ21vNiQ" target="_blank" rel="noreferrer"><img class="w-5 h-5 mx-1" src="https://araya.fear.io/icon/youtube.svg" alt="youtube" title="youtube"></a>
+      </div>
+    </div>
   </div>
 </div>
 <script>

@@ -62,6 +62,9 @@ function launchTransak(){
   transakInstance.on(transakInstance.EVENTS.TRANSAK_WIDGET_CLOSE,() => {
     console.log("TRANSAK_WIDGET_CLOSE");
     transakInstance.close();
+    setTimeout(() => {
+      document.querySelector("html").style.overflow = 'auto';
+    }, 100)
   },);
 }
 
