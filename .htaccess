@@ -1,0 +1,83 @@
+RewriteEngine On
+
+RewriteCond %{HTTP_HOST} ^fear.io
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule (.*) https://www.fear.io/$1 [R=301,L]
+
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://www.fear.io/$1 [R,L]
+
+Redirect /p2e https://play.fear.io/clucking-hell/index.html
+Redirect /play-wyun/ https://play.fearnft.games/wyun/index.html
+Redirect /play-wyun/index.html https://play.fearnft.games/wyun/index.html
+Redirect 301 /wyun/ https://www.fear.io/games/wyun/
+Redirect 301 /whack-the-demon/ https://www.fear.io/games/whack-the-demon/
+Redirect 301 /games.html https://www.fear.io/games/
+Redirect 301 /farm/upcoming.html https://www.fear.io/farm/nfts/
+
+Redirect /?utm_source=PlayToEarn.net https://www.fear.io/
+Redirect /opensea https://opensea.io/collection/unidentified-contract-tyjqonyi6h
+Redirect /wiki https://www.fear.io/updates/fear-wiki/
+Redirect /twitter https://twitter.com/fearnfts
+Redirect /telegram https://t.me/fearcoin
+Redirect /discord https://discord.gg/nbrQMUXF57
+Redirect /clucking-hell https://play.fear.io/clucking-hell/index.html
+Redirect /hell https://play.fear.io/clucking-hell/index.html
+Redirect /staking https://tokensfarm.com/fear
+Redirect /cluckoracle https://www.fear.io/games/clucking-hell/oracle
+Redirect /clucktest https://www.fear.io/games/clucking-hell/oracle/index-test.html
+Redirect /jobs https://www.fear.io/updates/jobs/
+Redirect /thecrypt https://www.fear.io/games/the-crypt/
+Redirect /games/thecrypt/ https://www.fear.io/games/the-crypt/
+
+Redirect /farm https://app.nftrade.com/farms/fear
+
+Redirect 301 /devilschest/ https://www.fear.io/games/wyun/devilschest/
+Redirect 301 /games/wyun/devilschest/ https://www.fear.io/games/clucking-hell/devils-chest/
+
+Redirect 301 /farm/nfts/wyun.html https://www.fear.io/farm/nfts/clucking-hell.html
+Redirect /whitepaper https://www.fear.io/docs/fear-nfts-whitepaper.pdf
+Redirect /araya https://www.fear.io/games/araya/
+Redirect 301 /coin.html https://www.fear.io/token.html
+Redirect 301 /watch/whack-the-demon/ https://www.fear.io/games/whack-the-demon/
+Redirect 301 /watch/wyun/ https://www.fear.io/games/wyun/
+Redirect 301 /coin.html https://www.fear.io/token.html
+Redirect /clucklead https://www.fear.io/games/clucking-hell/devils-chest/
+
+Redirect /youtube https://www.youtube.com/c/FEARSTUDIOS
+Redirect /instagram https://www.instagram.com/fearnfts/
+Redirect /devil https://www.fear.io/games/clucking-hell/devils-chest/
+Redirect /download https://museum.fear.io/museum-beta-1.0.zip 
+Redirect /earn	https://www.fear.io/games/clucking-hell/earn.html
+Redirect /cluck-farm https://app.nftrade.com/farms/fear
+Redirect /evil-twin https://www.fear.io/updates/evil-twin-games-strategic-investment/
+
+Redirect /frostbite https://www.fear.io/games/clucking-hell/frostbite.html
+
+Redirect /moon https://www.fear.io/moon-map.html
+Redirect /thejanitor https://www.fear.io/updates/the-crypt-meet-the-crypts-janitor/
+Redirect /crypt https://www.fear.io/games/the-crypt/
+Redirect /wolf-rpg https://www.fear.io/updates/fear-open-world-rpg
+
+
+Redirect 301 /holders.html https://www.fear.io/utility.html
+Redirect /update https://medium.com/@FEAROFFICIAL/fear-product-development-update-118368d705ca
+Redirect /updates https://medium.com/@FEAROFFICIAL/
+Redirect /updates/araya-survive-to-earn/ https://medium.com/@FEAROFFICIAL/arayas-survive-to-earn-economy-c72ac90053e7
+Redirect /beauty-in-horror https://medium.com/@FEAROFFICIAL/the-fear-wolf-there-is-beauty-in-horror-18ffd9ea541b
+Redirect /dev https://www.youtube.com/watch?v=OXU74wUShcc
+Redirect /keep https://medium.com/@FEAROFFICIAL/the-wolf-keep-and-fear-wolf-are-coming-to-blood-realms-30302dc6a547
+
+Redirect /linkedin https://www.linkedin.com/in/jonathan-c-479a46225/
+
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin: *
+</IfModule>
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php74” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php74 .php .php7 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
