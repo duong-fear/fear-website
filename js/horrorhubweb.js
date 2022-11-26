@@ -52,23 +52,59 @@ const fetchInitialAppState = async () => {
   }))
 }
 
-const QAList = [
+const qaList = [
   {
     q: "What payment methods do you accept?",
-    a: "Only in FEAR token",
+    a: "Only in <span class='text-red-600 font-bold'>$FEAR</span> token",
     opened: false,
   },
   {
     q: "What is your refund policy?",
-    a: "If you're unhappy with your purchase for any reason, email us within 90 days and we'll refund you in full, no questions asked.",
+    a: "We dont have it. All sales are final.",
     opened: false,
   },
   {
     q: "Do you offer technical support?",
-    a: "Of course not <span style='color: red'>lol</span> :p",
+    a: "Of course not 😂",
+    opened: false,
+  },
+  {
+    q: "How to report a bug or request a feature?",
+    a: "Please contact our staff on <a class='text-cyan-400' href='https://t.me/fearcoin' target='_blank'>telegram</a> or any of our social media (kindly check out links at bottom of this page)",
     opened: false,
   },
 ];
+
+const stepList = [
+  {
+    q: "How to get $FEAR token?",
+    a: "#todo",
+    opened: false,
+  },
+  {
+    q: "How to purchase game?",
+    a: "#todo",
+    opened: false,
+  },
+  {
+    q: "How to download apk file for the game?",
+    a: "#todo",
+    opened: false,
+  },
+  {
+    q: "How to install apk file on your phone?",
+    a: "#todo",
+    opened: false,
+  },
+  {
+    q: "How to start playing?",
+    a: "Open the app you just installed. That's all. Hope you having fun and thank you for your purchase 😍",
+    opened: false,
+  },
+].map((item, index) => ({
+  ...item,
+  q: `Step ${index+1}: ${item.q}`,
+}));
 
 const purchaseGame = async id => {
   if(vm.state.running.PURCHASE_GAME == id) return;
@@ -211,9 +247,10 @@ const boostrapApp = () => {
         DOWNLOAD_GAME: false,
       },
     },
-    // page: '/', // or `/faqs`
-    page: '/faqs',
-    qaList: QAList,
+    // page: '/', // or `/faqs` or `/guide`
+    page: '/',
+    qaList,
+    stepList,
     bootstrap: async () => {
       setInterval(() => {
         vm.epoch = getEpoch();
