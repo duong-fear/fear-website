@@ -52,6 +52,24 @@ const fetchInitialAppState = async () => {
   }))
 }
 
+const QAList = [
+  {
+    q: "What payment methods do you accept?",
+    a: "Only in FEAR token",
+    opened: false,
+  },
+  {
+    q: "What is your refund policy?",
+    a: "If you're unhappy with your purchase for any reason, email us within 90 days and we'll refund you in full, no questions asked.",
+    opened: false,
+  },
+  {
+    q: "Do you offer technical support?",
+    a: "Of course not <span style='color: red'>lol</span> :p",
+    opened: false,
+  },
+];
+
 const purchaseGame = async id => {
   if(vm.state.running.PURCHASE_GAME == id) return;
   try {
@@ -193,6 +211,9 @@ const boostrapApp = () => {
         DOWNLOAD_GAME: false,
       },
     },
+    // page: '/', // or `/faqs`
+    page: '/faqs',
+    qaList: QAList,
     bootstrap: async () => {
       setInterval(() => {
         vm.epoch = getEpoch();
