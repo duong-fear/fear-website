@@ -258,15 +258,6 @@ const boostrapApp = () => {
       await Promise.all([
         fetchInitialAppState(),
       ]);
-      $(".owl-carousel").owlCarousel({
-        // animateOut: 'slideOutDown',
-        // animateIn: 'flipInX',
-        items: 1,
-        margin: 0,
-        stagePadding: 0,
-        smartSpeed: 250,
-        dots: true,
-    });
     },
     selectedGameIndex: null,
   })

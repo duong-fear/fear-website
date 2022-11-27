@@ -86,12 +86,13 @@
       </div>
       <div class="font-bold cursor-pointer" :class="page == '/guide' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/guide'">Guide</div>
       <div class="font-bold cursor-pointer" :class="page == '/faqs' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/faqs'">FAQs</div>
+      <div class="font-bold cursor-pointer" :class="page == '/buy' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/buy'">buy $FEAR</div>
     </div>
-    <div class="flex justify-center items-center select-none mr-2">
-      <button class="text-neutral-50 px-2 py-1 rounded-sm border border-solid border-neutral-500" id="transakLink">buy $FEAR</button>
+    <div class="flex justify-center items-center select-none">
+      <!-- <button class="text-neutral-50 px-2 py-1 rounded-sm border border-solid border-neutral-500" id="transakLink">buy $FEAR</button> -->
       <template x-if="!_.get(state, 'user')">
         <button
-          class="text-neutral-800 bg-neutral-50 px-2 py-1 rounded-sm ml-1 border border-solid border-neutral-500 flex justify-center items-center disabled:opacity-70"
+          class="text-neutral-800 bg-neutral-50 px-2 py-1 rounded-md ml-1 border border-solid border-neutral-500 flex justify-center items-center disabled:opacity-70"
           @click="login"
           :disabled="state.running.GOOGLE_LOGIN"
         >
@@ -111,27 +112,9 @@
     </div>
   </div>
   <!-- main -->
-  <div class="flex-1">
+  <div class="flex-1 flex">
     <template x-if="!!state && page == '/'">
-      <!-- slider -->
       <div>
-        <div class="mt-2 mx-2">
-          <div class="fadeOut owl-carousel owl-theme">
-            <div class="item bg-red-200 h-40 rounded-md flex justify-end" style="background: url('https://picsum.photos/id/84/2000/160');">
-              <div class="flex flex-col self-end text-gray-50 mr-2 mb-2 text-right">
-                <span class="text-2xl font-macabre">Whack The Demon</span>
-                <span>some description</span>
-                <div class="mt-1">
-                  <button class="px-2 py-1 rounded-sm bg-cyan-200 text-cyan-900 text-xs" @click="setSelectedGameIndex(1)">Buy Now</button>
-                </div>
-              </div>
-            </div>
-            <div class="item bg-red-200 h-40 rounded-md" style="background: url('https://picsum.photos/id/14/2000/160');">
-            </div>
-            <div class="item bg-red-200 h-40 rounded-md" style="background: url('https://picsum.photos/id/60/2000/160');">
-            </div>
-          </div>
-        </div>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
         <template x-for="(g, index) in state.games">
           <div class="bg-neutral-800 rounded-md text-center p-1 xl:p-2 m-1 xl:m-2 cursor-pointer flex flex-col gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
@@ -211,11 +194,11 @@
       </div>
     </template>
     <template x-if="!!state && page == '/faqs'">
-      <div class="px-2">
+      <div class="px-2 flex-1">
         <template x-for="item of qaList">
           <div class="mt-2">
             <button
-              class="flex w-full justify-between rounded-md px-3 py-2 text-left text-sm lg:text-base font-bold text-neutral-100 bg-neutral-800"
+              class="flex w-full justify-between rounded-md px-3 py-2 text-left text-sm lg:text-base text-neutral-100 bg-neutral-800"
               @click="item.opened = !item.opened"
             >
               <span x-text="item.q"></span>
@@ -234,11 +217,11 @@
       </div>
     </template>
     <template x-if="!!state && page == '/guide'">
-      <div class="px-2">
+      <div class="px-2 flex-1">
         <template x-for="item of stepList">
           <div class="mt-2">
             <button
-              class="flex w-full justify-between rounded-md px-3 py-2 text-left text-sm lg:text-base font-bold text-neutral-100 bg-neutral-800"
+              class="flex w-full justify-between rounded-md px-3 py-2 text-left text-sm lg:text-base text-neutral-100 bg-neutral-800"
               @click="item.opened = !item.opened"
             >
               <span x-text="item.q"></span>
@@ -256,11 +239,22 @@
         </template>
       </div>
     </template>
+    <template x-if="page == '/buy'">
+      <div class="flex-1 flex">
+        <iframe
+        title="Transak On/Off Ramp Widget"
+        class="w-full flex-1"
+        src="https://global.transak.com/?apiKey=80f00610-32cc-4d01-8eb0-dfc825c2ef53&cryptoCurrencyCode=FEAR&hostURL=http%3A%2F%2Flocalhost%3A3000&network=polygon&sdkVersion=1.0.29&themeColor=000000" 
+        frameborder="no" allowtransparency="true" allowfullscreen=""
+      >
+      </iframe>
+      </div>
+    </template>
   </div>
   <!-- footer -->
   <div class="w-full mx-auto max-w-screen-xl text-gray-400 text-xs py-3">
     <div class="text-center">
-      <span>© 2022 <a href="https://www.fear.io" target="_blank" rel="noreferrer" class="text-bnb">fear.io</a> All Rights Reserved.</span>
+      <span>©2022 <a href="https://www.fear.io" target="_blank" rel="noreferrer" class="text-cyan-400 font-bold">fear.io</a> All Rights Reserved.</span>
     </div>
     <div class="mx-auto max-w-screen-xl flex justify-center pt-2">
       <div class="flex items-center">
