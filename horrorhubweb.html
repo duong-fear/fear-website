@@ -68,6 +68,17 @@
     .bg-red {
       background-color: #ff0000cc;
     }
+    ::-webkit-scrollbar {
+      width: auto;
+    }
+    ::-webkit-scrollbar-track {
+      border-radius: 2rem;
+      background: #525252;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #a3a3a3;
+      border-radius: 2rem;
+    }
   </style>
   <script src="/js/transak.js"></script>
   <link rel="stylesheet" href="assets/css/animate.min.css">
@@ -76,7 +87,7 @@
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/js/owl.carousel.min.js"></script>
 </head>
-<body x-data="$store.vm" class="font-averta bg-neutral-700 antialiased">
+<body x-data="$store.vm" class="font-averta bg-neutral-800 antialiased">
 <div class="container bg-neutral-900 mx-auto flex flex-col min-h-screen">
   <!-- header -->
   <div class="shadow bg-neutral-800 text-neutral-50 sticky top-0 flex justify-between items-center py-1 px-1 text-xs sm:text-sm lg:text-base z-10">
@@ -166,9 +177,9 @@
         <template x-if="selectedGameIndex != null">
           <div class="fixed top-0 left-0 w-full h-full z-20 flex flex-col justify-center backdrop-brightness-50 backdrop-blur-sm">
             <div class="mx-auto bg-neutral-900 text-neutral-50 flex flex-col h-full sm:h-5/6 sm:max-w-lg md:max-w-xl sm:rounded-md">
-            <div class="p-4 pb-2 font-bold text-lg flex justify-between items-center">
+            <div class="gap-2 p-4 pb-2 font-bold text-lg flex justify-between items-center">
               <span x-text="state.games[selectedGameIndex].name"></span>
-              <button class="px-2 bg-neutral-700 text-white rounded-md py-2 rounded-full w-8 h-8 flex justify-center items-center" @click="setSelectedGameIndex(null)">
+              <button class="self-start px-2 bg-neutral-700 text-white rounded-md py-2 rounded-full w-8 h-8 flex justify-center items-center" @click="setSelectedGameIndex(null)">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>                               
