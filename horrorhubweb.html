@@ -164,8 +164,8 @@
           </div>
         </template>
         <template x-if="selectedGameIndex != null">
-          <div class="fixed top-0 left-0 w-screen h-screen z-20 flex flex-col justify-center backdrop-brightness-50 backdrop-blur-sm">
-            <div class="container mx-auto bg-neutral-900 text-neutral-50 flex flex-col h-screen sm:h-auto sm:max-w-lg md:max-w-xl sm:rounded-md">
+          <div class="fixed top-0 left-0 w-full h-full z-20 flex flex-col justify-center backdrop-brightness-50 backdrop-blur-sm">
+            <div class="mx-auto bg-neutral-900 text-neutral-50 flex flex-col h-full sm:h-auto sm:max-w-lg md:max-w-xl sm:rounded-md">
             <div class="p-4 pb-2 font-bold text-lg flex justify-between items-center">
               <span x-text="state.games[selectedGameIndex].name"></span>
               <button class="px-2 bg-neutral-700 text-white rounded-md py-2 rounded-full w-8 h-8 flex justify-center items-center" @click="setSelectedGameIndex(null)">
