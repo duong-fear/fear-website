@@ -16,9 +16,21 @@
   <script src="https://apis.google.com/js/client:platform.js?onload=boostrapAppGAPI" async defer></script>
   
   <style>
+    /* https://1.bp.blogspot.com/-CVtA3rJ0f6Y/X7IW2YrKfcI/AAAAAAAAGCQ/4ZXJbscMKgwaCO95LXAovSieWS1Em14ygCPcBGAYYCw/s1440/Averta%2BFull%2Bfont%2B6.jpg */
     @font-face {
       font-family: "Averta";
-      src: url("fonts/Averta-Regular.otf") format("truetype");
+      font-weight: 400;
+      src: url("fonts/averta/Averta-Regular.otf") format("truetype");
+    }
+    @font-face {
+      font-family: "Averta";
+      font-weight: 700;
+      src: url("fonts/averta/Averta-Bold.otf") format("truetype");
+    }
+    @font-face {
+      font-family: "Averta";
+      font-weight: 800;
+      src: url("fonts/averta/Averta-ExtraBold.otf") format("truetype");
     }
     .font-averta {
       font-family: Averta !important;
@@ -128,49 +140,16 @@
       <div>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
         <template x-for="(g, index) in state.games">
-          <div class="bg-neutral-800 rounded-md text-center p-1 xl:p-2 m-1 xl:m-2 cursor-pointer flex flex-col gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
+          <div class="text-center p-1 xl:p-2 m-1 xl:m-2 cursor-pointer flex flex-col gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
             <div class="relative">
-              <img :src="g.splash" class="w-full rounded-md aspect-[4/3]">
+              <img :src="g.splash" class="w-full rounded-md aspect-square border-4 border-solid border-neutral-300 shadow-md">
               <span class="text-xs font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2">
                 <span x-text="g.priceFear + ' $FEAR'"></span>
               </span>
-              <span class="text-xs sm:text-sm lg:text-base font-bold absolute bottom-0 px-1 py-1 text-neutral-50 bg-opacity-30 bg-neutral-800 -translate-x-1/2 w-full" x-text="g.name"></span>
+              <!-- <span class="text-xs sm:text-sm lg:text-base font-bold absolute bottom-0 px-1 py-1 text-neutral-50 bg-opacity-30 bg-neutral-800 -translate-x-1/2 w-full" x-text="g.name"></span> -->
             </div>
-            <!-- <div class="flex-1 text-neutral-200 text-center flex justify-center items-center">
-              <span class="text-xs sm:text-sm md:text-base font-bold" x-text="g.name"></span>
-            </div> -->
-            <div class="text-center hidden">
-              <!-- <template x-if="state.user && !state.user.ownedGames.includes(g.id)">
-                <button
-                  class="text-green-800 bg-green-200 px-3 py-1 rounded-md inline-flex justify-center items-center select-none transition-all disabled:opacity-70"
-                  @click="purchaseGame(g.id)"
-                  :disabled="state.running.PURCHASE_GAME === g.id"
-                >
-                  <span>Buy</span>
-                  <i x-html="loadingSVG('w-4 h-4 ml-1')" x-show="state.running.PURCHASE_GAME === g.id"></i>
-                  <i x-html="shoppingBagSVG('w-4 h-4 ml-1')" x-show="state.running.PURCHASE_GAME !== g.id"></i>
-                </button>
-              </template>
-              <template x-if="state.user && state.user.ownedGames.includes(g.id)">
-                <a
-                  target="_blank"
-                  href="https://f004.backblazeb2.com/file/fear-public/2048/2048_3.0.apk"
-                  class="text-cyan-800 bg-cyan-200 px-3 py-1 rounded-md inline-flex justify-center items-center select-none transition-all disabled:opacity-70"
-                  :disabled="state.running.DOWNLOAD_GAME === g.id"
-                >
-                  <span>Download</span>
-                  <i x-html="loadingSVG('w-4 h-4 ml-1')" x-show="state.running.DOWNLOAD_GAME == g.id"></i>
-                  <i x-html="downloadSVG('w-4 h-4 ml-1')" x-show="state.running.DOWNLOAD_GAME != g.id"></i>
-              </a>
-              </template>
-              <template x-if="!state.user">
-                <button
-                  class="bg-red-400 text-gray-50 px-3 py-1 rounded-md inline-flex justify-center items-center select-none transition-all"
-                  @click="login"
-                >
-                  Login to buy
-                </button>
-              </template> -->
+            <div class="mt-2 flex-1 text-neutral-200 text-center flex justify-center items-center">
+              <span class="text-base font-bold" x-text="g.name"></span>
             </div>
           </div>
         </template>
@@ -258,14 +237,17 @@
       </div>
     </template>
     <template x-if="page == '/buy'">
-      <div class="flex-1 flex">
+      <div class="flex-1 flex relative">
         <iframe
-        title="Transak On/Off Ramp Widget"
-        class="w-full flex-1"
-        src="https://global.transak.com/?apiKey=80f00610-32cc-4d01-8eb0-dfc825c2ef53&cryptoCurrencyCode=FEAR&hostURL=http%3A%2F%2Flocalhost%3A3000&network=polygon&sdkVersion=1.0.29&themeColor=000000" 
-        frameborder="no" allowtransparency="true" allowfullscreen=""
-      >
-      </iframe>
+          title="Transak On/Off Ramp Widget"
+          class="w-full flex-1 z-20"
+          src="https://global.transak.com/?apiKey=80f00610-32cc-4d01-8eb0-dfc825c2ef53&cryptoCurrencyCode=FEAR&hostURL=http%3A%2F%2Flocalhost%3A3000&network=polygon&sdkVersion=1.0.29&themeColor=000000" 
+          frameborder="no" allowtransparency="true" allowfullscreen=""
+        >
+        </iframe>
+        <div class="absolute top-0 left-0 w-full h-full select-none text-neutral-500 bg-neutral-900 flex justify-center items-center z-10 text-2xl">
+          <span>Hang on a second please ...</span>
+        </div>
       </div>
     </template>
   </div>
