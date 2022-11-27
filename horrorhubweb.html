@@ -196,8 +196,12 @@
               <span x-text="loremText"></span><br/>
             </div>
             <div class="px-2 py-2 flex gap-2">
-              <button class="flex-1 bg-red-200 text-red-800 rounded-md py-2 flex justify-center items-center gap-1">
-                <span>Purchase</span>
+              <button class="flex-1 bg-cyan-200 text-cyan-800 rounded-md py-2 flex justify-center items-center gap-1">
+                <span>Pay with x $FEAR</span>
+                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PURCHASE_GAME"></i>
+              </button>
+              <button class="flex-1 bg-purple-200 text-purple-800 rounded-md py-2 flex justify-center items-center gap-1">
+                <span>Pay with y $MATIC</span>
                 <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PURCHASE_GAME"></i>
               </button>
             </div>
