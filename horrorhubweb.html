@@ -100,42 +100,44 @@
   <script src="assets/js/owl.carousel.min.js"></script>
 </head>
 <body x-data="$store.vm" class="font-averta bg-neutral-800 antialiased">
-<div class="container mx-auto flex flex-col min-h-screen">
+<div class="flex flex-col min-h-screen">
   <!-- header -->
-  <div class="text-neutral-50 sticky top-0 flex justify-between items-center py-1 px-1 text-xs sm:text-sm lg:text-base z-10">
-    <div class="flex items-center justify-center gap-3 ml-2 select-none">
-      <div>
-        <span class="font-macabre text-2xl cursor-pointer" :class="page == '/' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/'">Horror Hub</span>
-      </div>
-      <div class="font-bold cursor-pointer" :class="page == '/guide' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/guide'">Guide</div>
-      <div class="font-bold cursor-pointer" :class="page == '/faqs' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/faqs'">FAQs</div>
-      <div class="font-bold cursor-pointer" :class="page == '/buy' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/buy'">buy $FEAR</div>
-    </div>
-    <div class="flex justify-center items-center select-none">
-      <!-- <button class="text-neutral-50 px-2 py-1 rounded-sm border border-solid border-neutral-500" id="transakLink">buy $FEAR</button> -->
-      <template x-if="!_.get(state, 'user')">
-        <button
-          class="text-neutral-800 bg-neutral-50 px-2 py-1 rounded-md ml-1 border border-solid border-neutral-500 flex justify-center items-center disabled:opacity-70"
-          @click="login"
-          :disabled="state.running.GOOGLE_LOGIN"
-        >
-          <span>login</span>
-          <i x-show="state.running.GOOGLE_LOGIN" x-html="loadingSVG('w-3 h-3 ml-1')"></i>
-        </button>
-      </template>
-      <template x-if="_.get(state, 'user')">
-        <div class="bg-neutral-800 text-neutral-400 rounded-full flex justify-center items-center ml-2">
-          <img class="rounded-full w-4 h-4 mr-1" :src="state.user.picture" referrerpolicy="no-referrer" />
-          <div class="flex flex-col">
-            <span x-text="state.user.email"></span>
-            <!-- <span class="text-center">20.41 FEAR</span> -->
-          </div>
+  <div class="bg-neutral-900">
+    <div class="container mx-auto text-neutral-50 sticky top-0 flex justify-between items-center py-1 px-1 text-xs sm:text-sm lg:text-base z-10">
+      <div class="flex items-center justify-center gap-3 ml-2 select-none">
+        <div>
+          <span class="font-macabre text-2xl cursor-pointer" :class="page == '/' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/'">Horror Hub</span>
         </div>
-      </template>
+        <div class="font-bold cursor-pointer" :class="page == '/guide' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/guide'">Guide</div>
+        <div class="font-bold cursor-pointer" :class="page == '/faqs' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/faqs'">FAQs</div>
+        <div class="font-bold cursor-pointer" :class="page == '/buy' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/buy'">buy $FEAR</div>
+      </div>
+      <div class="flex justify-center items-center select-none">
+        <!-- <button class="text-neutral-50 px-2 py-1 rounded-sm border border-solid border-neutral-500" id="transakLink">buy $FEAR</button> -->
+        <template x-if="!_.get(state, 'user')">
+          <button
+            class="text-neutral-800 bg-neutral-50 px-2 py-1 rounded-md ml-1 border border-solid border-neutral-500 flex justify-center items-center disabled:opacity-70"
+            @click="login"
+            :disabled="state.running.GOOGLE_LOGIN"
+          >
+            <span>login</span>
+            <i x-show="state.running.GOOGLE_LOGIN" x-html="loadingSVG('w-3 h-3 ml-1')"></i>
+          </button>
+        </template>
+        <template x-if="_.get(state, 'user')">
+          <div class="bg-neutral-800 text-neutral-400 rounded-full flex justify-center items-center ml-2">
+            <img class="rounded-full w-4 h-4 mr-1" :src="state.user.picture" referrerpolicy="no-referrer" />
+            <div class="flex flex-col">
+              <span x-text="state.user.email"></span>
+              <!-- <span class="text-center">20.41 FEAR</span> -->
+            </div>
+          </div>
+        </template>
+      </div>
     </div>
   </div>
   <!-- main -->
-  <div class="flex-1 flex">
+  <div class="container mx-auto flex-1 flex">
     <template x-if="!!state && page == '/'">
       <div>
       <div class="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2">
@@ -245,7 +247,7 @@
           frameborder="no" allowtransparency="true" allowfullscreen=""
         >
         </iframe>
-        <div class="text-center absolute top-0 left-0 w-full h-full select-none text-neutral-500 bg-neutral-900 flex flex-col justify-center items-center z-10 text-2xl">
+        <div class="text-center absolute top-0 left-0 w-full h-full select-none text-neutral-500 flex flex-col justify-center items-center z-10 text-2xl">
           <span>Hang on a second please ...</span>
           <span>Transactions will be processed via our partner <b>Transak</b></span>
         </div>
