@@ -112,7 +112,7 @@ const purchaseGame = async id => {
     vm.state.running.PURCHASE_GAME = id;
     const { hubToken } = vm.state.user;
     const game = vm.state.games.find(g => g.id == id);
-    const ownedGames = await getOwnedGames(vm.state.user.hubToken);
+    const ownedGames = await getPurchasedGames(vm.state.user.hubToken);
     vm.state.user.ownedGames = ownedGames;
     if(ownedGames.includes(id)) throw new Error("Already purchased");
     const result = await axios.request({
@@ -151,15 +151,26 @@ const getHubAPIToken = async (googleIdToken) => {
   }
 }
 
-const getOwnedGames = async (hubToken) => {
-  const { Purchased } = await axios.request({
-    method: "GET",
-    url: `https://hubfunctions-prd.azurewebsites.net/api/getUser`,
-    headers: {
-      "x-zumo-auth": hubToken,
+const getPurchasedGames = async (refresh_token) => {
+  const { purchased } = await axios.request({
+    method: "POST",
+    url: `https://fearapi.azurewebsites.net/api/horrorhubweb/getPurchased`,
+    data: {
+      token: refresh_token,
     },
   }).then(r => r.data);
-  return Purchased.map(id => +id);
+  return purchased;
+}
+
+const exchangeCodeForToken = async (code) => {
+  const tokens = await axios.request({
+    method: "POST",
+    url: `https://fearapi.azurewebsites.net/api/horrorhubweb/exchangeCodeForTokens`,
+    data: {
+      code,
+    },
+  }).then(r => r.data);
+  return tokens;
 }
 
 const login = async () => {
@@ -170,12 +181,9 @@ const login = async () => {
     const { code } = await auth2.grantOfflineAccess({
       'redirect_uri': googleLoginRedirectURI,
     });
-    // login via 
+    const { id_token, refresh_token} = await exchangeCodeForToken(code);
     if(googleLoginRedirectURI) return;
-    // login via popup
-    const { id_token } = await gapi.client.getToken();
-    const hubToken = await getHubAPIToken(id_token);
-    const ownedGames = await getOwnedGames(hubToken);
+    const purchased = await getPurchasedGames(refresh_token);
     const profile = auth2.currentUser.get().getBasicProfile();
     const [
       name,
@@ -186,23 +194,23 @@ const login = async () => {
       profile.getEmail(),
       profile.getImageUrl(),
     ]
-    console.log(`code email name picture`, code, email, name, picture);
+    console.log(`email name picture`, email, name, picture);
     vm.state = {
       ...vm.state,
       user: {
         email,
         name,
         picture,
-        refreshToken: code,
+        refreshToken: refresh_token,
         idToken: id_token,
-        hubToken,
-        ownedGames,
+        ownedGames: purchased, // polyfill
+        purchased: purchased,
       }
     }
   } catch(exception) {
-    console.error("login() error", exception);
     // throw exception;
     if(_.get(exception, 'error') == "popup_closed_by_user") return;
+    console.error("login() error", exception);
     fearError(getExceptionDetails(exception));
   } finally {
     vm.state.running.GOOGLE_LOGIN = false;

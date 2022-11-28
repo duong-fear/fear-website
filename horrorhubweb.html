@@ -93,11 +93,6 @@
     }
   </style>
   <script src="/js/transak.js"></script>
-  <link rel="stylesheet" href="assets/css/animate.min.css">
-  <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-  <link rel="stylesheet" href="assets/css/owl.theme.default.css">
-  <script src="assets/js/jquery.min.js"></script>
-  <script src="assets/js/owl.carousel.min.js"></script>
 </head>
 <body x-data="$store.vm" class="font-averta bg-neutral-800 antialiased">
 <div class="flex flex-col min-h-screen">
@@ -125,10 +120,10 @@
           </button>
         </template>
         <template x-if="_.get(state, 'user')">
-          <div class="bg-neutral-800 text-neutral-400 rounded-full flex justify-center items-center ml-2">
-            <img class="rounded-full w-4 h-4 mr-1" :src="state.user.picture" referrerpolicy="no-referrer" />
-            <div class="flex flex-col">
-              <span x-text="state.user.email"></span>
+          <div class="cursor-pointer px-1 text-neutral-100 rounded-full flex justify-center items-center gap-1">
+            <img class="rounded-full w-4 h-4" :src="state.user.picture" referrerpolicy="no-referrer" />
+            <div class="flex justify-center items-center">
+              <span x-text="getEmailId(state.user.email)"></span>
               <!-- <span class="text-center">20.41 FEAR</span> -->
             </div>
           </div>
@@ -145,13 +140,16 @@
           <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
             <div class="relative">
               <img :src="g.splash" class="w-40 sm:w-52 md:w-60 lg:w-72 rounded-md aspect-square border-4 border-solid border-neutral-300 shadow-md">
-              <span class="text-xs font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2">
+              <span class="text-xs font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="!state.user || !state.user.purchased.includes(g.id)">
                 <span x-text="g.priceFear + ' $FEAR'"></span>
+              </span>
+              <span class="text-xs font-bold text-green-800 bg-green-200 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="state.user && state.user.purchased.includes(g.id)">
+                owned
               </span>
               <!-- <span class="text-xs sm:text-sm lg:text-base font-bold absolute bottom-0 px-1 py-1 text-neutral-50 bg-opacity-30 bg-neutral-800 -translate-x-1/2 w-full" x-text="g.name"></span> -->
             </div>
             <div class="mt-2 flex-1 text-neutral-300 text-center flex justify-center items-center">
-              <span class="text-base md:text-lg lg:text-xl font-bold" x-text="g.name"></span>
+              <span class="text-base md:text-lg lg:text-xl font-bold" x-text="g.name" :class="state.user && state.user.purchased.includes(g.id) ? 'text-green-400' : ''"></span>
             </div>
           </div>
         </template>
