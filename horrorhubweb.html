@@ -135,15 +135,18 @@
   <div class="container mx-auto flex-1 flex">
     <template x-if="!!state && page == '/'">
       <div>
+      <div class="text-neutral-100 rounded-md border-2 border-dashed border-neutral-700 p-4 mx-2 mt-2 md:mt-4">
+        some short description about the horror shop / $FEAR discount ... / current MATIC-FEAR exchange rate etc
+      </div>
       <div class="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2">
         <template x-for="(g, index) in state.games">
           <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
             <div class="relative">
               <img :src="g.splash" class="w-40 sm:w-52 md:w-60 lg:w-72 rounded-md aspect-square border-4 border-solid border-neutral-300 shadow-md">
-              <span class="text-xs font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="!state.user || !state.user.purchased.includes(g.id)">
+              <span class="text-xs sm:text-sm lg:text-base font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="!state.user || !state.user.purchased.includes(g.id)">
                 <span x-text="g.priceFear + ' $FEAR'"></span>
               </span>
-              <span class="text-xs font-bold text-green-800 bg-green-200 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="state.user && state.user.purchased.includes(g.id)">
+              <span class="text-xs sm:text-sm lg:text-base font-bold text-green-800 bg-green-200 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="state.user && state.user.purchased.includes(g.id)">
                 owned
               </span>
               <!-- <span class="text-xs sm:text-sm lg:text-base font-bold absolute bottom-0 px-1 py-1 text-neutral-50 bg-opacity-30 bg-neutral-800 -translate-x-1/2 w-full" x-text="g.name"></span> -->
@@ -176,11 +179,11 @@
             </div>
             <div class="px-2 py-2 flex gap-2">
               <button class="flex-1 bg-cyan-200 text-cyan-800 rounded-md py-2 flex justify-center items-center gap-1">
-                <span>Pay with x $FEAR</span>
+                <span>Pay with <span x-text="state.games[selectedGameIndex].priceFear"></span> $FEAR</span>
                 <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PURCHASE_GAME"></i>
               </button>
               <button class="flex-1 bg-purple-200 text-purple-800 rounded-md py-2 flex justify-center items-center gap-1">
-                <span>Pay with y $MATIC</span>
+                <span>Pay with <span x-text="state.games[selectedGameIndex].priceMatic"></span> $MATIC</span>
                 <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PURCHASE_GAME"></i>
               </button>
             </div>
