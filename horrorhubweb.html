@@ -161,7 +161,11 @@
             <div class="mx-auto bg-neutral-900 text-neutral-50 flex flex-col h-full sm:h-5/6 sm:max-w-lg md:max-w-xl sm:rounded-md">
             <div class="gap-2 p-4 pb-2 font-bold text-lg flex justify-between items-center">
               <span x-text="state.games[selectedGameIndex].name"></span>
-              <button class="self-start px-2 bg-neutral-700 text-white rounded-md py-2 rounded-full w-8 h-8 flex justify-center items-center" @click="setSelectedGameIndex(null)">
+              <button
+                class="self-start px-2 bg-neutral-700 text-white rounded-md py-2 rounded-full w-8 h-8 flex justify-center items-center disabled:cursor-not-allowed"
+                @click="setSelectedGameIndex(null)"
+                :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>                               
@@ -177,14 +181,53 @@
               <span x-text="loremText"></span><br/>
               <span x-text="loremText"></span><br/>
             </div>
-            <div class="px-2 py-2 flex gap-2">
-              <button class="flex-1 bg-cyan-200 text-cyan-800 rounded-md py-2 flex justify-center items-center gap-1">
-                <span>Pay with <span x-text="state.games[selectedGameIndex].priceFear"></span> $FEAR</span>
-                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PURCHASE_GAME"></i>
+            <div class="px-2 py-2 flex gap-2 text-xs sm:text-sm md:text-base" x-show="state.user && !state.user.purchased.includes(state.games[selectedGameIndex].id)">
+              <button
+                @click="payWithFear(state.games[selectedGameIndex].id)"
+                class="flex-1 bg-cyan-200 text-cyan-800 rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
+              >
+                <span>
+                  <span x-text="state.running.PAY_WITH_FEAR === false ? 'Pay with' : 'Paying'"></span>
+                  <span x-text="state.games[selectedGameIndex].priceFear"></span>
+                  <span>$FEAR</span>
+                </span>
+                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_FEAR !== false"></i>
               </button>
-              <button class="flex-1 bg-purple-200 text-purple-800 rounded-md py-2 flex justify-center items-center gap-1">
-                <span>Pay with <span x-text="state.games[selectedGameIndex].priceMatic"></span> $MATIC</span>
-                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PURCHASE_GAME"></i>
+              <button
+                @click="payWithMatic(state.games[selectedGameIndex].id)"
+                class="flex-1 bg-purple-200 text-purple-800 rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
+              >
+                <span>
+                  <span x-text="state.running.PAY_WITH_MATIC === false ? 'Pay with' : 'Paying'"></span>
+                  <span x-text="state.games[selectedGameIndex].priceMatic"></span>
+                  <span>$MATIC</span>
+                </span>
+                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_MATIC !== false"></i>
+              </button>
+            </div>
+            <div class="px-2 py-2 flex gap-2 text-sm md:text-base" x-show="state.user && state.user.purchased.includes(state.games[selectedGameIndex].id)">
+              <button
+                @click="downloadGame(state.games[selectedGameIndex].id)"
+                class="flex-1 bg-green-200 text-green-800 rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                :disabled="state.running.DOWNLOAD_GAME"
+              >
+                <span x-text="!state.running.DOWNLOAD_GAME ? 'Download' : 'Downloading'"></span>
+                <i x-html="downloadSVG('w-4 h-4')" x-show="!state.running.DOWNLOAD_GAME"></i>
+                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.DOWNLOAD_GAME"></i>
+              </button>
+            </div>
+            <div class="px-2 py-2 flex gap-2 text-sm md:text-base" x-show="!state.user">
+              <button
+                @click="login"
+                class="flex-1 bg-neutral-200 text-neutral-800 font-bold rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                :disabled="state.running.GOOGLE_LOGIN"
+              >
+                <span>
+                  Login
+                </span>
+                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.GOOGLE_LOGIN"></i>
               </button>
             </div>
             </div>

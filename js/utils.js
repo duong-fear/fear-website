@@ -30,10 +30,9 @@ const fearConfirm = async (title, message, confirmButtonText) => {
   return isConfirmed;
 }
 
-const fearSuccess = async (message, options = {}) => {
+const fearSuccess = async (message, options = { title: 'Done' }) => {
   await Swal.fire({
     icon: 'success',
-    title: 'Done',
     text: message,
     confirmButtonText: 'OK',
     ...options

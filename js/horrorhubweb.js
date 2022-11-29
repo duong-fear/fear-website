@@ -115,48 +115,81 @@ const stepList = [
   q: `Step ${index+1}: ${item.q}`,
 }));
 
-const purchaseGame = async id => {
-  if(vm.state.running.PURCHASE_GAME == id) return;
+const payWithFear = async productId => {
+  if(vm.state.running.PAY_WITH_FEAR === productId) return;
   try {
-    vm.state.running.PURCHASE_GAME = id;
-    const { hubToken } = vm.state.user;
-    const game = vm.state.games.find(g => g.id == id);
-    const ownedGames = await getPurchasedGames(vm.state.user.hubToken);
-    vm.state.user.ownedGames = ownedGames;
-    if(ownedGames.includes(id)) throw new Error("Already purchased");
-    const result = await axios.request({
-      method: "POST",
-      url: `https://hubfunctions-prd.azurewebsites.net/api/purchase/${id}`,
-      headers: {
-        "x-zumo-auth": hubToken,
-      },
-    }).then(r => r.data);
-    vm.state.user.ownedGames.push(id);
-    fearSuccess(`You owned '${game.name}'`);
+    vm.state.running.PAY_WITH_FEAR = productId;
+    const game = vm.state.games.find(g => g.id == productId);
+    const purchased = await getPurchasedGames(vm.state.user.refreshToken);
+    vm.state.user.purchased = purchased;
+    // if(purchased.includes(productId)) throw new Error("Already purchased");
+    // await axios.request({
+    //   method: "POST",
+    //   url: `https://fearapi.azurewebsites.net/api/horrorhubweb/purchase`,
+    //   data: {
+
+    //   },
+    // }).then(r => r.data);
+    await sleep(1);
+    vm.state.user.purchased.push(productId);
+    fearSuccess(`You owned '${game.name}'`, {
+      title: "Payment Successful",
+    });
+    // vm.selectedGameIndex = null;
   } catch(exception) {
-    console.error("purchaseGame() error", exception);
+    console.error("payWithFear() error", exception);
     fearError(getExceptionDetails(exception));
   } finally {
-    vm.state.running.PURCHASE_GAME = false;
+    vm.state.running.PAY_WITH_FEAR = false;
   }
 }
 
-const downloadGame = async () => {
-  await fearError("Download function is not implemented yet :D");
+const payWithMatic = async productId => {
+  if(vm.state.running.PAY_WITH_MATIC === productId) return;
+  try {
+    vm.state.running.PAY_WITH_MATIC = productId;
+    const game = vm.state.games.find(g => g.id == productId);
+    const purchased = await getPurchasedGames(vm.state.user.refreshToken);
+    vm.state.user.purchased = purchased;
+    // if(purchased.includes(productId)) throw new Error("Already purchased");
+    // await axios.request({
+    //   method: "POST",
+    //   url: `https://fearapi.azurewebsites.net/api/horrorhubweb/purchase`,
+    //   data: {
+
+    //   },
+    // }).then(r => r.data);
+    await sleep(1);
+    vm.state.user.purchased.push(productId);
+    fearSuccess(`You owned '${game.name}'`, {
+      title: "Payment Successful",
+    });
+    // vm.selectedGameIndex = null;
+  } catch(exception) {
+    console.error("payWithMatic() error", exception);
+    fearError(getExceptionDetails(exception));
+  } finally {
+    vm.state.running.PAY_WITH_MATIC = false;
+  }
 }
 
-const getHubAPIToken = async (googleIdToken) => {
+const downloadGame = async (productId) => {
+  if(vm.state.running.DOWNLOAD_GAME === productId) return;
   try {
-    const { authenticationToken } = await axios.request({
+    vm.state.running.DOWNLOAD_GAME = productId;
+    const { url } = await axios.request({
       method: "POST",
-      url: `https://hubfunctions-prd.azurewebsites.net/.auth/login/google`,
+      url: `https://fearapi.azurewebsites.net/api/horrorhubweb/getDownloadUrl`,
       data: {
-        id_token: googleIdToken,
+        productId,
       },
     }).then(r => r.data);
-    return authenticationToken;
-  } catch {
-    throw new Error("Can't contact Horror Hub app");
+    window.location.href = url;
+  } catch (exception) {
+    console.error("downloadGame() error", exception);
+    fearError(getExceptionDetails(exception));
+  } finally {
+    vm.state.running.DOWNLOAD_GAME = false;
   }
 }
 
@@ -262,6 +295,8 @@ const boostrapApp = () => {
         GOOGLE_LOGIN: false,
         PURCHASE_GAME: false,
         DOWNLOAD_GAME: false,
+        PAY_WITH_FEAR: false,
+        PAY_WITH_MATIC: false,
       },
     },
     // page: '/', // or `/faqs` or `/guide`
