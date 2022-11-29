@@ -3,6 +3,9 @@ const googleLoginRedirectURI = undefined; //window.location.href
 
 const matic2Fear = 10.844;
 
+const matic2Usd = 0.837;
+const fear2Usd = 0.075;
+
 const loremText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
 const fetchInitialAppState = async () => {  
   sleep(0.5);
@@ -11,49 +14,50 @@ const fetchInitialAppState = async () => {
       name: "Clucking Hell",
       splash: "https://placekitten.com/400/400?image=1",
       isDesktopGame: true,
-      priceFear: "10",
+      priceUsd: "3",
     },
     {
       name: "Whack The Demon",
       splash: "https://placekitten.com/400/400?image=2",
       isDesktopGame: false,
-      priceFear: "5",
+      priceUsd: "5",
     },
     {
       name: "Whack Your Undead Neighbour",
       splash: "https://placekitten.com/400/400?image=3",
       isDesktopGame: false,
-      priceFear: "25",
+      priceUsd: "10",
     },
     {
       name: "Whack Your Neighbour Extreme Edition",
       splash: "https://placekitten.com/400/400?image=4",
-      priceFear: "55",
+      priceUsd: "15",
     },
     {
       name: "Whack The Burglars",
       splash: "https://placekitten.com/400/400?image=5",
       isDesktopGame: false,
-      priceFear: "65",
+      priceUsd: "5",
     },
     {
       name: "Whack The Creeps Game",
       splash: "https://placekitten.com/400/400?image=6",
       isDesktopGame: false,
-      priceFear: "15",
+      priceUsd: "6",
     },
     {
       name: "Whack the Serial Killer",
       splash: "https://placekitten.com/400/400?image=7",
       isDesktopGame: false,
-      priceFear: "35",
+      priceUsd: "6",
     },
   ].map((g, index) => ({
     ...g,
     id: index,
     // user got discount when pay with $FEAR
     // this calculation may be wrong !!
-    priceMatic: (1.1 * g.priceFear / matic2Fear).toFixed(3),
+    priceMatic: +(g.priceUsd / matic2Usd).toFixed(3),
+    priceFear: +(0.9 * g.priceUsd / fear2Usd).toFixed(3),
   }))
 }
 

@@ -144,7 +144,7 @@
             <div class="relative">
               <img :src="g.splash" class="w-40 sm:w-52 md:w-60 lg:w-72 rounded-md aspect-square border-4 border-solid border-neutral-300 shadow-md">
               <span class="text-xs sm:text-sm lg:text-base font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="!state.user || !state.user.purchased.includes(g.id)">
-                <span x-text="g.priceFear + ' $FEAR'"></span>
+                <span x-text="g.priceUsd + ' USD'"></span>
               </span>
               <span class="text-xs sm:text-sm lg:text-base font-bold text-green-800 bg-green-200 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="state.user && state.user.purchased.includes(g.id)">
                 owned
