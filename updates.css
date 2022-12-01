@@ -738,13 +738,13 @@ letter-spacing: 5px;
 
 .ladda-button, .ladda-button .ladda-label, .ladda-button .ladda-spinner {background: red;padding: 10px 20px;font-family: Woodbone;border-radius: 20px;font-weight: bold;}
 .sweet-alert button, .sweet-alert button.cancel:active, .sweet-alert button:active {background:red ! important;border:1px solid red ! important;}
-#transakLink {font-family:The Macabre;border-radius:5px ! important;font-size:11pt;border:2px solid black;margin-top:5px ! important;}
-#transakLink:hover {background:black;color:#fff;border:2px solid #fff;}
+.transakLink {font-family:The Macabre;border-radius:5px ! important;font-size:11pt;border:2px solid black;margin-top:5px ! important;}
+.transakLink:hover {background:black;color:#fff;border:2px solid #fff;}
 
 
 @media only screen and (max-width: 1000px) {
 	.transak_modal{margin-top:100px ! important;}
-	#transakLink {margin-left:10px ! important;}
+	.transakLink {margin-left:10px ! important;}
 }
 
 

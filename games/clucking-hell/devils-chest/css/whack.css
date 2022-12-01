@@ -456,9 +456,9 @@ p.phrase {font-size:12pt ! important;}
 .navmenu li.navlink7 a {background:url(https://www.fear.io/images/devils-chest-icon.svg) no-repeat;}
 .navmenu li.navlink7 a:hover {background:url(https://www.fear.io/images/devils-chest-icon-hover.svg) no-repeat;}
 
-span.transactlink button {color: white ! important;font-weight: bold;background: red;position: absolute;right: 20px;font-size: 9pt;top: 20px;padding: 10px 20px;border: 2px solid red;width: 115px;}
+span.transakSpan button {color: white ! important;font-weight: bold;background: red;position: absolute;right: 20px;font-size: 9pt;top: 20px;padding: 10px 20px;border: 2px solid red;width: 115px;}
 	
-span.transactlink button:hover {color:white ! important;background:black;border:2px solid white;}
+span.transakSpan button:hover {color:white ! important;background:black;border:2px solid white;}
 #menu li.uniswaplink a {padding-left:30px;}
 .navmenu2 li.navlink1 a:hover {color:#ff017b ! important;}
 .navmenu2 li.quickswap a, #menu li.quickswap a {background:url(https://www.fear.io/images/quickswap-logo.svg) no-repeat ! important;padding-left:50px;}
@@ -507,7 +507,7 @@ h1.headerpage, #headersubpage span, span.headerpage {left:27%;}
 .container4 {clear:none;}
 .roadmap {width:100%;padding:0px 10% 0 10%;margin:0;}
 .innersection {margin-top:10px;}
-span.transactlink button {color: white ! important;font-weight: bold;position: absolute;left: auto;right: 14px;top: 18px;padding: 5px 10px;border: 2px solid red;width:88px;font-size: 10pt;}
+span.transakSpan button {color: white ! important;font-weight: bold;position: absolute;left: auto;right: 14px;top: 18px;padding: 5px 10px;border: 2px solid red;width:88px;font-size: 10pt;}
 }
 
 @media screen and (max-width: 980px) {
