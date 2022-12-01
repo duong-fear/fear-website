@@ -1,76 +1,10 @@
 <!doctype html>
-<html class="dark">
+<html>
     <head>
         <meta charset="utf-8">
-		    <title>Platform Stats | Fear</title>
+		<title>Buy | Fear</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <style>
-            @font-face {
-              font-family: "Averta";
-              src: url("fonts/Averta-Regular.otf") format("truetype");
-            }
-            .font-averta {
-              font-family: Averta, serif !important;
-            }
-            .text-main-color {
-              color: var(--mainColor);
-            }
-            .bg-main-color {
-              background-color: var(--mainColor);
-            }
-            .border-main-color {
-              border-color: var(--mainColor);
-            }
-            .bg-black-color {
-              background-color: var(--blackColor);
-            }
-            .bg-black-color {
-              background-color: var(--blackColor);
-            }
-            .bg-white-color {
-              background-color: var(--whiteColor);
-            }
-            .c3-tooltip {
-              opacity: 1 !important;
-            }
-            /* #chart {
-                height: 400px;
-            }
-            #token-release-chart {
-                height: 400px;
-                font-size: x-small;
-            }
-            #chart text {
-                fill: #eee;
-                font-family: 'Poppins', sans-serif;
-                font-size: larger;
-                text-align:left;
-            } */
-            .c3-chart-arc path {
-                stroke: red !important;
-            }
-            .c3-tooltip-container {
-                color: black;
-            }
-            .c3-tooltip-container table.c3-tooltip td.name {
-                display: none !important;
-            }
-            .c3-legend-item {
-                fill: white;
-            }
-            .c3-axis-y{
-                fill:white;
-            }
-            .c3-axis-x{
-                fill:white;
-            }
-            .c3-tooltip tr, .c3-tooltip td {
-                border: none !important;
-            }
-            .c3 text {
-                font-family: Averta, serif !important;
-            }
-        </style>
+
         <link rel="stylesheet" href="assets/css/bootstrap.min.css?v3">
         <link rel="stylesheet" href="assets/css/animate.min.css?v3">
         <link rel="stylesheet" href="assets/css/boxicons.min.css?v3">
@@ -82,34 +16,19 @@
         <link rel="stylesheet" href="assets/css/style.css?v3">
         <link rel="stylesheet" href="assets/css/responsive.css?v3">
         <link rel="stylesheet" href="updates.css?v176">
-        <link rel="stylesheet" href="css/preflight.css">
-        <link href="css/c3-eb4b9be8.css" media="screen" rel="stylesheet" type="text/css" />
-        <link rel="shortcut icon" href="images/fear-icon.svg" type="image/x-icon" />
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.js" integrity="sha512-tyQHGhqSiH/wW31W22IYEXVwL7Rh9pQ5oDedxPkXEftX/woKF5l/qswBaQ1Ohre7OyiLk1ypnYBBzmSZ/ZZk1w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="js/lodash@4.17.15.min.js"></script>
-        <script src="js/dayjs.min.js"></script>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script>tailwind.config = { corePlugins: { preflight: false } }</script>
-        <script src="js/alpinejs@3.10.4.min.js" defer></script>
-        <script src="js/axios@1.1.3.js"></script>
-        <!-- <script src="js/walletconnect_web3-provider@1.7.8.umd.min.js"></script> -->
-        <!-- <script src="js/web3modal@1.9.8.min.js"></script> -->
-        <script src="js/abi.js"></script>
-        <!-- <script src="js/staking.js"></script> -->
-        <!-- <script src="https://global.transak.com/sdk/v1.1/widget.js" async></script> -->
-        <script src="js/treasury.js"></script>
-        <script src="js/c3.min-d2a1f852.js" type="text/javascript"></script>
-        <script src="js/d3-5.8.2.min-c5268e33.js" type="text/javascript"></script>
-        <script src="https://global.transak.com/sdk/v1.1/widget.js" async></script>
-        <script src="/js/transak.js"></script>
-        <script src="/js/sweetalert2@11.js"></script>
+    <link rel="shortcut icon" href="images/fear-icon.svg" type="image/x-icon" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
 
-    </head>
+
+<script src="https://global.transak.com/sdk/v1.1/widget.js" async></script>
+<script src="/js/transak.js"></script>
+<script src="/js/sweetalert2@11.js"></script>
+
+</head>
 
     <body class="subpage gamespage templatepage">
 
-        <!-- Start Navbar Area -->
+             <!-- Start Navbar Area -->
         <div class="navbar-area">
             <div class="fear-responsive-nav">
                 <div class="container">
@@ -132,7 +51,7 @@
                         </a>
 							<span class="fearslogan"><img src="images/fear-slogan.svg" alt="Your Worst Nightmares Tokenised"/></span>
 
-                        <div class="navbar-collapse mean-menu">
+                        <div class="collapse navbar-collapse mean-menu">
                             <ul class="navbar-nav">
                                 <li class="nav-item nav-item-1"><a href="#" class="nav-link">Games <i class="flaticon-down-arrow"></i></a>
                                     <ul class="dropdown-menu">                                        
@@ -140,10 +59,12 @@
 <li class="nav-item the-crypt-link"><a href="/games/the-crypt/" class="nav-link">The Crypt</a></li>
                                         <li class="nav-item fear-museum-link"><a href="/games/blood-realms/" class="nav-link">Blood Realms</a></li>
 
+
+                      
                                        <li class="nav-item cluck-sub-menu"><a href="/games/clucking-hell/" class="nav-link nav-cluck-original">Clucking Hell</a></li>
 
                                        <li class="nav-item cluck-chest"><a href="/games/wyun/" class="nav-item">Whack Your UND. Neighbour</a></li>
-                                       <li class="nav-item cluck-chest"><a href="/games/whack-the-demon/" class="nav-item wtdlink">Whack the Demon</a></li>             
+                                       <li class="nav-item cluck-chest"><a href="/games/whack-the-demon/" class="nav-item wtdlink">Whack the Demon</a></li>
                                     </ul>
                                 </li>
 
@@ -158,12 +79,9 @@
                                         <li class="nav-item fear-token-link"><a href="/token.html" class="nav-link">FEAR TOKEN</a></li>           
 
                                         <li class="nav-item"><a href="/platform.html" class="nav-link">Platform Features</a></li><li class="nav-item"><a href="/platform-stats.html" class="nav-link">Platform Stats</a></li>
-										
-<li class="nav-item"><a href="/staking-MUTATED.html" class="nav-link">STAKING <font style="color:green;">MUTATED</font></a></li>
-<li class="nav-item"><a href="/moon-map.html" class="nav-link">ROAD MAP</a></li>
+<li class="nav-item"><a href="/staking-MUTATED.html" class="nav-link">STAKING <font style="color:green;">MUTATED</font></a></li><li class="nav-item"><a href="/moon-map.html" class="nav-link">ROAD MAP</a></li>
 
                                         <li class="nav-item holders-link"><a href="https://fear.io/docs/fear-bite-paper.pdf" class="nav-link">LITE PAPER</a></li>
-                                        
                                     </ul>
                                 </li>
 
@@ -199,7 +117,7 @@
         </div>
         <!-- End Navbar Area -->
 
-        <!-- Sidebar Modal -->
+<!-- Sidebar Modal -->
         <div class="sidebarModal modal right fade" id="sidebarModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -211,7 +129,6 @@
                         </div>
 
                         <div class="instagram-list">
-                            
                             <div class="row">
 
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-6">
@@ -279,80 +196,48 @@
         <!-- End Sidebar Modal -->
 
 
-        <!-- Start Staking Area -->
-        <section class="blog-details-area" x-data="$store.vm">
-            <div class="container mt-32">
-                <!-- start treasury UI -->
-                <template x-if="state.ready === true">
-                  <div class="rounded-md font-averta text-gray-100">
-                    <div class="page-title-content text-center py-4">
-                      <h1 class="" style="-webkit-animation: none; animation: none">Platform Stats</h1>
-                      <div style="font-size:12px;margin-top:10px;margin-bottom:10px;">
-                        For information on how our Platform drives the stats visit <a target="_blank" style="color:red;" href="https://medium.com/@FEAROFFICIAL/announcing-the-fear-dao-dashboard-e630f8459c4a">here</a>. 
-                      </div>
-                    </div>
-                    <!-- stats -->
-                    <div class="flex items-center justify-center text-center">
-                        <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col"  style="height:175px;">
-                            <span class="text-5xl py-2 font-bold text-main-color" x-text="state.totalFearTokenHolders"></span>
-                            <span class="uppercase text-xs text-neutral-200">$FEAR Holders</span>
-                            <div style="margin-top:5px;">
-                                <span style="font-size:9px;">UNIQUE HOLDERS ON</span>
-                                <a href="https://polygonscan.com/token/0xa2ca40dbe72028d3ac78b5250a8cb8c404e7fb8c#balances" target="_blank" style="margin-top:10px;font-size:9px; color:purple;display:inline-block;">POLY</a>
-                                <a href="https://bscscan.com/token/0x9ba6a67a6f3b21705a46b380a1b97373a33da311#balances" target="_blank" style="margin-top:10px;font-size:9px; color:yellow;display:inline-block;">BSC</a>
-                                <a href="https://etherscan.io/token/0x88a9a52f944315d5b4e917b9689e65445c401e83#balances" target="_blank" style="margin-top:10px;font-size:9px; color:silver;display:inline-block;">ETH</a>
-                            </div>
-                        </div>
-                        <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col" style="height:175px;">
-                            <span class="text-5xl py-2 py-2 font-bold text-main-color" x-text="state.totalFearWalletAccounts">-</span>
-                            <span class="uppercase text-xs text-neutral-200">FEAR Wallet Accounts</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-center text-center" style="margin-top:50px;">
-                        <div class="flex-1 bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col" style="height:175px;">
-                            <span class="text-5xl py-2 py-2 font-bold text-main-color" x-text="formatEtherHuman(state.daoWalletBalanceBN)"></span>
-                            <span class="uppercase text-xs text-neutral-200">$FEAR Fees Generated</span>
-                            <div style="margin-top:5px;">
-                                <span style="font-size:9px;">VIEW ON</span>
-                                <a href="https://polygonscan.com/address/0x3C821fea803e7376f223510e1a0117f6B4F01121" target="_blank" style="margin-top:9px;font-size:10px; color:purple;display:inline-block;">POLY</a>
-                                <a href="https://bscscan.com/address/0x3C821fea803e7376f223510e1a0117f6B4F01121" target="_blank" style="margin-top:9px;font-size:10px; color:yellow;display:inline-block;">BSC</a>
-                            </div>
-                        </div>
-                        <div class="flex-1 self-stretch bg-neutral-900 rounded-lg mx-2 py-4 flex flex-col justify-center" style="height:175px;">
-                            <span class="text-5xl py-2 py-2 font-bold text-main-color" x-text="formatEtherHuman(state.circulatingsupplyBN)"></span>
-                            <span class="uppercase text-xs text-neutral-200">$FEAR in circulation</span>
-                        </div>
-                    </div>
-                    <!-- charts -->
-                    <!-- dao wallet -->
-                    <div class="mt-2 px-2 hidden">
-                      <div class="bg-neutral-900 mt-4 py-2 pb-2 rounded-lg">
-                        <div id="dao-treasury-balance"></div>
-                      </div>
-                    </div>
-                  </div>
-                </template>
-                <template x-if="state.ready === false">
-                    <div class="flex flex-col h-96 text-neutral-400 justify-center items-center bg-neutral-900 rounded-lg select-none">
-                        <div>
-                            <svg class="animate-spin mb-2 h-5 w-5 text-white text-neutral-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <span>Fetching Platform Stats...</span>
-                        </div>
-                    </div>
-                </template>
-                <!-- end treasury UI -->
+        <!-- Start Page Title Area -->
+        <section class="page-title-area page-title-bg1">
+            <div class="container">
+                <div class="page-title-content">
+                    <h1 style="-webkit-animation:none;margin-bottom:40px;">BUY THE FEAR TOKEN</h1>
+                    <p>FEAR is building an <font style="color:red">Independent, Censor-Resistant</font> Horror Platform for both our own in-house game dev team and for independent horror game developers and filmmakers</p>
+                    <p>The journey we are on is one full of <span class="red">Darkness</span> and <span class="red">Evil</span>. If you want to join our community of heroes and <span class="red">Demon Slayers</span> you can buy our token below!</p>
+                </div>
             </div>
         </section>
-        <!-- End Staking Area -->
+        <!-- End Page Title Area -->
 
+        <section>
+            <div class="container">
+               <div class="row">
+                    <div class="col-md-6" style="text-align:center;">
+                        <h1 style="font-family:The Macabre;margin-bottom:30px;">Buy with your Wallet</h1>
+                        <iframe
+                            id="orion-widget"
+                            title="orion-widget"
+                            height="389px"
+                            width="314px"
+                            scrolling="no"
+                            allow="clipboard-wire"
+                            partner-id="91"
+                            src="https://trade.orionprotocol.io/widget?partnerId=91&defaultTheme=dark&assetFrom=usdt&assetTo=fear&allowedAssets=fear&amount=10"></iframe>
+
+                    </div>
+                    <div class="col-md-6" style="text-align:center;max-width: 500px;">
+                        <h1 style="font-family:The Macabre;margin-bottom:30px;;">Buy with your Credit Card</h1>
+                        <iframe height="625" title="Transak On/Off Ramp Widget"
+                            src="https://global.transak.com?apiKey=80f00610-32cc-4d01-8eb0-dfc825c2ef53&cryptoCurrencyCode=FEAR&network=polygon&defaultFiatAmount=20" 
+                            frameborder="no" allowtransparency="true" allowfullscreen="false" 
+                            style="display: block; width: 100%; max-height: 625px; max-width: 500px;">
+                        </iframe>
+                    </div>
+               </div>
+            </div>
+        </section>
 
          <!-- Start Social Area -->
-        <section class="social-area p-8">
+        <section class="social-area pt-100 pb-70">
             <div class="container">
                 <div class="section-title stayconnected">
                     <span class="sub-title">Official</span>
@@ -486,8 +371,8 @@
 
         <div class="go-top"><i class='bx bx-up-arrow-alt'></i></div>
 
-        <!-- <div class="fear-cursor"></div>
-        <div class="fear-cursor2"></div> -->
+        <div class="fear-cursor"></div>
+        <div class="fear-cursor2"></div>
 
         <!-- Links of JS files -->
         <script src="assets/js/jquery.min.js?v4"></script>
@@ -498,18 +383,14 @@
         <script src="assets/js/parallax.min.js?v4"></script>
         <script src="assets/js/meanmenu.min.js?v4"></script>
         <script src="assets/js/isotope.pkgd.min.js?v4"></script>
-        <!-- <script src="assets/js/cursor.min.js?v4"></script> -->
+        <script src="assets/js/cursor.min.js?v4"></script>
         <script src="assets/js/fancybox.min.js?v4"></script>
         <script src="assets/js/wow.min.js?v4"></script>
         <script src="assets/js/form-validator.min.js?v4"></script>
         <script src="assets/js/contact-form-script.js?v4"></script>
         <script src="assets/js/ajaxchimp.min.js?v4"></script>
         <script src="assets/js/main.js?v4"></script>
-
-<script>
-    document.addEventListener('alpine:init', boostrapApp);
-</script>
-
+   
 <script type="text/javascript">
 var sc_project=12412733; 
 var sc_invisible=1; 
@@ -519,6 +400,9 @@ var sc_remove_link=1;
 <script type="text/javascript"
 src="https://www.statcounter.com/counter/counter.js"
 async></script>
+
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery-3.6.1.min.js"></script>
 
 <noscript><div class="statcounter"><img class="statcounter"
 src="https://c.statcounter.com/12412733/0/af2ceb8d/1/"
