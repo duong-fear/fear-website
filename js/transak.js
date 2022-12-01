@@ -63,15 +63,17 @@ function launchTransak(){
     console.log("TRANSAK_WIDGET_CLOSE");
     transakInstance.close();
   },);
+  transakInstance.on(transakInstance.EVENTS.TRANSAK_ORDER_CREATED, (...params) => {
+    console.log("TRANSAK_ORDER_CREATED", params);
+    if(Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+  },);
 }
 
 window.onload = function(){
   $("#transakLink").on("click", launchTransak);
 };
-
-if(Notification.permission === "default") {
-  Notification.requestPermission();
-}
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
