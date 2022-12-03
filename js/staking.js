@@ -7,7 +7,7 @@ let STAKING_AVAILABLE_EPOCH = isProductEnv ? 1668157200 : 0;
 const isStakingAvaiable = () => {
   return !!_.get(vm, 'epoch') && vm.epoch >= STAKING_AVAILABLE_EPOCH;
 }
-const NUMBER_OF_CONFIRMATIONS_NEEDED = 2;
+const NUMBER_OF_CONFIRMATIONS_NEEDED = 3;
 
 const POLYGON_CHAINID = 137;
 const MUMBAI_CHAINID = 80001;

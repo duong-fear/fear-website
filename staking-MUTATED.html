@@ -62,6 +62,22 @@
     </head>
 
     <body class="subpage gamespage templatepage">
+      <!-- <div class="flex items-center m-2 fixed bottom-0 right-0 border border-gray-400 rounded p-2 bg-gray-300 text-pink-600 text-sm z-50">
+        <svg class="h-6 w-auto inline" viewBox="0 0 80 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill="url(#paint0_linear)" fill-rule="evenodd" clip-rule="evenodd" d="M32 16C24.8 16 20.3 19.6 18.5 26.8C21.2 23.2 24.35 21.85 27.95 22.75C30.004 23.2635 31.4721 24.7536 33.0971 26.4031C35.7443 29.0901 38.8081 32.2 45.5 32.2C52.7 32.2 57.2 28.6 59 21.4C56.3 25 53.15 26.35 49.55 25.45C47.496 24.9365 46.0279 23.4464 44.4029 21.7969C41.7557 19.1099 38.6919 16 32 16ZM18.5 32.2C11.3 32.2 6.8 35.8 5 43C7.7 39.4 10.85 38.05 14.45 38.95C16.504 39.4635 17.9721 40.9536 19.5971 42.6031C22.2443 45.2901 25.3081 48.4 32 48.4C39.2 48.4 43.7 44.8 45.5 37.6C42.8 41.2 39.65 42.55 36.05 41.65C33.996 41.1365 32.5279 39.6464 30.9029 37.9969C28.2557 35.3099 25.1919 32.2 18.5 32.2Z"></path>
+            <defs>
+                <linearGradient id="paint0_linear" x1="3.5" y1="16" x2="59" y2="48" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#2298BD"></stop>
+                    <stop offset="1" stop-color="#0ED7B5"></stop>
+                </linearGradient>
+            </defs>
+        </svg>
+        <span class="ml-1 sm:hidden md:hidden lg:hidden xl:hidden">xs</span>
+        <span class="ml-1 hidden sm:inline md:hidden font-extrabold">sm</span>
+        <span class="ml-1 hidden md:inline lg:hidden font-extrabold">md</span>
+        <span class="ml-1 hidden lg:inline xl:hidden font-extrabold">lg</span>
+        <span class="ml-1 hidden xl:inline font-extrabold">xl</span>
+      </div> -->
 
         <!-- Start Navbar Area -->
         <div class="navbar-area">
@@ -277,156 +293,151 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                 <div class="mt-8 rounded-md mb-4 pt-2 pb-4 antialiased" x-data="$store.vm">
                     <!-- tab container -->
                     <template x-if="activeTabId != null">
-                      <div class="flex text-center w-full mt-2 font-macabre justify-between">
+                      <div class="flex text-center w-full mt-0 sm:mt-2 font-macabre justify-between">
                         <button
                           id="the-crypt-tab" 
                           @click="activeTabId = 0"
-                          class="rounded-tl-md w-5/12 relative bg-main-color"
+                          class="py-2 md:py-3 rounded-tl-md w-5/12 relative bg-main-color"
                           :class="activeTabId == 0 ? 'text-white cursor-pointer' : 'cursor-not-allowed opacity-50'"
-                          style="padding-top: 0.75rem; padding-bottom: 0.75rem;"
                         >
-                          <span class="drop-shadow-lg text-2xl">The Crypt</span>
+                          <span class="drop-shadow-lg text-lg sm:text-2xl">The Crypt</span>
                         </button>
                         <button
                           id="the-tomb-tab"
                           @click="activeTabId = 1"
-                          class="rounded-tr-md w-5/12 relative bg-main-color"
+                          class="py-2 md:py-3 rounded-tr-md w-5/12 relative bg-main-color"
                           :class="activeTabId == 1 ? 'text-white cursor-pointer' : 'cursor-not-allowed opacity-50'"
-                          style="padding-top: 0.75rem; padding-bottom: 0.75rem;"
                         >
-                          <span class="drop-shadow-lg text-2xl">The Tomb &nbsp;(coming soon)</span>
+                          <span class="drop-shadow-lg text-lg sm:text-2xl">The Tomb</span>
                         </button>
                       </div>
                     </template>
                     <!-- tab content -->
                     <!-- "the crypt" tab-->
                     <template x-if="activeTabId == 0">
-                      <div class="border-3 border-main-color px-2 font-averta">
+                      <div class="border-3 border-main-color px-1 md:!px-2 font-averta">
                         <!-- staking global stats -->
-                        <div class="flex w-full mt-3">
-                          <div class="flex-1 text-center text-gray-100 rounded-2xl bg-black-color mx-2 py-4 flex flex-col-reverse">
+                        <div class="flex w-full mt-2 sm:mt-3 gap-1 md:!gap-2 xl:!gap-3">
+                          <div class="flex-1 text-center text-gray-100 rounded-lg sm:rounded-xl bg-black-color py-3 sm:!py-4 lg:!py-5 xl:!py-6 flex flex-col-reverse">
                             <div>
-                              <span class="uppercase md:text-sm text-xs">Total Staked</span>
+                              <span class="font-bold md:text-sm text-xs">Total Staked</span>
                             </div>
-                            <div class="flex justify-center items-center">
-                              <span class="text-4xl font-bold text-main-color" x-text="formatEtherHuman(_.get(global, 'tvlBN'))"></span>
-                              <img src="/images/fear-icon.svg" class="ml-2 w-8 h-8 rounded-full border-2 border-gray-500" title="$FEAR">
+                            <div class="flex justify-center items-center gap-1 sm:gap-2">
+                              <span class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-main-color" x-text="formatEtherHuman(_.get(global, 'tvlBN'))"></span>
+                              <img src="/images/fear-icon.svg" class="w-4 h-4 sm:w-5 sm:h-5 lg:h-6 lg:w-6 rounded-full border-2 border-gray-500" title="$FEAR">
                             </div>
                           </div>
-                          <div class="flex-1 text-center text-gray-100 rounded-2xl bg-black-color mx-2 py-4 flex flex-col-reverse">
+                          <div class="flex-1 text-center text-gray-100 rounded-lg sm:rounded-xl bg-black-color py-3 sm:!py-4 lg:!py-5 xl:!py-6 flex flex-col-reverse">
                             <div>
-                              <span class="uppercase md:text-sm text-xs">APR</span>
+                              <span class="font-bold md:text-sm text-xs">APR</span>
                             </div>
                             <div>
-                              <span class="text-4xl font-bold text-main-color" x-text="_.get(global, 'apr', 'n/a')+ '%'"></span>
-                            </div>
-                          </div>
-                          <div class="flex-1 text-center text-gray-100 rounded-2xl bg-black-color mx-2 py-4 flex flex-col-reverse">
-                            <div>
-                              <span class="uppercase md:text-sm text-xs">Stakers</span>
-                            </div>
-                            <div>
-                              <span class="text-4xl font-bold text-main-color" x-text="_.get(global, 'stakerCount', 'n/a')"></span>
+                              <span class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-main-color" x-text="_.get(global, 'apr', 'n/a')+ '%'"></span>
                             </div>
                           </div>
-                          <div class="flex-1 text-center text-gray-100 rounded-2xl bg-black-color mx-2 py-4 flex flex-col-reverse">
+                          <div class="flex-1 text-center text-gray-100 rounded-lg sm:rounded-xl bg-black-color py-3 sm:!py-4 lg:!py-5 xl:!py-6 flex flex-col-reverse">
                             <div>
-                              <span class="uppercase md:text-sm text-xs">Fees Collected</span>
+                              <span class="font-bold md:text-sm text-xs">Stakers</span>
                             </div>
-                            <div class="flex justify-center items-center">
-                              <span class="text-4xl font-bold text-main-color" x-text="formatEtherHuman(global.totalSentToDaoAmountBN)"></span>
-                              <img src="/images/fear-icon.svg" class="ml-2 w-8 h-8 rounded-full border-2 border-gray-500" title="$FEAR">
+                            <div>
+                              <span class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-main-color" x-text="_.get(global, 'stakerCount', 'n/a')"></span>
+                            </div>
+                          </div>
+                          <div class="flex-1 text-center text-gray-100 rounded-lg sm:rounded-xl bg-black-color py-3 sm:!py-4 lg:!py-5 xl:!py-6 flex flex-col-reverse">
+                            <div>
+                              <span class="font-bold md:text-sm text-xs">Fees Collected</span>
+                            </div>
+                            <div class="flex justify-center items-center gap-1 sm:gap-2">
+                              <span class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-main-color" x-text="formatEtherHuman(global.totalSentToDaoAmountBN)"></span>
+                              <img src="/images/fear-icon.svg" class="w-4 h-4 sm:w-5 sm:h-5 lg:h-6 lg:w-6 rounded-full border-2 border-gray-500" title="$FEAR">
                             </div>
                           </div>
                         </div>
                         <!-- wallet connected -->
-                        <div x-show="vm.wallet.address" class="bg-black-color select-none border-l-8 border-gray-600 pl-2 py-1 mt-3 text-gray-200 flex justify-between items-center h-12">
-                          <span class="font-mono" style="font-size: medium;">
+                        <div x-show="vm.wallet.address" class="bg-black-color select-none border-l-8 border-gray-600 pl-2 py-2 mt-2 text-gray-200 flex justify-between items-center text-sm md:text-base xl:text-lg">
+                          <span>
                             <img src="images/icons/metamask.svg" class="w-6 h-6 inline-block" x-show="vm.wallet.isMetaMask" />
                             <img src="images/icons/walletconnect.svg" class="w-6 h-6 inline-block" x-show="vm.wallet.isWalletConnect" />
                             <span x-text="vm.wallet.shortAddress || vm.wallet.address"></span> connected <span x-text="getChainNameById(network.chainId)"></span>                  
                           </span>
                           <button class="rounded-full bg-zinc-900 text-gray-300 mr-2 px-3 py-1 flex items-center" x-show="vm.wallet.isWalletConnect" @click="disconnectWC">
                             <span>disconnect</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-1 -mr-1">
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-1 -mr-1">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
+                            </svg> -->
                           </button>
                         </div>
                         <!-- staking stats by user -->
-                        <div class="rounded-xl mt-3 p-1 shadow">
+                        <div class="rounded-xl mt-1 md:!mt-2 shadow">
                           <div class="relative">
-                            <template x-if="!_.get(vm, 'wallet.address')">
-                              <div class="absolute w-full h-full bg-black-color flex items-center justify-center z-10">
-                                <div>
-                                  <!-- <div><span>Connect your wallet:</span></div> -->
-                                  <button
-                                    class="flex justify-center items-center bg-main-color text-white-color py-2 px-3 rounded-md select-none disabled:cursor-not-allowed disabled:opacity-50"
-                                    @click="connectWallet(0)"
-                                    :disabled="!isStakingAvaiable()"
-                                  >
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1">
-                                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
-                                    </svg>                            
-                                    <span>Connect Wallet</span>
-                                    <i x-html="createSpinner('ml-2 text-white')" :class="LOADING.CONNECT_WALLET ? 'auto' : 'hidden'"></i>
-                                  </button>
-                                </div>
+                            <div class="rounded-xl w-full h-52 sm:h-56 md:h-60 lg:h-64 xl:h-72 bg-black-color flex items-center justify-center z-10" x-show="!_.get(vm, 'wallet.address')">
+                              <div>
+                                <!-- <div><span>Connect your wallet:</span></div> -->
+                                <button
+                                  class="flex justify-center items-center bg-main-color text-white-color py-2 px-3 rounded-md select-none disabled:cursor-not-allowed disabled:opacity-50 text-sm md:text-base lg:text-lg"
+                                  @click="connectWallet(0)"
+                                  :disabled="!isStakingAvaiable()"
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
+                                  </svg>                            
+                                  <span>Connect Wallet</span>
+                                  <i x-html="createSpinner('ml-2 text-white')" :class="LOADING.CONNECT_WALLET ? 'auto' : 'hidden'"></i>
+                                </button>
                               </div>
-                            </template>
+                            </div>
                             <!-- staked + reward -->
-                            <div class="flex my-2">
-                              <div class="flex-1 flex flex-col items-center border-zinc-700 border-dashed border-2 rounded-md py-8 mx-2">
-                                <div>
-                                  <span>Wallet Balance: <span x-text="formatEtherHuman(_.get(wallet, 'fearBalanceBN'))"></span> FEAR</span>
+                            <div class="flex my-2 gap-1 text-xs md:text-sm lg:text-base xl:text-lg" x-show="_.get(vm, 'wallet.address')">
+                              <div class="flex-1 flex flex-col justify-center items-center border-zinc-700 border-dashed border-2 rounded-md py-3">
+                                <div class="text-center">
+                                  <span><span class="hidden md:inline">Wallet </span>Balance: <span x-text="formatEtherHuman(_.get(wallet, 'fearBalanceBN'))"></span> FEAR</span>
                                 </div>
                                 <div>
                                   <button
-                                    class="rounded-lg bg-green-300 text-green-900 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                                    class="rounded-md bg-green-300 text-green-900 px-3 py-2 mt-2 flex gap-1 justify-center items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
                                     :disabled="isWaitingForTransaction()"
                                     @click="stakeFear"
                                   >
-                                    <span>Stake $FEAR</span>
-                                    <i x-html="createSpinner('ml-2 text-green-900')" :class="LOADING.STAKE ? 'auto' : 'hidden'"></i>
+                                    <span>Stake</span>
+                                    <i x-html="createSpinner('text-green-900 h-3 w-3 md:h-4 md:w-4')" :class="LOADING.STAKE ? 'auto' : 'hidden'"></i>
                                   </button>
                                 </div>
                               </div>
-                              <div class="flex-1 flex flex-col items-center border-zinc-700 border-dashed border-2 rounded-md py-8 mx-2">
-                                <div>
+                              <div class="flex-1 flex flex-col justify-center items-center border-zinc-700 border-dashed border-2 rounded-md py-3">
+                                <div class="text-center">
                                   <span>Staked: <span x-text="formatEtherHuman(_.get(wallet, 'stakedAmountBN'))"></span> FEAR</span>
                                 </div>
-                                <div class="flex">
+                                <div class="flex flex-col lg:flex-row mt-2 gap-1">
                                   <button
-                                    class="rounded-lg bg-green-100 text-green-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                                    class="rounded-md bg-green-100 text-green-800 px-3 py-2 flex gap-1 justify-center items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
                                     @click="unstakeFear"
                                     :disabled="isWaitingForTransaction() || bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
                                   >
                                     <span>Unstake</span>
-                                    <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.UNSTAKE ? 'auto' : 'hidden'"></i>
+                                    <i x-html="createSpinner('text-green-800 h-3 w-3 md:h-4 md:w-4')" :class="LOADING.UNSTAKE ? 'auto' : 'hidden'"></i>
                                   </button>
-                                  &nbsp;
                                   <button
-                                    class="rounded-lg bg-red-100 text-red-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50 "
+                                    class="rounded-md bg-red-100 text-red-800 px-3 py-2 flex gap-1 justify-center items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50 "
                                     @click="instantUnstake"
                                     :disabled="isWaitingForTransaction() || bn(_.get(wallet, 'stakedAmountBN')).eq(ZeroBN)"
                                   >
                                     <span>Instant Unstake</span>
-                                    <i x-html="createSpinner('ml-1 text-red-800')" :class="LOADING.INSTANT_UNSTAKE ? 'auto' : 'hidden'"></i> 
+                                    <i x-html="createSpinner('text-red-800 h-3 w-3 md:h-4 md:w-4')" :class="LOADING.INSTANT_UNSTAKE ? 'auto' : 'hidden'"></i> 
                                   </button>
                                 </div>
                               </div>
-                              <div class="flex-1 flex flex-col items-center border-zinc-700 border-dashed border-2 rounded-md py-8 mx-2">
-                                <div>
+                              <div class="flex-1 flex flex-col justify-center items-center border-zinc-700 border-dashed border-2 rounded-md py-3">
+                                <div class="text-center">
                                   <span>Reward: <span x-text="formatEtherHuman(_.get(wallet, 'rewardAmountBN'))"></span> FEAR</span>
                                 </div>
                                 <div>
                                   <button
-                                    class="rounded-lg bg-green-100 text-green-800 px-3 py-2 mt-2 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                                    class="rounded-md bg-green-100 text-green-800 px-3 py-2 mt-2 flex gap-1 items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
                                     :disabled="isWaitingForTransaction() || bn(_.get(wallet, 'rewardAmountBN')).eq(ZeroBN)"
                                     @click="claimReward"
                                   >
                                     <span>Claim</span>
-                                    <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.CLAIM ? 'auto' : 'hidden'"></i>  
+                                    <i x-html="createSpinner('text-green-800 h-3 w-3 md:h-4 md:w-4')" :class="LOADING.CLAIM ? 'auto' : 'hidden'"></i>  
                                 </button>
                                 </div>
                               </div>
@@ -437,73 +448,72 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                         <template x-if="Array.isArray(wallet.allMyLocks) && wallet.allMyLocks.length > 0">
                           <div class="rounded-lg bg-black-color mt-3">
                             <div class="overflow-x-auto relative shadow-md rounded-lg">
-                              <table class="w-full text-sm text-left text-gray-400">
-                                <thead class="text-xs text-gray-50 uppercase bg-zinc-900">
+                              <table class="w-full text-xs md:text-sm xl:text-base text-left text-gray-400">
+                                <thead class="text-gray-50 uppercase bg-zinc-900">
                                   <tr class="text-center">
-                                    <th scope="col" class="py-3 px-6">Amount (unstaked)</th>
-                                    <th scope="col" class="py-3 px-6">1st Unlock</th>
-                                    <th scope="col" class="py-3 px-6">2nd Unlock</th>
-                                    <th scope="col" class="py-3 px-6">3rd Unlock</th>
-                                    <th scope="col" class="py-3 px-6">4th Unlock</th>
+                                    <th scope="col" class="py-2 px-3">Amount</th>
+                                    <th scope="col" class="py-2 px-3">1st Unlock</th>
+                                    <th scope="col" class="py-2 px-3">2nd Unlock</th>
+                                    <th scope="col" class="py-2 px-3">3rd Unlock</th>
+                                    <th scope="col" class="py-2 px-3">4th Unlock</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <template x-for="(lock, index) in wallet.allMyLocks">
                                     <tr class="bg-white border-b bg-gray-900 border-gray-700 text-gray-100 font-mono text-center">
-                                      <th scope="row" class="py-1 px-2 font-medium whitespace-nowrap text-white">
+                                      <th scope="row" class="py-2 px-3 font-medium whitespace-nowrap text-white">
                                         <span x-text="formatEtherHuman(lock[0])"></span>
                                         <span>FEAR</span>
                                       </th>
-                                      <td class="py-2 px-3" :class="epoch >= lock[1] && 'line-through opacity-40'">
+                                      <td class="py-2 px-3 whitespace-nowrap" :class="epoch >= lock[1] && 'line-through opacity-40'">
                                         <span x-text="formatDate(lock[1])"></span>
                                       </td>
-                                      <td class="py-2 px-3" :class="epoch >= lock[2] && 'line-through opacity-40'">
+                                      <td class="py-2 px-3 whitespace-nowrap" :class="epoch >= lock[2] && 'line-through opacity-40'">
                                         <span x-text="formatDate(lock[2])"></span>
                                       </td>
-                                      <td class="py-2 px-3" :class="epoch >= lock[3] && 'line-through opacity-40'">
+                                      <td class="py-2 px-3 whitespace-nowrap" :class="epoch >= lock[3] && 'line-through opacity-40'">
                                         <span x-text="formatDate(lock[3])"></span>
                                       </td>
-                                      <td class="py-2 px-3" :class="epoch >= lock[4] && 'line-through opacity-40'">
+                                      <td class="py-2 px-3 whitespace-nowrap" :class="epoch >= lock[4] && 'line-through opacity-40'">
                                         <span x-text="formatDate(lock[4])"></span>
                                       </td>
                                     </tr>
                                   </template>
                                 </tbody>
                               </table>
-                              <div class="flex justify-center">
-                                <button
-                                  class="rounded-lg bg-green-100 text-green-800 px-3 py-2 my-3 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
-                                  :disabled="isWaitingForTransaction() || wallet.unlockedAmountBN.eq(ZeroBN)"
-                                  @click="withdrawUnlockedFear"
-                                >
-                                  <span>Withdraw</span>
-                                  <template x-if="bn(_.get(wallet, 'unlockedAmountBN')).gt(ZeroBN)">
-                                    <span>
-                                      &nbsp;(<span x-text="`${formatEtherHuman(wallet.unlockedAmountBN)}`"></span>&nbsp;<span>FEAR</span>)
-                                    </span>
-                                  </template>
-                                  <i x-html="createSpinner('ml-1 text-green-800')" :class="LOADING.WITHDRAW ? 'auto' : 'hidden'"></i>  
-                                </button>
-                                <span>&nbsp;</span>
-                                <button
-                                  class="rounded-lg bg-cyan-100 text-cyan-800 px-3 py-2 my-3 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
-                                  :disabled="isWaitingForTransaction() || (wallet.lockedAmountBN.add(wallet.unlockedAmountBN)).eq(ZeroBN)"
-                                  @click="stakeBack"
-                                >
-                                  <span>Stake back</span>
-                                  <template x-if="(wallet.lockedAmountBN.add(wallet.unlockedAmountBN)).gt(ZeroBN)">
-                                    <span>
-                                      &nbsp;(<span x-text="`${formatEtherHuman(wallet.lockedAmountBN.add(wallet.unlockedAmountBN))}`"></span>&nbsp;<span>FEAR</span>)
-                                    </span>
-                                  </template>
-                                  <i x-html="createSpinner('ml-1 text-cyan-800')" :class="LOADING.STAKE_BACK ? 'auto' : 'hidden'"></i>  
-                                </button>
-                              </div>
+                            </div>
+                            <div class="flex justify-center text-xs md:text-sm lg:text-base xl:text-lg gap-1">
+                              <button
+                                class="rounded-md bg-green-100 text-green-800 px-3 py-2 my-2 md:!my-3 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                                :disabled="isWaitingForTransaction() || wallet.unlockedAmountBN.eq(ZeroBN)"
+                                @click="withdrawUnlockedFear"
+                              >
+                                <span>Withdraw</span>
+                                <template x-if="bn(_.get(wallet, 'unlockedAmountBN')).gt(ZeroBN)">
+                                  <span>
+                                    &nbsp;(<span x-text="`${formatEtherHuman(wallet.unlockedAmountBN)}`"></span>&nbsp;<span>FEAR</span>)
+                                  </span>
+                                </template>
+                                <i x-html="createSpinner('ml-1 text-green-800 w-3 h-3 md:w-4 md:h-4')" :class="LOADING.WITHDRAW ? 'auto' : 'hidden'"></i>  
+                              </button>
+                              <button
+                                class="rounded-md bg-cyan-100 text-cyan-800 px-3 py-2 my-2 md:!my-3 flex items-center select-none transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                                :disabled="isWaitingForTransaction() || (wallet.lockedAmountBN.add(wallet.unlockedAmountBN)).eq(ZeroBN)"
+                                @click="stakeBack"
+                              >
+                                <span>Stake back</span>
+                                <template x-if="(wallet.lockedAmountBN.add(wallet.unlockedAmountBN)).gt(ZeroBN)">
+                                  <span>
+                                    &nbsp;(<span x-text="`${formatEtherHuman(wallet.lockedAmountBN.add(wallet.unlockedAmountBN))}`"></span>&nbsp;<span>FEAR</span>)
+                                  </span>
+                                </template>
+                                <i x-html="createSpinner('ml-1 text-cyan-800 w-3 h-3 md:w-4 md:h-4')" :class="LOADING.STAKE_BACK ? 'auto' : 'hidden'"></i>  
+                              </button>
                             </div>
                             </div>
                         </template>
                         <!-- guide -->
-                        <div class="bg-black-color rounded-xl mt-3 mb-2 px-3 py-3">
+                        <div class="bg-black-color rounded-lg mt-1 md:!mt-2 mb-1 p-2 md:!p-3 text-sm md:text-base xl:text-lg">
                           <ol>
                             <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> 10% APR yield + Annual Treasury Rewards</li>
                             <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> No minimum locking period</li>
@@ -513,20 +523,20 @@ inflation yield bolstered by a <font style="color:red">REAL YIELD</font> top up 
                             <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Staking available on Binance Smart Chain network and Polygon network</li>
                           </ol>
                         </div>
-                        <div class="bg-black-color rounded-xl mt-3 mb-2 px-3 py-3 flex items-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                        <div class="bg-black-color rounded-lg mt-1 md:!mt-2 mb-1 md:!mb-2 p-2 md:!p-3 flex items-center text-sm md:text-base xl:text-lg">
+                          <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                          </svg>
+                          </svg> -->
                           <span>You may also want to move your fund from <a target="_blank" href="https://tokensfarm.com/fear/staking/3" class="text-cyan-500">previous Polygon staking pool</a> ( expiring on 13 Dec'22 )</span>
                         </div>
                       </div>
                     </template>
                     <!-- "the vault" tab-->
                     <template x-if="activeTabId == 1">
-                      <div class="border-3 border-main-color px-2 font-averta">
+                      <div class="border-3 border-main-color px-1 md:!px-2 font-averta">
                         <div class="bg-black-color rounded-xl mt-2 mb-2 px-3 py-3">
                             <ol>
-                              <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> 20-50% APR yield + Annual Treasury Rewards</li>
+                              <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> <span><b>Coming soon</b> with 20-50% APR yield + Annual Treasury Rewards</span></li>
                               <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> 1-4 Years locking period</li>
                               <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Unclaimable Rewards until period ends</li>
                               <li class="flex items-center"><i class="bx bx-badge-check text-main-color mr-1"></i> Instant Release option with 25% burn fee</li>
