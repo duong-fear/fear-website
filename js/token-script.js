@@ -74,6 +74,7 @@ var tokenReleaseChart = c3.generate({
 
 const circSupplyUrl = "https://api.fear.io/api/circulatingsupply";
 const priceUrl = "https://api.fear.io/api/cp";
+const tokenHoldersUrl = "https://api.fear.io/api/nooftokenholders";
 var circSupply = 0;
 var price = 0;
 
@@ -103,6 +104,10 @@ $.get(priceUrl, function(data, status) {
     }
 
     fetched = true;
+});
+
+$.get(tokenHoldersUrl, function(data, status) {
+    $("#holders").text(data);
 });
 
 function handleCopy(e, address){
