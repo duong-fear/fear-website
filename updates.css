@@ -540,7 +540,7 @@ span.datetag {color:white;font-size:15pt;font-weight:bold;display:inline-block;m
 .banner-bg1 {background:url(images/home/fear-wolf-home.jpg) no-repeat ! important;background-size:cover ! important;}
 .banner-bg6 {background:url(images/home/fear-wolf-home.jpg) no-repeat ! important;background-size:cover ! important;}
 .banner-bg2 {background:url(images/home/the-crypt-large.jpg) no-repeat ! important;background-size:cover ! important;}
-.banner-bg3 {background:url(images/home/blood-realms-home-2.jpg) no-repeat ! important;background-size:cover ! important;}
+.banner-bg3 {background:url(images/home/blood-realms-home-3.jpg) no-repeat ! important;background-size:cover ! important;background-position:top right ! important;}
 .banner-bg4 {background:url(images/home/the-crypt-large-5.jpg) no-repeat ! important;background-size:cover ! important;}
 .banner-bg5 {background:url(images/home/araya-home-page-2.jpg) no-repeat ! important;background-size:cover ! important;}
 .main-banner-content .btn-box .default-btn {background:#ad0610;}
@@ -554,6 +554,7 @@ span.datetag {color:white;font-size:15pt;font-weight:bold;display:inline-block;m
 .main-banner-content div.logo img {max-width:350px;}
 .banner-bg3 .main-banner-content div.logo img {max-width:400px;}
 .banner-bg6 {background-position: -300px 0 ! important;}
+.banner-bg3 {background:url(images/home/blood-realms-home-3-portrait.jpg) no-repeat ! important;background-size:contain ! important;}
 }
 
 .page-title-area {background-color:black ! important;}
@@ -571,7 +572,6 @@ span.datetag {color:white;font-size:15pt;font-weight:bold;display:inline-block;m
 .top-team-slides.owl-theme .owl-nav [class*=owl-].owl-next {right:-4px ! important;}
 .banner-bg2 {background:url(images/home/the-crypt-large-2.jpg) no-repeat top ! important;background-size:cover ! important;}
 .banner-bg4 {background:url(images/home/the-crypt-large-6-small.jpg) no-repeat top ! important;background-size:cover ! important;}
-.banner-bg3 {background:url(images/home/blood-realms-home-mobile.jpg) no-repeat top ! important;background-size:cover ! important;}
 .banner-bg1 .btn-box {margin-top:50px;}
 .banner-bg1 .default-btn {font-size:14px;background:rgba(0,0,0,0.5) ! important;}
 }
@@ -597,6 +597,7 @@ span.datetag {color:white;font-size:15pt;font-weight:bold;display:inline-block;m
 .section-title h2 {font-size:16px;}
 .banner-bg6 {background-position: -500px 0 ! important;}
 .banner-bg5 {background-position: -300px 0 ! important;}
+.banner-bg3 .sub-title {font-size:12pt ! important;}
 }
 @media screen and (max-width: 420px){
 .banner-bg1	{padding-top:100px;}
