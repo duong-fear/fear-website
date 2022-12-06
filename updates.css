@@ -1089,3 +1089,6 @@ letter-spacing: 5px;
   bottom: 0rem;
   transition: background-color .15s ease-in-out;
 }
+
+.redlink {color:red ! important;}
+.redlink:hover {color:white ! important;text-decoration:underline;}
