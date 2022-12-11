@@ -5,12 +5,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- <script>tailwind.config = { corePlugins: { preflight: false } }</script> -->
   <script src="js/lodash@4.17.15.min.js"></script>
+  <script src="js/abi.js"></script>
   <script src="js/utils.js"></script>
-  <script src="js/horrorhubweb.js"></script>
+  <script src="js/ethers@5.7.2.min.js"></script>
   <script src="/js/sweetalert2@11.js"></script>
   <script src="js/axios@1.1.3.js"></script>
-  <script src="js/abi.js"></script>
+  <script src="js/horrorhubweb.js"></script>
   <script src="js/alpinejs@3.10.4.min.js" defer></script>
+  
   <script src="assets/js/jquery.min.js?v4"></script>
   <script src="https://global.transak.com/sdk/v1.1/widget.js" async></script>
   <script src="https://apis.google.com/js/client:platform.js?onload=boostrapAppGAPI" async defer></script>
@@ -134,10 +136,16 @@
   <!-- main -->
   <div class="container mx-auto flex-1 flex">
     <template x-if="!!state && page == '/'">
-      <div>
+      <div class="w-full" :class="state.games ? 'block' : 'flex flex-col'">
       <div class="text-neutral-100 rounded-md border-2 border-dashed border-neutral-700 p-4 mx-2 mt-2 md:mt-4">
         some short description about the horror shop / $FEAR discount ... / current MATIC-FEAR exchange rate etc
       </div>
+      <template x-if="!state.games">
+        <div class="flex-1 flex justify-center items-center text-neutral-100">
+          <i x-html="loadingSVG('w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-neutral-400')"></i>
+        </div>
+      </template>
+      <template x-if="state.games">
       <div class="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2">
         <template x-for="(g, index) in state.games">
           <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
@@ -176,10 +184,7 @@
                 <img :src="state.games[selectedGameIndex].splash" class="w-full rounded-md" />
               </div> -->
               <iframe width="100%" class="aspect-video mb-3" src="https://www.youtube.com/embed/k3Yoch8jhXA" title="FEAR Araya Thailand Metaverse Expo 2022" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-              <span x-text="loremText"></span><br/>
-              <span x-text="loremText"></span><br/>
-              <span x-text="loremText"></span><br/>
-              <span x-text="loremText"></span><br/>
+              <span x-text="state.games[selectedGameIndex].description"></span><br/>
             </div>
             <div class="px-2 py-2 flex gap-2 text-xs sm:text-sm md:text-base" x-show="state.user && !state.user.purchased.includes(state.games[selectedGameIndex].id)">
               <button
@@ -234,6 +239,7 @@
           </div>
         </template>
       </div>
+      </template>
       </div>
     </template>
     <template x-if="!!state && page == '/faqs'">

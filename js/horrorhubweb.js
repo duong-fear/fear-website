@@ -1,64 +1,98 @@
 // config
 const googleLoginRedirectURI = undefined; //window.location.href
+const fAPIEndpoint = `https://fearapi.azurewebsites.net/api/horrorhubweb`;
+// const fAPIEndpoint = `http://localhost:7071/api/horrorhubweb`;
 
-const matic2Fear = 10.844;
+const POLYGON_CHAINID = 137;
+const MUMBAI_CHAINID = 80001;
+const CHAINID = MUMBAI_CHAINID;
 
 const matic2Usd = 0.837;
 const fear2Usd = 0.075;
 
-const loremText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
+const formatEther = input => input instanceof ethers.BigNumber ? ethers.utils.formatEther(input).replace(/.0$/, '') : 'n/a';
+
+const RPC_URL = {
+  [POLYGON_CHAINID]: 'https://rpc.ankr.com/polygon',
+  [MUMBAI_CHAINID]: 'https://rpc.ankr.com/polygon_mumbai',
+};
+
+const RPC_PROVIDER = {
+  [POLYGON_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[POLYGON_CHAINID]),
+  [MUMBAI_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[MUMBAI_CHAINID]),
+}
+
+const CONTRACT = {
+  FEAR_TOKEN: {
+    [POLYGON_CHAINID]: '0xa2ca40dbe72028d3ac78b5250a8cb8c404e7fb8c',
+    [MUMBAI_CHAINID]: '0x9006Cf37B092C03f77e2428B1220968E6DA399E9',
+    ABI: FEAR_TOKEN_ABI,
+    instanceForChain(chainId) {
+      return new ethers.Contract(
+        CONTRACT.FEAR_TOKEN[chainId],
+        CONTRACT.FEAR_TOKEN.ABI,
+        RPC_PROVIDER[chainId],
+      );
+    }
+  },
+  HORRORHUB_WEB_SALE: {
+    [POLYGON_CHAINID]: "",
+    [MUMBAI_CHAINID]: '0xCD46A312F947266730d9DB460685369E70c34D96',
+    ABI: HORRORHUB_WEB_SALE_ABI,
+    instanceForChain(chainId) {
+      return new ethers.Contract(
+        CONTRACT.HORRORHUB_WEB_SALE[chainId],
+        CONTRACT.HORRORHUB_WEB_SALE.ABI,
+        RPC_PROVIDER[chainId],
+      );
+    }
+  },
+};
+
+const getPriceForAllProducts = async () => {
+  const [
+    productIds,
+    usdQuotes,
+    fearQuotes,
+    maticQuotes,
+  ] = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getPrices([]);
+  // todo use lodash
+  const output = {};
+  productIds.forEach((idBN, index) => {
+    const id = idBN.toNumber();
+    output[id] = {
+      usd: usdQuotes[index],
+      fear: fearQuotes[index],
+      matic: maticQuotes[index],
+    };
+  });
+  return output;
+}
+
 const fetchInitialAppState = async () => {  
-  sleep(0.5);
-  vm.state.games = [
-    {
-      name: "Clucking Hell",
-      splash: "https://placekitten.com/400/400?image=1",
-      isDesktopGame: true,
-      priceUsd: "3",
-    },
-    {
-      name: "Whack The Demon",
-      splash: "https://placekitten.com/400/400?image=2",
-      isDesktopGame: false,
-      priceUsd: "5",
-    },
-    {
-      name: "Whack Your Undead Neighbour",
-      splash: "https://placekitten.com/400/400?image=3",
-      isDesktopGame: false,
-      priceUsd: "10",
-    },
-    {
-      name: "Whack Your Neighbour Extreme Edition",
-      splash: "https://placekitten.com/400/400?image=4",
-      priceUsd: "15",
-    },
-    {
-      name: "Whack The Burglars",
-      splash: "https://placekitten.com/400/400?image=5",
-      isDesktopGame: false,
-      priceUsd: "5",
-    },
-    {
-      name: "Whack The Creeps Game",
-      splash: "https://placekitten.com/400/400?image=6",
-      isDesktopGame: false,
-      priceUsd: "6",
-    },
-    {
-      name: "Whack the Serial Killer",
-      splash: "https://placekitten.com/400/400?image=7",
-      isDesktopGame: false,
-      priceUsd: "6",
-    },
-  ].map((g, index) => ({
-    ...g,
-    id: index,
-    // user got discount when pay with $FEAR
-    // this calculation may be wrong !!
-    priceMatic: +(g.priceUsd / matic2Usd).toFixed(3),
-    priceFear: +(0.9 * g.priceUsd / fear2Usd).toFixed(3),
+  const [priceForAllProducts] = await Promise.all([
+    getPriceForAllProducts(),
+  ]);
+  const { productList } = await getProductList();
+  vm.state.games = productList.map(p => ({
+    ...p,
+    id: +p.rowKey,
+    priceUsd: formatEther( priceForAllProducts[+p.rowKey].usd ),
+    priceMatic: formatEther( priceForAllProducts[+p.rowKey].matic ),
+    priceFear: formatEther( priceForAllProducts[+p.rowKey].fear ),
   }))
+}
+
+// const updateExchangeRate = async () => {
+//   const [fear2Usd, matic2Usd] = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(80001).getExchangeRate();
+//   vm.state.exchangeRate = {
+//     fear2Usd,
+//     matic2Usd,
+//   };
+// }
+
+const getProductList = async () => {
+  return await axios.get(`${fAPIEndpoint}/getProductList`).then(r => r.data);
 }
 
 const qaList = [
@@ -207,12 +241,37 @@ const getPurchasedGames = async (refresh_token) => {
 const exchangeCodeForToken = async (code) => {
   const tokens = await axios.request({
     method: "POST",
-    url: `https://fearapi.azurewebsites.net/api/horrorhubweb/exchangeCodeForTokens`,
+    url: `${fAPIEndpoint}/exchangeCodeForTokens`,
     data: {
       code,
     },
   }).then(r => r.data);
   return tokens;
+}
+
+const getEthBalanceByAddress = async (address) => {
+  const balance = await RPC_PROVIDER[CHAINID].getBalance(address);
+  return balance;
+}
+const getFearBalanceByAddress = async (address) => {
+  const balance = await CONTRACT.FEAR_TOKEN.instanceForChain(CHAINID).balanceOf(address);
+  return balance;
+}
+const getOwnedProductsByAddress = async (address) => {
+  const owned = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getPurchased(address);
+  return owned;
+}
+
+const getMappedEthAddress = async (email) => {
+  // const { address } = await axios.request({
+  //   method: "POST",
+  //   url: `${fAPIEndpoint}/exchangeEmailForEthAddress`,
+  //   data: {
+  //     email,
+  //   },
+  // }).then(r => r.data);
+  // await sleep(0.2);
+  return "0xa3c4C3aA1b7728e1736a689Fa8E96bcf4bc306b3";
 }
 
 const login = async () => {
@@ -223,9 +282,6 @@ const login = async () => {
     const { code } = await auth2.grantOfflineAccess({
       'redirect_uri': googleLoginRedirectURI,
     });
-    const { id_token, refresh_token} = await exchangeCodeForToken(code);
-    if(googleLoginRedirectURI) return;
-    const purchased = await getPurchasedGames(refresh_token);
     const profile = auth2.currentUser.get().getBasicProfile();
     const [
       name,
@@ -236,17 +292,34 @@ const login = async () => {
       profile.getEmail(),
       profile.getImageUrl(),
     ]
+    const { id_token, refresh_token } = await exchangeCodeForToken(code);
+    const ethAddress = getMappedEthAddress(email);
+    const [
+      maticBalance,
+      fearBalance,
+      ownedProducts,
+    ] = await Promise.all([
+      getEthBalanceByAddress(ethAddress),
+      getFearBalanceByAddress(ethAddress),
+      getOwnedProductsByAddress(ethAddress),
+    ]);
+    console.log("maticBalance, fearBalance", [maticBalance, fearBalance].map(v => ethers.utils.formatEther(v)));
+    console.log(`ownedProducts`, ownedProducts);
+    if(googleLoginRedirectURI) return;
+    const purchased = await getPurchasedGames(refresh_token);
     console.log(`email name picture`, email, name, picture);
     vm.state = {
       ...vm.state,
       user: {
         email,
         name,
+        ethAddress,
         picture,
         refreshToken: refresh_token,
         idToken: id_token,
-        ownedGames: purchased, // polyfill
         purchased: purchased,
+        maticBalance,
+        fearBalance,
       }
     }
   } catch(exception) {
@@ -291,6 +364,7 @@ const boostrapApp = () => {
     state: {
       games: null,
       user: null,
+      // exchangeRate: null,
       running: {
         GOOGLE_LOGIN: false,
         PURCHASE_GAME: false,
