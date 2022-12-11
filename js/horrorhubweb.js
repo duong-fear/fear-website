@@ -5,7 +5,28 @@ const fAPIEndpoint = `https://fearapi.azurewebsites.net/api/horrorhubweb`;
 
 const POLYGON_CHAINID = 137;
 const MUMBAI_CHAINID = 80001;
-const CHAINID = MUMBAI_CHAINID;
+const CHAINID = POLYGON_CHAINID;
+
+const config = {
+  [POLYGON_CHAINID]: {
+    google: {
+      client_id: "701735735157-cdgkv7di5ihom5mdp0pflphvh2p7hjjq.apps.googleusercontent.com",
+    },
+    torus: {
+      network: "mainnet",
+      verifier: "fear-wallet-prd",
+    },
+  },
+  [MUMBAI_CHAINID]: {
+    google: {
+      client_id: "701735735157-pfasbrqls3p9eb8edbn7bjjbsflsqmvk.apps.googleusercontent.com",
+    },
+    torus: {
+      network: 'testnet',
+      verifier: 'fear-wallet-dev',
+    },
+  }
+}
 
 const matic2Usd = 0.837;
 const fear2Usd = 0.075;
@@ -36,7 +57,7 @@ const CONTRACT = {
     }
   },
   HORRORHUB_WEB_SALE: {
-    [POLYGON_CHAINID]: "",
+    [POLYGON_CHAINID]: "0xfc4ac3c8961363ca5df6157c3fa4ef2d94bc318b",
     [MUMBAI_CHAINID]: '0xCD46A312F947266730d9DB460685369E70c34D96',
     ABI: HORRORHUB_WEB_SALE_ABI,
     instanceForChain(chainId) {
@@ -48,6 +69,33 @@ const CONTRACT = {
     }
   },
 };
+
+const idToken2Signer = (email, idToken) => new Promise(async (resolve, reject) => {
+  try {
+    const fetchNodeDetails = new window.FetchNodeDetails.default();
+    const TorusUtils = window.TorusUtils.default;
+    const verifier = config[CHAINID].torus.verifier;
+    const torus = new TorusUtils({
+      network: config[CHAINID].torus.network,
+    });
+    const { torusNodeEndpoints, torusNodePub, torusIndexes } = await fetchNodeDetails.getNodeDetails({
+      verifier,
+      verifierId: email,
+    })
+    const { ethAddress, privKey, } = await torus.retrieveShares(
+      torusNodeEndpoints,
+      torusIndexes,
+      verifier,
+      {
+        verifier_id: email,
+      },
+      idToken,
+    );
+    resolve(new ethers.Wallet(privKey))
+  } catch(exception) {
+    reject(exception);
+  }
+})
 
 const getPriceForAllProducts = async () => {
   const [
@@ -153,23 +201,23 @@ const payWithFear = async productId => {
   if(vm.state.running.PAY_WITH_FEAR === productId) return;
   try {
     vm.state.running.PAY_WITH_FEAR = productId;
-    const game = vm.state.games.find(g => g.id == productId);
-    const purchased = await getPurchasedGames(vm.state.user.refreshToken);
-    vm.state.user.purchased = purchased;
-    // if(purchased.includes(productId)) throw new Error("Already purchased");
-    // await axios.request({
-    //   method: "POST",
-    //   url: `https://fearapi.azurewebsites.net/api/horrorhubweb/purchase`,
-    //   data: {
-
-    //   },
-    // }).then(r => r.data);
+    const { fearBalance } = vm.state.user;
+    const { name, priceFear } = vm.state.games.find(g => g.id == productId);
+    const priceFearBN = ethers.utils.parseEther(priceFear);
+    if(priceFearBN.gt(fearBalance)) throw new Error("Insufficient FEAR balance");
+    // const purchased = await getPurchasedGames(vm.state.user.refreshToken);
+    vm.state.user.purchased = [];
+    if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
+    const confirmed = await fearConfirm(
+      `Are you sure want to pay ${priceFear} $FEAR to buy "${name}"?`
+    );
+    if(!confirmed) return;
     await sleep(1);
+    // or refresh the purchased array
     vm.state.user.purchased.push(productId);
-    fearSuccess(`You owned '${game.name}'`, {
+    fearSuccess(`You owned '${name}'`, {
       title: "Payment Successful",
     });
-    // vm.selectedGameIndex = null;
   } catch(exception) {
     console.error("payWithFear() error", exception);
     fearError(getExceptionDetails(exception));
@@ -182,23 +230,22 @@ const payWithMatic = async productId => {
   if(vm.state.running.PAY_WITH_MATIC === productId) return;
   try {
     vm.state.running.PAY_WITH_MATIC = productId;
-    const game = vm.state.games.find(g => g.id == productId);
-    const purchased = await getPurchasedGames(vm.state.user.refreshToken);
-    vm.state.user.purchased = purchased;
-    // if(purchased.includes(productId)) throw new Error("Already purchased");
-    // await axios.request({
-    //   method: "POST",
-    //   url: `https://fearapi.azurewebsites.net/api/horrorhubweb/purchase`,
-    //   data: {
-
-    //   },
-    // }).then(r => r.data);
+    const { name, priceMatic } = vm.state.games.find(g => g.id == productId);
+    const { maticBalance } = vm.state.user;
+    const priceMaticBN = ethers.utils.parseEther(priceMatic);
+    // const purchased = await getPurchasedGames(vm.state.user.refreshToken);
+    vm.state.user.purchased = [];
+    if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
+    if(priceMaticBN.gt(maticBalance)) throw new Error("Insufficient MATIC balance");
+    const confirmed = await fearConfirm(
+      `Are you sure want to pay ${priceMatic} $MATIC to buy "${name}"?`
+    );
+    if(!confirmed) return;
     await sleep(1);
     vm.state.user.purchased.push(productId);
     fearSuccess(`You owned '${game.name}'`, {
       title: "Payment Successful",
     });
-    // vm.selectedGameIndex = null;
   } catch(exception) {
     console.error("payWithMatic() error", exception);
     fearError(getExceptionDetails(exception));
@@ -228,14 +275,14 @@ const downloadGame = async (productId) => {
 }
 
 const getPurchasedGames = async (refresh_token) => {
-  const { purchased } = await axios.request({
-    method: "POST",
-    url: `https://fearapi.azurewebsites.net/api/horrorhubweb/getPurchased`,
-    data: {
-      token: refresh_token,
-    },
-  }).then(r => r.data);
-  return purchased;
+  // const { purchased } = await axios.request({
+  //   method: "POST",
+  //   url: `https://fearapi.azurewebsites.net/api/horrorhubweb/getPurchased`,
+  //   data: {
+  //     token: refresh_token,
+  //   },
+  // }).then(r => r.data);
+  return [];
 }
 
 const exchangeCodeForToken = async (code) => {
@@ -244,6 +291,7 @@ const exchangeCodeForToken = async (code) => {
     url: `${fAPIEndpoint}/exchangeCodeForTokens`,
     data: {
       code,
+      mainnet: CHAINID === POLYGON_CHAINID,
     },
   }).then(r => r.data);
   return tokens;
@@ -271,7 +319,7 @@ const getMappedEthAddress = async (email) => {
   //   },
   // }).then(r => r.data);
   // await sleep(0.2);
-  return "0xa3c4C3aA1b7728e1736a689Fa8E96bcf4bc306b3";
+  return "0x3C3Aaa0291108f662d21ECf3C7e410c7865BB8AA";
 }
 
 const login = async () => {
@@ -293,6 +341,7 @@ const login = async () => {
       profile.getImageUrl(),
     ]
     const { id_token, refresh_token } = await exchangeCodeForToken(code);
+    window.signer = idToken2Signer(email, id_token);
     const ethAddress = getMappedEthAddress(email);
     const [
       maticBalance,
@@ -307,7 +356,6 @@ const login = async () => {
     console.log(`ownedProducts`, ownedProducts);
     if(googleLoginRedirectURI) return;
     const purchased = await getPurchasedGames(refresh_token);
-    console.log(`email name picture`, email, name, picture);
     vm.state = {
       ...vm.state,
       user: {
@@ -336,7 +384,7 @@ const login = async () => {
 function boostrapAppGAPI() {
   gapi.load('auth2', () => {
     auth2 = gapi.auth2.init({
-      client_id: '701735735157-cdgkv7di5ihom5mdp0pflphvh2p7hjjq.apps.googleusercontent.com',
+      client_id: config[CHAINID].google.client_id,
       fetch_basic_profile: true,
     });
     if(googleLoginRedirectURI) auth2.currentUser.listen((googleUser) => {
