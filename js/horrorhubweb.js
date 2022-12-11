@@ -22,8 +22,8 @@ const config = {
       client_id: "701735735157-pfasbrqls3p9eb8edbn7bjjbsflsqmvk.apps.googleusercontent.com",
     },
     torus: {
-      network: 'testnet',
-      verifier: 'fear-wallet-dev',
+      network: "testnet",
+      verifier: "fear-wallet-dev",
     },
   }
 }
@@ -41,6 +41,11 @@ const RPC_URL = {
 const RPC_PROVIDER = {
   [POLYGON_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[POLYGON_CHAINID]),
   [MUMBAI_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[MUMBAI_CHAINID]),
+}
+
+const getRecommendedGasPrice = async (chainId) => {
+  // +25% to base gas price to get recommended gas price
+  return (await RPC_PROVIDER[chainId].getGasPrice()).mul(125).div(100);
 }
 
 const CONTRACT = {
@@ -241,9 +246,23 @@ const payWithMatic = async productId => {
       `Are you sure want to pay ${priceMatic} $MATIC to buy "${name}"?`
     );
     if(!confirmed) return;
-    await sleep(1);
+    const gasPrice = await getRecommendedGasPrice(CHAINID);
+    const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(137).estimateGas.purchaseByMatic(productId, {
+      value: priceMaticBN,
+    })
+    // +10% for est. gas limit
+    const gasLimit = estGasLimit.mul(110).div(100);
+    const gasFee = gasLimit.mul(gasPrice);
+    console.log(`gasFee`, gasFee);
+    // const tx = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(137).purchaseByMatic(
+    //   productId,
+    //   {
+    //     value: priceMaticBN.sub(gasFee),
+    //   },
+    // )
+    // await tx.wait();
     vm.state.user.purchased.push(productId);
-    fearSuccess(`You owned '${game.name}'`, {
+    fearSuccess(`You owned '${name}'`, {
       title: "Payment Successful",
     });
   } catch(exception) {
