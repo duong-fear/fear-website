@@ -39,6 +39,16 @@ const RPC_URL = {
   [MUMBAI_CHAINID]: 'https://rpc.ankr.com/polygon_mumbai',
 };
 
+const BICONOMY_API_KEY = {
+  [POLYGON_CHAINID]: 'y9lbpk5lO.40482d7f-f2d5-44e6-a24d-cf898ad97727',
+  [MUMBAI_CHAINID]: '',
+}
+
+const BICONOMY_PURCHASE_BY_FEAR_TRANSFER_APPID = {
+  [POLYGON_CHAINID]: 'f9d89d0a-be38-4996-8345-df04220354b1',
+  [MUMBAI_CHAINID]: '',
+}
+
 const RPC_PROVIDER = {
   [POLYGON_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[POLYGON_CHAINID]),
   [MUMBAI_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[MUMBAI_CHAINID]),
@@ -77,6 +87,34 @@ const CONTRACT = {
     }
   },
 };
+
+const biconomyExecTransaction = async (params, gasLimit) => {
+  const { data } = await axios.post(
+    biconomyNativeTxEndpoint,
+    {
+      userAddress: vm.state.user.ethAddress,
+      apiId: BICONOMY_PURCHASE_BY_FEAR_TRANSFER_APPID[CHAINID],
+      params,
+      gasLimit,
+    },
+    {
+      headers: {
+        'x-api-key': BICONOMY_API_KEY[CHAINID],
+      },
+      validateStatus: () => true,
+    }
+  );
+  const txHash = _.get(data, 'txHash');
+  const error = _.get(data, 'error');
+  const flag = _.get(data, 'flag');
+  const log = _.get(data, 'log');
+  if(txHash) {
+    console.log(`biconomy txHash`, txHash);
+    RPC_PROVIDER[CHAINID].waitForTransaction(txHash, 2);
+    return txHash;
+  }
+  throw new Error(error || `unknown biconomy error ( flag: ${flag} / log: ${log} )`);
+}
 
 const generateFearTransferMetaSignature = async (toAddress, amountBN) => {
   const walletSigner = window.signer;
@@ -268,17 +306,28 @@ const payWithFear = async productId => {
     const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByTransferMeta(productId, a, r, s, v);
     // +10% for est. gas limit
     const gasLimit = estGasLimit.mul(110).div(100);
-    const tx = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).connect(signer).purchaseByTransferMeta(
-      productId,
-      a, r, s, v,
-      {
-        gasLimit,
-        gasPrice,
-      },
+    // method 1: directly via user wallet
+    // const tx = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).connect(signer).purchaseByTransferMeta(
+    //   productId,
+    //   a, r, s, v,
+    //   {
+    //     gasLimit,
+    //     gasPrice,
+    //   },
+    // );
+    // console.log(`payWithFear txHash`, tx.hash);
+    // await tx.wait(2);
+    // method 2: via biconomy
+    await biconomyExecTransaction(
+      [
+        productId,
+        a,
+        r,
+        s,
+        v,
+      ],
+      gasLimit.toNumber(),
     );
-    console.log(`payWithFear txHash`, tx.hash);
-    await tx.wait(2);
-    // or refresh the purchased array
     vm.state.user.purchased.push(productId);
     fearSuccess(`You owned '${name}'`, {
       title: "Payment Successful",
