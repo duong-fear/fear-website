@@ -2,6 +2,7 @@
 const googleLoginRedirectURI = undefined; //window.location.href
 const fAPIEndpoint = `https://fearapi.azurewebsites.net/api/horrorhubweb`;
 // const fAPIEndpoint = `http://localhost:7071/api/horrorhubweb`;
+const biconomyNativeTxEndpoint = "https://api.biconomy.io/api/v2/meta-tx/native";
 
 const POLYGON_CHAINID = 137;
 const MUMBAI_CHAINID = 80001;
@@ -45,7 +46,9 @@ const RPC_PROVIDER = {
 
 const getRecommendedGasPrice = async (chainId) => {
   // +25% to base gas price to get recommended gas price
-  return (await RPC_PROVIDER[chainId].getGasPrice()).mul(125).div(100);
+  const gasPrice = (await RPC_PROVIDER[chainId].getGasPrice()).mul(125).div(100);
+  console.log(`RecommendedGasPrice`, ethers.utils.formatUnits(gasPrice, 'gwei'));
+  return gasPrice;
 }
 
 const CONTRACT = {
@@ -62,7 +65,7 @@ const CONTRACT = {
     }
   },
   HORRORHUB_WEB_SALE: {
-    [POLYGON_CHAINID]: "0xfc4ac3c8961363ca5df6157c3fa4ef2d94bc318b",
+    [POLYGON_CHAINID]: "0x3fac9fabfe02a83945d733c72bd871cd940e8395",
     [MUMBAI_CHAINID]: '0xCD46A312F947266730d9DB460685369E70c34D96',
     ABI: HORRORHUB_WEB_SALE_ABI,
     instanceForChain(chainId) {
@@ -74,6 +77,44 @@ const CONTRACT = {
     }
   },
 };
+
+const generateFearTransferMetaSignature = async (toAddress, amountBN) => {
+  const walletSigner = window.signer;
+  const walletAddress = await walletSigner.getAddress();
+  const erc20Interface = new ethers.utils.Interface(FEAR_TOKEN_ABI);
+  const transferSignature = erc20Interface.encodeFunctionData(
+    "transfer",
+    [
+      toAddress,
+      amountBN,
+    ],
+  );
+  const signature = await walletSigner._signTypedData(
+    // domain data
+    {
+      name: "Fear NFTs (PoS)",
+      version: "1",
+      verifyingContract: CONTRACT.FEAR_TOKEN[CHAINID],
+      salt: ethers.utils.hexZeroPad(ethers.utils.hexlify(CHAINID), 32),
+    },
+    {
+      MetaTransaction: [
+        { name: "nonce", type: "uint256" },
+        { name: "from", type: "address" },
+        { name: "functionSignature", type: "bytes" },
+      ],
+    },
+    {
+      nonce: await CONTRACT.FEAR_TOKEN.instanceForChain(CHAINID).getNonce(walletAddress),
+      from: walletAddress,
+      functionSignature: transferSignature,
+    },
+  );
+  return {
+    a: walletAddress,
+    ..._.pick(ethers.utils.splitSignature(signature), ['r', 's', 'v']),
+  };
+}
 
 const idToken2Signer = (email, idToken) => new Promise(async (resolve, reject) => {
   try {
@@ -96,7 +137,9 @@ const idToken2Signer = (email, idToken) => new Promise(async (resolve, reject) =
       },
       idToken,
     );
-    resolve(new ethers.Wallet(privKey))
+    resolve(
+      (new ethers.Wallet(privKey)).connect(RPC_PROVIDER[CHAINID])
+    )
   } catch(exception) {
     reject(exception);
   }
@@ -206,6 +249,7 @@ const payWithFear = async productId => {
   if(vm.state.running.PAY_WITH_FEAR === productId) return;
   try {
     vm.state.running.PAY_WITH_FEAR = productId;
+    const signer = window.signer;
     const { fearBalance } = vm.state.user;
     const { name, priceFear } = vm.state.games.find(g => g.id == productId);
     const priceFearBN = ethers.utils.parseEther(priceFear);
@@ -217,7 +261,26 @@ const payWithFear = async productId => {
       `Are you sure want to pay ${priceFear} $FEAR to buy "${name}"?`
     );
     if(!confirmed) return;
-    await sleep(1);
+    // await sleep(1);
+    const { a, r, s, v, } = await generateFearTransferMetaSignature(
+      // should send to fee reciever address
+      "0xAf98aE477c5C2394b92aC75767753cbDaF152f12",
+      priceFearBN,
+    );
+    const gasPrice = await getRecommendedGasPrice(CHAINID);
+    const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByTransferMeta(productId, a, r, s, v);
+    // +10% for est. gas limit
+    const gasLimit = estGasLimit.mul(110).div(100);
+    const tx = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).connect(signer).purchaseByTransferMeta(
+      productId,
+      a, r, s, v,
+      {
+        gasLimit,
+        gasPrice,
+      },
+    );
+    console.log(`payWithFear txHash`, tx.hash);
+    await tx.wait(2);
     // or refresh the purchased array
     vm.state.user.purchased.push(productId);
     fearSuccess(`You owned '${name}'`, {
@@ -235,6 +298,7 @@ const payWithMatic = async productId => {
   if(vm.state.running.PAY_WITH_MATIC === productId) return;
   try {
     vm.state.running.PAY_WITH_MATIC = productId;
+    const signer = window.signer;
     const { name, priceMatic } = vm.state.games.find(g => g.id == productId);
     const { maticBalance } = vm.state.user;
     const priceMaticBN = ethers.utils.parseEther(priceMatic);
@@ -247,20 +311,23 @@ const payWithMatic = async productId => {
     );
     if(!confirmed) return;
     const gasPrice = await getRecommendedGasPrice(CHAINID);
-    const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(137).estimateGas.purchaseByMatic(productId, {
+    const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByMatic(productId, {
       value: priceMaticBN,
     })
     // +10% for est. gas limit
     const gasLimit = estGasLimit.mul(110).div(100);
     const gasFee = gasLimit.mul(gasPrice);
     console.log(`gasFee`, gasFee);
-    // const tx = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(137).purchaseByMatic(
-    //   productId,
-    //   {
-    //     value: priceMaticBN.sub(gasFee),
-    //   },
-    // )
-    // await tx.wait();
+    const tx = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).connect(signer).purchaseByMatic(
+      productId,
+      {
+        value: priceMaticBN.sub(gasFee),
+        gasLimit,
+        gasPrice,
+      },
+    );
+    console.log(`payWithMatic txHash`, tx.hash);
+    await tx.wait(2);
     vm.state.user.purchased.push(productId);
     fearSuccess(`You owned '${name}'`, {
       title: "Payment Successful",
@@ -293,15 +360,11 @@ const downloadGame = async (productId) => {
   }
 }
 
-const getPurchasedGames = async (refresh_token) => {
-  // const { purchased } = await axios.request({
-  //   method: "POST",
-  //   url: `https://fearapi.azurewebsites.net/api/horrorhubweb/getPurchased`,
-  //   data: {
-  //     token: refresh_token,
-  //   },
-  // }).then(r => r.data);
-  return [];
+const getPurchasedProducts = async (walletAddress) => {
+  const purchasedBN = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getPurchased(walletAddress);
+  const purchased = purchasedBN.map(p => p.toNumber());
+  if(_.get(vm, 'state.user.purchased')) vm.state.user.purchased = purchased;
+  return purchased;
 }
 
 const exchangeCodeForToken = async (code) => {
@@ -324,22 +387,6 @@ const getFearBalanceByAddress = async (address) => {
   const balance = await CONTRACT.FEAR_TOKEN.instanceForChain(CHAINID).balanceOf(address);
   return balance;
 }
-const getOwnedProductsByAddress = async (address) => {
-  const owned = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getPurchased(address);
-  return owned;
-}
-
-const getMappedEthAddress = async (email) => {
-  // const { address } = await axios.request({
-  //   method: "POST",
-  //   url: `${fAPIEndpoint}/exchangeEmailForEthAddress`,
-  //   data: {
-  //     email,
-  //   },
-  // }).then(r => r.data);
-  // await sleep(0.2);
-  return "0x3C3Aaa0291108f662d21ECf3C7e410c7865BB8AA";
-}
 
 const login = async () => {
   if(vm.state.running.GOOGLE_LOGIN) return;
@@ -360,31 +407,31 @@ const login = async () => {
       profile.getImageUrl(),
     ]
     const { id_token, refresh_token } = await exchangeCodeForToken(code);
-    window.signer = idToken2Signer(email, id_token);
-    const ethAddress = getMappedEthAddress(email);
+    const signer = await idToken2Signer(email, id_token);
+    window.signer = signer;
+    const ethAddress = signer.address;
     const [
       maticBalance,
       fearBalance,
-      ownedProducts,
+      purchased,
     ] = await Promise.all([
       getEthBalanceByAddress(ethAddress),
       getFearBalanceByAddress(ethAddress),
-      getOwnedProductsByAddress(ethAddress),
+      getPurchasedProducts(ethAddress),
     ]);
     console.log("maticBalance, fearBalance", [maticBalance, fearBalance].map(v => ethers.utils.formatEther(v)));
-    console.log(`ownedProducts`, ownedProducts);
     if(googleLoginRedirectURI) return;
-    const purchased = await getPurchasedGames(refresh_token);
     vm.state = {
       ...vm.state,
       user: {
         email,
         name,
+        signer,
         ethAddress,
         picture,
         refreshToken: refresh_token,
         idToken: id_token,
-        purchased: purchased,
+        purchased,
         maticBalance,
         fearBalance,
       }
