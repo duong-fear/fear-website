@@ -254,14 +254,11 @@ const payWithFear = async productId => {
     const { name, priceFear } = vm.state.games.find(g => g.id == productId);
     const priceFearBN = ethers.utils.parseEther(priceFear);
     if(priceFearBN.gt(fearBalance)) throw new Error("Insufficient FEAR balance");
-    // const purchased = await getPurchasedGames(vm.state.user.refreshToken);
-    vm.state.user.purchased = [];
     if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
     const confirmed = await fearConfirm(
       `Are you sure want to pay ${priceFear} $FEAR to buy "${name}"?`
     );
     if(!confirmed) return;
-    // await sleep(1);
     const { a, r, s, v, } = await generateFearTransferMetaSignature(
       // should send to fee reciever address
       "0xAf98aE477c5C2394b92aC75767753cbDaF152f12",
@@ -302,8 +299,6 @@ const payWithMatic = async productId => {
     const { name, priceMatic } = vm.state.games.find(g => g.id == productId);
     const { maticBalance } = vm.state.user;
     const priceMaticBN = ethers.utils.parseEther(priceMatic);
-    // const purchased = await getPurchasedGames(vm.state.user.refreshToken);
-    vm.state.user.purchased = [];
     if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
     if(priceMaticBN.gt(maticBalance)) throw new Error("Insufficient MATIC balance");
     const confirmed = await fearConfirm(
