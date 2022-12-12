@@ -387,12 +387,20 @@ const payWithMatic = async productId => {
 const downloadGame = async (productId) => {
   if(vm.state.running.DOWNLOAD_GAME === productId) return;
   try {
+    const signer = window.signer;
+    const address = signer.address
+    const epoch = getEpoch();
+    const sig = await signer.signMessage(`${address}:${epoch}`);
     vm.state.running.DOWNLOAD_GAME = productId;
     const { url } = await axios.request({
       method: "POST",
-      url: `https://fearapi.azurewebsites.net/api/horrorhubweb/getDownloadUrl`,
+      url: `${fAPIEndpoint}/getDownloadUrl`,
+      // url: `http://localhost:7071/api/horrorhubweb/getDownloadUrl`,
       data: {
         productId,
+        epoch,
+        address,
+        sig,
       },
     }).then(r => r.data);
     window.location.href = url;
