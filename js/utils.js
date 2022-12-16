@@ -81,3 +81,19 @@ const shoppingBagSVG = (classNames = 'w-4 h-4') => `<svg xmlns="http://www.w3.or
 </svg>`;
 
 const getEmailId = email => typeof email === "string" ? email.replace(/@.*/, '') : 'n/a';
+
+const formatEther = input => input instanceof ethers.BigNumber ? ethers.utils.formatEther(input).replace(/.0$/, '') : 'n/a';
+
+const formatEtherHuman = (input) => {
+  if(!(input instanceof ethers.BigNumber)) return 'n/a';
+  const ZeroBN = ethers.constants.Zero;
+  const OneEtherBN = ethers.utils.parseEther("1");
+  const OneFinneyBN = ethers.utils.parseUnits('1', 'finney');
+  const OneThousandEtherBN = ethers.utils.parseEther("1000");
+  const OneMillionEtherBN = ethers.utils.parseEther("1000000");
+  if(input.gte(OneMillionEtherBN)) return formatEther(input.div(1_000_000).div(OneFinneyBN).mul(OneFinneyBN)) + "M";
+  if(input.gte(OneThousandEtherBN)) return formatEther(input.div(1_000).div(OneFinneyBN).mul(OneFinneyBN)) + "K";
+  if(input.gte(OneFinneyBN)) return formatEther(input.div(OneFinneyBN).mul(OneFinneyBN));
+  if(input.eq(ZeroBN)) return "0";
+  return "~0.001";
+}

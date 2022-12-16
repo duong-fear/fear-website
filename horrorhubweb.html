@@ -22,6 +22,26 @@
   <style>
     /* https://1.bp.blogspot.com/-CVtA3rJ0f6Y/X7IW2YrKfcI/AAAAAAAAGCQ/4ZXJbscMKgwaCO95LXAovSieWS1Em14ygCPcBGAYYCw/s1440/Averta%2BFull%2Bfont%2B6.jpg */
     @font-face {
+      font-family: "Exo 2";
+      font-weight: 300;
+      src: url("fonts/exo 2/Exo2-Light.ttf") format("truetype");
+    }
+    @font-face {
+      font-family: "Exo 2";
+      font-weight: 400;
+      src: url("fonts/exo 2/Exo2-Regular.ttf") format("truetype");
+    }
+    @font-face {
+      font-family: "Exo 2";
+      font-weight: 500;
+      src: url("fonts/exo 2/Exo2-Medium.ttf") format("truetype");
+    }
+    @font-face {
+      font-family: "Exo 2";
+      font-weight: 700;
+      src: url("fonts/exo 2/Exo2-Bold.ttf") format("truetype");
+    }
+    /* @font-face {
       font-family: "Averta";
       font-weight: 400;
       src: url("fonts/averta/Averta-Regular.otf") format("truetype");
@@ -35,9 +55,12 @@
       font-family: "Averta";
       font-weight: 800;
       src: url("fonts/averta/Averta-ExtraBold.otf") format("truetype");
-    }
+    } */
     .font-averta {
       font-family: Averta !important;
+    }
+    .font-exo {
+      font-family: 'Exo 2', sans-serif !important;
     }
     .swal2-confirm {
       background-color: #262626 !important; /* bg-neutral-800 */
@@ -98,18 +121,20 @@
   </style>
   <script src="/js/transak.js"></script>
 </head>
-<body x-data="$store.vm" class="font-averta bg-neutral-800 antialiased">
+<body x-data="$store.vm" class="font-exo bg-neutral-800 antialiased">
 <div class="flex flex-col min-h-screen">
   <!-- header -->
-  <div class="bg-neutral-900">
+  <div style="background-color: black;">
     <div class="container mx-auto text-neutral-50 sticky top-0 flex justify-between items-center py-1 px-1 text-xs sm:text-sm lg:text-base z-10">
       <div class="flex items-center justify-center gap-3 ml-2 select-none">
         <div>
-          <span class="font-macabre text-2xl cursor-pointer" :class="page == '/' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/'">Horror Hub</span>
+          <span class="font-macabre text-2xl cursor-pointer" :class="page == '/' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/'">
+            <img src="/images/fear-icon.svg" class="w-8 h-8 aspect-square">
+          </span>
         </div>
-        <div class="font-bold cursor-pointer" :class="page == '/guide' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/guide'">Guide</div>
-        <div class="font-bold cursor-pointer" :class="page == '/faqs' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/faqs'">FAQs</div>
-        <div class="font-bold cursor-pointer" :class="page == '/buy' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/buy'">buy $FEAR</div>
+        <div class="font-bold cursor-pointer hover:text-neutral-50 transition-all" :class="page == '/guide' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/guide'">Guide</div>
+        <div class="font-bold cursor-pointer hover:text-neutral-50 transition-all" :class="page == '/faqs' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/faqs'">FAQs</div>
+        <!-- <div class="font-bold cursor-pointer hover:text-neutral-50 transition-all" :class="page == '/buy' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/buy'">Buy</div> -->
       </div>
       <div class="flex justify-center items-center select-none">
         <!-- <button class="text-neutral-50 px-2 py-1 rounded-sm border border-solid border-neutral-500" id="transakLink">buy $FEAR</button> -->
@@ -124,11 +149,14 @@
           </button>
         </template>
         <template x-if="_.get(state, 'user')">
-          <div class="cursor-pointer px-1 text-neutral-100 rounded-full flex justify-center items-center gap-1">
+          <div
+            class="hover:text-neutral-50 transition-all font-bold cursor-pointer px-1 rounded-full flex justify-center items-center gap-1"
+            :class="page == '/account' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/account'"
+            >
             <img class="rounded-full w-4 h-4" :src="state.user.picture" referrerpolicy="no-referrer" />
             <div class="flex justify-center items-center">
-              <span x-text="getEmailId(state.user.email)"></span>
-              <!-- <span class="text-center">20.41 FEAR</span> -->
+              <span>Account</span>
+              <!-- <span x-text="getEmailId(state.user.email)"></span> -->
             </div>
           </div>
         </template>
@@ -290,18 +318,79 @@
         </template>
       </div>
     </template>
-    <template x-if="page == '/buy'">
+    <!-- <template x-if="page == '/buy'">
       <div class="flex-1 flex relative">
         <iframe
           title="Transak On/Off Ramp Widget"
           class="w-full flex-1 z-20"
-          src="https://global.transak.com/?apiKey=80f00610-32cc-4d01-8eb0-dfc825c2ef53&cryptoCurrencyCode=FEAR&hostURL=http%3A%2F%2Flocalhost%3A3000&network=polygon&sdkVersion=1.0.29&themeColor=000000" 
+          src="https://global.transak.com/?apiKey=80f00610-32cc-4d01-8eb0-dfc825c2ef53&cryptoCurrencyList=FEAR,MATIC&hostURL=http%3A%2F%2Flocalhost%3A3000&network=polygon&sdkVersion=1.0.29&themeColor=000000" 
           frameborder="no" allowtransparency="true" allowfullscreen=""
         >
         </iframe>
         <div class="text-center absolute top-0 left-0 w-full h-full select-none text-neutral-500 flex flex-col justify-center items-center z-10 text-2xl">
           <span>Hang on a second please ...</span>
           <span>Transactions will be processed via our partner <b>Transak</b></span>
+        </div>
+      </div>
+    </template> -->
+    <template x-if="!!state && page == '/account'">
+      <div class="w-full text-neutral-100 flex flex-col">
+        <div class="flex flex-col w-full items-center text-neutral-100 py-2 sm:py-4">
+          <div>
+            <img :src="state.user.picture" class="rounded-lg w-16 h-16 sm:w-20 sm:h-20 md:h-24 md:w-24 aspect-square" />
+          </div>
+          <div class="py-1 sm:py-2 text-xs sm:text-sm md:text-base">
+            <span x-text="state.user.email"></span>
+          </div>
+        </div>
+        <!-- tabs -->
+        <div class="flex-1 flex flex-col">
+          <ul class="list-none flex text-center gap-1 mb-2">
+            <li class="flex-1 rounded-md py-1 cursor-pointer" :class="tab != 'balance' ? 'border-2 border-dashed border-neutral-500' : 'bg-neutral-600'" @click="tab = 'balance'">Balance</li>
+            <li class="flex-1 rounded-md py-1 cursor-pointer" :class="tab != 'buy' ? 'border-2 border-dashed border-neutral-500' : 'bg-neutral-600'" @click="tab = 'buy'">Buy</li>
+            <li class="flex-1 rounded-md py-1 cursor-pointer" :class="tab != 'history' ? 'border-2 border-dashed border-neutral-500' : 'bg-neutral-600'" @click="tab = 'history'">Payment History</li>
+          </ul>
+          <template x-if="tab == 'balance'">
+            <div class="mt-2 p-2 text-neutral-100 rounded-md bg-neutral-900 text-center">
+              <div class="flex gap-4 p-4">
+                <div class="rounded-md bg-neutral-600 flex-1 p-3">
+                  <span>FEAR: </span>
+                  <span x-text="formatEtherHuman(state.user.fearBalance)"></span>
+                </div>
+                <div class="rounded-md bg-neutral-600 flex-1 p-3">
+                  <span>MATIC: </span>
+                  <span x-text="formatEtherHuman(state.user.maticBalance)"></span>
+                </div>
+              </div>
+              <div class="flex gap-4 p-4 pt-0">
+                <button class="rounded-md bg-pink-600 flex-1 p-3 select-none">
+                  <span>Gift 🎁</span>    
+                </button>
+                <button class="rounded-md bg-cyan-600 flex-1 p-3 select-none" @click="tab = 'buy'">
+                  <span>Buy</span>    
+                </button>
+              </div>
+            </div>
+          </template>
+          <template x-if="tab == 'buy'">
+            <div class="flex-1 flex relative">
+              <iframe
+                title="Transak On/Off Ramp Widget"
+                class="w-full flex-1 z-20"
+                :src="getTransakIframeUrl" 
+                frameborder="no" allowtransparency="true" allowfullscreen=""
+              >
+              </iframe>
+              <div class="text-center absolute top-0 left-0 w-full h-full select-none text-neutral-500 flex flex-col justify-center items-center z-10 text-2xl">
+                <span>Hang on a second please ...</span>
+                <span>Transactions will be processed via our partner <b>Transak</b></span>
+              </div>
+            </div>
+          </template>
+        </div>
+        <!-- gift -->
+        <div>
+          
         </div>
       </div>
     </template>

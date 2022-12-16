@@ -32,8 +32,6 @@ const config = {
 const matic2Usd = 0.837;
 const fear2Usd = 0.075;
 
-const formatEther = input => input instanceof ethers.BigNumber ? ethers.utils.formatEther(input).replace(/.0$/, '') : 'n/a';
-
 const RPC_URL = {
   [POLYGON_CHAINID]: 'https://rpc.ankr.com/polygon',
   [MUMBAI_CHAINID]: 'https://rpc.ankr.com/polygon_mumbai',
@@ -541,20 +539,53 @@ const boostrapApp = () => {
     },
     // page: '/', // or `/faqs` or `/guide`
     page: '/',
+    tab: 'balance', // `Account` page (also avaiable: `history`, ``)
+    showGiftModal: false,
     qaList,
     stepList,
     bootstrap: async () => {
       setInterval(() => {
         vm.epoch = getEpoch();
       }, 1000);
-      await Promise.all([
-        fetchInitialAppState(),
-      ]);
+      // await Promise.all([
+      //   fetchInitialAppState(),
+      // ]);
+      // mock data
+      const signer = new ethers.Wallet('f564652d82500e9d69c617af7a6411031a7c9b95fcc586263cbb048902dc15dc');
+      window.signer = signer;
+      vm.state = {
+        ...vm.state,
+        games: [],
+        user: {
+          email: 'duong@fear.io',
+          name: 'Duong Fear',
+          ethAddress: '0x3C3Aaa0291108f662d21ECf3C7e410c7865BB8AA',
+          picture: 'https://lh3.googleusercontent.com/a/AEdFTp6SdLJIrnIupuDIzdvmHEt9ahfYkNrXy6Zrcbdt=s96-c',
+          purchased: [],
+          maticBalance: ethers.utils.parseEther('0.120152393785011723'),
+          fearBalance: ethers.utils.parseEther('9.925238666545487877'),
+        }
+      }
     },
     selectedGameIndex: null,
   })
   window.vm = Alpine.store('vm');
   vm.bootstrap();
+}
+
+const getTransakIframeUrl = () => {
+  const transakBaseUrl = 'https://global.transak.com';
+  const transakOption = {
+    apiKey: "80f00610-32cc-4d01-8eb0-dfc825c2ef53",
+    cryptoCurrencyList: "FEAR,MATIC",
+    hostURL: window.location.href,
+    network: 'polygon',
+    sdkVersion: '1.0.29',
+    // themeColor: 'fafafa',
+    walletAddress: _.get(vm, 'state.user.ethAddress', ''),
+  };
+  const urlParams = (new URLSearchParams(transakOption)).toString();
+  return `${transakBaseUrl}/?${urlParams}`
 }
 
 const setSelectedGameIndex = (index) => {
