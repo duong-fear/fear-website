@@ -363,7 +363,7 @@
                 </div>
               </div>
               <div class="flex gap-4 p-4 pt-0">
-                <button class="rounded-md bg-pink-600 flex-1 p-3 select-none">
+                <button class="rounded-md bg-pink-600 flex-1 p-3 select-none" @click="state.giftModal.visible = true">
                   <span>Gift 🎁</span>    
                 </button>
                 <button class="rounded-md bg-cyan-600 flex-1 p-3 select-none" @click="tab = 'buy'">
@@ -388,10 +388,86 @@
             </div>
           </template>
         </div>
-        <!-- gift -->
-        <div>
-          
+        <!-- gift modal -->
+        <!-- <template x-if="state.giftModal.visible"> -->
+        <div class="fixed top-0 left-0 w-full h-full text-gray-100 flex flex-col justify-center items-center backdrop-brightness-50 backdrop-blur-sm z-30" x-show="state.giftModal.visible" x-transition.duration.100ms>
+          <div class="bg-neutral-800 rounded-md p-3 sm:p-4 text-xs sm:text-sm md:text-base" style="max-width: 95%;">
+            <div>
+              <div class="text-lg sm:text-xl font-bold text-center">
+                <span>Gift token to your friend</span>
+              </div>
+              <div class="py-1 sm:py-2">
+                <span>Enter your friend's email address and press on <b>Search</b> button.</span><br/>
+                <span>We will find their <b>Fear-Wallet</b> address for you</span>
+              </div>
+            </div>
+            <div class="py-2 rounded-lg flex justify-center items-center gap-1">
+              <label for="giftEmailAddress" class="flex-1 self-stretch flex justify-center items-center gap-1 bg-neutral-600 rounded px-2">
+                  <span class="text-neutral-300 select-none">Email</span>
+                  <input
+                    class="h-full flex-1 bg-neutral-600 outline-none text-right font-bold disabled:cursor-not-allowed" type="text" id="giftEmailAddress" autocomplete="off" autofocus
+                    x-model="state.giftModal.email"
+                    @keyup.enter="lookupEthAddressGiftModal"
+                    :disabled="state.running.GIFT_MODAL_FIND_ETH_ADDRESS"
+                  />
+              </label>
+              <button
+                class="bg-violet-600 px-3 py-2 rounded disabled:opacity-70 flex justify-center items-center gap-1 disabled:cursor-not-allowed"
+                @click="lookupEthAddressGiftModal"
+                :disabled="state.running.GIFT_MODAL_FIND_ETH_ADDRESS"
+              >
+                <span>Search</span>
+                <i x-show="state.running.GIFT_MODAL_FIND_ETH_ADDRESS" x-html="loadingSVG('h-3 w-3 sm:h-4 sm:w-4 text-white')"></i>
+              </button>
+            </div>
+            <template x-if="state.giftModal.ethAddress">
+              <div>
+                <div class="border-l-4 pl-1 sm:pl-2 border-violet-600 border-solid">
+                  <span class="font-bold">Found: </span>
+                  <a :href="generateBlockscanUrlForAddress(CHAINID, state.giftModal.ethAddress)" target="_blank" x-text="state.giftModal.ethAddress" class="text-red-600 font-bold"></a>
+                </div>
+                <div class="py-2 rounded-lg flex justify-center items-center gap-1">
+                  <div class="flex self-stretch justify-center items-center select-none font-bold">
+                    <div
+                      class="rounded-tl rounded-bl px-2 self-stretch flex justify-center items-center cursor-pointer transition-all"
+                      :class="state.giftModal.token === 'fear' ? 'bg-violet-600' : 'bg-neutral-700 opacity-50'"
+                      @click="setGiftToken('fear')"
+                    >
+                      <span>FEAR</span>
+                    </div>
+                    <div
+                      class="rounded-tr rounded-br px-2 self-stretch flex justify-center items-center cursor-pointer transition-all"
+                      :class="state.giftModal.token === 'matic' ? 'bg-violet-600' : 'bg-neutral-700 opacity-50'"
+                      @click="setGiftToken('matic')"
+                    >
+                      <span>MATIC</span>
+                    </div>
+                  </div>
+                  <label for="giftAmount" class="flex-1 self-stretch flex justify-center items-center gap-1 bg-neutral-600 rounded px-2 py-2">
+                    <span class="text-neutral-300 select-none">Amount</span>
+                    <input @keypress="onValidEthAmountInput" class="h-full flex-1 bg-neutral-600 outline-none text-right font-bold" type="text" id="giftAmount" x-model="state.giftModal.amount" />
+                </div>
+              </div>
+            </template>
+            <div class="py-2 flex justify-between select-none">
+              <button
+                class="bg-neutral-300 text-neutral-900 px-3 py-2 rounded"
+                @click="state.giftModal = _.clone(_giftModal)"
+              >
+                <span>Cancel</span>
+              </button>
+              <button
+                class="bg-violet-600 px-3 py-2 rounded disabled:opacity-50 flex justify-center items-center gap-1"
+                :disabled="!state.giftModal.amount || state.running.GIFT_MODAL_SEND"
+                @click="sendGift"
+              >
+                <span>Send</span>
+                <i x-show="state.running.GIFT_MODAL_SEND" x-html="loadingSVG('h-3 w-3 sm:h-4 sm:w-4 text-white')"></i>            
+              </button>
+            </div>
+          </div>
         </div>
+        <!-- </template> -->
       </div>
     </template>
   </div>

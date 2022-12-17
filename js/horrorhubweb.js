@@ -46,16 +46,19 @@ const BICONOMY_PURCHASE_BY_FEAR_TRANSFER_APPID = {
   [POLYGON_CHAINID]: 'f9d89d0a-be38-4996-8345-df04220354b1',
   [MUMBAI_CHAINID]: '',
 }
+const BICONOMY_FEAR_METATRANSACTION_APPID = {
+  [POLYGON_CHAINID]: 'dea3e094-2ff5-4190-9b07-f15885cdaf8d',
+  [MUMBAI_CHAINID]: '',
+}
 
 const RPC_PROVIDER = {
   [POLYGON_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[POLYGON_CHAINID]),
   [MUMBAI_CHAINID]: new ethers.providers.JsonRpcProvider(RPC_URL[MUMBAI_CHAINID]),
 }
 
-const getRecommendedGasPrice = async (chainId) => {
+const getRecommendedGasPrice = async () => {
   // +25% to base gas price to get recommended gas price
-  const gasPrice = (await RPC_PROVIDER[chainId].getGasPrice()).mul(125).div(100);
-  console.log(`RecommendedGasPrice`, ethers.utils.formatUnits(gasPrice, 'gwei'));
+  const gasPrice = (await RPC_PROVIDER[CHAINID].getGasPrice()).mul(125).div(100);
   return gasPrice;
 }
 
@@ -86,12 +89,12 @@ const CONTRACT = {
   },
 };
 
-const biconomyExecTransaction = async (params, gasLimit) => {
+const biconomyExecTransaction = async (apiId, params, gasLimit) => {
   const { data } = await axios.post(
     biconomyNativeTxEndpoint,
     {
       userAddress: vm.state.user.ethAddress,
-      apiId: BICONOMY_PURCHASE_BY_FEAR_TRANSFER_APPID[CHAINID],
+      apiId,
       params,
       gasLimit,
     },
@@ -149,6 +152,7 @@ const generateFearTransferMetaSignature = async (toAddress, amountBN) => {
   return {
     a: walletAddress,
     ..._.pick(ethers.utils.splitSignature(signature), ['r', 's', 'v']),
+    functionSignature: transferSignature,
   };
 }
 
@@ -300,7 +304,7 @@ const payWithFear = async productId => {
       "0xAf98aE477c5C2394b92aC75767753cbDaF152f12",
       priceFearBN,
     );
-    const gasPrice = await getRecommendedGasPrice(CHAINID);
+    const gasPrice = await getRecommendedGasPrice();
     const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByTransferMeta(productId, a, r, s, v);
     // +10% for est. gas limit
     const gasLimit = estGasLimit.mul(110).div(100);
@@ -317,6 +321,7 @@ const payWithFear = async productId => {
     // await tx.wait(2);
     // method 2: via biconomy
     await biconomyExecTransaction(
+      BICONOMY_PURCHASE_BY_FEAR_TRANSFER_APPID[CHAINID],
       [
         productId,
         a,
@@ -352,7 +357,7 @@ const payWithMatic = async productId => {
       `Are you sure want to pay ${priceMatic} $MATIC to buy "${name}"?`
     );
     if(!confirmed) return;
-    const gasPrice = await getRecommendedGasPrice(CHAINID);
+    const gasPrice = await getRecommendedGasPrice();
     const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByMatic(productId, {
       value: priceMaticBN,
     })
@@ -522,19 +527,127 @@ function boostrapAppGAPI() {
   });
 }
 
+const lookupEthAddressGiftModal = async () => {
+  vm.state.running.GIFT_MODAL_FIND_ETH_ADDRESS = true;
+  try {
+    if(!isValidEmailAddress(vm.state.giftModal.email)) throw new Error("Please input a valid email address");
+    vm.state.giftModal.ethAddress = '';
+    const verifier = config[CHAINID].torus.verifier;
+    const network = config[CHAINID].torus.network;
+    const verifierId = vm.state.giftModal.email;
+    const pubAddress = await email2TorusAddress(network, verifier, verifierId);
+    vm.state.giftModal.ethAddress = pubAddress;
+    setGiftToken('fear');
+  } catch(exception) {
+    fearError(getExceptionDetails(exception).message);
+  } finally {
+    vm.state.running.GIFT_MODAL_FIND_ETH_ADDRESS = false;
+  }
+}
+
+const sendFear = async (toAddress, amountBN) => {
+  const { functionSignature, r, s, v, } = await generateFearTransferMetaSignature(
+    toAddress,
+    amountBN,
+  );
+  const estGasLimit = await CONTRACT.FEAR_TOKEN.instanceForChain(CHAINID).estimateGas.executeMetaTransaction(
+    vm.state.user.ethAddress,
+    functionSignature,
+    r,
+    s,
+    v,
+  );
+  const gasLimit = estGasLimit.mul(120).div(100);
+  const txHash = await biconomyExecTransaction(
+    BICONOMY_FEAR_METATRANSACTION_APPID[CHAINID],
+    [
+      vm.state.user.ethAddress,
+      functionSignature,
+      r,
+      s,
+      v,
+    ],
+    gasLimit.toNumber(),
+  );
+  return txHash;
+}
+
+const sendGift = async () => {
+  try {
+    vm.state.running.GIFT_MODAL_SEND = true;
+    const { fearBalance, maticBalance } = vm.state.user;
+    const { email, token, amount, ethAddress } = vm.state.giftModal;
+    if(!ethers.utils.isAddress(ethAddress)) throw new Error("Invalid recipient address");
+    if(!isValidEtherAmount(amount)) throw new Error("Invalid send amount");
+    const amountBN = ethers.utils.parseEther(amount);
+    if(token === 'fear') {
+      if(amountBN.gt(fearBalance)) return fearError("Insufficient $FEAR balance");
+      const confirmed = await fearConfirm('Are you sure ?', `You are sending ${formatEther(amountBN)} $FEAR to "${email}"`);
+      if(!confirmed) return;
+      const txHash = await sendFear(ethAddress, amountBN);
+      fearSuccess(`You sent ${formatEther(amountBN)} $FEAR to "${email}"`);
+    }
+    if(token === 'matic') {
+      if(amountBN.gt(maticBalance)) {
+        return fearError("Insufficient $MATIC balance");
+      }
+      const ETH_TRANSFER_GAS_LIMIT = ethers.BigNumber.from(21_000);
+      const gasPrice = await getRecommendedGasPrice();
+      const gasFeeBN = gasPrice.mul(ETH_TRANSFER_GAS_LIMIT);
+      if(!amountBN.gt(gasFeeBN)) {
+        return fearError(`Send amount must greater than ${formatEther(gasFeeBN)} $MATIC to cover network fee`);
+      }
+      const transferAmountBN = amountBN.sub(gasFeeBN);
+      const confirmed = await fearConfirm('Are you sure ?', `You are sending ${formatEther(amountBN)} $MATIC to "${email}", your friend will receive ${formatEther(transferAmountBN)} $MATIC (network fee included)`);
+      if(!confirmed) return;
+      const tx = await window.signer.sendTransaction({
+        to: ethAddress,
+        value: transferAmountBN,
+        gasPrice,
+        gasLimit: ETH_TRANSFER_GAS_LIMIT,
+      });
+      console.log(`tx hash`, tx.hash);
+      await tx.wait();
+      fearSuccess(`You sent ${formatEther(amountBN)} $MATIC to "${email}"`);
+    }
+  } catch(exception) {
+    console.error("sendGift() error", exception);
+    fearError(getExceptionDetails(exception));
+  }
+  finally {
+    vm.state.running.GIFT_MODAL_SEND = false;
+  }
+}
+
+const setGiftToken = (token) => {
+  vm.state.giftModal.token = token;
+  if(token === 'fear') vm.state.giftModal.amount = formatEther(vm.state.user.fearBalance);
+  if(token === 'matic') vm.state.giftModal.amount = formatEther(vm.state.user.maticBalance);
+}
+
+const _giftModal = {
+  visible: false,
+  email: null,
+  ethAddress: null,
+  amount: null,
+  token: null, // 'fear' or 'matic'
+};
+
 const boostrapApp = () => {
   Alpine.store('vm', {
     epoch: null,
     state: {
       games: null,
       user: null,
-      // exchangeRate: null,
+      giftModal: { ..._giftModal },
       running: {
         GOOGLE_LOGIN: false,
         PURCHASE_GAME: false,
         DOWNLOAD_GAME: false,
         PAY_WITH_FEAR: false,
         PAY_WITH_MATIC: false,
+        GIFT_MODAL_FIND_ETH_ADDRESS: false,
+        GIFT_MODAL_SEND: false,
       },
     },
     // page: '/', // or `/faqs` or `/guide`
@@ -547,25 +660,25 @@ const boostrapApp = () => {
       setInterval(() => {
         vm.epoch = getEpoch();
       }, 1000);
-      // await Promise.all([
-      //   fetchInitialAppState(),
-      // ]);
+      await Promise.all([
+        fetchInitialAppState(),
+      ]);
       // mock data
-      const signer = new ethers.Wallet('f564652d82500e9d69c617af7a6411031a7c9b95fcc586263cbb048902dc15dc');
-      window.signer = signer;
-      vm.state = {
-        ...vm.state,
-        games: [],
-        user: {
-          email: 'duong@fear.io',
-          name: 'Duong Fear',
-          ethAddress: '0x3C3Aaa0291108f662d21ECf3C7e410c7865BB8AA',
-          picture: 'https://lh3.googleusercontent.com/a/AEdFTp6SdLJIrnIupuDIzdvmHEt9ahfYkNrXy6Zrcbdt=s96-c',
-          purchased: [],
-          maticBalance: ethers.utils.parseEther('0.120152393785011723'),
-          fearBalance: ethers.utils.parseEther('9.925238666545487877'),
-        }
-      }
+      // const signer = (new ethers.Wallet('f564652d82500e9d69c617af7a6411031a7c9b95fcc586263cbb048902dc15dc')).connect(RPC_PROVIDER[CHAINID]);
+      // window.signer = signer;
+      // vm.state = {
+      //   ...vm.state,
+      //   games: [],
+      //   user: {
+      //     email: 'duong@fear.io',
+      //     name: 'Duong Fear',
+      //     ethAddress: '0x3C3Aaa0291108f662d21ECf3C7e410c7865BB8AA',
+      //     picture: 'https://lh3.googleusercontent.com/a/AEdFTp6SdLJIrnIupuDIzdvmHEt9ahfYkNrXy6Zrcbdt=s96-c',
+      //     purchased: [],
+      //     maticBalance: ethers.utils.parseEther('0.120152393785011723'),
+      //     fearBalance: ethers.utils.parseEther('9.925238666545487877'),
+      //   }
+      // }
     },
     selectedGameIndex: null,
   })

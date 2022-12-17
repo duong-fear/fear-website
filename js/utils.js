@@ -1,3 +1,19 @@
+const isValidEmailAddress = (input) => {
+  // https://emailregex.com/
+  const emailPattern = /^(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
+  return emailPattern.test(input);
+}
+
+const isValidEtherAmount = (input) => {
+  try {
+    const ZeroBN = ethers.constants.Zero;
+    const valueBN = input instanceof ethers.BigNumber ? input : ethers.utils.parseEther(input);
+    return valueBN.gt(ZeroBN);
+  } catch {
+    return false;
+  }
+}
+
 const getEpoch = () => Number.parseInt((new Date()).getTime()/1000);
 
 const sleep = seconds => new Promise((resolve) => {
@@ -96,4 +112,35 @@ const formatEtherHuman = (input) => {
   if(input.gte(OneFinneyBN)) return formatEther(input.div(OneFinneyBN).mul(OneFinneyBN));
   if(input.eq(ZeroBN)) return "0";
   return "~0.001";
+}
+
+const email2TorusAddress = async (network, verifier, verifierId) => {
+  try {
+    const fetchNodeDetails = new window.FetchNodeDetails.default();
+    const TorusUtils = window.TorusUtils.default;
+    const torus = new TorusUtils({
+      network,
+    });
+    const { torusNodeEndpoints, torusNodePub, torusIndexes } = await fetchNodeDetails.getNodeDetails({
+      verifier,
+      verifierId,
+    });
+    const publicAddress = await torus.getPublicAddress(torusNodeEndpoints, torusNodePub, { verifier, verifierId });
+    return publicAddress;
+  } catch(exception) {
+    throw exception;
+  }
+}
+
+const generateBlockscanUrlForAddress = (chainId, address) => {
+  const blockScanMap = {
+    137: 'https://polygonscan.com/address',
+    80001: 'https://mumbai.polygonscan.com/address',
+  };
+  return `${blockScanMap[chainId]}/${address}`;
+}
+
+const onValidEthAmountInput = (e) => {
+  const key = e.key;
+  if(!/^[\d\.]$/.test(key)) return e.preventDefault();
 }
