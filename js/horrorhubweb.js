@@ -443,6 +443,57 @@ const getFearBalanceByAddress = async (address) => {
   return balance;
 }
 
+const _transakPurchaseHistory = [
+  {
+    "id":"9151faa1-e69b-4a36-b959-3c4f894afb68",
+    // "walletAddress":"0x86349020e9394b2BE1b1262531B0C3335fc32F20",
+    "createdAt": 1671304939,
+    "status": "COMPLETED",
+    "fiatCurrency": "USD",
+    "userId": "65317131-cd95-419a-a50c-747d142f83e9",
+    "cryptocurrency": "MATIC",
+    "isBuyOrSell": "BUY",
+    "fiatAmount": 30,
+    "commissionDecimal": 0.0075,
+    // "fromWalletAddress":"0x085ee67132ec4297b85ed5d1b4c65424d36fda7d",
+    // "walletLink":"https://rinkeby.etherscan.io/address/0x86349020e9394b2BE1b1262531B0C3335fc32F20#tokentxns",
+    "amountPaid": 30,
+    // "partnerOrderId":"2183721893",
+    // "partnerCustomerId":"2183721893",
+    // "redirectURL":"https://google.com",
+    "conversionPrice": 0.071,
+    "cryptoAmount": 36.3,
+    "totalFee": 5.52652,
+    "paymentOption":[],
+    "autoExpiresAt": 1671304939,
+    "referenceCode": 226056
+  },
+  {
+    "id":"9151faa1-e69b-4a36-b959-3c4f894afb68",
+    // "walletAddress":"0x86349020e9394b2BE1b1262531B0C3335fc32F20",
+    "createdAt": 1671341339,
+    "status": "AWAITING_PAYMENT_FROM_USER",
+    "fiatCurrency": "USD",
+    "userId": "65317131-cd95-419a-a50c-747d142f83e9",
+    "cryptocurrency": "FEAR",
+    "isBuyOrSell": "BUY",
+    "fiatAmount": 50,
+    "commissionDecimal": 0.0075,
+    // "fromWalletAddress":"0x085ee67132ec4297b85ed5d1b4c65424d36fda7d",
+    // "walletLink":"https://rinkeby.etherscan.io/address/0x86349020e9394b2BE1b1262531B0C3335fc32F20#tokentxns",
+    "amountPaid": 0,
+    "partnerOrderId":"2183721893",
+    "partnerCustomerId":"2183721893",
+    // "redirectURL":"https://google.com",
+    "conversionPrice": 0.071,
+    "cryptoAmount": 681.2,
+    "totalFee": 5.52652,
+    "paymentOption":[],
+    "autoExpiresAt": 1671344939,
+    "referenceCode": 226056
+  }
+];
+
 const login = async () => {
   if(vm.state.running.GOOGLE_LOGIN) return;
   try {
@@ -489,6 +540,7 @@ const login = async () => {
         purchased,
         maticBalance,
         fearBalance,
+        transakPurchaseHistory: _transakPurchaseHistory,
       }
     }
   } catch(exception) {
@@ -677,6 +729,7 @@ const boostrapApp = () => {
       //     purchased: [],
       //     maticBalance: ethers.utils.parseEther('0.120152393785011723'),
       //     fearBalance: ethers.utils.parseEther('9.925238666545487877'),
+      //     transakPurchaseHistory: _transakPurchaseHistory,
       //   }
       // }
     },
@@ -699,6 +752,17 @@ const getTransakIframeUrl = () => {
   };
   const urlParams = (new URLSearchParams(transakOption)).toString();
   return `${transakBaseUrl}/?${urlParams}`
+}
+
+const ORDER_STATUS_CLASSES_ENUM = {
+  COMPLETED: 'text-green-500 font-bold',
+  FAILED: 'text-red-500 font-bold',
+  EXPIRED: 'text-red-500 font-bold',
+  PROCESSING: 'text-yellow-500 font-bold',
+  PENDING_DELIVERY_FROM_TRANSAK: 'text-cyan-500 font-bold',
+  PAYMENT_DONE_MARKED_BY_USER: '',
+  CANCELLED: '',
+  AWAITING_PAYMENT_FROM_USER: '',
 }
 
 const setSelectedGameIndex = (index) => {
