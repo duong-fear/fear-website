@@ -102,11 +102,25 @@
     div.owl-stage-outer {
       border-radius: 0.375rem;
     }
+    .border-red {
+      border-color: #fc0820;
+    }
     .text-red {
-      color: red;
+      color: #fc0820;
     }
     .bg-red {
-      background-color: #ff0000cc;
+      background-color: #fc0820;
+    }
+    .fear-button {
+      border-width: 1px;
+      border-color: #fc0820;
+      border-style: solid;
+      color: #fc0820;
+    }
+    .neon-red:not(:disabled):hover {
+      box-shadow: 0 0 0.5rem 1px #fc0820bf;
+      -webkit-box-shadow: 0px 0px 0.5rem 1px rgb(200 53 60 / 75%);
+      -moz-box-shadow: 0px 0px .5rem 1px rgb(200 53 60 / 75%);
     }
     ::-webkit-scrollbar {
       width: auto;
@@ -118,6 +132,40 @@
     ::-webkit-scrollbar-thumb {
       background: #a3a3a3;
       border-radius: 2rem;
+    }
+    #account-tab-container div {
+      background: red;
+      position: relative;
+    }
+    #account-tab-container div:nth-child(1)::after,
+    #account-tab-container div:nth-child(2)::after {
+      content: "";
+      right: -1rem;
+      transform: skewX(20deg);
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+      position: absolute;
+      background-color: #fc0820;
+      transform-origin: bottom left;
+      width: 1rem;
+      top: 0rem;
+      bottom: 0rem;
+      transition: background-color .15s ease-in-out;
+    }
+    #account-tab-container div:nth-child(2)::before,
+    #account-tab-container div:nth-child(3)::after {
+      content: "";
+      left: -1rem;
+      transform: skewX(-20deg);
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      position: absolute;
+      background-color: #fc0820;
+      transform-origin: bottom left;
+      width: 1rem;
+      top: 0rem;
+      bottom: 0rem;
+      transition: background-color .15s ease-in-out;
     }
   </style>
   <script src="/js/transak.js"></script>
@@ -335,7 +383,7 @@
       </div>
     </template> -->
     <template x-if="!!state && page == '/account'">
-      <div class="w-full text-neutral-100 flex flex-col">
+      <div class="w-full text-neutral-100 flex flex-col px-2 sm:px-3 md:px-4">
         <div class="flex flex-col w-full items-center text-neutral-100 py-2 sm:py-4">
           <div>
             <img :src="state.user.picture" class="rounded-lg w-16 h-16 sm:w-20 sm:h-20 md:h-24 md:w-24 aspect-square" />
@@ -346,28 +394,28 @@
         </div>
         <!-- tabs -->
         <div class="flex-1 flex flex-col">
-          <ul class="list-none flex text-center gap-1 mb-2">
-            <li class="flex-1 rounded-md py-1 cursor-pointer" :class="tab != 'balance' ? 'border-2 border-dashed border-neutral-500' : 'bg-neutral-600'" @click="tab = 'balance'">Balance</li>
-            <li class="flex-1 rounded-md py-1 cursor-pointer" :class="tab != 'buy' ? 'border-2 border-dashed border-neutral-500' : 'bg-neutral-600'" @click="tab = 'buy'">Buy</li>
-            <li class="flex-1 rounded-md py-1 cursor-pointer" :class="tab != 'history' ? 'border-2 border-dashed border-neutral-500' : 'bg-neutral-600'" @click="tab = 'history'">Payment History</li>
-          </ul>
+          <div class="flex text-center gap-1 mb-2 font-bold" id="account-tab-container">
+            <div class="py-1 md:py-2 mr-4 flex-1 rounded-tl-md rounded-bl-md py-1 cursor-pointer" :class="tab != 'balance' ? 'opacity-40' : ''" @click="tab = 'balance'">Balance</div>
+            <div class="py-1 md:py-2 mx-4 flex-1 py-1 cursor-pointer" :class="tab != 'buy' ? 'opacity-40' : ''" @click="tab = 'buy'">Buy</div>
+            <div class="py-1 md:py-2 ml-4 flex-1 rounded-tr-md rounded-br-md py-1 cursor-pointer" :class="tab != 'history' ? 'opacity-40' : ''" @click="tab = 'history'">History</div>
+          </div>
           <template x-if="tab == 'balance'">
-            <div class="mt-2 p-2 text-neutral-100 rounded-md bg-neutral-900 text-center">
+            <div class="p-2 text-neutral-100 rounded-md bg-neutral-900 text-center">
               <div class="flex gap-4 p-4">
-                <div class="rounded-md bg-neutral-600 flex-1 p-3">
-                  <span>FEAR: </span>
-                  <span x-text="formatEtherHuman(state.user.fearBalance)"></span>
+                <div class="rounded-md flex-1 p-3 flex flex-col">
+                  <span class="text-3xl sm:text-4xl md:text-5xl text-red" x-text="formatEtherHuman(state.user.fearBalance)"></span>
+                  <span class="text-xs sm:text-sm md:text-base text-neutral-400">$FEAR</span>
                 </div>
-                <div class="rounded-md bg-neutral-600 flex-1 p-3">
-                  <span>MATIC: </span>
-                  <span x-text="formatEtherHuman(state.user.maticBalance)"></span>
+                <div class="rounded-md flex-1 p-3 flex flex-col">
+                  <span class="text-3xl sm:text-4xl md:text-5xl text-red" x-text="formatEtherHuman(state.user.maticBalance)"></span>
+                  <span class="text-xs sm:text-sm md:text-base text-neutral-400">$MATIC</span>
                 </div>
               </div>
-              <div class="flex gap-4 p-4 pt-0">
-                <button class="rounded-md bg-pink-600 flex-1 p-3 select-none" @click="state.giftModal.visible = true">
+              <div class="flex gap-2 sm:gap-3 md:gap-4 p-2 sm:p-3 md:p-4 pt-0 justify-center items-center">
+                <button class="w-20 rounded-md fear-button border-2 neon-red font-bold p-2 select-none" @click="state.giftModal.visible = true">
                   <span>Gift 🎁</span>    
                 </button>
-                <button class="rounded-md bg-cyan-600 flex-1 p-3 select-none" @click="tab = 'buy'">
+                <button class="w-20 rounded-md bg-red text-neutral-900 border-red border-2 neon-red font-bold p-2 select-none" @click="tab = 'buy'">
                   <span>Buy</span>    
                 </button>
               </div>
@@ -453,7 +501,7 @@
               <div class="text-lg sm:text-xl font-bold text-center">
                 <span>Gift token to your friend</span>
               </div>
-              <div class="py-1 sm:py-2">
+              <div class="py-1 sm:py-2 text-neutral-300">
                 <span>Enter your friend's email address and press on <b>Search</b> button.</span><br/>
                 <span>We will find their <b>Fear-Wallet</b> address for you</span>
               </div>
@@ -469,32 +517,32 @@
                   />
               </label>
               <button
-                class="bg-violet-600 px-3 py-2 rounded disabled:opacity-70 flex justify-center items-center gap-1 disabled:cursor-not-allowed"
+                class="bg-neutral-300 text-neutral-700 select-none px-3 py-2 rounded disabled:opacity-70 flex justify-center items-center gap-1 disabled:cursor-not-allowed"
                 @click="lookupEthAddressGiftModal"
                 :disabled="state.running.GIFT_MODAL_FIND_ETH_ADDRESS"
               >
                 <span>Search</span>
-                <i x-show="state.running.GIFT_MODAL_FIND_ETH_ADDRESS" x-html="loadingSVG('h-3 w-3 sm:h-4 sm:w-4 text-white')"></i>
+                <i x-show="state.running.GIFT_MODAL_FIND_ETH_ADDRESS" x-html="loadingSVG('h-3 w-3 sm:h-4 sm:w-4 text-neutral-700')"></i>
               </button>
             </div>
             <template x-if="state.giftModal.ethAddress">
               <div>
-                <div class="border-l-4 pl-1 sm:pl-2 border-violet-600 border-solid">
-                  <span class="font-bold">Found: </span>
-                  <a :href="generateBlockscanUrlForAddress(CHAINID, state.giftModal.ethAddress)" target="_blank" x-text="state.giftModal.ethAddress" class="text-red-600 font-bold"></a>
+                <div class="border-l-4 pl-1 sm:pl-2 border-red border-solid select-none">
+                  <span class="font-bold">Found </span>
+                  <a :href="generateBlockscanUrlForAddress(CHAINID, state.giftModal.ethAddress)" target="_blank" x-text="state.giftModal.ethAddress" class="text-cyan-500 font-bold"></a>
                 </div>
                 <div class="py-2 rounded-lg flex justify-center items-center gap-1">
                   <div class="flex self-stretch justify-center items-center select-none font-bold">
                     <div
                       class="rounded-tl rounded-bl px-2 self-stretch flex justify-center items-center cursor-pointer transition-all"
-                      :class="state.giftModal.token === 'fear' ? 'bg-violet-600' : 'bg-neutral-700 opacity-50'"
+                      :class="state.giftModal.token === 'fear' ? 'bg-red' : 'bg-neutral-700 opacity-50'"
                       @click="setGiftToken('fear')"
                     >
                       <span>FEAR</span>
                     </div>
                     <div
                       class="rounded-tr rounded-br px-2 self-stretch flex justify-center items-center cursor-pointer transition-all"
-                      :class="state.giftModal.token === 'matic' ? 'bg-violet-600' : 'bg-neutral-700 opacity-50'"
+                      :class="state.giftModal.token === 'matic' ? 'bg-red' : 'bg-neutral-700 opacity-50'"
                       @click="setGiftToken('matic')"
                     >
                       <span>MATIC</span>
@@ -508,18 +556,19 @@
             </template>
             <div class="py-2 flex justify-between select-none">
               <button
-                class="bg-neutral-300 text-neutral-900 px-3 py-2 rounded text-xs"
+                class="bg-neutral-700 text-neutral-100 border-2 border-solid border-neutral-500 px-3 py-2 rounded"
                 @click="state.giftModal = _.clone(_giftModal)"
               >
                 <span>Cancel</span>
               </button>
               <button
-                class="bg-violet-600 px-3 py-2 rounded disabled:opacity-50 flex justify-center items-center gap-1 text-xs"
+                class="fear-button neon-red border-2 font-bold px-3 py-2 rounded disabled:opacity-50 flex justify-center items-center gap-1"
                 :disabled="!state.giftModal.amount || state.running.GIFT_MODAL_SEND"
+                x-show="state.giftModal.ethAddress"
                 @click="sendGift"
               >
                 <span>Send</span>
-                <i x-show="state.running.GIFT_MODAL_SEND" x-html="loadingSVG('h-3 w-3 sm:h-4 sm:w-4 text-white')"></i>            
+                <i x-show="state.running.GIFT_MODAL_SEND" x-html="loadingSVG('h-3 w-3 sm:h-4 sm:w-4 text-red')"></i>            
               </button>
             </div>
           </div>
