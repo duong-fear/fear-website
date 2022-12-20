@@ -724,7 +724,13 @@ const refreshTransakPurchaseHistory = async () => {
     method: "GET",
     url: `https://fearapi.azurewebsites.net/api/toolbox/orderHistory/${ethAddress}`,
   }).then(r => r.data);
-  vm.state.user.transakPurchaseHistory = orders;
+  vm.state.user.transakPurchaseHistory = orders.sort((x, y) => {
+    const dx = dayjs(x.createdAt);
+    const dy = dayjs(y.createdAt);
+    if(dx.isBefore(dy)) return -1;
+    if(dx.isAfter(dy)) return 1;
+    return 0;
+  }).reverse();
 }
 
 const showTransakHistoryTab = () => {
