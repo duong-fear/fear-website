@@ -85,12 +85,12 @@
       border-radius: 0.375rem !important;
     }
     .swal2-cancel {
-      background-color: #fee2e2 !important;
-      color: #b91c1c !important;
+      background-color: #a3a3a3 !important;
+      color: #171717 !important;
     }
     .swal2-confirm {
-      background-color: #d1fae5 !important;
-      color: #065f46 !important;
+      background-color: #fc0820 !important;
+      color: white !important;
     }
     @font-face {
       font-family: "The Macabre";
@@ -193,7 +193,7 @@
         <!-- <button class="text-neutral-50 px-2 py-1 rounded-sm border border-solid border-neutral-500" id="transakLink">buy $FEAR</button> -->
         <template x-if="!_.get(state, 'user')">
           <button
-            class="border-red border-2 fear-button px-2 py-1 rounded-md ml-1 border-solid flex justify-center items-center disabled:opacity-70"
+            class="neon-red uppercase border-red border-2 fear-button px-2 py-1 rounded-md ml-1 border-solid flex justify-center items-center disabled:opacity-70"
             @click="login"
             :disabled="state.running.GOOGLE_LOGIN"
           >
@@ -229,21 +229,23 @@
         </div>
       </template>
       <template x-if="state.games">
-      <div class="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2">
+      <div class="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 mt-2">
         <template x-for="(g, index) in state.games">
           <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
-            <div class="relative">
-              <img :src="g.splash" class="w-40 sm:w-52 md:w-60 lg:w-72 rounded-md aspect-square border-4 border-solid border-neutral-300 shadow-md">
-              <span class="text-xs sm:text-sm lg:text-base font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="!state.user || !state.user.purchased.includes(g.id)">
-                <span x-text="g.priceUsd + ' USD'"></span>
-              </span>
-              <span class="text-xs sm:text-sm lg:text-base font-bold text-green-800 bg-green-200 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="state.user && state.user.purchased.includes(g.id)">
-                owned
-              </span>
-              <!-- <span class="text-xs sm:text-sm lg:text-base font-bold absolute bottom-0 px-1 py-1 text-neutral-50 bg-opacity-30 bg-neutral-800 -translate-x-1/2 w-full" x-text="g.name"></span> -->
-            </div>
-            <div class="mt-2 flex-1 text-neutral-300 text-center flex justify-center items-center">
-              <span class="text-base md:text-lg lg:text-xl font-bold" x-text="g.name"></span>
+            <div class="p-1 bg-neutral-900 rounded-md h-full flex flex-col">
+              <div class="relative">
+                <img :src="g.splash" class="w-40 sm:w-52 md:w-60 lg:w-72 rounded-md aspect-square shadow-md">
+                <span class="text-xs sm:text-sm lg:text-base font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="!state.user || !state.user.purchased.includes(g.id)">
+                  <span x-text="g.priceUsd + ' USD'"></span>
+                </span>
+                <!-- <span class="text-xs sm:text-sm lg:text-base font-bold text-green-800 bg-green-200 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="state.user && state.user.purchased.includes(g.id)">
+                  owned
+                </span> -->
+                <!-- <span class="text-xs sm:text-sm lg:text-base font-bold absolute bottom-0 px-1 py-1 text-neutral-50 bg-opacity-30 bg-neutral-800 -translate-x-1/2 w-full" x-text="g.name"></span> -->
+              </div>
+              <div class="uppercase p-2 flex-1 text-neutral-200 text-center flex justify-center items-center w-40 sm:w-52 md:w-60 lg:w-72">
+                <span class="text-sm sm:text-base md:text-lg lg:text-xl font-medium" x-text="g.name"></span>
+              </div>
             </div>
           </div>
         </template>
@@ -303,7 +305,7 @@
             <div class="px-2 py-2 flex gap-2 text-sm md:text-base" x-show="state.user && state.user.purchased.includes(state.games[selectedGameIndex].id)">
               <button
                 @click="downloadGame(state.games[selectedGameIndex].id)"
-                class="flex-1 bg-green-200 text-green-800 rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed py-4"
+                class="font-bold flex-1 bg-green-200 text-green-800 rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed py-4"
                 :disabled="state.running.DOWNLOAD_GAME"
               >
                 <span x-text="!state.running.DOWNLOAD_GAME ? 'Download' : 'Downloading'"></span>
@@ -314,7 +316,7 @@
             <div class="px-2 py-2 flex gap-2 text-sm md:text-base" x-show="!state.user">
               <button
                 @click="login"
-                class="py-4 flex-1 bg-neutral-200 text-neutral-800 font-bold rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                class="uppercase py-4 flex-1 bg-neutral-200 text-neutral-800 font-bold rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
                 :disabled="state.running.GOOGLE_LOGIN"
               >
                 <span>
@@ -497,7 +499,7 @@
         <!-- gift modal -->
         <!-- <template x-if="state.giftModal.visible"> -->
         <div class="fixed top-0 left-0 w-full h-full text-gray-100 flex flex-col justify-center items-center backdrop-brightness-50 backdrop-blur-sm z-30" x-show="state.giftModal.visible" x-transition.duration.100ms>
-          <div class="border-2 md:border-4 border-solid border-neutral-600 bg-neutral-800 rounded-md p-3 sm:p-4 text-xs sm:text-sm md:text-base" style="max-width: 95%;">
+          <div class="border-2 md:border-4 border-solid border-neutral-900 bg-neutral-800 rounded-md p-3 sm:p-4 text-xs sm:text-sm md:text-base" style="max-width: 95%;">
             <div>
               <div class="text-lg sm:text-xl font-bold text-center">
                 <span>Gift token to your friend</span>
@@ -557,7 +559,7 @@
             </template>
             <div class="py-2 flex justify-between select-none">
               <button
-                class="bg-neutral-700 text-neutral-100 border-2 border-solid border-neutral-500 px-3 py-2 rounded"
+                class="font-bold bg-neutral-400 text-neutral-800 border-2 border-solid border-neutral-400 px-3 py-2 rounded"
                 @click="state.giftModal = _.clone(_giftModal)"
               >
                 <span>Cancel</span>

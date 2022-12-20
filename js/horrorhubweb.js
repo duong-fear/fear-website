@@ -693,6 +693,7 @@ const sendGift = async () => {
       await tx.wait();
       fearSuccess(`You sent ${formatEther(amountBN)} $MATIC to "${email}"`);
     }
+    await refreshUserStats();
   } catch(exception) {
     console.error("sendGift() error", exception);
     fearError(getExceptionDetails(exception));
