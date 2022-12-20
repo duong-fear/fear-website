@@ -214,7 +214,7 @@
   </div>
   <!-- main -->
   <div class="container mx-auto flex-1 flex">
-    <template x-if="!!state && page == '/'">
+    <template x-if="!!state && page === '/'">
       <div class="w-full" :class="state.games ? 'block' : 'flex flex-col'">
       <div class="text-neutral-100 rounded-md border-2 border-dashed border-neutral-700 p-4 mx-2 mt-2 md:mt-4">
         some short description about the horror shop / $FEAR discount ... / current MATIC-FEAR exchange rate etc
@@ -239,13 +239,13 @@
               <!-- <span class="text-xs sm:text-sm lg:text-base font-bold absolute bottom-0 px-1 py-1 text-neutral-50 bg-opacity-30 bg-neutral-800 -translate-x-1/2 w-full" x-text="g.name"></span> -->
             </div>
             <div class="mt-2 flex-1 text-neutral-300 text-center flex justify-center items-center">
-              <span class="text-base md:text-lg lg:text-xl font-bold" x-text="g.name" :class="state.user && state.user.purchased.includes(g.id) ? 'text-green-400' : ''"></span>
+              <span class="text-base md:text-lg lg:text-xl font-bold" x-text="g.name"></span>
             </div>
           </div>
         </template>
-        <template x-if="selectedGameIndex != null">
+        <template x-if="selectedGameIndex !== null">
           <div class="fixed top-0 left-0 w-full h-full z-20 flex flex-col justify-center backdrop-brightness-50 backdrop-blur-sm">
-            <div class="mx-auto bg-neutral-900 text-neutral-50 flex flex-col h-full sm:h-5/6 sm:max-w-lg md:max-w-xl sm:rounded-md">
+            <div class="mx-auto bg-neutral-800 text-neutral-50 flex flex-col h-full sm:h-5/6 sm:max-w-lg md:max-w-xl sm:rounded-md">
             <div class="gap-2 p-4 pb-2 font-bold text-lg flex justify-between items-center">
               <span x-text="state.games[selectedGameIndex].name"></span>
               <button
@@ -268,33 +268,38 @@
             <div class="px-2 py-2 flex gap-2 text-xs sm:text-sm md:text-base" x-show="state.user && !state.user.purchased.includes(state.games[selectedGameIndex].id)">
               <button
                 @click="payWithFear(state.games[selectedGameIndex].id)"
-                class="flex-1 bg-cyan-200 text-cyan-800 rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                class="neon-red flex-1 bg-red text-neutral-100 rounded-md py-4 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
                 :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
               >
                 <span>
                   <span x-text="state.running.PAY_WITH_FEAR === false ? 'Pay with' : 'Paying'"></span>
-                  <span x-text="state.games[selectedGameIndex].priceFear"></span>
-                  <span>$FEAR</span>
+                  <span class="font-bold" x-text="state.games[selectedGameIndex].priceFear"></span>
+                  <span class="font-bold">$FEAR</span>
                 </span>
                 <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_FEAR !== false"></i>
               </button>
               <button
                 @click="payWithMatic(state.games[selectedGameIndex].id)"
-                class="flex-1 bg-purple-200 text-purple-800 rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                class="neon-red flex-1 bg-red text-neutral-100 rounded-md py-4 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
                 :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
               >
                 <span>
                   <span x-text="state.running.PAY_WITH_MATIC === false ? 'Pay with' : 'Paying'"></span>
-                  <span x-text="state.games[selectedGameIndex].priceMatic"></span>
-                  <span>$MATIC</span>
+                  <span class="font-bold" x-text="state.games[selectedGameIndex].priceMatic"></span>
+                  <span class="font-bold">$MATIC</span>
                 </span>
                 <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_MATIC !== false"></i>
               </button>
             </div>
+            <!-- <div class="mx-2" x-show="state.user && !state.user.purchased.includes(state.games[selectedGameIndex].id)">
+              <button @click="uiOpenTokenPurchase" class="w-full mb-2 select-none rounded-md font-bold text-center px-2 py-4 text-xs sm:text-sm md:text-base bg-red">
+                <span>Purchase FEAR / MATIC</span>
+              </button>
+            </div> -->
             <div class="px-2 py-2 flex gap-2 text-sm md:text-base" x-show="state.user && state.user.purchased.includes(state.games[selectedGameIndex].id)">
               <button
                 @click="downloadGame(state.games[selectedGameIndex].id)"
-                class="flex-1 bg-green-200 text-green-800 rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                class="flex-1 bg-green-200 text-green-800 rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed py-4"
                 :disabled="state.running.DOWNLOAD_GAME"
               >
                 <span x-text="!state.running.DOWNLOAD_GAME ? 'Download' : 'Downloading'"></span>
@@ -305,7 +310,7 @@
             <div class="px-2 py-2 flex gap-2 text-sm md:text-base" x-show="!state.user">
               <button
                 @click="login"
-                class="flex-1 bg-neutral-200 text-neutral-800 font-bold rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                class="py-4 flex-1 bg-neutral-200 text-neutral-800 font-bold rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
                 :disabled="state.running.GOOGLE_LOGIN"
               >
                 <span>
@@ -321,7 +326,7 @@
       </template>
       </div>
     </template>
-    <template x-if="!!state && page == '/faqs'">
+    <template x-if="!!state && page === '/faqs'">
       <div class="px-2 flex-1">
         <template x-for="item of qaList">
           <div class="mt-2">
@@ -344,7 +349,7 @@
         </template>
       </div>
     </template>
-    <template x-if="!!state && page == '/guide'">
+    <template x-if="!!state && page === '/guide'">
       <div class="px-2 flex-1">
         <template x-for="item of stepList">
           <div class="mt-2">
@@ -382,7 +387,7 @@
         </div>
       </div>
     </template> -->
-    <template x-if="!!state && page == '/account'">
+    <template x-if="!!state && page === '/account'">
       <div class="w-full text-neutral-100 flex flex-col px-2 sm:px-3 md:px-4">
         <div class="flex flex-col w-full items-center text-neutral-100 py-2 sm:py-4">
           <div>
@@ -412,10 +417,10 @@
                 </div>
               </div>
               <div class="flex gap-2 sm:gap-3 md:gap-4 p-2 sm:p-3 md:p-4 pt-0 justify-center items-center">
-                <button class="w-20 rounded-md fear-button border-2 neon-red font-bold p-2 select-none" @click="state.giftModal.visible = true">
+                <button class="w-24 rounded-md fear-button border-2 neon-red font-bold p-2 select-none" @click="state.giftModal.visible = true">
                   <span>Gift 🎁</span>    
                 </button>
-                <button class="w-20 rounded-md bg-red text-neutral-900 border-red border-2 neon-red font-bold p-2 select-none" @click="tab = 'buy'">
+                <button class="w-24 rounded-md bg-red text-neutral-900 border-red border-2 neon-red font-bold p-2 select-none" @click="tab = 'buy'">
                   <span>Buy</span>    
                 </button>
               </div>
@@ -425,12 +430,12 @@
             <div class="flex-1 flex relative">
               <iframe
                 title="Transak On/Off Ramp Widget"
-                class="w-full flex-1 z-20"
+                class="w-full flex-1 z-20 rounded-md"
                 :src="getTransakIframeUrl" 
                 frameborder="no" allowtransparency="true" allowfullscreen=""
               >
               </iframe>
-              <div class="text-center absolute top-0 left-0 w-full h-full select-none text-neutral-500 flex flex-col justify-center items-center z-10 text-2xl">
+              <div class="rounded-md bg-neutral-900 text-center absolute top-0 left-0 w-full h-full select-none text-neutral-500 flex flex-col justify-center items-center z-10 text-2xl">
                 <span>Hang on a second please ...</span>
                 <span>Transactions will be processed via our partner <b>Transak</b></span>
               </div>
@@ -440,7 +445,7 @@
             <div class="rounded-lg bg-black-color mt-1">
               <div class="overflow-x-auto relative rounded-lg">
                 <template x-if="!state.user.transakPurchaseHistory">
-                  <div class="text-center h-32 w-full select-none text-neutral-400 flex flex-col gap-1 md:gap-2 justify-center items-center bg-neutral-700">
+                  <div class="text-center h-32 w-full select-none text-neutral-400 flex flex-col gap-1 md:gap-2 justify-center items-center bg-neutral-900">
                     <i x-html="loadingSVG('w-4 h-4 sm:h-5 sm:w-5 md:w-6 md:h-6 text-neutral-400')"></i>
                     <span class="text-sm sm:text-base md:text-lg">Refreshing your purchase history</span>
                   </div>
@@ -477,7 +482,7 @@
                 </table>
                 </template>
                 <template x-if="Array.isArray(state.user.transakPurchaseHistory) && state.user.transakPurchaseHistory.length == 0">
-                  <div class="text-center h-32 w-full select-none text-neutral-400 flex flex-col gap-1 md:gap-2 justify-center items-center bg-neutral-700">
+                  <div class="text-center h-32 w-full select-none text-neutral-400 flex flex-col gap-1 md:gap-2 justify-center items-center bg-neutral-900">
                     <span class="text-sm sm:text-base md:text-lg">Purchase history is empty ❌</span>
                   </div>
                 </template>

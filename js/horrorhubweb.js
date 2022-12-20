@@ -205,6 +205,22 @@ const getPriceForAllProducts = async () => {
   return output;
 }
 
+const refreshUserStats = async () => {
+  const { ethAddress } = vm.state.user;
+  const [
+    maticBalance,
+    fearBalance,
+    // purchased,
+  ] = await Promise.all([
+    getEthBalanceByAddress(ethAddress),
+    getFearBalanceByAddress(ethAddress),
+    // getPurchasedProducts(ethAddress),
+  ]);
+  vm.state.user.maticBalance = maticBalance;
+  vm.state.user.fearBalance = fearBalance;
+  // vm.state.user.purchased = purchased;
+}
+
 const fetchInitialAppState = async () => {  
   const [priceForAllProducts] = await Promise.all([
     getPriceForAllProducts(),
@@ -293,7 +309,14 @@ const payWithFear = async productId => {
     const { fearBalance } = vm.state.user;
     const { name, priceFear } = vm.state.games.find(g => g.id == productId);
     const priceFearBN = ethers.utils.parseEther(priceFear);
-    if(priceFearBN.gt(fearBalance)) throw new Error("Insufficient FEAR balance");
+    if(priceFearBN.gt(fearBalance)) {
+      setTimeout(() => {
+        vm.selectedGameIndex = null;
+        vm.page = '/account';
+        vm.tab = 'buy';
+      }, 0)
+      throw new Error("Insufficient FEAR balance");
+    }
     if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
     const confirmed = await fearConfirm(
       `Are you sure want to pay ${priceFear} $FEAR to buy "${name}"?`
@@ -332,12 +355,13 @@ const payWithFear = async productId => {
       gasLimit.toNumber(),
     );
     vm.state.user.purchased.push(productId);
+    await refreshUserStats();
     fearSuccess(`You owned '${name}'`, {
       title: "Payment Successful",
     });
   } catch(exception) {
     console.error("payWithFear() error", exception);
-    fearError(getExceptionDetails(exception));
+    fearError(getExceptionDetails(exception).message);
   } finally {
     vm.state.running.PAY_WITH_FEAR = false;
   }
@@ -352,7 +376,14 @@ const payWithMatic = async productId => {
     const { maticBalance } = vm.state.user;
     const priceMaticBN = ethers.utils.parseEther(priceMatic);
     if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
-    if(priceMaticBN.gt(maticBalance)) throw new Error("Insufficient MATIC balance");
+    if(priceMaticBN.gt(maticBalance)) {
+      setTimeout(() => {
+        vm.selectedGameIndex = null;
+        vm.page = '/account';
+        vm.tab = 'buy';
+      }, 0)
+      throw new Error("Insufficient MATIC balance");
+    }
     const confirmed = await fearConfirm(
       `Are you sure want to pay ${priceMatic} $MATIC to buy "${name}"?`
     );
@@ -376,12 +407,13 @@ const payWithMatic = async productId => {
     console.log(`payWithMatic txHash`, tx.hash);
     await tx.wait(2);
     vm.state.user.purchased.push(productId);
+    await refreshUserStats();
     fearSuccess(`You owned '${name}'`, {
       title: "Payment Successful",
     });
   } catch(exception) {
     console.error("payWithMatic() error", exception);
-    fearError(getExceptionDetails(exception));
+    fearError(getExceptionDetails(exception).message);
   } finally {
     vm.state.running.PAY_WITH_MATIC = false;
   }
@@ -525,7 +557,6 @@ const login = async () => {
       getFearBalanceByAddress(ethAddress),
       getPurchasedProducts(ethAddress),
     ]);
-    console.log("maticBalance, fearBalance", [maticBalance, fearBalance].map(v => ethers.utils.formatEther(v)));
     if(googleLoginRedirectURI) return;
     vm.state = {
       ...vm.state,
@@ -784,5 +815,16 @@ const ORDER_STATUS_CLASSES_ENUM = {
 const setSelectedGameIndex = (index) => {
   const htmlRootNode = document.querySelector("html");
   htmlRootNode.style.overflow = index != null ? 'hidden' : 'auto';
-  vm.selectedGameIndex = index;
+  setTimeout(() => {
+    vm.selectedGameIndex = index;
+  }, 0)
+}
+
+// UI event handler
+const uiOpenTokenPurchase = () => {
+  setTimeout(() => {
+    vm.page = '/account';
+    vm.tab = 'buy';
+    vm.selectedGameIndex = null;
+  }, 0)
 }
