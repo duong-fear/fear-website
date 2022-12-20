@@ -397,17 +397,17 @@
           <div class="flex text-center gap-1 mb-2 font-bold" id="account-tab-container">
             <div class="py-1 md:py-2 mr-4 flex-1 rounded-tl-md rounded-bl-md py-1 cursor-pointer" :class="tab != 'balance' ? 'opacity-40' : ''" @click="tab = 'balance'">Balance</div>
             <div class="py-1 md:py-2 mx-4 flex-1 py-1 cursor-pointer" :class="tab != 'buy' ? 'opacity-40' : ''" @click="tab = 'buy'">Buy</div>
-            <div class="py-1 md:py-2 ml-4 flex-1 rounded-tr-md rounded-br-md py-1 cursor-pointer" :class="tab != 'history' ? 'opacity-40' : ''" @click="tab = 'history'">History</div>
+            <div class="py-1 md:py-2 ml-4 flex-1 rounded-tr-md rounded-br-md py-1 cursor-pointer" :class="tab != 'history' ? 'opacity-40' : ''" @click="showTransakHistoryTab">History</div>
           </div>
           <template x-if="tab == 'balance'">
             <div class="p-2 text-neutral-100 rounded-md bg-neutral-900 text-center">
               <div class="flex gap-4 p-4">
                 <div class="rounded-md flex-1 p-3 flex flex-col">
-                  <span class="text-3xl sm:text-4xl md:text-5xl text-red" x-text="formatEtherHuman(state.user.fearBalance)"></span>
+                  <span class="text-3xl sm:text-4xl md:text-5xl text-red font-bold" x-text="formatEtherHuman(state.user.fearBalance)"></span>
                   <span class="text-xs sm:text-sm md:text-base text-neutral-400">$FEAR</span>
                 </div>
                 <div class="rounded-md flex-1 p-3 flex flex-col">
-                  <span class="text-3xl sm:text-4xl md:text-5xl text-red" x-text="formatEtherHuman(state.user.maticBalance)"></span>
+                  <span class="text-3xl sm:text-4xl md:text-5xl text-red font-bold" x-text="formatEtherHuman(state.user.maticBalance)"></span>
                   <span class="text-xs sm:text-sm md:text-base text-neutral-400">$MATIC</span>
                 </div>
               </div>
@@ -437,29 +437,15 @@
             </div>
           </template>
           <template x-if="tab == 'history'">
-            <!-- <div class="py-2">
-              <div x-show="state.user.transakPurchaseHistory.length > 0" class="flex justify-center items-center">
-
-              </div>
-              <template x-for="order in state.user.transakPurchaseHistory">
-                <div class="flex justify-center items-center">
-                  <div class="flex-1">
-                    <span x-text="dayjs(order.createdAt*1000).format('DD MMM YYYY HH:mm:ss')"></span>
-                  </div>
-                  <div class="flex-1">
-                    <span x-text="`${order.cryptoAmount} ${order.cryptocurrency}`"></span>
-                  </div>
-                  <div class="flex-1">
-                    <span x-text="`${order.fiatAmount} ${order.fiatCurrency}`"></span>
-                  </div>
-                  <div class="flex-1">
-                    <span x-text="order.status"></span>
-                  </div>
-                </div>
-              </template>  
-            </div> -->
             <div class="rounded-lg bg-black-color mt-1">
-              <div class="overflow-x-auto relative shadow-md rounded-lg">
+              <div class="overflow-x-auto relative rounded-lg">
+                <template x-if="!state.user.transakPurchaseHistory">
+                  <div class="text-center h-32 w-full select-none text-neutral-400 flex flex-col gap-1 md:gap-2 justify-center items-center bg-neutral-700">
+                    <i x-html="loadingSVG('w-4 h-4 sm:h-5 sm:w-5 md:w-6 md:h-6 text-neutral-400')"></i>
+                    <span class="text-sm sm:text-base md:text-lg">Refreshing your purchase history</span>
+                  </div>
+                </template>
+                <template x-if="Array.isArray(state.user.transakPurchaseHistory) && state.user.transakPurchaseHistory.length > 0">
                 <table class="w-full text-xs md:text-sm xl:text-base text-left text-gray-400">
                   <thead class="text-gray-50 uppercase bg-zinc-900 whitespace-nowrap">
                     <tr class="text-center">
@@ -474,10 +460,10 @@
                     <template x-for="order in state.user.transakPurchaseHistory">
                       <tr class="border-b bg-neutral-700 border-neutral-600 text-gray-100 font-mono text-center">
                         <th scope="row" class="py-2 px-3 font-medium whitespace-nowrap text-white">
-                          <span x-text="dayjs(order.createdAt*1000).format('DD MMM YYYY HH:mm:ss')"></span>
+                          <span x-text="dayjs(order.createdAt).format('DD MMM YYYY HH:mm:ss')"></span>
                         </th>
                         <td class="py-2 px-3 whitespace-nowrap">
-                          <span x-text="`${order.cryptoAmount} ${order.cryptocurrency}`"></span>
+                          <span x-text="`${order.cryptoAmount} ${order.cryptoCurrency}`"></span>
                         </td>
                         <td class="py-2 px-3 whitespace-nowrap">
                           <span x-text="`${order.fiatAmount} ${order.fiatCurrency}`"></span>
@@ -488,7 +474,13 @@
                       </tr>
                     </template>
                   </tbody>
-                </table> 
+                </table>
+                </template>
+                <template x-if="Array.isArray(state.user.transakPurchaseHistory) && state.user.transakPurchaseHistory.length == 0">
+                  <div class="text-center h-32 w-full select-none text-neutral-400 flex flex-col gap-1 md:gap-2 justify-center items-center bg-neutral-700">
+                    <span class="text-sm sm:text-base md:text-lg">Purchase history is empty ❌</span>
+                  </div>
+                </template>
               </div>
             </div>
           </template>

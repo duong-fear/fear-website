@@ -685,6 +685,22 @@ const _giftModal = {
   token: null, // 'fear' or 'matic'
 };
 
+const refreshTransakPurchaseHistory = async () => {
+  vm.state.user.transakPurchaseHistory = null;
+  const { ethAddress } = vm.state.user;
+  // const ethAddress = '0x6f59e2b0b7d0d68ed7c733ff8f84e33d8aa4e647';
+  const { orders } = await axios.request({
+    method: "GET",
+    url: `https://fearapi.azurewebsites.net/api/toolbox/orderHistory/${ethAddress}`,
+  }).then(r => r.data);
+  vm.state.user.transakPurchaseHistory = orders;
+}
+
+const showTransakHistoryTab = () => {
+  refreshTransakPurchaseHistory();
+  vm.tab = 'history';
+}
+
 const boostrapApp = () => {
   Alpine.store('vm', {
     epoch: null,
@@ -729,7 +745,7 @@ const boostrapApp = () => {
       //     purchased: [],
       //     maticBalance: ethers.utils.parseEther('0.120152393785011723'),
       //     fearBalance: ethers.utils.parseEther('9.925238666545487877'),
-      //     transakPurchaseHistory: _transakPurchaseHistory,
+      //     transakPurchaseHistory: null,
       //   }
       // }
     },
@@ -760,9 +776,9 @@ const ORDER_STATUS_CLASSES_ENUM = {
   EXPIRED: 'text-red-500 font-bold',
   PROCESSING: 'text-yellow-500 font-bold',
   PENDING_DELIVERY_FROM_TRANSAK: 'text-cyan-500 font-bold',
-  PAYMENT_DONE_MARKED_BY_USER: '',
-  CANCELLED: '',
-  AWAITING_PAYMENT_FROM_USER: '',
+  PAYMENT_DONE_MARKED_BY_USER: 'text-blue-500 font-bold',
+  CANCELLED: 'text-red-500 font-bold',
+  AWAITING_PAYMENT_FROM_USER: 'text-neutral-300 font-bold',
 }
 
 const setSelectedGameIndex = (index) => {
