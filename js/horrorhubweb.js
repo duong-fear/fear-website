@@ -856,3 +856,11 @@ const uiOpenTokenPurchase = () => {
     vm.selectedGameIndex = null;
   }, 0)
 }
+
+const copyAddress2Clipboard = () => {
+  var clipboard = new ClipboardJS('#ethAddress');
+  clipboard.on('success', function(e) {
+    fearSuccess("Address copied to clipboard");
+  });
+  document.getElementById('ethAddress').click();
+}
