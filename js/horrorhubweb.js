@@ -816,6 +816,7 @@ const boostrapApp = () => {
 
 const getTransakIframeUrl = () => {
   const transakBaseUrl = 'https://global.transak.com';
+  const { email } = vm.state.user;
   const transakOption = {
     apiKey: "80f00610-32cc-4d01-8eb0-dfc825c2ef53",
     cryptoCurrencyList: "FEAR,MATIC",
@@ -824,6 +825,8 @@ const getTransakIframeUrl = () => {
     sdkVersion: '1.0.29',
     // themeColor: 'fafafa',
     walletAddress: _.get(vm, 'state.user.ethAddress', ''),
+    email,
+    isAutoFillUserData: true,
   };
   const urlParams = (new URLSearchParams(transakOption)).toString();
   return `${transakBaseUrl}/?${urlParams}`
