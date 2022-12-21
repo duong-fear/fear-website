@@ -100,7 +100,16 @@ const getEmailId = email => typeof email === "string" ? email.replace(/@.*/, '')
 
 const formatEther = input => input instanceof ethers.BigNumber ? ethers.utils.formatEther(input).replace(/.0$/, '') : 'n/a';
 
-const formatEtherHuman = (input) => {
+const formatEtherHuman = (_input) => {
+  let input = null;
+  if(typeof _input === 'string') {
+    try {
+      input = ethers.utils.parseEther(_input);
+    } catch {
+      return 'n/a';
+    }
+  }
+  if(_input instanceof ethers.BigNumber) input = _input;
   if(!(input instanceof ethers.BigNumber)) return 'n/a';
   const ZeroBN = ethers.constants.Zero;
   const OneEtherBN = ethers.utils.parseEther("1");

@@ -117,6 +117,13 @@
       border-style: solid;
       color: #fc0820;
     }
+    .fear-button-white {
+      border-width: 1px;
+      border-color: #00000055;
+      border-style: solid;
+      color: white;
+      background: #fc0820;
+    }
     .fear-button:not(:disabled):hover {
       color: white;
       background-color: #fc0820;
@@ -138,7 +145,7 @@
       border-radius: 2rem;
     }
     #account-tab-container div {
-      background: red;
+      background: #fc0820;
       position: relative;
     }
     #account-tab-container div:nth-child(1)::after,
@@ -193,7 +200,7 @@
         <!-- <button class="text-neutral-50 px-2 py-1 rounded-sm border border-solid border-neutral-500" id="transakLink">buy $FEAR</button> -->
         <template x-if="!_.get(state, 'user')">
           <button
-            class="neon-red uppercase border-red border-2 fear-button px-2 py-1 rounded-md ml-1 border-solid flex justify-center items-center disabled:opacity-70"
+            class="neon-red uppercase border-red border-2 fear-button-white px-2 py-1 rounded-md ml-1 border-solid flex justify-center items-center disabled:opacity-70"
             @click="login"
             :disabled="state.running.GOOGLE_LOGIN"
           >
@@ -271,27 +278,27 @@
               <iframe width="100%" class="aspect-video mb-3" src="https://www.youtube.com/embed/k3Yoch8jhXA" title="FEAR Araya Thailand Metaverse Expo 2022" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
               <span x-text="state.games[selectedGameIndex].description"></span><br/>
             </div>
-            <div class="px-2 py-2 flex gap-2 text-xs sm:text-sm md:text-base" x-show="state.user && !state.user.purchased.includes(state.games[selectedGameIndex].id)">
+            <div class="px-2 py-2 flex gap-2 text-sm sm:text-base md:text-lg" x-show="state.user && !state.user.purchased.includes(state.games[selectedGameIndex].id)">
               <button
                 @click="payWithFear(state.games[selectedGameIndex].id)"
-                class="fear-button border-2 neon-red flex-1 border-red text-red rounded-md py-4 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                class="fear-button-white border-2 neon-red flex-1 rounded-md py-4 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
                 :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
               >
                 <span>
                   <span x-text="state.running.PAY_WITH_FEAR === false ? 'Pay with' : 'Paying'"></span>
-                  <span class="font-bold" x-text="state.games[selectedGameIndex].priceFear"></span>
+                  <span class="font-bold" x-text="formatEtherHuman(state.games[selectedGameIndex].priceFear)"></span>
                   <span class="font-bold">$FEAR</span>
                 </span>
                 <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_FEAR !== false"></i>
               </button>
               <button
                 @click="payWithMatic(state.games[selectedGameIndex].id)"
-                class="fear-button border-2 neon-red flex-1 border-red text-red rounded-md py-4 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                class="fear-button-white border-2 neon-red flex-1 rounded-md py-4 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
                 :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
               >
                 <span>
                   <span x-text="state.running.PAY_WITH_MATIC === false ? 'Pay with' : 'Paying'"></span>
-                  <span class="font-bold" x-text="state.games[selectedGameIndex].priceMatic"></span>
+                  <span class="font-bold" x-text="formatEtherHuman(state.games[selectedGameIndex].priceMatic)"></span>
                   <span class="font-bold">$MATIC</span>
                 </span>
                 <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_MATIC !== false"></i>
