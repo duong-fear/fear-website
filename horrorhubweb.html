@@ -227,8 +227,8 @@
   <div class="container mx-auto flex-1 flex">
     <template x-if="!!state && page === '/'">
       <div class="w-full" :class="state.games ? 'block' : 'flex flex-col'">
-      <div class="text-neutral-100 rounded-md border-2 border-dashed border-neutral-700 p-2 sm:p-3 md:p-4 mx-2 sm:mx-0 mt-2 md:mt-4">
-        some short description about the horror shop / $FEAR discount ... / current MATIC-FEAR exchange rate etc
+      <div class="text-neutral-100 rounded-md p-1 sm:p-2 mx-2 sm:mx-0 mt-2 md:mt-4 text-center text-sm sm:text-base">
+        <span><b>The Horror Hub</b> - Experience the most Viral, Horrific and Hilarious FEAR Games, Films and Animations.</span>
       </div>
       <template x-if="!state.games">
         <div class="flex-1 flex justify-center items-center text-neutral-100">
@@ -243,7 +243,7 @@
       <div class="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 mt-2">
         <template x-for="(g, index) in state.games">
           <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
-            <div class="p-1 bg-neutral-900 rounded-md h-full flex flex-col">
+            <div class="shadow-md p-1 bg-neutral-900 rounded-md h-full flex flex-col">
               <div class="relative">
                 <img :src="g.splash" class="w-40 sm:w-52 md:w-60 lg:w-72 rounded-md aspect-square shadow-md">
                 <span class="text-xs sm:text-sm lg:text-base font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="!state.user || !state.user.purchased.includes(g.id)">
@@ -343,7 +343,7 @@
       <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-base sm:text-lg">
         <span>Films</span>
       </div>
-      <div class="bg-neutral-700 text-neutral-200 rounded-md flex items-center justify-center h-20 sm:h-24 mt-4 mx-2 sm:mx-0">
+      <div class="border-2 border-dashed border-neutral-700 text-neutral-200 rounded-md flex items-center justify-center h-20 sm:h-24 mt-4 mx-2 sm:mx-0">
         <span>coming soon ...</span>
       </div>
       </div>
@@ -355,7 +355,7 @@
         <template x-for="item of qaList">
           <div class="mt-2">
             <button
-              class="flex w-full justify-between rounded-md px-3 py-2 text-left text-sm lg:text-base text-neutral-100 bg-neutral-700"
+              class="font-medium flex w-full justify-between rounded-md px-3 py-2 text-left text-sm lg:text-base text-neutral-100 bg-neutral-700"
               @click="item.opened = !item.opened"
             >
               <span x-text="item.q"></span>
@@ -368,6 +368,11 @@
             </button>
             <div x-show="item.opened" class="bg-neutral-900 text-neutral-300 p-2 mt-2 transition-all rounded-md border border-neutral-600 border-dashed text-sm lg:text-base">
               <span x-html="item.a"></span>
+              <template x-if="item.showBuyButton && state.user.email">
+                <div class="flex items-center justify-center mt-2">
+                  <button class="font-bold px-3 py-2 neon-red fear-button-white rounded-md text-xs sm:text-sm" @click="uiOpenTokenPurchase">Purchase FEAR/MATIC</button>
+                </div>
+              </template>
             </div>
           </div>
         </template>
