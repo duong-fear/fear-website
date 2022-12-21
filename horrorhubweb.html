@@ -227,7 +227,7 @@
   <div class="container mx-auto flex-1 flex">
     <template x-if="!!state && page === '/'">
       <div class="w-full" :class="state.games ? 'block' : 'flex flex-col'">
-      <div class="text-neutral-100 rounded-md border-2 border-dashed border-neutral-700 p-4 mx-2 mt-2 md:mt-4">
+      <div class="text-neutral-100 rounded-md border-2 border-dashed border-neutral-700 p-2 sm:p-3 md:p-4 mx-2 sm:mx-0 mt-2 md:mt-4">
         some short description about the horror shop / $FEAR discount ... / current MATIC-FEAR exchange rate etc
       </div>
       <template x-if="!state.games">
@@ -236,6 +236,10 @@
         </div>
       </template>
       <template x-if="state.games">
+      <div>
+      <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-base sm:text-lg">
+        <span>Games</span>
+      </div>
       <div class="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 mt-2">
         <template x-for="(g, index) in state.games">
           <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
@@ -335,6 +339,13 @@
             </div>
           </div>
         </template>
+      </div>
+      <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-base sm:text-lg">
+        <span>Films</span>
+      </div>
+      <div class="bg-neutral-700 text-neutral-200 rounded-md flex items-center justify-center h-20 sm:h-24 mt-4 mx-2 sm:mx-0">
+        <span>coming soon ...</span>
+      </div>
       </div>
       </template>
       </div>
