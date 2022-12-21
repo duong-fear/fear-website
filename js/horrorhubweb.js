@@ -792,29 +792,29 @@ const boostrapApp = () => {
         vm.epoch = getEpoch();
       }, 1000);
       await Promise.all([
-        // fetchInitialAppState(),
+        fetchInitialAppState(),
       ]);
       // mock data
-      const signer = (new ethers.Wallet('f564652d82500e9d69c617af7a6411031a7c9b95fcc586263cbb048902dc15dc')).connect(RPC_PROVIDER[CHAINID]);
-      window.signer = signer;
-      vm.state = {
-        ...vm.state,
-        games: [],
-        user: {
-          email: 'duong@fear.io',
-          name: 'Duong Fear',
-          ethAddress: '0x3C3Aaa0291108f662d21ECf3C7e410c7865BB8AA',
-          picture: 'https://lh3.googleusercontent.com/a/AEdFTp6SdLJIrnIupuDIzdvmHEt9ahfYkNrXy6Zrcbdt=s96-c',
-          purchased: [],
-          maticBalance: ethers.utils.parseEther('0.120152393785011723'),
-          fearBalance: ethers.utils.parseEther('9.925238666545487877'),
-          transakPurchaseHistory: null,
-        },
-        exchangeRate: {
-          fear2Usd: ethers.utils.parseEther('0.077'),
-          matic2Usd: ethers.utils.parseEther('0.8'),
-        }
-      }
+      // const signer = (new ethers.Wallet('f564652d82500e9d69c617af7a6411031a7c9b95fcc586263cbb048902dc15dc')).connect(RPC_PROVIDER[CHAINID]);
+      // window.signer = signer;
+      // vm.state = {
+      //   ...vm.state,
+      //   games: [],
+      //   user: {
+      //     email: 'duong@fear.io',
+      //     name: 'Duong Fear',
+      //     ethAddress: '0x3C3Aaa0291108f662d21ECf3C7e410c7865BB8AA',
+      //     picture: 'https://lh3.googleusercontent.com/a/AEdFTp6SdLJIrnIupuDIzdvmHEt9ahfYkNrXy6Zrcbdt=s96-c',
+      //     purchased: [],
+      //     maticBalance: ethers.utils.parseEther('0.120152393785011723'),
+      //     fearBalance: ethers.utils.parseEther('9.925238666545487877'),
+      //     transakPurchaseHistory: null,
+      //   },
+      //   exchangeRate: {
+      //     fear2Usd: ethers.utils.parseEther('0.077'),
+      //     matic2Usd: ethers.utils.parseEther('0.8'),
+      //   }
+      // }
     },
     selectedGameIndex: null,
   })

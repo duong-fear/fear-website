@@ -211,7 +211,7 @@
         </template>
         <template x-if="_.get(state, 'user')">
           <div class="flex items-center justify-center gap-1">
-            <div class="border-solid border-neutral-600 border-2 rounded-md px-2 cursor-pointer" @click="page = '/account'">
+            <div class="border-solid text-neutral-300 border-neutral-700 border-2 rounded-md px-2 cursor-pointer" @click="page = '/account'">
               <span x-text="getNetworth"></span>
             </div>
             <div
