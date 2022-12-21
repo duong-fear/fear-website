@@ -29,9 +29,6 @@ const config = {
   }
 }
 
-const matic2Usd = 0.837;
-const fear2Usd = 0.075;
-
 const RPC_URL = {
   [POLYGON_CHAINID]: 'https://rpc.ankr.com/polygon',
   [MUMBAI_CHAINID]: 'https://rpc.ankr.com/polygon_mumbai',
@@ -222,10 +219,16 @@ const refreshUserStats = async () => {
 }
 
 const fetchInitialAppState = async () => {  
-  const [priceForAllProducts] = await Promise.all([
+  const [
+    priceForAllProducts,
+    { productList },
+    exchangeRate,
+  ] = await Promise.all([
     getPriceForAllProducts(),
+    getProductList(),
+    getExchangeRate(),
   ]);
-  const { productList } = await getProductList();
+  vm.state.exchangeRate = exchangeRate;
   vm.state.games = productList.map(p => ({
     ...p,
     id: +p.rowKey,
@@ -235,13 +238,13 @@ const fetchInitialAppState = async () => {
   }))
 }
 
-// const updateExchangeRate = async () => {
-//   const [fear2Usd, matic2Usd] = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(80001).getExchangeRate();
-//   vm.state.exchangeRate = {
-//     fear2Usd,
-//     matic2Usd,
-//   };
-// }
+const getExchangeRate = async () => {
+  const [fear2Usd, matic2Usd] = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getExchangeRate();
+  return {
+    fear2Usd,
+    matic2Usd,
+  };
+}
 
 const getProductList = async () => {
   return await axios.get(`${fAPIEndpoint}/getProductList`).then(r => r.data);
@@ -764,6 +767,7 @@ const boostrapApp = () => {
   Alpine.store('vm', {
     epoch: null,
     state: {
+      exchangeRate: null,
       games: null,
       user: null,
       giftModal: { ..._giftModal },
@@ -788,25 +792,29 @@ const boostrapApp = () => {
         vm.epoch = getEpoch();
       }, 1000);
       await Promise.all([
-        fetchInitialAppState(),
+        // fetchInitialAppState(),
       ]);
       // mock data
-      // const signer = (new ethers.Wallet('f564652d82500e9d69c617af7a6411031a7c9b95fcc586263cbb048902dc15dc')).connect(RPC_PROVIDER[CHAINID]);
-      // window.signer = signer;
-      // vm.state = {
-      //   ...vm.state,
-      //   games: [],
-      //   user: {
-      //     email: 'duong@fear.io',
-      //     name: 'Duong Fear',
-      //     ethAddress: '0x3C3Aaa0291108f662d21ECf3C7e410c7865BB8AA',
-      //     picture: 'https://lh3.googleusercontent.com/a/AEdFTp6SdLJIrnIupuDIzdvmHEt9ahfYkNrXy6Zrcbdt=s96-c',
-      //     purchased: [],
-      //     maticBalance: ethers.utils.parseEther('0.120152393785011723'),
-      //     fearBalance: ethers.utils.parseEther('9.925238666545487877'),
-      //     transakPurchaseHistory: null,
-      //   }
-      // }
+      const signer = (new ethers.Wallet('f564652d82500e9d69c617af7a6411031a7c9b95fcc586263cbb048902dc15dc')).connect(RPC_PROVIDER[CHAINID]);
+      window.signer = signer;
+      vm.state = {
+        ...vm.state,
+        games: [],
+        user: {
+          email: 'duong@fear.io',
+          name: 'Duong Fear',
+          ethAddress: '0x3C3Aaa0291108f662d21ECf3C7e410c7865BB8AA',
+          picture: 'https://lh3.googleusercontent.com/a/AEdFTp6SdLJIrnIupuDIzdvmHEt9ahfYkNrXy6Zrcbdt=s96-c',
+          purchased: [],
+          maticBalance: ethers.utils.parseEther('0.120152393785011723'),
+          fearBalance: ethers.utils.parseEther('9.925238666545487877'),
+          transakPurchaseHistory: null,
+        },
+        exchangeRate: {
+          fear2Usd: ethers.utils.parseEther('0.077'),
+          matic2Usd: ethers.utils.parseEther('0.8'),
+        }
+      }
     },
     selectedGameIndex: null,
   })
@@ -851,6 +859,18 @@ const setSelectedGameIndex = (index) => {
   }, 0)
 }
 
+const getNetworth = () => {
+  try {
+    const OneEtherBN = ethers.utils.parseUnits('1', 'ether');
+    const { fear2Usd, matic2Usd } = vm.state.exchangeRate;
+    const { fearBalance, maticBalance } = vm.state.user;
+    const networthBN = fear2Usd.mul(fearBalance).div(OneEtherBN).add( matic2Usd.mul(maticBalance).div(OneEtherBN) );
+    return `$ ${formatEtherHuman(networthBN)}`;
+  } catch {
+    return '$ n/a';
+  }
+}
+
 // UI event handler
 const uiOpenTokenPurchase = () => {
   setTimeout(() => {
@@ -862,7 +882,7 @@ const uiOpenTokenPurchase = () => {
 
 const copyAddress2Clipboard = () => {
   var clipboard = new ClipboardJS('#ethAddress');
-  clipboard.on('success', function(e) {
+  clipboard.on('success', () => {
     fearSuccess("Address copied to clipboard");
   });
   document.getElementById('ethAddress').click();
