@@ -243,7 +243,7 @@
       </template>
       <template x-if="state.games">
       <div>
-      <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-base sm:text-lg">
+      <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-sm sm:text-base opacity-50">
         <span>Games</span>
       </div>
       <div class="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 mt-2">
@@ -346,7 +346,7 @@
           </div>
         </template>
       </div>
-      <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-base sm:text-lg">
+      <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-sm sm:text-base opacity-50">
         <span>Films</span>
       </div>
       <div class="border-2 border-dashed border-neutral-700 text-neutral-200 rounded-md flex items-center justify-center h-20 sm:h-24 mt-4 mx-2 sm:mx-0">
@@ -467,15 +467,15 @@
             <div class="p-2 text-neutral-100 rounded-md bg-neutral-900 text-center">
               <div class="flex gap-1 sm:gap-2 md:gap-3 p-1 sm:p-2 md:p-3">
                 <div class="rounded-md flex-1 p-3 flex flex-col">
-                  <span class="text-3xl sm:text-4xl md:text-5xl text-red font-bold" x-text="getNetworth"></span>
+                  <span class="text-2xl sm:text-3xl md:text-4xl text-red font-bold" x-text="getNetworth"></span>
                   <span class="text-xs sm:text-sm md:text-base text-neutral-400">Net Worth</span>
                 </div>
                 <div class="rounded-md flex-1 p-3 flex flex-col">
-                  <span class="text-3xl sm:text-4xl md:text-5xl text-red font-bold" x-text="formatEtherHuman(state.user.fearBalance)"></span>
+                  <span class="text-2xl sm:text-3xl md:text-4xl text-red font-bold" x-text="formatEtherHuman(state.user.fearBalance)"></span>
                   <span class="text-xs sm:text-sm md:text-base text-neutral-400">FEAR</span>
                 </div>
                 <div class="rounded-md flex-1 p-3 flex flex-col">
-                  <span class="text-3xl sm:text-4xl md:text-5xl text-red font-bold" x-text="formatEtherHuman(state.user.maticBalance)"></span>
+                  <span class="text-2xl sm:text-3xl md:text-4xl text-red font-bold" x-text="formatEtherHuman(state.user.maticBalance)"></span>
                   <span class="text-xs sm:text-sm md:text-base text-neutral-400">MATIC</span>
                 </div>
               </div>
