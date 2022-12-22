@@ -781,7 +781,7 @@ const boostrapApp = () => {
         GIFT_MODAL_SEND: false,
       },
     },
-    // page: '/', // or `/faqs` or `/guide`
+    // page: '/', // or `/faqs` or `/guide` or `/details`
     page: '/',
     tab: 'balance', // `Account` page (also avaiable: `history`, ``)
     showGiftModal: false,
@@ -886,4 +886,41 @@ const copyAddress2Clipboard = () => {
     fearSuccess("Address copied to clipboard");
   });
   document.getElementById('ethAddress').click();
+}
+
+// MOCK DATA
+const product = {
+  title: 'Clucking Hell',
+  description: `My Hotpot Restaurant is a Restaurant Management game.<br/>
+  In this game you will play the role of a hot pot restaurant owner, developing various hot pot dishes, making daily purchase plans, serving customers, training chefs and waiters, purchasing restaurant stuffs, opening a chain of stores, etc.<br/>
+  <b>Game features</b><br/>
+  1、Multiple ways to run the business freely.<br/>
+  2、Feel the fun of running a hot pot restaurant and enjoy all kinds of delicious food,Especially Chinese ingredients.<br/>`,
+  rating: 5, // up to 5
+  reviews: [
+    {
+      author: 'Ciny',
+      avatar: 'https://play-lh.googleusercontent.com/a-/AD5-WCk-zZqTuYvAFI9DgwCu-jNV_yTTI9LwYaWvDeyW=s32-rw',
+      content: 'this game is awesome',
+      date: 'November 26, 2022',
+      rating: 5,
+      email: '',
+    },
+    {
+      author: 'Chao',
+      avatar: 'https://play-lh.googleusercontent.com/a-/AD5-WCm2rJMne_5vAJNWzLzvbBYMwqRPBUor_kEvcVry1g=s32-rw',
+      content: 'I absolutely love this game',
+      date: 'November 26, 2022',
+      rating: 5,
+      email: '',
+    },
+    {
+      author: 'Ashley Johnston',
+      avatar: 'https://play-lh.googleusercontent.com/a-/AD5-WCmXXCO4inYUeHd7NKC9_zQwJDG9uxv0pMX3WPm5UQ=s32-rw',
+      content: "For the most part this is a fun game. It's aesthetic and the ads are unobtrusive. The biggest downside is that sometimes when you watch an ad to get gems the game will freeze and not give you the gems after you've already watched the ad. I find the ad issue frustrating but not enough to quit playing...it just takes more time to build up your restaurant.",
+      date: 'November 27, 2022',
+      rating: 4,
+      email: '',
+    }
+  ],
 }
