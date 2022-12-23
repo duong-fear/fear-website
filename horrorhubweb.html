@@ -558,7 +558,7 @@
       </div>
     </template>
     <template x-if="!!state && +page >= 0">
-      <div class="text-neutral-100 px-2 sm:px-0 w-full" x-init="getReviewsForProduct">
+      <div class="text-neutral-100 px-2 sm:px-0 w-full -mb-6" x-init="getReviewsForProduct">
         <div class="flex justify-center py-4 text-2xl font-bold">
           <div class="uppercase">
             <span x-text="state.games[`_${page}`].name"></span>
@@ -570,56 +570,71 @@
         <div class="rounded-md text-neutral-300">
           <span x-html="state.games[`_${page}`].description"></span>
         </div>
-        <!-- buy button when loged in -->
-        <div class="py-2 my-2 select-none flex items-center justify-center gap-1" x-show="state.user && !state.user.purchased.includes(page)">
-          <button
-            @click="payWithFear(page)"
-            class="fear-button-white border-2 neon-red flex-1 rounded-md py-4 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
-            :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
-          >
-            <span>
-              <span x-text="state.running.PAY_WITH_FEAR === false ? 'Pay with' : 'Paying'"></span>
-              <span class="font-bold" x-text="formatEtherHuman(state.games[`_${page}`].priceFear)"></span>
-              <span class="font-bold">$FEAR</span>
-            </span>
-            <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_FEAR !== false"></i>
-          </button>
-          <button
-            @click="payWithMatic(page)"
-            class="fear-button-white border-2 neon-red flex-1 rounded-md py-4 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
-            :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
-          >
-            <span>
-              <span x-text="state.running.PAY_WITH_MATIC === false ? 'Pay with' : 'Paying'"></span>
-              <span class="font-bold" x-text="formatEtherHuman(state.games[`_${page}`].priceMatic)"></span>
-              <span class="font-bold">$MATIC</span>
-            </span>
-            <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_MATIC !== false"></i>
-          </button>
-        </div>
-        <div class="py-2 my-2 select-none flex items-center justify-center gap-1" x-show="state.user && state.user.purchased.includes(page)">
-          <button
-            class="py-4 font-bold flex-1 bg-green-200 text-green-800 rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed py-4"
-            @click="downloadGame(page)"
-            :disabled="state.running.DOWNLOAD_GAME"
-          >
-            <span x-text="!state.running.DOWNLOAD_GAME ? 'Download' : 'Downloading'"></span>
-            <i x-html="downloadSVG('w-4 h-4')" x-show="!state.running.DOWNLOAD_GAME"></i>
-            <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.DOWNLOAD_GAME"></i>
-          </button>
-        </div>
-        <!-- login button -->
-        <div class="px-2 py-2 flex gap-2 text-sm md:text-base" x-show="!state.user">
-          <button
-            @click="login"
-            class="my-4 select-none uppercase py-4 flex-1 bg-neutral-200 text-neutral-800 font-bold rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
-            :disabled="state.running.GOOGLE_LOGIN"
-          >
-            <span>
-              Login to purchase
-            </span>
-            <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.GOOGLE_LOGIN"></i>
-          </button>
+        <!-- action button: login | buy / download / review -->
+        <div class="left-0 sm:left-auto fixed bottom-0 left-0 container max-w-6xl backdrop-blur-lg backdrop-brightness-100 z-10 text-sm md:text-base">
+          <!-- buy buttons when loged in and game hasnt purchased -->
+          <div class="flex" x-show="state.user && !state.user.purchased.includes(page)">
+            <button class="text-neutral-100 px-2" @click="page = '/'">
+              <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
+            </button>
+            <div class="flex-1 flex gap-1 mr-2">
+              <button
+                @click="payWithFear(page)"
+                class="border-0 my-3 select-none uppercase py-4 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
+              >
+                <span>
+                  <span x-text="state.running.PAY_WITH_FEAR === false ? 'Pay with' : 'Paying'"></span>
+                  <span class="font-bold" x-text="formatEtherHuman(state.games[`_${page}`].priceFear)"></span>
+                  <span class="font-bold">FEAR</span>
+                </span>
+                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_FEAR !== false"></i>
+              </button>
+              <button
+                @click="payWithMatic(page)"
+                class="border-0 my-3 select-none uppercase py-4 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+                :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
+              >
+                <span>
+                  <span x-text="state.running.PAY_WITH_MATIC === false ? 'Pay with' : 'Paying'"></span>
+                  <span class="font-bold" x-text="formatEtherHuman(state.games[`_${page}`].priceMatic)"></span>
+                  <span class="font-bold">MATIC</span>
+                </span>
+                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_MATIC !== false"></i>
+              </button>
+            </div>
+          </div>
+          <!-- download button when loged in and game has purchased -->
+          <div class="flex" x-show="state.user && state.user.purchased.includes(page)">
+            <button class="text-neutral-100 pl-3" @click="page = '/'">
+              <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
+            </button>
+            <button
+              class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-green-100 text-green-800 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+              @click="downloadGame(page)"
+              :disabled="state.running.DOWNLOAD_GAME"
+            >
+              <span x-text="!state.running.DOWNLOAD_GAME ? 'Download' : 'Downloading'"></span>
+              <i x-html="downloadSVG('w-4 h-4')" x-show="!state.running.DOWNLOAD_GAME"></i>
+              <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.DOWNLOAD_GAME"></i>
+            </button>
+          </div>
+          <!-- login button -->
+          <div class="flex" x-show="!state.user">
+            <button class="text-neutral-100 pl-3" @click="page = '/'">
+              <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
+            </button>
+            <button
+              @click="login"
+              class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-neutral-200 text-neutral-800 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+              :disabled="state.running.GOOGLE_LOGIN"
+            >
+              <span>
+                Login to purchase
+              </span>
+              <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.GOOGLE_LOGIN"></i>
+            </button>
+          </div>
         </div>
         <!-- comment add box -->
         <!-- <div>
@@ -639,7 +654,7 @@
             </div>
           </div>
         </div> -->
-        <div class="border-l-4 border-solid border-red-600 pl-2 mb-2 font-bold">
+        <div class="border-l-4 border-solid border-red-600 pl-2 my-2 font-bold">
           <span>Reviews</span>
         </div>
         <div x-show="!state.reviews">
@@ -687,7 +702,11 @@
     </template>
   </div>
   <!-- footer -->
-  <div class="w-full mx-auto max-w-screen-xl text-gray-400 text-xs py-3">
+  <!-- footer will be hidden on product page so the action button can take the bottom -->
+  <div
+    class="w-full mx-auto max-w-screen-xl text-gray-400 text-xs"
+    :class="+page > 0 ? 'invisible h-24' : 'py-3'"
+  >
     <div class="text-center">
       <span>©2022 <a href="https://www.fear.io" target="_blank" rel="noreferrer" class="text-cyan-400 font-bold">fear.io</a> All Rights Reserved.</span>
     </div>
