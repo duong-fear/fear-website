@@ -186,7 +186,7 @@
 <div class="flex flex-col min-h-screen">
   <!-- header -->
   <div style="background-color: black;" class="sticky top-0">
-    <div class="container mx-auto text-neutral-50 sticky top-0 flex justify-between items-center py-1 sm:py-2 md:py-3 px-1 text-sm sm:text-base lg:text-lg z-10">
+    <div class="max-w-6xl container mx-auto text-neutral-50 sticky top-0 flex justify-between items-center py-1 sm:py-2 md:py-3 px-1 text-sm sm:text-base lg:text-lg z-10">
       <div class="flex items-center justify-center gap-3 sm:gap-4 md:gap-5 ml-2 select-none">
         <div>
           <span class="font-macabre text-2xl cursor-pointer" :class="page == '/' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/'">
@@ -230,7 +230,7 @@
     </div>
   </div>
   <!-- main -->
-  <div class="container mx-auto flex-1 flex">
+  <div class="container mx-auto flex-1 flex max-w-6xl">
     <template x-if="!!state && page === '/'">
       <div class="w-full" :class="state.games ? 'block' : 'flex flex-col'">
       <div class="text-neutral-100 rounded-md p-1 sm:p-2 mx-2 sm:mx-0 mt-2 md:mt-4 text-center text-sm sm:text-base">
@@ -246,12 +246,12 @@
       <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-sm sm:text-base opacity-50">
         <span>Games</span>
       </div>
-      <div class="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 mt-2">
+      <div class="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-2 mt-2">
         <template x-for="(g, index) in state.games">
-          <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="setSelectedGameIndex(index)">
+          <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="page = g.id">
             <div class="shadow-md p-1 bg-neutral-900 rounded-md h-full flex flex-col">
               <div class="relative">
-                <img :src="g.splash" class="w-40 sm:w-52 md:w-60 lg:w-72 rounded-md aspect-square shadow-md">
+                <img :src="g.splash" class="w-40 sm:w-52 md:w-60 lg:w-64 rounded-md aspect-square shadow-md">
                 <span class="text-xs sm:text-sm lg:text-base font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="!state.user || !state.user.purchased.includes(g.id)">
                   <span x-text="g.priceUsd + ' USD'"></span>
                 </span>
@@ -260,88 +260,9 @@
                 </span> -->
                 <!-- <span class="text-xs sm:text-sm lg:text-base font-bold absolute bottom-0 px-1 py-1 text-neutral-50 bg-opacity-30 bg-neutral-800 -translate-x-1/2 w-full" x-text="g.name"></span> -->
               </div>
-              <div class="uppercase p-2 flex-1 text-neutral-200 text-center flex justify-center items-center w-40 sm:w-52 md:w-60 lg:w-72">
+              <div class="uppercase p-2 flex-1 text-neutral-200 text-center flex justify-center items-center w-40 sm:w-52 md:w-60 lg:w-64">
                 <span class="text-sm sm:text-base md:text-lg lg:text-xl font-medium" x-text="g.name"></span>
               </div>
-            </div>
-          </div>
-        </template>
-        <template x-if="selectedGameIndex !== null">
-          <div class="fixed top-0 left-0 w-full h-full z-20 flex flex-col justify-center backdrop-brightness-50 backdrop-blur-sm">
-            <div class="mx-auto bg-neutral-800 text-neutral-50 flex flex-col h-full sm:h-5/6 sm:max-w-lg md:max-w-xl sm:rounded-md">
-            <div class="gap-2 p-4 pb-2 font-bold text-lg flex justify-between items-center">
-              <span x-text="state.games[selectedGameIndex].name"></span>
-              <button
-                class="self-start px-2 bg-neutral-700 text-white rounded-md py-2 rounded-full w-8 h-8 flex justify-center items-center disabled:cursor-not-allowed"
-                @click="setSelectedGameIndex(null)"
-                :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>                               
-              </button>
-            </div>
-            <div class="flex-1 px-4 overflow-auto">
-              <!-- <div class="mb-2">
-                <img :src="state.games[selectedGameIndex].splash" class="w-full rounded-md" />
-              </div> -->
-              <iframe width="100%" class="aspect-video mb-3" src="https://www.youtube.com/embed/k3Yoch8jhXA" title="FEAR Araya Thailand Metaverse Expo 2022" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-              <span x-text="state.games[selectedGameIndex].description"></span><br/>
-            </div>
-            <div class="px-2 py-2 flex gap-2 text-sm sm:text-base md:text-lg" x-show="state.user && !state.user.purchased.includes(state.games[selectedGameIndex].id)">
-              <button
-                @click="payWithFear(state.games[selectedGameIndex].id)"
-                class="fear-button-white border-2 neon-red flex-1 rounded-md py-4 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
-                :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
-              >
-                <span>
-                  <span x-text="state.running.PAY_WITH_FEAR === false ? 'Pay with' : 'Paying'"></span>
-                  <span class="font-bold" x-text="formatEtherHuman(state.games[selectedGameIndex].priceFear)"></span>
-                  <span class="font-bold">$FEAR</span>
-                </span>
-                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_FEAR !== false"></i>
-              </button>
-              <button
-                @click="payWithMatic(state.games[selectedGameIndex].id)"
-                class="fear-button-white border-2 neon-red flex-1 rounded-md py-4 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
-                :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
-              >
-                <span>
-                  <span x-text="state.running.PAY_WITH_MATIC === false ? 'Pay with' : 'Paying'"></span>
-                  <span class="font-bold" x-text="formatEtherHuman(state.games[selectedGameIndex].priceMatic)"></span>
-                  <span class="font-bold">$MATIC</span>
-                </span>
-                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_MATIC !== false"></i>
-              </button>
-            </div>
-            <!-- <div class="mx-2" x-show="state.user && !state.user.purchased.includes(state.games[selectedGameIndex].id)">
-              <button @click="uiOpenTokenPurchase" class="w-full mb-2 select-none rounded-md font-bold text-center px-2 py-4 text-xs sm:text-sm md:text-base bg-red">
-                <span>Purchase FEAR / MATIC</span>
-              </button>
-            </div> -->
-            <div class="px-2 py-2 flex gap-2 text-sm md:text-base" x-show="state.user && state.user.purchased.includes(state.games[selectedGameIndex].id)">
-              <button
-                @click="downloadGame(state.games[selectedGameIndex].id)"
-                class="font-bold flex-1 bg-green-200 text-green-800 rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed py-4"
-                :disabled="state.running.DOWNLOAD_GAME"
-              >
-                <span x-text="!state.running.DOWNLOAD_GAME ? 'Download' : 'Downloading'"></span>
-                <i x-html="downloadSVG('w-4 h-4')" x-show="!state.running.DOWNLOAD_GAME"></i>
-                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.DOWNLOAD_GAME"></i>
-              </button>
-            </div>
-            <div class="px-2 py-2 flex gap-2 text-sm md:text-base" x-show="!state.user">
-              <button
-                @click="login"
-                class="uppercase py-4 flex-1 bg-neutral-200 text-neutral-800 font-bold rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
-                :disabled="state.running.GOOGLE_LOGIN"
-              >
-                <span>
-                  Login
-                </span>
-                <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.GOOGLE_LOGIN"></i>
-              </button>
-            </div>
             </div>
           </div>
         </template>
@@ -636,26 +557,72 @@
         <!-- </template> -->
       </div>
     </template>
-    <template x-if="!!state && page === '/details'">
-      <div class="text-neutral-100 px-2 sm:px-0">
-        <div class="flex justify-between py-4 text-3xl font-bold">
-          <div>
-            <span x-text="product.title"></span>
-          </div>
-          <div class="flex justify-center items-center gap-1">
-            <span x-text="product.rating"></span>
-            <i x-html="starSVG('w-6 h-6 text-yellow-300')"></i>
+    <template x-if="!!state && +page >= 0">
+      <div class="text-neutral-100 px-2 sm:px-0 w-full" x-init="getReviewsForProduct">
+        <div class="flex justify-center py-4 text-2xl font-bold">
+          <div class="uppercase">
+            <span x-text="state.games[`_${page}`].name"></span>
           </div>
         </div>
-        <div class="p-2 border-2 border-dashed border-neutral-700 rounded-md">
-          <span x-html="product.description"></span>
+        <!-- <div class="border-l-4 border-solid border-red-600 pl-2 mb-2 font-bold">
+          <span>Game description</span>
+        </div> -->
+        <div class="rounded-md text-neutral-300">
+          <span x-html="state.games[`_${page}`].description"></span>
         </div>
-        <div class="py-2 my-2 select-none flex items-center justify-center gap-1">
-          <button class="fear-button-white px-3 py-2 rounded-md border-2 border-solid neon-red">Buy with x FEAR</button>
-          <button class="fear-button-white px-3 py-2 rounded-md border-2 border-solid neon-red">Buy with y MATIC</button>
+        <!-- buy button when loged in -->
+        <div class="py-2 my-2 select-none flex items-center justify-center gap-1" x-show="state.user && !state.user.purchased.includes(page)">
+          <button
+            @click="payWithFear(page)"
+            class="fear-button-white border-2 neon-red flex-1 rounded-md py-4 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+            :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
+          >
+            <span>
+              <span x-text="state.running.PAY_WITH_FEAR === false ? 'Pay with' : 'Paying'"></span>
+              <span class="font-bold" x-text="formatEtherHuman(state.games[`_${page}`].priceFear)"></span>
+              <span class="font-bold">$FEAR</span>
+            </span>
+            <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_FEAR !== false"></i>
+          </button>
+          <button
+            @click="payWithMatic(page)"
+            class="fear-button-white border-2 neon-red flex-1 rounded-md py-4 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+            :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
+          >
+            <span>
+              <span x-text="state.running.PAY_WITH_MATIC === false ? 'Pay with' : 'Paying'"></span>
+              <span class="font-bold" x-text="formatEtherHuman(state.games[`_${page}`].priceMatic)"></span>
+              <span class="font-bold">$MATIC</span>
+            </span>
+            <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_MATIC !== false"></i>
+          </button>
+        </div>
+        <div class="py-2 my-2 select-none flex items-center justify-center gap-1" x-show="state.user && state.user.purchased.includes(page)">
+          <button
+            class="py-4 font-bold flex-1 bg-green-200 text-green-800 rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed py-4"
+            @click="downloadGame(page)"
+            :disabled="state.running.DOWNLOAD_GAME"
+          >
+            <span x-text="!state.running.DOWNLOAD_GAME ? 'Download' : 'Downloading'"></span>
+            <i x-html="downloadSVG('w-4 h-4')" x-show="!state.running.DOWNLOAD_GAME"></i>
+            <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.DOWNLOAD_GAME"></i>
+          </button>
+        </div>
+        <!-- login button -->
+        <div class="px-2 py-2 flex gap-2 text-sm md:text-base" x-show="!state.user">
+          <button
+            @click="login"
+            class="my-4 select-none uppercase py-4 flex-1 bg-neutral-200 text-neutral-800 font-bold rounded-md py-2 flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+            :disabled="state.running.GOOGLE_LOGIN"
+          >
+            <span>
+              Login to purchase
+            </span>
+            <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.GOOGLE_LOGIN"></i>
+          </button>
         </div>
         <!-- comment add box -->
-        <div>
+        <!-- <div>
           <textarea class="w-full rounded-md p-2 bg-neutral-200 text-neutral-900 focus:outline-neutral-600 h-32" placeholder="write review as some1 ..."></textarea>
           <div class="flex items-center justify-between py-2">
             <div class="flex items-center">
@@ -671,26 +638,50 @@
               >Submit</button>
             </div>
           </div>
-        </div>
-        <!-- <div>
-          <span class="font-bold text-3xl">Reviews</span>
         </div> -->
-        <template x-for="review in product.reviews">
-          <div class="py-2">
-            <div class="flex justify-between">
-              <div class="flex justify-center items-center gap-1">
-                <img :src="review.avatar" alt="" class="rounded-full">
-                <span class="font-bold" x-text="review.author"></span>
-              </div>
-              <div class="flex justify-center items-center gap-1">
-                <span x-text="review.rating"></span>
-                <i x-html="starSVG"></i>
-              </div>
-            </div>
-            <div class="pt-2">
-              <span x-text="review.content"></span>
-            </div>
+        <div class="border-l-4 border-solid border-red-600 pl-2 mb-2 font-bold">
+          <span>Reviews</span>
+        </div>
+        <div x-show="!state.reviews">
+          <div class="rounded-md flex justify-center items-center bg-neutral-700 text-neutral-400 py-12 gap-1 opacity-70">
+            <span>
+              <i x-html="loadingSVG"></i>
+            </span>
+            <span>Fetching product reviews ...</span>
           </div>
+        </div>
+        <div x-show="Array.isArray(state.reviews) && state.reviews.length == 0">
+          <div class="flex justify-center items-center py-12 bg-neutral-700 text-neutral-400 rounded-md opacity-70">
+            <span>There are no reviews yet 😴</span>
+          </div>
+        </div>
+        <template x-if="Array.isArray(state.reviews) && state.reviews.length > 0">
+          <template x-for="review in state.reviews">
+            <div class="mb-2 bg-neutral-700 p-2 sm:p-3 md:p-4 rounded-md">
+              <div class="flex justify-between">
+                <div class="flex justify-center items-center gap-1">
+                  <img :src="review.avatar" alt="" class="rounded-full border-2 border-neutral-500">
+                  <div class="flex flex-col">
+                    <span class="font-bold" x-text="review.name"></span>
+                    <div class="flex">
+                      <template x-for="i in _.range(0, review.rating)">
+                        <i x-html="starSVG('w-4 h-4 text-yellow-300')"></i>
+                      </template>
+                      <template x-for="i in _.range(0, 5 - review.rating)">
+                        <i x-html="starSVG('w-4 h-4 text-neutral-400 opacity-30')"></i>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-neutral-400 text-xs">
+                  <span x-text="dayjs(review.time * 1000).format('DD MMM YYYY HH:mm')"></span>
+                </div>
+              </div>
+              <div class="pt-2 text-neutral-300">
+                <span x-text="review.content"></span>
+              </div>
+            </div>
+          </template>
         </template>
       </div>
     </template>

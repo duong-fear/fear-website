@@ -182,6 +182,18 @@ const idToken2Signer = (email, idToken) => new Promise(async (resolve, reject) =
   }
 })
 
+const getReviewsForProduct = async _productId => {
+  vm.state.reviews = null;
+  const productId = _productId || +vm.page || 0;
+  const url = `${fAPIEndpoint}/productReview/${productId}`;
+  const _reviews = await axios.request({
+    method: "GET",
+    url,
+  }).then(r => r.data);
+  if(!_productId) vm.state.reviews = _reviews;
+  return _reviews;
+}
+
 const getPriceForAllProducts = async () => {
   const [
     productIds,
@@ -229,13 +241,17 @@ const fetchInitialAppState = async () => {
     getExchangeRate(),
   ]);
   vm.state.exchangeRate = exchangeRate;
-  vm.state.games = productList.map(p => ({
+  const games = productList.map(p => ({
     ...p,
     id: +p.rowKey,
     priceUsd: formatEther( priceForAllProducts[+p.rowKey].usd ),
     priceMatic: formatEther( priceForAllProducts[+p.rowKey].matic ),
     priceFear: formatEther( priceForAllProducts[+p.rowKey].fear ),
-  }))
+  }));
+  games.forEach(product => {
+    games[`_${product.id}`] = product;
+  });
+  vm.state.games = games;
 }
 
 const getExchangeRate = async () => {
@@ -770,6 +786,7 @@ const boostrapApp = () => {
       exchangeRate: null,
       games: null,
       user: null,
+      reviews: null,
       giftModal: { ..._giftModal },
       running: {
         GOOGLE_LOGIN: false,
@@ -781,8 +798,7 @@ const boostrapApp = () => {
         GIFT_MODAL_SEND: false,
       },
     },
-    // page: '/', // or `/faqs` or `/guide` or `/details`
-    page: '/',
+    page: '/', // '/' or `/faqs` or `/guide` or `:productId` (product page)
     tab: 'balance', // `Account` page (also avaiable: `history`, ``)
     showGiftModal: false,
     qaList,
@@ -899,12 +915,12 @@ const product = {
   rating: 5, // up to 5
   reviews: [
     {
-      author: 'Ciny',
+      name: 'Ciny',
+      email: 'ciny@gmail.com',
       avatar: 'https://play-lh.googleusercontent.com/a-/AD5-WCk-zZqTuYvAFI9DgwCu-jNV_yTTI9LwYaWvDeyW=s32-rw',
       content: 'this game is awesome',
-      date: 'November 26, 2022',
+      time: 'November 26, 2022',
       rating: 5,
-      email: '',
     },
     {
       author: 'Chao',
