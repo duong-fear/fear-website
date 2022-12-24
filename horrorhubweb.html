@@ -558,7 +558,11 @@
       </div>
     </template>
     <template x-if="!!state && +page >= 0">
-      <div class="text-neutral-100 px-2 sm:px-0 w-full -mb-6" x-init="getReviewsForProduct">
+      <div
+        class="text-neutral-100 px-2 sm:px-0 w-full -mb-6"
+        x-init="getReviewsForProduct"
+        x-data="{showProductReviewBox: false, content: '', rating: 5, }"
+      >
         <div class="flex justify-center py-4 text-2xl font-bold">
           <div class="uppercase">
             <span x-text="state.games[`_${page}`].name"></span>
@@ -605,6 +609,16 @@
             </div>
           </div>
           <!-- download button when loged in and game has purchased -->
+          <div class="" x-show="showProductReviewBox" x-transition.duration.100ms>
+            <div class="p-2">
+              <textarea class="ring-2 ring-neutral-700 resize-none p-2 w-full h-32 rounded-md text-neutral-800 bg-neutral-300" :placeholder="`Write review as '${state.user.name}' ...`"></textarea>
+            </div>
+            <div class="flex justify-center items-center py-2">
+              <template x-for="i in _.range(1, 6)">
+                <i x-html="starSVG('w-12 h-12')" class="cursor-pointer" @click="rating = i" :class="i <= rating ? 'text-yellow-300' : 'text-neutral-400 opacity-30'"></i>
+              </template>
+            </div>
+          </div>
           <div class="flex" x-show="state.user && state.user.purchased.includes(page)">
             <button class="text-neutral-100 pl-3" @click="page = '/'">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
@@ -615,8 +629,21 @@
               :disabled="state.running.DOWNLOAD_GAME"
             >
               <span x-text="!state.running.DOWNLOAD_GAME ? 'Download' : 'Downloading'"></span>
-              <i x-html="downloadSVG('w-4 h-4')" x-show="!state.running.DOWNLOAD_GAME"></i>
               <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.DOWNLOAD_GAME"></i>
+            </button>
+            <button
+              class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-fuchsia-100 text-fuchsia-800 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+              @click="showProductReviewBox = true"
+              x-show="!showProductReviewBox"
+            >
+              <span>Review</span>
+            </button>
+            <button
+              class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-fuchsia-800 text-fuchsia-100 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+              @click="showProductReviewBox = false"
+              x-show="showProductReviewBox"
+            >
+              <span>Submit</span>
             </button>
           </div>
           <!-- login button -->

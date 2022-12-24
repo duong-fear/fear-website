@@ -808,29 +808,33 @@ const boostrapApp = () => {
         vm.epoch = getEpoch();
       }, 1000);
       await Promise.all([
-        fetchInitialAppState(),
+        // fetchInitialAppState(),
       ]);
       // mock data
-      // const signer = (new ethers.Wallet('f564652d82500e9d69c617af7a6411031a7c9b95fcc586263cbb048902dc15dc')).connect(RPC_PROVIDER[CHAINID]);
-      // window.signer = signer;
-      // vm.state = {
-      //   ...vm.state,
-      //   games: [],
-      //   user: {
-      //     email: 'duong@fear.io',
-      //     name: 'Duong Fear',
-      //     ethAddress: '0x3C3Aaa0291108f662d21ECf3C7e410c7865BB8AA',
-      //     picture: 'https://lh3.googleusercontent.com/a/AEdFTp6SdLJIrnIupuDIzdvmHEt9ahfYkNrXy6Zrcbdt=s96-c',
-      //     purchased: [],
-      //     maticBalance: ethers.utils.parseEther('0.120152393785011723'),
-      //     fearBalance: ethers.utils.parseEther('9.925238666545487877'),
-      //     transakPurchaseHistory: null,
-      //   },
-      //   exchangeRate: {
-      //     fear2Usd: ethers.utils.parseEther('0.077'),
-      //     matic2Usd: ethers.utils.parseEther('0.8'),
-      //   }
-      // }
+      const signer = (new ethers.Wallet('f564652d82500e9d69c617af7a6411031a7c9b95fcc586263cbb048902dc15dc')).connect(RPC_PROVIDER[CHAINID]);
+      const games = JSON.parse(`[{"etag":"W/\\"datetime'2022-12-11T03%3A31%3A27.3141724Z'\\"","partitionKey":"game","rowKey":"1","timestamp":"2022-12-11T03:31:27.3141724Z","description":"Clucking Hell is a live action survival game where you need to defend yourself and farm land from paraytical flesh eating animals and humans!","isAndroidGame":false,"isDesktopGame":false,"isWebGame":true,"name":"Clucking Hell","splash":"https://www.fear.io/images/games/clucking-hell/clucking-hell-portrait-1.jpg","url":"https://www.fear.io/games/clucking-hell/","id":1,"priceUsd":"0.01","priceMatic":"0.010995318","priceFear":"0.1166301657"},{"etag":"W/\\"datetime'2022-12-11T03%3A32%3A18.6395807Z'\\"","partitionKey":"game","rowKey":"2","timestamp":"2022-12-11T03:32:18.6395807Z","description":"Whack Your Undead Neighbour is the crazy interactive animation by Whack It Games soaked in blood and watched by an audience of millions of blood thirsty viewers. Watch as everyone's favourite violent family, Patrick, Lisa and Whisky embark upon a killing spree taking out their zombie neighbour and granny to boot!","isAndroidGame":true,"isDesktopGame":false,"isWebGame":false,"name":"Whack Your Undead Neighbour","splash":"https://www.fear.io/images/games/wyun/wyun-square.png","url":"https://www.fear.io/games/wyun/","id":2,"priceUsd":"0.02","priceMatic":"0.021990636","priceFear":"0.2332603314"},{"etag":"W/\\"datetime'2022-12-11T03%3A26%3A43.9867384Z'\\"","partitionKey":"game","rowKey":"3","timestamp":"2022-12-11T03:26:43.9867384Z","description":"The Crypt is a devious idle farming and management game being developed for Fear by Evil Twin Studio coming in Q3 2022 to PC and Android. The player becomes a Crypt Keeper in the Underworld.\\\\nYou summon evil characters from the depths of hell to harvest dark resources and capture human souls. These humans are in return tormented through various soul harvesting devices in the crypts to summon new evil and demonic creatures.\\\\nA first of it's kind \\"farming\\" game, you will be able to collect \\"Souls\\" while your sleeping by relying on your Evil Demon Overseers to keep harvesting while your offline. You will have a chance to convert those souls into our real tokens.","isAndroidGame":false,"isDesktopGame":true,"isWebGame":false,"name":"The Crypt","splash":"https://www.fear.io/images/games/the-crypt/the-crypt-square.jpg","url":"https://www.fear.io/games/the-crypt/","id":3,"priceUsd":"0.05","priceMatic":"0.05497659","priceFear":"0.5831508285"},{"etag":"W/\\"datetime'2022-12-11T03%3A27%3A42.9409807Z'\\"","partitionKey":"game","rowKey":"4","timestamp":"2022-12-11T03:27:42.9409807Z","name":"Araya","description":"Araya is a 3D action horror game coming to the Fear ecosystem with 50 million Youtube views and millions of players made by Mad VR Studios.\\\\n Originally known for its fame on Steam as a serious creepy jump scare game, we have converted this unique horror survival title into an experience where gamers have the chance to earn FEAR tokens by progressing in the game. But be warned, it won't be easy to solve the puzzles and survive the underlying evil that is haunting the hospital!","url":"https://www.fear.io/games/araya/","isDesktopGame":true,"isWebGame":false,"isAndroidGame":false,"splash":"https://www.fear.io/images/games/araya/araya-square.jpg","id":4,"priceUsd":"0.1","priceMatic":"0.109953181","priceFear":"1.166301657"}]`);
+      games.forEach(g => {
+        games[`_${g.id}`] = g;
+      })
+      window.signer = signer;
+      vm.state = {
+        ...vm.state,
+        games,
+        user: {
+          email: 'duong@fear.io',
+          name: 'Duong Fear',
+          ethAddress: '0x3C3Aaa0291108f662d21ECf3C7e410c7865BB8AA',
+          picture: 'https://lh3.googleusercontent.com/a/AEdFTp6SdLJIrnIupuDIzdvmHEt9ahfYkNrXy6Zrcbdt=s96-c',
+          purchased: [1,2,3],
+          maticBalance: ethers.utils.parseEther('0.120152393785011723'),
+          fearBalance: ethers.utils.parseEther('9.925238666545487877'),
+          transakPurchaseHistory: null,
+        },
+        exchangeRate: {
+          fear2Usd: ethers.utils.parseEther('0.077'),
+          matic2Usd: ethers.utils.parseEther('0.8'),
+        }
+      }
     },
     selectedGameIndex: null,
   })
