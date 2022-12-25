@@ -796,6 +796,7 @@ const boostrapApp = () => {
         PAY_WITH_MATIC: false,
         GIFT_MODAL_FIND_ETH_ADDRESS: false,
         GIFT_MODAL_SEND: false,
+        SUBMIT_REVIEW: false,
       },
     },
     page: '/', // '/' or `/faqs` or `/guide` or `:productId` (product page)
@@ -858,6 +859,32 @@ const getTransakIframeUrl = () => {
   };
   const urlParams = (new URLSearchParams(transakOption)).toString();
   return `${transakBaseUrl}/?${urlParams}`
+}
+
+const submitProductReview = async (productId, content, rating) => {
+  vm.state.running.SUBMIT_REVIEW = true;
+  const { email, name, picture } = vm.state.user;
+  try {
+    const url = `${fAPIEndpoint}/productReview/${productId}`;
+    await axios.request({
+      method: "POST",
+      url,
+      data: {
+        productId,
+        content,
+        rating,
+        email,
+        name,
+        avatar: picture,
+      }
+    }).then(r => r.data);
+    vm.state.reviews = await getReviewsForProduct(productId);
+    fearSuccess("Review submited. Thank you");
+  } catch(exception) {
+    console.error(`submitProductReview`, exception);
+  } finally {
+    vm.state.running.SUBMIT_REVIEW = false;
+  }
 }
 
 const ORDER_STATUS_CLASSES_ENUM = {
