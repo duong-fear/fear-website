@@ -362,7 +362,7 @@
           </div>
           <div class="flex justify-center gap-1">
             <a
-              class="rounded-md bg-neutral-600 text-cyan-200 px-3 py-2 text-xs sm:text-sm md:text-base"
+              class="rounded-md bg-neutral-600 text-neutral-50 px-3 py-2 text-xs sm:text-sm md:text-base"
               :href="generateBlockscanUrlForAddress(CHAINID, state.user.ethAddress)"
               target="_blank"
             >
@@ -624,7 +624,7 @@
               <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.DOWNLOAD_GAME"></i>
             </button>
             <button
-              class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-fuchsia-100 text-fuchsia-800 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+              class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-red-100 text-red-800 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
               @click="showProductReviewBox = true"
               x-show="!showProductReviewBox"
             >
