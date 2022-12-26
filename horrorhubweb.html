@@ -243,9 +243,10 @@
       </template>
       <template x-if="state.games">
       <div>
-      <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-sm sm:text-base opacity-50">
+      <!-- games divider -->
+      <!-- <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-sm sm:text-base opacity-50">
         <span>Games</span>
-      </div>
+      </div> -->
       <div class="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-2 mt-2">
         <template x-for="(g, index) in state.games">
           <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="page = g.id">
@@ -267,11 +268,12 @@
           </div>
         </template>
       </div>
-      <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-sm sm:text-base opacity-50">
+      <!-- films divider -->
+      <!-- <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-sm sm:text-base opacity-50">
         <span>Films</span>
-      </div>
-      <div class="border-2 border-dashed border-neutral-700 text-neutral-200 rounded-md flex items-center justify-center h-20 sm:h-24 mt-4 mx-2 sm:mx-0">
-        <span>coming soon ...</span>
+      </div> -->
+      <div class="text-sm sm:text-base border-2 border-dashed border-neutral-700 text-neutral-400 rounded-md flex items-center justify-center h-20 sm:h-24 mt-4 mx-2 sm:mx-0">
+        <span>More horror <b>games</b> and <b>films</b> coming soon ...</span>
       </div>
       </div>
       </template>
