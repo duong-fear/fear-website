@@ -190,11 +190,12 @@ const getReviewsForProduct = async _productId => {
     method: "GET",
     url,
   }).then(r => r.data);
-  if(!_productId) vm.state.reviews = _reviews.map(r => ({
+  const reviews = _reviews.map(r => ({
     ...r,
     content: r.content.replace(badWordsPattern, "***"),
   }));
-  return _reviews;
+  if(!_productId) vm.state.reviews = reviews;
+  return reviews;
 }
 
 const getPriceForAllProducts = async () => {
