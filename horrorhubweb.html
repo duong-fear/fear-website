@@ -673,7 +673,7 @@
               </button>
               <button
                 class="mx-2 my-3 select-none uppercase py-4 flex-1 fear-button-white neon-red font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
-                @click="submitProductReview(page, content, rating)"
+                @click="submitProductReview(page, content, rating, () => {showProductReviewBox = false; content = ''; rating = 5;})"
                 :disabled="vm.state.running.SUBMIT_REVIEW"
               >
                 <span>SUBMIT</span>

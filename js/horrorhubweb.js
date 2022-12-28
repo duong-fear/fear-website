@@ -399,7 +399,7 @@ const payWithFear = async productId => {
     );
     vm.state.user.purchased.push(productId);
     await refreshUserStats();
-    fearSuccess(`You owned '${name}'`, {
+    fearSuccess(`You purchased ${name}`, {
       title: "Payment Successful",
     });
   } catch(exception) {
@@ -854,7 +854,7 @@ const getTransakIframeUrl = () => {
   return `${transakBaseUrl}/?${urlParams}`
 }
 
-const submitProductReview = async (productId, content, rating) => {
+const submitProductReview = async (productId, content, rating, callback) => {
   vm.state.running.SUBMIT_REVIEW = true;
   const { email, name, picture } = vm.state.user;
   try {
@@ -873,6 +873,7 @@ const submitProductReview = async (productId, content, rating) => {
     }).then(r => r.data);
     vm.state.reviews = await getReviewsForProduct(productId);
     fearSuccess("Review submited. Thank you");
+    if(typeof callback === 'function') callback();
   } catch(exception) {
     console.error(`submitProductReview`, exception);
   } finally {
