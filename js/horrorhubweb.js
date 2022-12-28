@@ -792,6 +792,9 @@ const boostrapApp = () => {
         GIFT_MODAL_SEND: false,
         SUBMIT_REVIEW: false,
       },
+      modal: {
+        FILMS: false,
+      },
     },
     page: '/', // '/' or `/faqs` or `/guide` or `:productId` (product page)
     tab: 'balance', // `Account` page (also avaiable: `history`, ``)
@@ -965,4 +968,11 @@ const product = {
       email: '',
     }
   ],
+}
+
+const openModal = (key) => {
+  vm.state.modal[key] = true;
+}
+const closeModal = (key) => {
+  vm.state.modal[key] = false;
 }
