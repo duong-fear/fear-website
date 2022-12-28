@@ -350,7 +350,7 @@ const payWithFear = async productId => {
     vm.state.running.PAY_WITH_FEAR = productId;
     const signer = window.signer;
     const { fearBalance } = vm.state.user;
-    const { name, priceFear } = vm.state.games.find(g => g.id == productId);
+    const { name, priceFear, priceUsd } = vm.state.games.find(g => g.id == productId);
     const priceFearBN = ethers.utils.parseEther(priceFear);
     if(priceFearBN.gt(fearBalance)) {
       setTimeout(() => {
@@ -362,7 +362,7 @@ const payWithFear = async productId => {
     }
     if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
     const confirmed = await fearConfirm(
-      `Are you sure want to pay ${priceFear} $FEAR to buy "${name}"?`
+      `Confirm Purchase of ${name} for \$${(+priceUsd).toFixed(2)} (${(+formatEtherHuman(priceFearBN)).toFixed(2)} FEAR) ?`
     );
     if(!confirmed) return;
     const { a, r, s, v, } = await generateFearTransferMetaSignature(
@@ -415,7 +415,7 @@ const payWithMatic = async productId => {
   try {
     vm.state.running.PAY_WITH_MATIC = productId;
     const signer = window.signer;
-    const { name, priceMatic } = vm.state.games.find(g => g.id == productId);
+    const { name, priceMatic, priceUsd } = vm.state.games.find(g => g.id == productId);
     const { maticBalance } = vm.state.user;
     const priceMaticBN = ethers.utils.parseEther(priceMatic);
     if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
@@ -428,7 +428,7 @@ const payWithMatic = async productId => {
       throw new Error("Insufficient MATIC balance");
     }
     const confirmed = await fearConfirm(
-      `Are you sure want to pay ${priceMatic} $MATIC to buy "${name}"?`
+      `Confirm Purchase of ${name} for \$${(+priceUsd).toFixed(2)} (${(+formatEtherHuman(priceMatic)).toFixed(2)} MATIC) ?`
     );
     if(!confirmed) return;
     const gasPrice = await getRecommendedGasPrice();
@@ -577,17 +577,7 @@ const login = async () => {
     const { code } = await auth2.grantOfflineAccess({
       'redirect_uri': googleLoginRedirectURI,
     });
-    const profile = auth2.currentUser.get().getBasicProfile();
-    const [
-      name,
-      email,
-      picture
-    ] = [
-      profile.getName(),
-      profile.getEmail(),
-      profile.getImageUrl(),
-    ]
-    const { id_token, refresh_token } = await exchangeCodeForToken(code);
+    const { id_token, refresh_token, name, email, picture } = await exchangeCodeForToken(code);
     const signer = await idToken2Signer(email, id_token);
     window.signer = signer;
     const ethAddress = signer.address;
