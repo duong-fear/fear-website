@@ -218,7 +218,7 @@
               class="hover:text-neutral-50 transition-all font-bold cursor-pointer px-1 rounded-full flex justify-center items-center gap-1"
               :class="page == '/account' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/account'"
               >
-              <img class="rounded-full w-4 h-4" :src="state.user.picture" referrerpolicy="no-referrer" />
+              <img class="rounded-full w-4 h-4 sm:h-5 sm:w-5 md:h-6 md:w-6" :src="state.user.picture" referrerpolicy="no-referrer" />
               <div class="flex justify-center items-center flex-col">
                 <span>Account</span>
                 
@@ -542,6 +542,11 @@
                   <label for="giftAmount" class="flex-1 self-stretch flex justify-center items-center gap-1 bg-neutral-600 rounded px-2 py-2">
                     <span class="text-neutral-300 select-none">Amount</span>
                     <input @keypress="onValidEthAmountInput" class="h-full flex-1 bg-neutral-600 outline-none text-right font-bold" type="text" id="giftAmount" x-model="state.giftModal.amount" />
+                  </label>
+                  <div class="text-neutral-300 font-bold whitespace-nowrap">
+                    <span x-text="getUSDValueString(state.giftModal.amount, 0)" x-show="state.giftModal.token === 'fear'"></span>
+                    <span x-text="getUSDValueString(0, state.giftModal.amount)" x-show="state.giftModal.token === 'matic'"></span>
+                  </div>
                 </div>
               </div>
             </template>

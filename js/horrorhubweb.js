@@ -943,6 +943,24 @@ const loadSavedLoginData = async () => {
   }
 }
 
+const getUSDValueString = (_fearBalance, _maticBalance, textOnZeroOrError = '') => {
+  try {
+    const OneEtherBN = ethers.utils.parseEther("1");
+    let fearBalanceBN, maticBalanceBN;
+    if(_fearBalance instanceof ethers.BigNumber) fearBalanceBN = _fearBalance;
+    if(_maticBalance instanceof ethers.BigNumber) maticBalanceBN = _maticBalance;
+    fearBalanceBN = ethers.utils.parseEther(`${_fearBalance || 0}`);
+    maticBalanceBN = ethers.utils.parseEther(`${_maticBalance || 0}`);
+    const { fear2Usd, matic2Usd } = vm.state.exchangeRate;
+    const usdValueBN = fear2Usd.mul(fearBalanceBN).div(OneEtherBN).add( matic2Usd.mul(maticBalanceBN).div(OneEtherBN) );
+    return usdValueBN.eq(ethers.constants.Zero) ? textOnZeroOrError : `≈ \$${formatEtherHuman(usdValueBN)}`;
+  }
+  catch(exception) {
+    console.error(`getUSDValue exception`, exception);
+  }
+  return textOnZeroOrError;
+}
+
 const logout = async () => {
   const confirmed = await fearConfirm("Are you sure you want to log out ?");
   if(!confirmed) return;
