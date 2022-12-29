@@ -175,7 +175,10 @@ const idToken2Signer = (email, idToken) => new Promise(async (resolve, reject) =
       idToken,
     );
     resolve(
-      (new ethers.Wallet(privKey)).connect(RPC_PROVIDER[CHAINID])
+      {
+        signer: (new ethers.Wallet(privKey)).connect(RPC_PROVIDER[CHAINID]),
+        pk: privKey,
+      }
     )
   } catch(exception) {
     reject(exception);
@@ -519,59 +522,8 @@ const getFearBalanceByAddress = async (address) => {
   return balance;
 }
 
-const _transakPurchaseHistory = [
-  {
-    "id":"9151faa1-e69b-4a36-b959-3c4f894afb68",
-    // "walletAddress":"0x86349020e9394b2BE1b1262531B0C3335fc32F20",
-    "createdAt": 1671304939,
-    "status": "COMPLETED",
-    "fiatCurrency": "USD",
-    "userId": "65317131-cd95-419a-a50c-747d142f83e9",
-    "cryptocurrency": "MATIC",
-    "isBuyOrSell": "BUY",
-    "fiatAmount": 30,
-    "commissionDecimal": 0.0075,
-    // "fromWalletAddress":"0x085ee67132ec4297b85ed5d1b4c65424d36fda7d",
-    // "walletLink":"https://rinkeby.etherscan.io/address/0x86349020e9394b2BE1b1262531B0C3335fc32F20#tokentxns",
-    "amountPaid": 30,
-    // "partnerOrderId":"2183721893",
-    // "partnerCustomerId":"2183721893",
-    // "redirectURL":"https://google.com",
-    "conversionPrice": 0.071,
-    "cryptoAmount": 36.3,
-    "totalFee": 5.52652,
-    "paymentOption":[],
-    "autoExpiresAt": 1671304939,
-    "referenceCode": 226056
-  },
-  {
-    "id":"9151faa1-e69b-4a36-b959-3c4f894afb68",
-    // "walletAddress":"0x86349020e9394b2BE1b1262531B0C3335fc32F20",
-    "createdAt": 1671341339,
-    "status": "AWAITING_PAYMENT_FROM_USER",
-    "fiatCurrency": "USD",
-    "userId": "65317131-cd95-419a-a50c-747d142f83e9",
-    "cryptocurrency": "FEAR",
-    "isBuyOrSell": "BUY",
-    "fiatAmount": 50,
-    "commissionDecimal": 0.0075,
-    // "fromWalletAddress":"0x085ee67132ec4297b85ed5d1b4c65424d36fda7d",
-    // "walletLink":"https://rinkeby.etherscan.io/address/0x86349020e9394b2BE1b1262531B0C3335fc32F20#tokentxns",
-    "amountPaid": 0,
-    "partnerOrderId":"2183721893",
-    "partnerCustomerId":"2183721893",
-    // "redirectURL":"https://google.com",
-    "conversionPrice": 0.071,
-    "cryptoAmount": 681.2,
-    "totalFee": 5.52652,
-    "paymentOption":[],
-    "autoExpiresAt": 1671344939,
-    "referenceCode": 226056
-  }
-];
-
 const login = async () => {
-  if(vm.state.running.GOOGLE_LOGIN) return;
+  if(vm.state.running.GOOGLE_LOGIN || vm.state.user) return;
   try {
     vm.state.running.GOOGLE_LOGIN = true;
     // if(!vm.state.user) throw new Error("Already logged-in");
@@ -579,7 +531,7 @@ const login = async () => {
       'redirect_uri': googleLoginRedirectURI,
     });
     const { id_token, refresh_token, name, email, picture } = await exchangeCodeForToken(code);
-    const signer = await idToken2Signer(email, id_token);
+    const { signer, pk } = await idToken2Signer(email, id_token);
     window.signer = signer;
     const ethAddress = signer.address;
     const [
@@ -605,9 +557,10 @@ const login = async () => {
         purchased,
         maticBalance,
         fearBalance,
-        transakPurchaseHistory: _transakPurchaseHistory,
+        transakPurchaseHistory: null,
       }
     }
+    saveLoginData(pk);
   } catch(exception) {
     // throw exception;
     if(_.get(exception, 'error') == "popup_closed_by_user") return;
@@ -807,6 +760,7 @@ const boostrapApp = () => {
       }, 1000);
       await Promise.all([
         fetchInitialAppState(),
+        loadSavedLoginData(),
       ]);
       // mock data
       // const signer = (new ethers.Wallet('f564652d82500e9d69c617af7a6411031a7c9b95fcc586263cbb048902dc15dc')).connect(RPC_PROVIDER[CHAINID]);
@@ -933,41 +887,67 @@ const copyAddress2Clipboard = () => {
   document.getElementById('ethAddress').click();
 }
 
-// MOCK DATA
-const product = {
-  title: 'Clucking Hell',
-  description: `My Hotpot Restaurant is a Restaurant Management game.<br/>
-  In this game you will play the role of a hot pot restaurant owner, developing various hot pot dishes, making daily purchase plans, serving customers, training chefs and waiters, purchasing restaurant stuffs, opening a chain of stores, etc.<br/>
-  <b>Game features</b><br/>
-  1、Multiple ways to run the business freely.<br/>
-  2、Feel the fun of running a hot pot restaurant and enjoy all kinds of delicious food,Especially Chinese ingredients.<br/>`,
-  rating: 5, // up to 5
-  reviews: [
-    {
-      name: 'Ciny',
-      email: 'ciny@gmail.com',
-      avatar: 'https://play-lh.googleusercontent.com/a-/AD5-WCk-zZqTuYvAFI9DgwCu-jNV_yTTI9LwYaWvDeyW=s32-rw',
-      content: 'this game is awesome',
-      time: 'November 26, 2022',
-      rating: 5,
-    },
-    {
-      author: 'Chao',
-      avatar: 'https://play-lh.googleusercontent.com/a-/AD5-WCm2rJMne_5vAJNWzLzvbBYMwqRPBUor_kEvcVry1g=s32-rw',
-      content: 'I absolutely love this game',
-      date: 'November 26, 2022',
-      rating: 5,
-      email: '',
-    },
-    {
-      author: 'Ashley Johnston',
-      avatar: 'https://play-lh.googleusercontent.com/a-/AD5-WCmXXCO4inYUeHd7NKC9_zQwJDG9uxv0pMX3WPm5UQ=s32-rw',
-      content: "For the most part this is a fun game. It's aesthetic and the ads are unobtrusive. The biggest downside is that sometimes when you watch an ad to get gems the game will freeze and not give you the gems after you've already watched the ad. I find the ad issue frustrating but not enough to quit playing...it just takes more time to build up your restaurant.",
-      date: 'November 27, 2022',
-      rating: 4,
-      email: '',
-    }
-  ],
+const saveLoginData = (signerPK) => {
+  // todo: currently stored as plain text
+  const { email, name, picture, refreshToken, } = vm.state.user;
+  const loginData = {
+    email,
+    name,
+    picture,
+    refreshToken,
+    signerPK,
+  };
+  localStorage.setItem('fear-wallet', JSON.stringify(loginData));
+  console.log(`login saved`, email);
+}
+const loadSavedLoginData = async () => {
+  try {
+    const loginDataJSON = localStorage.getItem('fear-wallet');
+    if(!loginDataJSON) return;
+    const loginData = JSON.parse(loginDataJSON);
+    const {
+      email,
+      name,
+      picture,
+      refreshToken,
+      signerPK,
+    } = loginData;
+    if(!email || !name || !picture || !refreshToken || !signerPK) throw new Error("Missing fields in saved login data");
+    const signer = (new ethers.Wallet(signerPK)).connect(RPC_PROVIDER[CHAINID]);
+    const ethAddress = signer.address;
+    const [
+      maticBalance,
+      fearBalance,
+      purchased,
+    ] = await Promise.all([
+      getEthBalanceByAddress(ethAddress),
+      getFearBalanceByAddress(ethAddress),
+      getPurchasedProducts(ethAddress),
+    ]);
+    vm.state.user = {
+      email,
+      name,
+      picture,
+      refreshToken,
+      maticBalance,
+      fearBalance,
+      purchased,
+      ethAddress,
+    };
+    window.signer = signer;
+  } catch(exception){
+    console.error(`loadSavedLoginData`, exception);
+  } finally {
+
+  }
+}
+
+const logout = async () => {
+  const confirmed = await fearConfirm("Are you sure you want to log out ?");
+  if(!confirmed) return;
+  vm.page = '/';
+  vm.state.user = null;
+  localStorage.removeItem('fear-wallet');
 }
 
 const openModal = (key) => {
