@@ -744,6 +744,7 @@ const boostrapApp = () => {
         GIFT_MODAL_FIND_ETH_ADDRESS: false,
         GIFT_MODAL_SEND: false,
         SUBMIT_REVIEW: false,
+        REFRESH_BALANCE: false,
       },
       modal: {
         FILMS: false,
@@ -948,6 +949,16 @@ const logout = async () => {
   vm.page = '/';
   vm.state.user = null;
   localStorage.removeItem('fear-wallet');
+}
+
+const refreshBalance = async () => {
+  try {
+    vm.state.running.REFRESH_BALANCE = true;
+    await refreshUserStats();
+  } catch(exception) {
+  } finally {
+    vm.state.running.REFRESH_BALANCE = false;
+  }
 }
 
 const openModal = (key) => {

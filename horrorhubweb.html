@@ -386,17 +386,29 @@
             <div class="p-2 text-neutral-100 rounded-md bg-neutral-900 text-center">
               <div class="flex gap-1 sm:gap-2 md:gap-3 p-1 sm:p-2 md:p-3">
                 <div class="rounded-md flex-1 p-3 flex flex-col">
-                  <span class="text-2xl sm:text-3xl md:text-4xl text-red font-bold" x-text="getNetworth"></span>
+                  <span class="text-2xl sm:text-3xl md:text-4xl text-red font-bold" :class="state.running.REFRESH_BALANCE && 'animate-pulse'" x-text="getNetworth"></span>
                   <span class="text-xs sm:text-sm md:text-base text-neutral-400">Net Worth</span>
                 </div>
                 <div class="rounded-md flex-1 p-3 flex flex-col">
-                  <span class="text-2xl sm:text-3xl md:text-4xl text-red font-bold" x-text="formatEtherHuman(state.user.fearBalance)"></span>
+                  <span class="text-2xl sm:text-3xl md:text-4xl text-red font-bold" :class="state.running.REFRESH_BALANCE && 'animate-pulse'" x-text="formatEtherHuman(state.user.fearBalance)"></span>
                   <span class="text-xs sm:text-sm md:text-base text-neutral-400">FEAR</span>
                 </div>
                 <div class="rounded-md flex-1 p-3 flex flex-col">
-                  <span class="text-2xl sm:text-3xl md:text-4xl text-red font-bold" x-text="formatEtherHuman(state.user.maticBalance)"></span>
+                  <span class="text-2xl sm:text-3xl md:text-4xl text-red font-bold" :class="state.running.REFRESH_BALANCE && 'animate-pulse'" x-text="formatEtherHuman(state.user.maticBalance)"></span>
                   <span class="text-xs sm:text-sm md:text-base text-neutral-400">MATIC</span>
                 </div>
+              </div>
+              <!-- refresh balance button -->
+              <div class="flex justify-center items-center mb-4">
+                <button
+                  class="text-red disabled:opacity-50"
+                  :disabled="state.running.REFRESH_BALANCE"
+                  @click="refreshBalance"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" :class="state.running.REFRESH_BALANCE && 'animate-spin'">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                  </svg>                  
+                </button>
               </div>
               <div class="flex gap-2 sm:gap-3 md:gap-4 p-2 sm:p-3 md:p-4 pt-0 justify-center items-center">
                 <button class="w-24 rounded-md fear-button border-2 neon-red font-bold p-2 select-none" @click="state.giftModal.visible = true">
