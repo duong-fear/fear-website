@@ -186,19 +186,28 @@ const idToken2Signer = (email, idToken) => new Promise(async (resolve, reject) =
 })
 
 const getReviewsForProduct = async _productId => {
-  vm.state.reviews = null;
-  const productId = _productId || +vm.page || 0;
-  const url = `${fAPIEndpoint}/productReview/${productId}`;
-  const _reviews = await axios.request({
-    method: "GET",
-    url,
-  }).then(r => r.data);
-  const reviews = _reviews.map(r => ({
-    ...r,
-    content: r.content.replace(badWordsPattern, "***"),
-  }));
-  if(!_productId) vm.state.reviews = reviews;
-  return reviews;
+  try {
+    vm.state.running.FETCH_REVIEW = true;
+    const { email } = vm.state.user;
+    vm.state.reviews = null;
+    const productId = _productId || +vm.page || 0;
+    const url = `${fAPIEndpoint}/productReview/${productId}`;
+    const _reviews = await axios.request({
+      method: "GET",
+      url,
+    }).then(r => r.data);
+    const reviews = _reviews.map(r => ({
+      ...r,
+      content: r.content.replace(badWordsPattern, "***"),
+    }));
+    vm.state.myReviews[productId] = reviews.find(r => r.email == email);
+    if(!_productId) vm.state.reviews = reviews;
+    return reviews;
+  } catch(exception) {
+    console.error(`getReviewsForProduct error`, exception);
+  } finally {
+    vm.state.running.FETCH_REVIEW = false;
+  }
 }
 
 const getPriceForAllProducts = async () => {
@@ -734,6 +743,7 @@ const boostrapApp = () => {
       games: null,
       user: null,
       reviews: null,
+      myReviews: {},
       giftModal: { ..._giftModal },
       running: {
         GOOGLE_LOGIN: false,
@@ -745,6 +755,7 @@ const boostrapApp = () => {
         GIFT_MODAL_SEND: false,
         SUBMIT_REVIEW: false,
         REFRESH_BALANCE: false,
+        FETCH_REVIEW: false,
       },
       modal: {
         FILMS: false,
