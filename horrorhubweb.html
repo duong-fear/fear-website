@@ -194,7 +194,7 @@
           </span>
         </div>
         <div class="font-bold cursor-pointer hover:text-neutral-50 transition-all tex-lg" :class="page == '/' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/'">Games</div>
-        <div class="font-bold cursor-pointer hover:text-neutral-50 transition-all tex-lg text-neutral-400" @click="openModal('FILMS')">Films</div>
+        <div class="font-bold cursor-pointer hover:text-neutral-50 transition-all tex-lg" :class="page == '/films' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/films'">Films</div>
         <div class="font-bold cursor-pointer hover:text-neutral-50 transition-all tex-lg" :class="page == '/faqs' ? 'text-neutral-50' : 'text-neutral-400'" @click="page = '/faqs'">FAQs</div>
       </div>
       <div class="flex justify-center items-center select-none">
@@ -298,6 +298,14 @@
             </div>
           </div>
         </template>
+      </div>
+    </template>
+    <template x-if="page === '/films'">
+      <div class="w-full flex items-center justify-center">
+        <div class="w-fit bg-neutral-900 text-neutral-200 rounded-md p-6 mx-2 border-2 border-dashed border-neutral-700 border-solid text-sm sm:text-base">
+          <span>FEAR is in the process of incubating <b>Horror Short Films</b> with the <a class="font-bold text-red" href="https://londonhorrorsociety.co.uk/" rel="noreferrer" target="_blank">London Horror Society</a>.<br /></span>
+          <span>For more info on this initiative or how to apply for <b>Film Grants</b> please visit <a class="font-bold text-red" href="https://film.fear.io/" el="noreferrer" target="_blank">FEAR Films</a>.</span>
+        </div>
       </div>
     </template>
     <template x-if="!!state && page === '/guide'">
@@ -775,17 +783,6 @@
         <a href="https://t.me/fearcoin" target="_blank" rel="noreferrer"><img class="w-5 h-5 mx-1" src="https://araya.fear.io/icon/telegram.svg" alt="telegram" title="telegram"></a>
         <a href="https://www.instagram.com/fearnfts/" target="_blank" rel="noreferrer"><img class="w-5 h-5 mx-1" src="https://araya.fear.io/icon/instagram.svg" alt="instagram" title="instagram"></a>
         <a href="https://www.youtube.com/channel/UCHRX3sh3G8sxvHLLQ21vNiQ" target="_blank" rel="noreferrer"><img class="w-5 h-5 mx-1" src="https://araya.fear.io/icon/youtube.svg" alt="youtube" title="youtube"></a>
-      </div>
-    </div>
-  </div>
-  <!-- modals -->
-  <div class="fixed top-0 left-0 w-full h-full backdrop-blur-sm backdrop-brightness-50 flex items-center justify-center z-40" x-show="state.modal.FILMS" style="display: none;" x-transition.duration.100ms>
-    <div class="bg-neutral-700 text-neutral-100 rounded-md max-w-sm md:max-w-md p-3 mx-2 sm:mx-0 border-2 border-neutral-600 border-solid">
-      <div>
-        <span>FEAR is in the process of incubating <b>Horror Short Films</b> with the <a class="font-bold text-cyan-400" href="https://londonhorrorsociety.co.uk/" rel="noreferrer" target="_blank">London Horror Society</a>. For more info on this initiative or how to apply for <b>Film Grants</b> please visit <a class="font-bold text-cyan-400" href="https://film.fear.io/" el="noreferrer" target="_blank">FEAR Films</a>.</span>
-      </div>
-      <div class="flex justify-center pt-2">
-        <button class="fear-button-white neon-red font-medium px-3 py-2 rounded-md select-none text-xs sm:text-sm" @click="closeModal('FILMS')">Close</button>
       </div>
     </div>
   </div>
