@@ -366,12 +366,21 @@ const payWithFear = async productId => {
     const { name, priceFear, priceUsd } = vm.state.games.find(g => g.id == productId);
     const priceFearBN = ethers.utils.parseEther(priceFear);
     if(priceFearBN.gt(fearBalance)) {
-      setTimeout(() => {
-        vm.selectedGameIndex = null;
-        vm.page = '/account';
-        vm.tab = 'buy';
-      }, 0)
-      throw new Error("Insufficient FEAR balance");
+      const { isConfirmed } = await Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: "Insufficient FEAR balance",
+        showCancelButton: true,
+        cancelButtonText: 'Close',
+        showConfirmButton: true,
+        confirmButtonText: 'Buy FEAR',
+        allowOutsideClick: false,
+        reverseButtons: true,
+      });
+      if(isConfirmed) {
+        setTimeout(uiOpenTokenPurchase, 0);
+      }
+      return;
     }
     if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
     const confirmed = await fearConfirm(
@@ -433,12 +442,21 @@ const payWithMatic = async productId => {
     const priceMaticBN = ethers.utils.parseEther(priceMatic);
     if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
     if(priceMaticBN.gt(maticBalance)) {
-      setTimeout(() => {
-        vm.selectedGameIndex = null;
-        vm.page = '/account';
-        vm.tab = 'buy';
-      }, 0)
-      throw new Error("Insufficient MATIC balance");
+      const { isConfirmed } = await Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: "Insufficient MATIC balance",
+        showCancelButton: true,
+        cancelButtonText: 'Close',
+        showConfirmButton: true,
+        confirmButtonText: 'Buy MATIC',
+        allowOutsideClick: false,
+        reverseButtons: true,
+      });
+      if(isConfirmed) {
+        setTimeout(uiOpenTokenPurchase, 0);
+      }
+      return;
     }
     const confirmed = await fearConfirm(
       `Confirm Purchase of ${name} for \$${(+priceUsd).toFixed(2)} (${(+formatEtherHuman(priceMatic)).toFixed(2)} MATIC) ?`
@@ -800,7 +818,6 @@ const boostrapApp = () => {
       //   }
       // }
     },
-    selectedGameIndex: null,
   })
   window.vm = Alpine.store('vm');
   vm.bootstrap();
@@ -862,14 +879,6 @@ const ORDER_STATUS_CLASSES_ENUM = {
   AWAITING_PAYMENT_FROM_USER: 'text-neutral-300 font-bold',
 }
 
-const setSelectedGameIndex = (index) => {
-  const htmlRootNode = document.querySelector("html");
-  htmlRootNode.style.overflow = index != null ? 'hidden' : 'auto';
-  setTimeout(() => {
-    vm.selectedGameIndex = index;
-  }, 0)
-}
-
 const getNetworth = () => {
   try {
     const OneEtherBN = ethers.utils.parseUnits('1', 'ether');
@@ -887,7 +896,6 @@ const uiOpenTokenPurchase = () => {
   setTimeout(() => {
     vm.page = '/account';
     vm.tab = 'buy';
-    vm.selectedGameIndex = null;
   }, 0)
 }
 
