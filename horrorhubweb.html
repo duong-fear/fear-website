@@ -594,7 +594,7 @@
         <div class="flex items-center justify-center gap-1 pb-4">
           <div class="px-2 text-center">
             <div class="flex justify-center items-center font-bold text-xl text-neutral-300 gap-1">
-              <span>5</span>
+              <span x-text="state.games[`_${page}`].avgRating || 'n/a'" :class="!state.games[`_${page}`].avgRating && 'opacity-50'"></span>
               <i x-html="starSVG('w-5 h-5 text-yellow-300')"></i>
             </div>
             <div>
