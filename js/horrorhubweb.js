@@ -188,7 +188,6 @@ const idToken2Signer = (email, idToken) => new Promise(async (resolve, reject) =
 const getReviewsForProduct = async _productId => {
   try {
     vm.state.running.FETCH_REVIEW = true;
-    const { email } = vm.state.user;
     vm.state.reviews = null;
     const productId = _productId || +vm.page || 0;
     const url = `${fAPIEndpoint}/productReview/${productId}`;
@@ -200,7 +199,10 @@ const getReviewsForProduct = async _productId => {
       ...r,
       content: r.content.replace(badWordsPattern, "***"),
     }));
-    vm.state.myReviews[productId] = reviews.find(r => r.email == email);
+    // const email = _.get(vm, 'state.user.email');
+    // if(email) {
+    //   vm.state.myReviews[productId] = reviews.find(r => r.email == email);
+    // }
     if(!_productId) vm.state.reviews = reviews;
     return reviews;
   } catch(exception) {
