@@ -9,6 +9,7 @@
   <script src="js/utils.js"></script>
   <script src="js/ethers@5.7.2.min.js"></script>
   <script src="js/dayjs.min.js"></script>
+  <!-- <script src="js/dayjs_utc.js"></script> -->
   <script src="/js/sweetalert2@11.js"></script>
   <script src="js/axios@1.1.3.js"></script>
   <script src="js/horrorhubweb.js"></script>
@@ -446,34 +447,34 @@
           <template x-if="tab == 'history'">
             <div class="rounded-lg bg-black-color mt-1">
               <div class="overflow-x-auto relative rounded-lg">
-                <template x-if="!state.user.transakPurchaseHistory">
+                <template x-if="!state.user.transactionHistory">
                   <div class="text-center h-32 w-full select-none text-neutral-400 flex flex-col gap-1 md:gap-2 justify-center items-center bg-neutral-900">
                     <i x-html="loadingSVG('w-4 h-4 sm:h-5 sm:w-5 md:w-6 md:h-6 text-neutral-400')"></i>
                     <span class="text-sm sm:text-base md:text-lg">Refreshing your purchase history ...</span>
                   </div>
                 </template>
-                <template x-if="Array.isArray(state.user.transakPurchaseHistory) && state.user.transakPurchaseHistory.length > 0">
+                <template x-if="Array.isArray(state.user.transactionHistory) && state.user.transactionHistory.length > 0">
                 <table class="w-full text-xs md:text-sm xl:text-base text-left text-gray-400">
                   <thead class="text-gray-50 uppercase bg-zinc-900 whitespace-nowrap">
                     <tr class="text-center">
                       <th scope="col" class="py-2 px-3">Date</th>
-                      <th scope="col" class="py-2 px-3">Token amount</th>
-                      <th scope="col" class="py-2 px-3">Fiat amount</th>
+                      <th scope="col" class="py-2 px-3">Item</th>
+                      <th scope="col" class="py-2 px-3">Cost</th>
                       <!-- <th scope="col" class="py-2 px-3">Payment method</th> -->
                       <th scope="col" class="py-2 px-3">Order Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <template x-for="order in state.user.transakPurchaseHistory">
+                    <template x-for="order in state.user.transactionHistory">
                       <tr class="border-b bg-neutral-700 border-neutral-600 text-gray-100 font-mono text-center">
                         <th scope="row" class="py-2 px-3 font-medium whitespace-nowrap text-white">
-                          <span x-text="dayjs(order.createdAt).format('DD MMM YYYY HH:mm:ss')"></span>
+                          <span x-text="order.time"></span>
                         </th>
-                        <td class="py-2 px-3 whitespace-nowrap">
-                          <span x-text="`${order.cryptoAmount} ${order.cryptoCurrency}`"></span>
+                        <td class="py-2 px-3 whitespace-nowrap font-bold">
+                          <span x-html="order.item"></span>
                         </td>
-                        <td class="py-2 px-3 whitespace-nowrap">
-                          <span x-text="`${order.fiatAmount} ${order.fiatCurrency}`"></span>
+                        <td class="py-2 px-3 whitespace-nowrap font-bold">
+                          <span x-html="order.cost"></span>
                         </td>
                         <td class="py-2 px-3 whitespace-nowrap">
                           <span x-text="order.status" :class="ORDER_STATUS_CLASSES_ENUM[order.status]"></span>
@@ -483,7 +484,7 @@
                   </tbody>
                 </table>
                 </template>
-                <template x-if="Array.isArray(state.user.transakPurchaseHistory) && state.user.transakPurchaseHistory.length == 0">
+                <template x-if="Array.isArray(state.user.transactionHistory) && state.user.transactionHistory.length == 0">
                   <div class="text-center h-32 w-full select-none text-neutral-400 flex flex-col gap-1 md:gap-2 justify-center items-center bg-neutral-900">
                     <span class="text-sm sm:text-base md:text-lg">Purchase history is empty ❌</span>
                   </div>

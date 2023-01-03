@@ -444,7 +444,7 @@ const payWithFear = async productId => {
       vm.state.games[index].totalSold += 1;
     });
     vm.state.user.purchased.push(productId);
-    await refreshUserStats();
+    await refreshBalance();
     fearSuccess(`You purchased ${name}`, {
       title: "Payment Successful",
     });
@@ -510,7 +510,7 @@ const payWithMatic = async productId => {
       if(g.id !== productId) return;
       vm.state.games[index].totalSold += 1;
     });
-    await refreshUserStats();
+    await refreshBalance();
     fearSuccess(`You owned '${name}'`, {
       title: "Payment Successful",
     });
@@ -613,7 +613,7 @@ const login = async () => {
         purchased,
         maticBalance,
         fearBalance,
-        transakPurchaseHistory: null,
+        transactionHistory: null,
       }
     }
     saveLoginData(pk);
@@ -760,29 +760,64 @@ const _giftModal = {
   token: null, // 'fear' or 'matic'
 };
 
-const refreshTransakPurchaseHistory = async () => {
-  vm.state.user.transakPurchaseHistory = null;
-  const { ethAddress } = vm.state.user;
-  // const ethAddress = '0x6f59e2b0b7d0d68ed7c733ff8f84e33d8aa4e647';
+const getTransakPurchaseHistory = async (ethAddress) => {
   const { orders } = await axios.request({
     method: "GET",
     url: `https://fearapi.azurewebsites.net/api/toolbox/orderHistory/${ethAddress}`,
   }).then(r => r.data);
-  vm.state.user.transakPurchaseHistory = orders.sort((x, y) => {
-    const dx = dayjs(x.createdAt);
-    const dy = dayjs(y.createdAt);
-    if(dx.isBefore(dy)) return -1;
-    if(dx.isAfter(dy)) return 1;
-    return 0;
-  }).reverse();
+  return orders.map(o => ({
+    ...o,
+    type: "transak",
+    time: dayjs(o.createdAt).format('DD MMM YYYY HH:mm:ss'),
+    item: `${o.cryptoAmount} ${o.cryptoCurrency}`,
+    cost: `${o.fiatAmount} ${o.fiatCurrency} <span class='text-yellow-300'>fiat</span>`,
+    status: o.status,
+  }));
 }
 
+//dayjs(o.createdAt).format('DD MMM YYYY HH:mm:ss'),
+
+const getProductPurchaseHistory = async (ethAddress) => {
+  const { games } = vm.state;
+  const totalNumberOfTransactions = (await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getTotalNumberOfTransactions()).toNumber();
+  if(totalNumberOfTransactions == 0) return [];
+  const transactions = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getTransaction(_.range(0, totalNumberOfTransactions));
+  return transactions.filter(t => t.sender === ethAddress).map(t => ({
+    type: "product",
+    time: dayjs(t.created.toNumber() * 1000).format('DD MMM YYYY HH:mm:ss'),
+    item: games.find(g => g.id == t.productId.toNumber()).name,
+    cost: formatEtherHuman(t.amount) + ` ${t.token == 0 ? 'FEAR' : 'MATIC'}`,
+    status: "COMPLETED",
+  }));
+} 
+
 const showTransakHistoryTab = () => {
-  refreshTransakPurchaseHistory();
+  vm.state.user.transactionHistory = null;
   vm.tab = 'history';
+  (async () => {
+    const { ethAddress } = vm.state.user;
+    const [
+      transakPurchaseHistory,
+      productPurchaseHistory,
+    ] = await Promise.all([
+      getTransakPurchaseHistory(ethAddress), // '0x6f59e2b0b7d0d68ed7c733ff8f84e33d8aa4e647'
+      getProductPurchaseHistory(ethAddress),
+    ]);
+    vm.state.user.transactionHistory = [
+      ...transakPurchaseHistory,
+      ...productPurchaseHistory,
+    ].sort((x, y) => {
+      const dx = dayjs(x.time);
+      const dy = dayjs(y.time);
+      if(dx.isBefore(dy)) return 1;
+      if(dx.isAfter(dy)) return -1;
+      return 0;
+    })
+  })();
 }
 
 const boostrapApp = () => {
+  // dayjs.extend(window.dayjs_plugin_utc);
   Alpine.store('vm', {
     epoch: null,
     state: {
@@ -839,7 +874,7 @@ const boostrapApp = () => {
       //     purchased: [1,2,3],
       //     maticBalance: ethers.utils.parseEther('0.120152393785011723'),
       //     fearBalance: ethers.utils.parseEther('9.925238666545487877'),
-      //     transakPurchaseHistory: null,
+      //     transactionHistory: null,
       //   },
       //   exchangeRate: {
       //     fear2Usd: ethers.utils.parseEther('0.077'),
