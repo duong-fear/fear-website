@@ -6,7 +6,7 @@ const biconomyNativeTxEndpoint = "https://api.biconomy.io/api/v2/meta-tx/native"
 
 const POLYGON_CHAINID = 137;
 const MUMBAI_CHAINID = 80001;
-const CHAINID = POLYGON_CHAINID;
+const CHAINID = MUMBAI_CHAINID;
 
 const config = {
   [POLYGON_CHAINID]: {
@@ -20,11 +20,12 @@ const config = {
   },
   [MUMBAI_CHAINID]: {
     google: {
-      client_id: "701735735157-pfasbrqls3p9eb8edbn7bjjbsflsqmvk.apps.googleusercontent.com",
+      // client_id: "701735735157-pfasbrqls3p9eb8edbn7bjjbsflsqmvk.apps.googleusercontent.com",
+      client_id: "701735735157-cdgkv7di5ihom5mdp0pflphvh2p7hjjq.apps.googleusercontent.com",
     },
     torus: {
-      network: "testnet",
-      verifier: "fear-wallet-dev",
+      network: "mainnet",
+      verifier: "fear-wallet-prd",
     },
   }
 }
@@ -36,16 +37,16 @@ const RPC_URL = {
 
 const BICONOMY_API_KEY = {
   [POLYGON_CHAINID]: 'y9lbpk5lO.40482d7f-f2d5-44e6-a24d-cf898ad97727',
-  [MUMBAI_CHAINID]: '',
+  [MUMBAI_CHAINID]: 'IgDy9onQW.43854a64-3411-4d26-9947-664adaffc913',
 }
 
 const BICONOMY_PURCHASE_BY_FEAR_TRANSFER_APPID = {
-  [POLYGON_CHAINID]: 'f9d89d0a-be38-4996-8345-df04220354b1',
-  [MUMBAI_CHAINID]: '',
+  [POLYGON_CHAINID]: '',
+  [MUMBAI_CHAINID]: '0f955092-4409-4da0-b3a8-15556e67c32b',
 }
 const BICONOMY_FEAR_METATRANSACTION_APPID = {
   [POLYGON_CHAINID]: 'dea3e094-2ff5-4190-9b07-f15885cdaf8d',
-  [MUMBAI_CHAINID]: '',
+  [MUMBAI_CHAINID]: 'caff8745-6960-4921-a25d-86f457b4e936',
 }
 
 const RPC_PROVIDER = {
@@ -73,8 +74,8 @@ const CONTRACT = {
     }
   },
   HORRORHUB_WEB_SALE: {
-    [POLYGON_CHAINID]: "0x3fac9fabfe02a83945d733c72bd871cd940e8395",
-    [MUMBAI_CHAINID]: '0xCD46A312F947266730d9DB460685369E70c34D96',
+    [POLYGON_CHAINID]: "",
+    [MUMBAI_CHAINID]: '0x2c533ef69f0613b9915A621F914255d88EbF7175',
     ABI: HORRORHUB_WEB_SALE_ABI,
     instanceForChain(chainId) {
       return new ethers.Contract(
@@ -104,6 +105,7 @@ const biconomyExecTransaction = async (apiId, params, gasLimit) => {
   );
   const txHash = _.get(data, 'txHash');
   const error = _.get(data, 'error');
+  const message = _.get(data, 'message');
   const flag = _.get(data, 'flag');
   const log = _.get(data, 'log');
   if(txHash) {
@@ -111,7 +113,7 @@ const biconomyExecTransaction = async (apiId, params, gasLimit) => {
     RPC_PROVIDER[CHAINID].waitForTransaction(txHash, 2);
     return txHash;
   }
-  throw new Error(error || `unknown biconomy error ( flag: ${flag} / log: ${log} )`);
+  throw new Error(error || `unknown biconomy error ( message: ${message} / log: ${log} )`);
 }
 
 const generateFearTransferMetaSignature = async (toAddress, amountBN) => {
@@ -251,12 +253,14 @@ const refreshUserStats = async () => {
 const fetchInitialAppState = async () => {  
   const [
     priceForAllProducts,
-    { productList },
+    productList,
     exchangeRate,
+    totalSoldStats,
   ] = await Promise.all([
     getPriceForAllProducts(),
     getProductList(),
     getExchangeRate(),
+    getTotalSoldStats(),
   ]);
   vm.state.exchangeRate = exchangeRate;
   const games = productList.map(p => ({
@@ -265,6 +269,7 @@ const fetchInitialAppState = async () => {
     priceUsd: formatEther( priceForAllProducts[+p.rowKey].usd ),
     priceMatic: formatEther( priceForAllProducts[+p.rowKey].matic ),
     priceFear: formatEther( priceForAllProducts[+p.rowKey].fear ),
+    totalSold: totalSoldStats[+p.rowKey],
   }));
   games.forEach(product => {
     games[`_${product.id}`] = product;
@@ -274,14 +279,26 @@ const fetchInitialAppState = async () => {
 
 const getExchangeRate = async () => {
   const [fear2Usd, matic2Usd] = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getExchangeRate();
+  console.log(`fear2Usd = ${formatEther(fear2Usd)} matic2Usd = ${formatEther(matic2Usd)}`);
   return {
     fear2Usd,
     matic2Usd,
   };
 }
 
-const getProductList = async () => {
-  return await axios.get(`${fAPIEndpoint}/getProductList`).then(r => r.data);
+const getProductList = async (updateState = false) => {
+  const { productList } = await axios.get(`${fAPIEndpoint}/getProductList`).then(r => r.data);
+  if(updateState) {
+    vm.state.games.forEach((g, index) => {
+      vm.state.games[index].avgRating = productList.find(p => +p.rowKey === g.id).avgRating;
+    });
+  }
+  return productList;
+}
+
+const getTotalSoldStats = async () => {
+  const result = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getProductsTotalSold();
+  return _.zipObject(...result.map(a => a.map(b => b.toNumber())))
 }
 
 const qaList = [
@@ -364,7 +381,7 @@ const payWithFear = async productId => {
   try {
     vm.state.running.PAY_WITH_FEAR = productId;
     const signer = window.signer;
-    const { fearBalance } = vm.state.user;
+    const { fearBalance, ethAddress } = vm.state.user;
     const { name, priceFear, priceUsd } = vm.state.games.find(g => g.id == productId);
     const priceFearBN = ethers.utils.parseEther(priceFear);
     if(priceFearBN.gt(fearBalance)) {
@@ -395,7 +412,7 @@ const payWithFear = async productId => {
       priceFearBN,
     );
     const gasPrice = await getRecommendedGasPrice();
-    const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByTransferMeta(productId, a, r, s, v);
+    const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByTransferMeta(productId, a, ethAddress, r, s, v);
     // +10% for est. gas limit
     const gasLimit = estGasLimit.mul(110).div(100);
     // method 1: directly via user wallet
@@ -415,12 +432,17 @@ const payWithFear = async productId => {
       [
         productId,
         a,
+        ethAddress,
         r,
         s,
         v,
       ],
       gasLimit.toNumber(),
     );
+    vm.state.games.forEach((g, index) => {
+      if(g.id !== productId) return;
+      vm.state.games[index].totalSold += 1;
+    });
     vm.state.user.purchased.push(productId);
     await refreshUserStats();
     fearSuccess(`You purchased ${name}`, {
@@ -440,7 +462,7 @@ const payWithMatic = async productId => {
     vm.state.running.PAY_WITH_MATIC = productId;
     const signer = window.signer;
     const { name, priceMatic, priceUsd } = vm.state.games.find(g => g.id == productId);
-    const { maticBalance } = vm.state.user;
+    const { maticBalance, ethAddress } = vm.state.user;
     const priceMaticBN = ethers.utils.parseEther(priceMatic);
     if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
     if(priceMaticBN.gt(maticBalance)) {
@@ -465,7 +487,7 @@ const payWithMatic = async productId => {
     );
     if(!confirmed) return;
     const gasPrice = await getRecommendedGasPrice();
-    const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByMatic(productId, {
+    const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByMatic(productId, ethAddress, {
       value: priceMaticBN,
     })
     // +10% for est. gas limit
@@ -474,6 +496,7 @@ const payWithMatic = async productId => {
     console.log(`gasFee`, gasFee);
     const tx = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).connect(signer).purchaseByMatic(
       productId,
+      ethAddress,
       {
         value: priceMaticBN.sub(gasFee),
         gasLimit,
@@ -483,6 +506,10 @@ const payWithMatic = async productId => {
     console.log(`payWithMatic txHash`, tx.hash);
     await tx.wait(2);
     vm.state.user.purchased.push(productId);
+    vm.state.games.forEach((g, index) => {
+      if(g.id !== productId) return;
+      vm.state.games[index].totalSold += 1;
+    });
     await refreshUserStats();
     fearSuccess(`You owned '${name}'`, {
       title: "Payment Successful",
@@ -536,7 +563,7 @@ const exchangeCodeForToken = async (code) => {
     url: `${fAPIEndpoint}/exchangeCodeForTokens`,
     data: {
       code,
-      mainnet: CHAINID === POLYGON_CHAINID,
+      mainnet: true,
     },
   }).then(r => r.data);
   return tokens;
@@ -860,7 +887,13 @@ const submitProductReview = async (productId, content, rating, callback) => {
         avatar: picture,
       }
     }).then(r => r.data);
-    vm.state.reviews = await getReviewsForProduct(productId);
+    const [
+      reviews,
+    ] = await Promise.all([
+      getReviewsForProduct(productId),
+      getProductList(true)
+    ]);
+    vm.state.reviews = reviews;
     fearSuccess("Review submited. Thank you");
     if(typeof callback === 'function') callback();
   } catch(exception) {
