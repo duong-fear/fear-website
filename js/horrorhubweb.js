@@ -376,12 +376,13 @@ const stepList = [
   q: `Step ${index+1}: ${item.q}`,
 }));
 
-const payWithFear = async productId => {
+const payWithFear = async (productId, receiverOptions = {}) => {
   if(vm.state.running.PAY_WITH_FEAR === productId) return;
   try {
     vm.state.running.PAY_WITH_FEAR = productId;
-    const signer = window.signer;
-    const { fearBalance, ethAddress } = vm.state.user;
+    const { fearBalance, ethAddress, email } = vm.state.user;
+    const receiverAddress = _.get(receiverOptions, 'ethAddress', ethAddress);
+    const receiverEmail = _.get(receiverOptions, 'email', email); // gift product
     const { name, priceFear, priceUsd } = vm.state.games.find(g => g.id == productId);
     const priceFearBN = ethers.utils.parseEther(priceFear);
     if(priceFearBN.gt(fearBalance)) {
@@ -401,9 +402,10 @@ const payWithFear = async productId => {
       }
       return;
     }
-    if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
+    const ownedProductByReceiver = await getPurchasedProducts(receiverAddress);
+    if(ownedProductByReceiver.includes(productId)) throw new Error("The receiver already owned the product");
     const confirmed = await fearConfirm(
-      `Confirm Purchase of ${name} for \$${(+priceUsd).toFixed(2)} (${(+formatEtherHuman(priceFearBN)).toFixed(2)} FEAR) ?`
+      `Confirm ${receiverEmail == email ? 'Purchase' : 'Gift'} of ${name} ${receiverEmail == email ? '' : `to ${receiverEmail} `}for \$${(+priceUsd).toFixed(2)} (${(+formatEtherHuman(priceFearBN)).toFixed(2)} FEAR) ?`
     );
     if(!confirmed) return;
     const { a, r, s, v, } = await generateFearTransferMetaSignature(
@@ -411,9 +413,7 @@ const payWithFear = async productId => {
       "0xAf98aE477c5C2394b92aC75767753cbDaF152f12",
       priceFearBN,
     );
-    const gasPrice = await getRecommendedGasPrice();
-    const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByTransferMeta(productId, a, ethAddress, r, s, v);
-    // +10% for est. gas limit
+    const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByTransferMeta(productId, a, receiverAddress, r, s, v);
     const gasLimit = estGasLimit.mul(110).div(100);
     // method 1: directly via user wallet
     // const tx = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).connect(signer).purchaseByTransferMeta(
@@ -424,7 +424,6 @@ const payWithFear = async productId => {
     //     gasPrice,
     //   },
     // );
-    // console.log(`payWithFear txHash`, tx.hash);
     // await tx.wait(2);
     // method 2: via biconomy
     await biconomyExecTransaction(
@@ -432,7 +431,7 @@ const payWithFear = async productId => {
       [
         productId,
         a,
-        ethAddress,
+        receiverAddress,
         r,
         s,
         v,
@@ -443,11 +442,14 @@ const payWithFear = async productId => {
       if(g.id !== productId) return;
       vm.state.games[index].totalSold += 1;
     });
-    vm.state.user.purchased.push(productId);
+    if(receiverEmail == email) vm.state.user.purchased.push(productId);
     await refreshBalance();
-    fearSuccess(`You purchased ${name}`, {
+    fearSuccess(
+      receiverEmail == email ? `You purchased ${name}` : `Gift has sent to ${receiverEmail}`,
+      {
       title: "Payment Successful",
-    });
+      },
+    );
   } catch(exception) {
     console.error("payWithFear() error", exception);
     fearError(getExceptionDetails(exception).message);
@@ -456,15 +458,18 @@ const payWithFear = async productId => {
   }
 }
 
-const payWithMatic = async productId => {
+const payWithMatic = async (productId, receiverOptions = {}) => {
   if(vm.state.running.PAY_WITH_MATIC === productId) return;
   try {
     vm.state.running.PAY_WITH_MATIC = productId;
     const signer = window.signer;
     const { name, priceMatic, priceUsd } = vm.state.games.find(g => g.id == productId);
-    const { maticBalance, ethAddress } = vm.state.user;
+    const { maticBalance, ethAddress, email } = vm.state.user;
+    const receiverAddress = _.get(receiverOptions, 'ethAddress', ethAddress);
+    const receiverEmail = _.get(receiverOptions, 'email', email); // gift product
     const priceMaticBN = ethers.utils.parseEther(priceMatic);
-    if(vm.state.user.purchased.includes(productId)) throw new Error("Product already purchased");
+    const ownedProductByReceiver = await getPurchasedProducts(receiverAddress);
+    if(ownedProductByReceiver.includes(productId)) throw new Error("The receiver already owned the product");
     if(priceMaticBN.gt(maticBalance)) {
       const { isConfirmed } = await Swal.fire({
         icon: 'error',
@@ -483,11 +488,11 @@ const payWithMatic = async productId => {
       return;
     }
     const confirmed = await fearConfirm(
-      `Confirm Purchase of ${name} for \$${(+priceUsd).toFixed(2)} (${(+formatEtherHuman(priceMatic)).toFixed(2)} MATIC) ?`
+      `Confirm ${receiverEmail === email ? 'Purchase' : 'Gift'} of ${name} ${receiverEmail == email ? '' : `to ${receiverEmail} `}for \$${(+priceUsd).toFixed(2)} (${(+formatEtherHuman(priceMatic)).toFixed(2)} MATIC) ?`
     );
     if(!confirmed) return;
     const gasPrice = await getRecommendedGasPrice();
-    const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByMatic(productId, ethAddress, {
+    const estGasLimit = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).estimateGas.purchaseByMatic(productId, receiverAddress, {
       value: priceMaticBN,
     })
     // +10% for est. gas limit
@@ -496,7 +501,7 @@ const payWithMatic = async productId => {
     console.log(`gasFee`, gasFee);
     const tx = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).connect(signer).purchaseByMatic(
       productId,
-      ethAddress,
+      receiverAddress,
       {
         value: priceMaticBN.sub(gasFee),
         gasLimit,
@@ -505,15 +510,18 @@ const payWithMatic = async productId => {
     );
     console.log(`payWithMatic txHash`, tx.hash);
     await tx.wait(2);
-    vm.state.user.purchased.push(productId);
+    if(receiverEmail == email) vm.state.user.purchased.push(productId);
     vm.state.games.forEach((g, index) => {
       if(g.id !== productId) return;
       vm.state.games[index].totalSold += 1;
     });
     await refreshBalance();
-    fearSuccess(`You owned '${name}'`, {
+    fearSuccess(
+      receiverEmail == email ? `You owned '${name}'` : `Gift has sent to ${receiverEmail}`,
+      {
       title: "Payment Successful",
-    });
+      },
+    );
   } catch(exception) {
     console.error("payWithMatic() error", exception);
     fearError(getExceptionDetails(exception).message);
@@ -550,10 +558,10 @@ const downloadGame = async (productId) => {
   }
 }
 
-const getPurchasedProducts = async (walletAddress) => {
-  const purchasedBN = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getPurchased(walletAddress);
+const getPurchasedProducts = async (ethAddress) => {
+  const purchasedBN = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getPurchased(ethAddress);
   const purchased = purchasedBN.map(p => p.toNumber());
-  if(_.get(vm, 'state.user.purchased')) vm.state.user.purchased = purchased;
+  // if(_.get(vm, 'state.user.purchased')) vm.state.user.purchased = purchased;
   return purchased;
 }
 
@@ -670,6 +678,24 @@ const lookupEthAddressGiftModal = async () => {
     vm.state.running.GIFT_MODAL_FIND_ETH_ADDRESS = false;
   }
 }
+
+const lookupEthAddressProductGiftModal = async () => {
+  vm.state.running.PRODUCT_GIFT_MODAL_FIND_ETH_ADDRESS = true;
+  try {
+    const email = _.get(vm, 'state.modal.GIFT_PRODUCT.email');
+    if(typeof email !== 'string' || !isValidEmailAddress(email)) throw new Error("Please input a valid email address");
+    vm.state.modal.GIFT_PRODUCT.ethAddress = '';
+    const verifier = config[CHAINID].torus.verifier;
+    const network = config[CHAINID].torus.network;
+    const pubAddress = await email2TorusAddress(network, verifier, email);
+    vm.state.modal.GIFT_PRODUCT.ethAddress = pubAddress;
+  } catch(exception) {
+    fearError(getExceptionDetails(exception).message);
+  } finally {
+    vm.state.running.PRODUCT_GIFT_MODAL_FIND_ETH_ADDRESS = false;
+  }
+}
+
 
 const sendFear = async (toAddress, amountBN) => {
   const { functionSignature, r, s, v, } = await generateFearTransferMetaSignature(
@@ -833,19 +859,21 @@ const boostrapApp = () => {
         DOWNLOAD_GAME: false,
         PAY_WITH_FEAR: false,
         PAY_WITH_MATIC: false,
+        GIFT_WITH_FEAR: false,
+        GIFT_WITH_MATIC: false,
         GIFT_MODAL_FIND_ETH_ADDRESS: false,
         GIFT_MODAL_SEND: false,
         SUBMIT_REVIEW: false,
         REFRESH_BALANCE: false,
         FETCH_REVIEW: false,
+        PRODUCT_GIFT_MODAL_FIND_ETH_ADDRESS: false,
       },
       modal: {
-        FILMS: false,
+        GIFT_PRODUCT: null,
       },
     },
     page: '/', // '/' or `/faqs` or `/guide` or `:productId` (product page)
     tab: 'balance', // `Account` page (also avaiable: `history`, ``)
-    showGiftModal: false,
     qaList,
     stepList,
     bootstrap: async () => {
@@ -1068,9 +1096,52 @@ const refreshBalance = async () => {
   }
 }
 
-const openModal = (key) => {
-  vm.state.modal[key] = true;
+const openModal = (key, options = {}) => {
+  vm.state.modal[key] = options;
 }
 const closeModal = (key) => {
-  vm.state.modal[key] = false;
+  vm.state.modal[key] = null;
+}
+
+
+// product gifting
+
+const giftWithFear = async (productId, note = '') => {
+  try {
+    vm.state.running.GIFT_WITH_FEAR = true;
+    const email = _.get(vm, 'state.modal.GIFT_PRODUCT.email').toLowerCase();
+    const ethAddress = _.get(vm, 'state.modal.GIFT_PRODUCT.ethAddress');
+    await payWithFear(productId, {
+      ethAddress,
+      email,
+      note,
+    });
+    // fearSuccess(`Gift sent to ${email} 🎉`);
+  }
+  catch(exception) {
+    console.error("giftWithFear() error", exception);
+    fearError(getExceptionDetails(exception).message);
+  } finally {
+    vm.state.running.GIFT_WITH_FEAR = false;
+  }
+}
+
+const giftWithMatic = async (productId, note = '') => {
+  try {
+    vm.state.running.GIFT_WITH_MATIC = true;
+    const email = _.get(vm, 'state.modal.GIFT_PRODUCT.email').toLowerCase();
+    const ethAddress = _.get(vm, 'state.modal.GIFT_PRODUCT.ethAddress');
+    await payWithMatic(productId, {
+      ethAddress,
+      email,
+      note,
+    });
+    // fearSuccess(`Gift sent to ${email} 🎉`);
+  }
+  catch(exception) {
+    console.error("giftWithMatic() error", exception);
+    fearError(getExceptionDetails(exception).message);
+  } finally {
+    vm.state.running.GIFT_WITH_MATIC = false;
+  }
 }

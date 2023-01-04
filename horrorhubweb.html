@@ -234,7 +234,7 @@
   <div class="container mx-auto flex-1 flex max-w-6xl">
     <template x-if="!!state && page === '/'">
       <div class="w-full" :class="state.games ? 'block' : 'flex flex-col'">
-      <div class="text-neutral-100 rounded-md p-1 sm:p-2 mx-2 sm:mx-0 mt-2 md:mt-4 text-center text-sm sm:text-base">
+      <div class="text-neutral-100 rounded-md p-1 sm:p-2 mx-2 sm:mx-0 mt-2 md:mt-4 text-center text-sm sm:text-base select-none">
         <span><b>The Horror Hub</b> - Experience the most Viral, Horrific and Hilarious FEAR Games, Films and Animations.</span>
       </div>
       <template x-if="!state.games">
@@ -268,11 +268,11 @@
               <div class="flex justify-between items-center text-sm sm:text-base md:text-lg gap-1">
                 <div class="flex items-center px-2 pb-1 gap-1 font-bold">
                   <span x-text="g.avgRating" class="text-neutral-300"></span>
-                  <i x-html="starSVG('w-4 h-4 sm:h-5 sm:w-5 text-yellow-300')"></i>
+                  <i x-html="starSVG('w-4 h-4 sm:h-5 sm:w-5 text-red')"></i>
                 </div>
-                <div class="flex items-center px-2 pb-1 gap-1">
-                  <span x-text="`${g.totalSold}`" class="font-bold text-neutral-300"></span>
-                  <span class="text-neutral-400">sold</span>
+                <div class="flex items-center px-2 pb-1 gap-1 text-neutral-300">
+                  <i x-html="downloadCircleSVG('w-4 h-4 sm:h-5 sm:w-5')"></i>
+                  <span x-text="`${g.totalSold}`" class="font-bold"></span>
                 </div>
               </div>
             </div>
@@ -606,7 +606,7 @@
           <div class="px-2 text-center">
             <div class="flex justify-center items-center font-bold text-xl text-neutral-300 gap-1">
               <span x-text="state.games[`_${page}`].avgRating || 'n/a'" :class="!state.games[`_${page}`].avgRating && 'opacity-50'"></span>
-              <i x-html="starSVG('w-5 h-5 text-yellow-300')"></i>
+              <i x-html="starSVG('w-5 h-5 text-red')"></i>
             </div>
             <div>
               <span class="uppercase text-neutral-400 text-xs">avg. rating</span>
@@ -660,6 +660,12 @@
                 </span>
                 <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_MATIC !== false"></i>
               </button>
+              <button
+                @click="openModal('GIFT_PRODUCT', { productId: page })"
+                class="border-0 my-3 select-none uppercase py-4 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                Gift 🎁
+              </button>
             </div>
           </div>
           <!-- download button when loged in and game has purchased -->
@@ -681,6 +687,12 @@
               x-show="!showProductReviewBox"
             >
               <span>Review</span>
+            </button>
+            <button
+              @click="openModal('GIFT_PRODUCT', { productId: page })"
+              class="border-0 mx-2 my-3 select-none uppercase py-4 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              Gift 🎁
             </button>
             <button
               class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-fuchsia-800 text-fuchsia-100 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
@@ -708,48 +720,30 @@
           </div>
         </div>
         <div class="left-0 sm:left-auto fixed bottom-0 left-0 container max-w-6xl backdrop-blur-lg backdrop-brightness-50 z-10 text-sm md:text-base" x-show="showProductReviewBox">
-            <div class="text-neutral-300 text-center text-base py-2 pt-3 font-bold">
-              <span>We would highly appreciated your feedback</span>
-            </div>
-            <div class="p-2">
-              <textarea x-model="content" class="ring-2 ring-neutral-700 resize-none p-2 w-full h-32 rounded-md text-neutral-800 bg-neutral-300" :placeholder="`Write review as '${state.user.name}' ...`"></textarea>
-            </div>
-            <div class="flex justify-center items-center py-2">
-              <template x-for="i in _.range(1, 6)">
-                <i x-html="starSVG('w-12 h-12')" class="cursor-pointer" @click="rating = i" :class="i <= rating ? 'text-yellow-300' : 'text-neutral-400 opacity-30'"></i>
-              </template>
-            </div>
-            <div class="flex" x-show="state.user && state.user.purchased.includes(page)">
-              <button class="text-neutral-100 pl-3" @click="showProductReviewBox = false">
-                <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
-              </button>
-              <button
-                class="mx-2 my-3 select-none uppercase py-4 flex-1 fear-button-white neon-red font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
-                @click="submitProductReview(page, content, rating, () => {showProductReviewBox = false; content = ''; rating = 5;})"
-                :disabled="vm.state.running.SUBMIT_REVIEW"
-              >
-                <span>SUBMIT</span>
-              </button>
-            </div>
+          <div class="text-neutral-300 text-center text-base py-2 pt-3 font-bold">
+            <span>We would highly appreciated your feedback</span>
           </div>
-        <!-- comment add box -->
-        <!-- <div>
-          <textarea class="w-full rounded-md p-2 bg-neutral-200 text-neutral-900 focus:outline-neutral-600 h-32" placeholder="write review as some1 ..."></textarea>
-          <div class="flex items-center justify-between py-2">
-            <div class="flex items-center">
-              <i x-html="starSVG('w-6 h-6 text-yellow-300 cursor-pointer')"></i>
-              <i x-html="starSVG('w-6 h-6 text-yellow-300 cursor-pointer')"></i>
-              <i x-html="starSVG('w-6 h-6 text-yellow-300 cursor-pointer')"></i>
-              <i x-html="starSVG('w-6 h-6 text-yellow-300 cursor-pointer')"></i>
-              <i x-html="starSVG('w-6 h-6 text-yellow-300 cursor-pointer')"></i>
-            </div>
-            <div>
-              <button
-                class="rounded-md fear-button-white px-2 py-1 neon-red"
-              >Submit</button>
-            </div>
+          <div class="p-2">
+            <textarea x-model="content" class="ring-2 ring-neutral-700 resize-none p-2 w-full h-32 rounded-md text-neutral-800 bg-neutral-300" :placeholder="`Write review as '${state.user.name}' ...`"></textarea>
           </div>
-        </div> -->
+          <div class="flex justify-center items-center py-2">
+            <template x-for="i in _.range(1, 6)">
+              <i x-html="starSVG('w-12 h-12')" class="cursor-pointer" @click="rating = i" :class="i <= rating ? 'text-red' : 'text-neutral-400 opacity-30'"></i>
+            </template>
+          </div>
+          <div class="flex" x-show="state.user && state.user.purchased.includes(page)">
+            <button class="text-neutral-100 pl-3" @click="showProductReviewBox = false">
+              <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
+            </button>
+            <button
+              class="mx-2 my-3 select-none uppercase py-4 flex-1 fear-button-white neon-red font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+              @click="submitProductReview(page, content, rating, () => {showProductReviewBox = false; content = ''; rating = 5;})"
+              :disabled="vm.state.running.SUBMIT_REVIEW"
+            >
+              <span>SUBMIT</span>
+            </button>
+          </div>
+        </div>
         <div class="border-l-4 border-solid border-red-600 pl-2 my-2 font-bold">
           <span>Reviews</span>
         </div>
@@ -776,7 +770,7 @@
                     <span class="font-bold" x-text="review.name"></span>
                     <div class="flex">
                       <template x-for="i in _.range(0, review.rating)">
-                        <i x-html="starSVG('w-4 h-4 text-yellow-300')"></i>
+                        <i x-html="starSVG('w-4 h-4 text-red')"></i>
                       </template>
                       <template x-for="i in _.range(0, 5 - review.rating)">
                         <i x-html="starSVG('w-4 h-4 text-neutral-400 opacity-30')"></i>
@@ -798,6 +792,82 @@
     </template>
   </div>
   <!-- footer -->
+  <!-- modals -->
+  <div
+    x-transition.duration.100ms
+    class="fixed top-0 left-0 w-full h-full backdrop-blur-sm backdrop-brightness-50 flex items-center justify-center z-10"
+    x-show="state && state.modal.GIFT_PRODUCT"  
+  >
+    <template x-if="state.modal.GIFT_PRODUCT">
+    <div class="p-2 sm:p-3 md:p-4 rounded bg-neutral-800 border-2 md:border-4 border-solid border-neutral-700 text-neutral-100 w-full max-w-sm sm:max-w-md md:max-w-lg">
+      <div class="flex pb-4 text-lg justify-between items-center">
+        <span>Gift <b x-text="state.games[`_${state.modal.GIFT_PRODUCT.productId}`].name"></b> to your friend</span>
+        <button
+          @click="closeModal('GIFT_PRODUCT')"
+          class="p-1"
+          :disabled="state.running.PRODUCT_GIFT_MODAL_FIND_ETH_ADDRESS"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="rounded-md p-2 mb-4 border-dashed border-2 border-neutral-700">
+        <span>Enter your friend's email address and press on <b>Search</b> button.<br/>We will find their <b>Fear Wallet</b> address for you</span>
+      </div>
+      <div class="flex items-center justify-center gap-1">
+        <label for="productGiftEmailAddress" class="flex-1 self-stretch flex justify-center items-center gap-1 bg-neutral-600 rounded px-2 py-2">
+          <span class="text-neutral-300 select-none">Email</span>
+          <input
+            class="h-full flex-1 bg-neutral-600 outline-none text-right font-bold disabled:cursor-not-allowed"
+            type="text" autocomplete="off" id="productGiftEmailAddress"
+            x-model="state.modal.GIFT_PRODUCT.email"
+            @keyup.enter="lookupEthAddressProductGiftModal" :disabled="state.running.PRODUCT_GIFT_MODAL_FIND_ETH_ADDRESS"
+          />
+        </label>
+        <button
+          class="self-stretch bg-neutral-300 text-neutral-700 select-none px-3 py-2 rounded disabled:bg-neutral-500 flex justify-center items-center gap-1 disabled:cursor-not-allowed"
+          @click="lookupEthAddressProductGiftModal"
+          :disabled="state.running.PRODUCT_GIFT_MODAL_FIND_ETH_ADDRESS"
+        >     
+          <i x-show="!state.running.PRODUCT_GIFT_MODAL_FIND_ETH_ADDRESS" x-html="searchSVG('h-3 w-3 sm:h-4 sm:w-4 md:w-5 md:h-5')"></i>
+          <i x-show="state.running.PRODUCT_GIFT_MODAL_FIND_ETH_ADDRESS" x-html="loadingSVG('h-3 w-3 sm:h-4 sm:w-4 md:w-5 md:h-5')"></i>
+        </button>
+      </div>
+      <div class="mt-2 border-l-4 pl-1 sm:pl-2 border-red border-solid select-none" x-show="state.modal.GIFT_PRODUCT.ethAddress" x-transition.duration.50ms>
+        <span class="font-bold">Found </span>
+        <a :href="generateBlockscanUrlForAddress(CHAINID, state.modal.GIFT_PRODUCT.ethAddress)" target="_blank" x-text="state.modal.GIFT_PRODUCT.ethAddress" class="text-cyan-500 font-bold"></a>
+      </div>
+      <div class="flex items-center gap-2 pt-2 justify-end select-none" x-show="state.modal.GIFT_PRODUCT.ethAddress" x-transition.duration.50ms>
+        <button
+          @click="giftWithFear(state.modal.GIFT_PRODUCT.productId)"
+          class="border-0 my-2 select-none uppercase py-2 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+          :disabled="state.running.GIFT_WITH_FEAR || state.running.GIFT_WITH_MATIC"
+        >
+          <span>
+            <span>Pay</span>
+            <span class="font-bold" x-text="formatEtherHuman(state.games[`_${state.modal.GIFT_PRODUCT.productId}`].priceFear)"></span>
+            <span class="font-bold">FEAR</span>
+          </span>
+          <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.GIFT_WITH_FEAR !== false"></i>
+        </button>
+        <span>OR</span>
+        <button
+          @click="giftWithMatic(state.modal.GIFT_PRODUCT.productId)"
+          class="border-0 my-2 select-none uppercase py-2 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+          :disabled="state.running.GIFT_WITH_FEAR || state.running.GIFT_WITH_MATIC"
+        >
+          <span>
+            <span>Pay</span>
+            <span class="font-bold" x-text="formatEtherHuman(state.games[`_${state.modal.GIFT_PRODUCT.productId}`].priceMatic)"></span>
+            <span class="font-bold">MATIC</span>
+          </span>
+          <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.GIFT_WITH_MATIC"></i>
+        </button>
+      </div>
+    </div>
+    </template>
+  </div>
   <!-- footer will be hidden on product page so the action button can take the bottom -->
   <div
     class="w-full mx-auto max-w-screen-xl text-gray-400 text-xs"
