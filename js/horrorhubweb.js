@@ -1145,3 +1145,11 @@ const giftWithMatic = async (productId, note = '') => {
     vm.state.running.GIFT_WITH_MATIC = false;
   }
 }
+
+// mock
+const productImageList = [
+  'games/blood-realms/images/blood-realms-screenshot-4.jpg',
+  'games/the-crypt/images/the-crypt-demons-2.jpg',
+  'games/clucking-hell/images/clucking-hell-frostbite-menu.jpg',
+  'games/blood-realms/images/blood-realms-screenshot-1.jpg',
+];

@@ -636,7 +636,7 @@
           <span x-html="state.games[`_${page}`].description"></span>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-4 p-2">
-          <a href="games/blood-realms/images/blood-realms-screenshot-4.jpg" data-fancybox="gallery" class="flex items-center justify-center">
+          <!-- <a href="games/blood-realms/images/blood-realms-screenshot-4.jpg" data-fancybox="gallery" class="flex items-center justify-center">
             <img src="games/blood-realms/images/blood-realms-screenshot-4.jpg" class="rounded-md" />
           </a>
           <a href="games/the-crypt/images/the-crypt-demons-2.jpg" data-fancybox="gallery" class="flex items-center justify-center">
@@ -647,7 +647,12 @@
           </a>
           <a href="games/blood-realms/images/blood-realms-screenshot-1.jpg" data-fancybox="gallery" class="flex items-center justify-center">
             <img src="games/blood-realms/images/blood-realms-screenshot-1.jpg" class="rounded-md" />
-          </a>
+          </a> -->
+          <template x-for="src in productImageList">
+            <a :href="src" data-fancybox="gallery" class="flex items-center justify-center">
+              <img :src="src" class="rounded-md" />
+            </a>
+          </template>
         </div>
         <!-- action button: login | buy / download / review -->
         <div class="left-0 sm:left-auto fixed bottom-0 left-0 container max-w-6xl backdrop-blur-lg backdrop-brightness-200 z-10 text-sm md:text-base" x-show="!showProductReviewBox">
