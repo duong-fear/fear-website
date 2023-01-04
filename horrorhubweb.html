@@ -1,3 +1,4 @@
+<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,6 +22,12 @@
   <script src="https://cdn.transak.com/js/sdk/transak-v1.js" async></script>
   <script src="js/clipboard.min.js" async defer></script>
   <script src="https://apis.google.com/js/client:platform.js?onload=boostrapAppGAPI" async defer></script>
+  <!-- <link rel="stylesheet" href="assets/css/fancybox.min.css"> -->
+  <script src="js/fancybox.4.js"></script>
+  <link
+  rel="stylesheet"
+  href="css/fancybox.4.css"
+/>
   
   <style>
     /* https://1.bp.blogspot.com/-CVtA3rJ0f6Y/X7IW2YrKfcI/AAAAAAAAGCQ/4ZXJbscMKgwaCO95LXAovSieWS1Em14ygCPcBGAYYCw/s1440/Averta%2BFull%2Bfont%2B6.jpg */
@@ -627,6 +634,20 @@
         </div> -->
         <div class="rounded-md text-neutral-300">
           <span x-html="state.games[`_${page}`].description"></span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-4 p-2">
+          <a href="games/blood-realms/images/blood-realms-screenshot-4.jpg" data-fancybox="gallery" class="flex items-center justify-center">
+            <img src="games/blood-realms/images/blood-realms-screenshot-4.jpg" class="rounded-md" />
+          </a>
+          <a href="games/the-crypt/images/the-crypt-demons-2.jpg" data-fancybox="gallery" class="flex items-center justify-center">
+            <img src="games/the-crypt/images/the-crypt-demons-2.jpg" class="rounded-md" />
+          </a>
+          <a href="games/clucking-hell/images/clucking-hell-frostbite-menu.jpg" data-fancybox="gallery" class="flex items-center justify-center">
+            <img src="games/clucking-hell/images/clucking-hell-frostbite-menu.jpg" class="rounded-md" />
+          </a>
+          <a href="games/blood-realms/images/blood-realms-screenshot-1.jpg" data-fancybox="gallery" class="flex items-center justify-center">
+            <img src="games/blood-realms/images/blood-realms-screenshot-1.jpg" class="rounded-md" />
+          </a>
         </div>
         <!-- action button: login | buy / download / review -->
         <div class="left-0 sm:left-auto fixed bottom-0 left-0 container max-w-6xl backdrop-blur-lg backdrop-brightness-200 z-10 text-sm md:text-base" x-show="!showProductReviewBox">
