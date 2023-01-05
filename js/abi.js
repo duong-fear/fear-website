@@ -397,6 +397,25 @@ const FEAR_TOKEN_ABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
+  // faucet
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "faucet",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
 ];
 
 const FEAR_STAKE_POOL_ABI = [

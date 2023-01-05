@@ -943,12 +943,13 @@ const ORDER_STATUS_CLASSES_ENUM = {
   AWAITING_PAYMENT_FROM_USER: 'text-neutral-300 font-bold',
 }
 
-const getNetworth = () => {
+const getNetworth = (noFloat = false) => {
   try {
     const OneEtherBN = ethers.utils.parseUnits('1', 'ether');
     const { fear2Usd, matic2Usd } = vm.state.exchangeRate;
     const { fearBalance, maticBalance } = vm.state.user;
-    const networthBN = fear2Usd.mul(fearBalance).div(OneEtherBN).add( matic2Usd.mul(maticBalance).div(OneEtherBN) );
+    let networthBN = fear2Usd.mul(fearBalance).div(OneEtherBN).add( matic2Usd.mul(maticBalance).div(OneEtherBN) );
+    if(noFloat) networthBN = networthBN.div(OneEtherBN).mul(OneEtherBN);
     return `$ ${formatEtherHuman(networthBN)}`;
   } catch {
     return '$ n/a';
