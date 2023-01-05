@@ -267,7 +267,7 @@
       </div> -->
       <div class="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-2 mt-2">
         <template x-for="(g, index) in state.games">
-          <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="page = g.id">
+          <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="routerNavigate(`game/${g.id}`)">
             <div class="shadow-md p-1 bg-neutral-900 rounded-md h-full flex flex-col">
               <div class="relative">
                 <img :src="g.splash" class="w-40 sm:w-52 md:w-60 lg:w-64 rounded-md aspect-square shadow-md">
@@ -336,44 +336,6 @@
         </div>
       </div>
     </template>
-    <template x-if="!!state && page === '/guide'">
-      <div class="px-2 flex-1">
-        <template x-for="item of stepList">
-          <div class="mt-2">
-            <button
-              class="flex w-full justify-between rounded-md px-3 py-2 text-left text-sm lg:text-base text-neutral-100 bg-neutral-700"
-              @click="item.opened = !item.opened"
-            >
-              <span x-text="item.q"></span>
-              <svg
-                :class="!item.opened && 'rotate-180 transform'"
-                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-neutral-100"
-              >
-                <path fill-rule="evenodd" d="M14.77 12.79a.75.75 0 01-1.06-.02L10 8.832 6.29 12.77a.75.75 0 11-1.08-1.04l4.25-4.5a.75.75 0 011.08 0l4.25 4.5a.75.75 0 01-.02 1.06z" clip-rule="evenodd"></path>
-              </svg>
-            </button>
-            <div x-show="item.opened" class="bg-neutral-900 text-neutral-300 p-2 mt-2 transition-all rounded-md border border-neutral-600 border-dashed text-sm lg:text-base">
-              <span x-html="item.a"></span>
-            </div>
-          </div>
-        </template>
-      </div>
-    </template>
-    <!-- <template x-if="page == '/buy'">
-      <div class="flex-1 flex relative">
-        <iframe
-          title="Transak On/Off Ramp Widget"
-          class="w-full flex-1 z-20"
-          src="https://global.transak.com/?apiKey=80f00610-32cc-4d01-8eb0-dfc825c2ef53&cryptoCurrencyList=FEAR,MATIC&hostURL=http%3A%2F%2Flocalhost%3A3000&network=polygon&sdkVersion=1.0.29&themeColor=000000" 
-          frameborder="no" allowtransparency="true" allowfullscreen=""
-        >
-        </iframe>
-        <div class="text-center absolute top-0 left-0 w-full h-full select-none text-neutral-500 flex flex-col justify-center items-center z-10 text-2xl">
-          <span>Hang on a second please ...</span>
-          <span>Transactions will be processed via our partner <b>Transak</b></span>
-        </div>
-      </div>
-    </template> -->
     <template x-if="!!state && page === '/account'">
       <div class="w-full text-neutral-100 flex flex-col px-2 sm:px-3 md:px-4">
         <div class="w-full text-neutral-100 py-2 sm:py-4">
@@ -611,21 +573,25 @@
         <!-- </template> -->
       </div>
     </template>
-    <template x-if="!!state && +page >= 0">
+    <template x-if="!!state && /^game\/\d+$/.test(page)">
       <div
         class="text-neutral-100 px-2 sm:px-0 w-full -mb-6"
-        x-init="getReviewsForProduct"
-        x-data="{showProductReviewBox: false, content: '', rating: 5, }"
+        x-data="{
+          showProductReviewBox: false,
+          content: '',
+          rating: 5,
+          productId: +page.slice(5),
+        }"
       >
         <div class="flex justify-center py-4 text-2xl font-bold">
           <div class="uppercase">
-            <span x-text="state.games[`_${page}`].name"></span>
+            <span x-text="state.games[productId].name"></span>
           </div>
         </div>
         <div class="flex items-center justify-center gap-1 pb-4">
           <div class="px-2 text-center">
             <div class="flex justify-center items-center font-bold text-xl text-neutral-300 gap-1">
-              <span x-text="state.games[`_${page}`].avgRating || 'n/a'" :class="!state.games[`_${page}`].avgRating && 'opacity-50'"></span>
+              <span x-text="state.games[productId].avgRating || 'n/a'" :class="!state.games[productId].avgRating && 'opacity-50'"></span>
               <i x-html="starSVG('w-5 h-5 text-red')"></i>
             </div>
             <div>
@@ -635,7 +601,7 @@
           <div style="width: 1px;" class="py-1 bg-neutral-500 h-8"></div>
           <div class="px-2 text-center">
             <div class="font-bold text-xl text-neutral-300">
-              <span x-text="state.games[`_${page}`].totalSold" :class="state.games[`_${page}`].totalSold === 0 && 'text-neutral-400'"></span>
+              <span x-text="state.games[productId].totalSold" :class="state.games[productId].totalSold === 0 && 'text-neutral-400'"></span>
             </div>
             <div>
               <span class="uppercase text-neutral-400 text-xs">total sold</span>
@@ -646,21 +612,9 @@
           <span>Game description</span>
         </div> -->
         <div class="rounded-md text-neutral-300">
-          <span x-html="state.games[`_${page}`].description"></span>
+          <span x-html="state.games[productId].description"></span>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-4 p-2">
-          <!-- <a href="games/blood-realms/images/blood-realms-screenshot-4.jpg" data-fancybox="gallery" class="flex items-center justify-center">
-            <img src="games/blood-realms/images/blood-realms-screenshot-4.jpg" class="rounded-md" />
-          </a>
-          <a href="games/the-crypt/images/the-crypt-demons-2.jpg" data-fancybox="gallery" class="flex items-center justify-center">
-            <img src="games/the-crypt/images/the-crypt-demons-2.jpg" class="rounded-md" />
-          </a>
-          <a href="games/clucking-hell/images/clucking-hell-frostbite-menu.jpg" data-fancybox="gallery" class="flex items-center justify-center">
-            <img src="games/clucking-hell/images/clucking-hell-frostbite-menu.jpg" class="rounded-md" />
-          </a>
-          <a href="games/blood-realms/images/blood-realms-screenshot-1.jpg" data-fancybox="gallery" class="flex items-center justify-center">
-            <img src="games/blood-realms/images/blood-realms-screenshot-1.jpg" class="rounded-md" />
-          </a> -->
           <template x-for="src in productImageList">
             <a :href="src" data-fancybox="gallery" class="flex items-center justify-center">
               <img :src="src" class="rounded-md" />
@@ -670,38 +624,38 @@
         <!-- action button: login | buy / download / review -->
         <div class="left-0 sm:left-auto fixed bottom-0 left-0 container max-w-6xl backdrop-blur-lg backdrop-brightness-200 z-10 text-sm md:text-base" x-show="!showProductReviewBox">
           <!-- buy buttons when loged in and game hasnt purchased -->
-          <div class="flex" x-show="state.user && !state.user.purchased.includes(page)">
-            <button class="text-neutral-100 px-2" @click="page = '/'">
+          <div class="flex" x-show="state.user && !state.user.purchased.includes(productId)">
+            <button class="text-neutral-100 px-2" @click="routerNavigateBack">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
             </button>
             <div class="flex-1 flex gap-1 mr-2">
               <button
-                @click="payWithFear(page)"
+                @click="payWithFear(productId)"
                 class="border-0 my-3 select-none uppercase py-4 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
                 :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
               >
                 <span>
                   <span x-text="state.running.PAY_WITH_FEAR === false ? 'Pay with' : 'Paying'"></span>
-                  <span class="font-bold" x-text="formatEtherHuman(state.games[`_${page}`].priceFear)"></span>
+                  <span class="font-bold" x-text="formatEtherHuman(state.games[productId].priceFear)"></span>
                   <span class="font-bold">FEAR</span>
                 </span>
                 <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_FEAR !== false"></i>
               </button>
               <button
-                @click="payWithMatic(page)"
+                @click="payWithMatic(productId)"
                 class="border-0 my-3 select-none uppercase py-4 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
                 :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
               >
                 <span>
                   <span x-text="state.running.PAY_WITH_MATIC === false ? 'Pay with' : 'Paying'"></span>
-                  <span class="font-bold" x-text="formatEtherHuman(state.games[`_${page}`].priceMatic)"></span>
+                  <span class="font-bold" x-text="formatEtherHuman(state.games[productId].priceMatic)"></span>
                   <span class="font-bold">MATIC</span>
                 </span>
                 <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_MATIC !== false"></i>
               </button>
               <button
                 :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
-                @click="openModal('GIFT_PRODUCT', { productId: page })"
+                @click="openModal('GIFT_PRODUCT', { productId: productId })"
                 class="border-0 my-3 select-none uppercase py-4 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 Gift 🎁
@@ -709,13 +663,13 @@
             </div>
           </div>
           <!-- download button when loged in and game has purchased -->
-          <div class="flex" x-show="state.user && state.user.purchased.includes(page)">
-            <button class="text-neutral-100 pl-3" @click="page = '/'">
+          <div class="flex" x-show="state.user && state.user.purchased.includes(productId)">
+            <button class="text-neutral-100 pl-3" @click="routerNavigateBack">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
             </button>
             <button
               class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-green-100 text-green-800 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
-              @click="downloadGame(page)"
+              @click="downloadGame(productId)"
               :disabled="state.running.DOWNLOAD_GAME"
             >
               <span x-text="!state.running.DOWNLOAD_GAME ? 'Download' : 'Downloading'"></span>
@@ -729,7 +683,7 @@
               <span>Review</span>
             </button>
             <button
-              @click="openModal('GIFT_PRODUCT', { productId: page })"
+              @click="openModal('GIFT_PRODUCT', { productId: productId })"
               class="border-0 mx-2 my-3 select-none uppercase py-4 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               Gift 🎁
@@ -744,7 +698,7 @@
           </div>
           <!-- login button -->
           <div class="flex" x-show="!state.user">
-            <button class="text-neutral-100 pl-3" @click="page = '/'">
+            <button class="text-neutral-100 pl-3" @click="routerNavigateBack">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
             </button>
             <button
@@ -771,13 +725,13 @@
               <i x-html="starSVG('w-12 h-12')" class="cursor-pointer" @click="rating = i" :class="i <= rating ? 'text-red' : 'text-neutral-400 opacity-30'"></i>
             </template>
           </div>
-          <div class="flex" x-show="state.user && state.user.purchased.includes(page)">
+          <div class="flex" x-show="state.user && state.user.purchased.includes(productId)">
             <button class="text-neutral-100 pl-3" @click="showProductReviewBox = false">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
             </button>
             <button
               class="mx-2 my-3 select-none uppercase py-4 flex-1 fear-button-white neon-red font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
-              @click="submitProductReview(page, content, rating, () => {showProductReviewBox = false; content = ''; rating = 5;})"
+              @click="submitProductReview(productId, content, rating, () => {showProductReviewBox = false; content = ''; rating = 5;})"
               :disabled="vm.state.running.SUBMIT_REVIEW"
             >
               <span>SUBMIT</span>
@@ -908,10 +862,10 @@
     </div>
     </template>
   </div>
-  <!-- footer will be hidden on product page so the action button can take the bottom -->
+  <!-- footer will be hidden on product details page so the action button can take the bottom -->
   <div
     class="w-full mx-auto max-w-screen-xl text-gray-400 text-xs"
-    :class="+page > 0 ? 'invisible h-24' : 'py-3'"
+    :class="/^#game\/\d+$/.test(page) ? 'invisible h-24' : 'py-3'"
   >
     <div class="text-center">
       <span>©2022 <a href="https://www.fear.io" target="_blank" rel="noreferrer" class="text-cyan-400 font-bold">fear.io</a> All Rights Reserved.</span>

@@ -110,7 +110,7 @@ const biconomyExecTransaction = async (apiId, params, gasLimit) => {
   const log = _.get(data, 'log');
   if(txHash) {
     console.log(`biconomy txHash`, txHash);
-    RPC_PROVIDER[CHAINID].waitForTransaction(txHash, 2);
+    await RPC_PROVIDER[CHAINID].waitForTransaction(txHash, 2);
     return txHash;
   }
   throw new Error(error || `unknown biconomy error ( message: ${message} / log: ${log} )`);
@@ -187,31 +187,16 @@ const idToken2Signer = (email, idToken) => new Promise(async (resolve, reject) =
   }
 })
 
-const getReviewsForProduct = async _productId => {
-  try {
-    vm.state.running.FETCH_REVIEW = true;
-    vm.state.reviews = null;
-    const productId = _productId || +vm.page || 0;
-    const url = `${fAPIEndpoint}/productReview/${productId}`;
-    const _reviews = await axios.request({
-      method: "GET",
-      url,
-    }).then(r => r.data);
-    const reviews = _reviews.map(r => ({
-      ...r,
-      content: r.content.replace(badWordsPattern, "***"),
-    }));
-    // const email = _.get(vm, 'state.user.email');
-    // if(email) {
-    //   vm.state.myReviews[productId] = reviews.find(r => r.email == email);
-    // }
-    if(!_productId) vm.state.reviews = reviews;
-    return reviews;
-  } catch(exception) {
-    console.error(`getReviewsForProduct error`, exception);
-  } finally {
-    vm.state.running.FETCH_REVIEW = false;
-  }
+const getReviewsForProduct = async productId => {
+  const _reviews = await axios.request({
+    method: "GET",
+    url: `${fAPIEndpoint}/productReview/${productId}`,
+  }).then(r => r.data);
+  const reviews = _reviews.map(r => ({
+    ...r,
+    content: r.content.replace(badWordsPattern, "***"),
+  }));
+  return reviews;
 }
 
 const getPriceForAllProducts = async () => {
@@ -271,10 +256,11 @@ const fetchInitialAppState = async () => {
     priceFear: formatEther( priceForAllProducts[+p.rowKey].fear ),
     totalSold: totalSoldStats[+p.rowKey],
   }));
-  games.forEach(product => {
-    games[`_${product.id}`] = product;
-  });
-  vm.state.games = games;
+  vm.state.games = _.zipObject(
+    games.map(g => g.id),
+    games,
+  );
+  console.log(`vm.state.games`, vm.state.games);
 }
 
 const getExchangeRate = async () => {
@@ -289,9 +275,10 @@ const getExchangeRate = async () => {
 const getProductList = async (updateState = false) => {
   const { productList } = await axios.get(`${fAPIEndpoint}/getProductList`).then(r => r.data);
   if(updateState) {
-    vm.state.games.forEach((g, index) => {
-      vm.state.games[index].avgRating = productList.find(p => +p.rowKey === g.id).avgRating;
-    });
+    productList.forEach(p => {
+      const productId = +p.rowKey;
+      vm.state.games[productId].avgRating = p.avgRating;
+    })
   }
   return productList;
 }
@@ -345,37 +332,6 @@ const qaList = [
   },
 ];
 
-const stepList = [
-  {
-    q: "How to get $FEAR token?",
-    a: "#todo",
-    opened: false,
-  },
-  {
-    q: "How to purchase game?",
-    a: "#todo",
-    opened: false,
-  },
-  {
-    q: "How to download apk file for the game?",
-    a: "#todo",
-    opened: false,
-  },
-  {
-    q: "How to install apk file on your phone?",
-    a: "#todo",
-    opened: false,
-  },
-  {
-    q: "How to start playing?",
-    a: "Open the app you just installed. That's all. Hope you having fun and thank you for your purchase 😍",
-    opened: false,
-  },
-].map((item, index) => ({
-  ...item,
-  q: `Step ${index+1}: ${item.q}`,
-}));
-
 const payWithFear = async (productId, receiverOptions = {}) => {
   if(vm.state.running.PAY_WITH_FEAR === productId) return;
   try {
@@ -383,7 +339,7 @@ const payWithFear = async (productId, receiverOptions = {}) => {
     const { fearBalance, ethAddress, email } = vm.state.user;
     const receiverAddress = _.get(receiverOptions, 'ethAddress', ethAddress);
     const receiverEmail = _.get(receiverOptions, 'email', email); // gift product
-    const { name, priceFear, priceUsd } = vm.state.games.find(g => g.id == productId);
+    const { name, priceFear, priceUsd } = vm.state.games[productId];
     const priceFearBN = ethers.utils.parseEther(priceFear);
     if(priceFearBN.gt(fearBalance)) {
       const { isConfirmed } = await Swal.fire({
@@ -438,10 +394,7 @@ const payWithFear = async (productId, receiverOptions = {}) => {
       ],
       gasLimit.toNumber(),
     );
-    vm.state.games.forEach((g, index) => {
-      if(g.id !== productId) return;
-      vm.state.games[index].totalSold += 1;
-    });
+    vm.state.games[productId].totalSold += 1;
     if(receiverEmail == email) vm.state.user.purchased.push(productId);
     await refreshBalance();
     fearSuccess(
@@ -463,7 +416,7 @@ const payWithMatic = async (productId, receiverOptions = {}) => {
   try {
     vm.state.running.PAY_WITH_MATIC = productId;
     const signer = window.signer;
-    const { name, priceMatic, priceUsd } = vm.state.games.find(g => g.id == productId);
+    const { name, priceMatic, priceUsd } = vm.state.games[productId];
     const { maticBalance, ethAddress, email } = vm.state.user;
     const receiverAddress = _.get(receiverOptions, 'ethAddress', ethAddress);
     const receiverEmail = _.get(receiverOptions, 'email', email); // gift product
@@ -511,10 +464,7 @@ const payWithMatic = async (productId, receiverOptions = {}) => {
     console.log(`payWithMatic txHash`, tx.hash);
     await tx.wait(2);
     if(receiverEmail == email) vm.state.user.purchased.push(productId);
-    vm.state.games.forEach((g, index) => {
-      if(g.id !== productId) return;
-      vm.state.games[index].totalSold += 1;
-    });
+    vm.state.games[productId].totalSold += 1;
     await refreshBalance();
     fearSuccess(
       receiverEmail == email ? `You owned '${name}'` : `Gift has sent to ${receiverEmail}`,
@@ -561,7 +511,6 @@ const downloadGame = async (productId) => {
 const getPurchasedProducts = async (ethAddress) => {
   const purchasedBN = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getPurchased(ethAddress);
   const purchased = purchasedBN.map(p => p.toNumber());
-  // if(_.get(vm, 'state.user.purchased')) vm.state.user.purchased = purchased;
   return purchased;
 }
 
@@ -696,7 +645,6 @@ const lookupEthAddressProductGiftModal = async () => {
   }
 }
 
-
 const sendFear = async (toAddress, amountBN) => {
   const { functionSignature, r, s, v, } = await generateFearTransferMetaSignature(
     toAddress,
@@ -812,7 +760,7 @@ const getProductPurchaseHistory = async (ethAddress) => {
   return transactions.map(t => ({
     type: "product",
     time: dayjs(t.created.toNumber() * 1000).format('DD MMM YYYY HH:mm:ss'),
-    item: games.find(g => g.id == t.productId.toNumber()).name,
+    item: games[t.productId.toNumber()].name,
     cost: formatEtherHuman(t.amount) + ` ${t.token == 0 ? 'FEAR' : 'MATIC'}`,
     status: "COMPLETED",
     sender: t.sender,
@@ -890,10 +838,9 @@ const boostrapApp = () => {
         GIFT_PRODUCT: null,
       },
     },
-    page: '/', // '/' or `/faqs` or `/guide` or `:productId` (product page)
+    page: '', // '/' or `/faqs` or `/guide` or `:productId` (product page)
     tab: 'balance', // `Account` page (also avaiable: `history`, ``)
     qaList,
-    stepList,
     bootstrap: async () => {
       setInterval(() => {
         vm.epoch = getEpoch();
@@ -902,6 +849,7 @@ const boostrapApp = () => {
         fetchInitialAppState(),
         loadSavedLoginData(),
       ]);
+      updateRoute(window.location);
       // mock data
       // const signer = (new ethers.Wallet('f564652d82500e9d69c617af7a6411031a7c9b95fcc586263cbb048902dc15dc')).connect(RPC_PROVIDER[CHAINID]);
       // const games = JSON.parse(`[{"etag":"W/\\"datetime'2022-12-11T03%3A31%3A27.3141724Z'\\"","partitionKey":"game","rowKey":"1","timestamp":"2022-12-11T03:31:27.3141724Z","description":"Clucking Hell is a live action survival game where you need to defend yourself and farm land from paraytical flesh eating animals and humans!","isAndroidGame":false,"isDesktopGame":false,"isWebGame":true,"name":"Clucking Hell","splash":"https://www.fear.io/images/games/clucking-hell/clucking-hell-portrait-1.jpg","url":"https://www.fear.io/games/clucking-hell/","id":1,"priceUsd":"0.01","priceMatic":"0.010995318","priceFear":"0.1166301657"},{"etag":"W/\\"datetime'2022-12-11T03%3A32%3A18.6395807Z'\\"","partitionKey":"game","rowKey":"2","timestamp":"2022-12-11T03:32:18.6395807Z","description":"Whack Your Undead Neighbour is the crazy interactive animation by Whack It Games soaked in blood and watched by an audience of millions of blood thirsty viewers. Watch as everyone's favourite violent family, Patrick, Lisa and Whisky embark upon a killing spree taking out their zombie neighbour and granny to boot!","isAndroidGame":true,"isDesktopGame":false,"isWebGame":false,"name":"Whack Your Undead Neighbour","splash":"https://www.fear.io/images/games/wyun/wyun-square.png","url":"https://www.fear.io/games/wyun/","id":2,"priceUsd":"0.02","priceMatic":"0.021990636","priceFear":"0.2332603314"},{"etag":"W/\\"datetime'2022-12-11T03%3A26%3A43.9867384Z'\\"","partitionKey":"game","rowKey":"3","timestamp":"2022-12-11T03:26:43.9867384Z","description":"The Crypt is a devious idle farming and management game being developed for Fear by Evil Twin Studio coming in Q3 2022 to PC and Android. The player becomes a Crypt Keeper in the Underworld.\\\\nYou summon evil characters from the depths of hell to harvest dark resources and capture human souls. These humans are in return tormented through various soul harvesting devices in the crypts to summon new evil and demonic creatures.\\\\nA first of it's kind \\"farming\\" game, you will be able to collect \\"Souls\\" while your sleeping by relying on your Evil Demon Overseers to keep harvesting while your offline. You will have a chance to convert those souls into our real tokens.","isAndroidGame":false,"isDesktopGame":true,"isWebGame":false,"name":"The Crypt","splash":"https://www.fear.io/images/games/the-crypt/the-crypt-square.jpg","url":"https://www.fear.io/games/the-crypt/","id":3,"priceUsd":"0.05","priceMatic":"0.05497659","priceFear":"0.5831508285"},{"etag":"W/\\"datetime'2022-12-11T03%3A27%3A42.9409807Z'\\"","partitionKey":"game","rowKey":"4","timestamp":"2022-12-11T03:27:42.9409807Z","name":"Araya","description":"Araya is a 3D action horror game coming to the Fear ecosystem with 50 million Youtube views and millions of players made by Mad VR Studios.\\\\n Originally known for its fame on Steam as a serious creepy jump scare game, we have converted this unique horror survival title into an experience where gamers have the chance to earn FEAR tokens by progressing in the game. But be warned, it won't be easy to solve the puzzles and survive the underlying evil that is haunting the hospital!","url":"https://www.fear.io/games/araya/","isDesktopGame":true,"isWebGame":false,"isAndroidGame":false,"splash":"https://www.fear.io/images/games/araya/araya-square.jpg","id":4,"priceUsd":"0.1","priceMatic":"0.109953181","priceFear":"1.166301657"}]`);
@@ -1175,7 +1123,7 @@ const productImageList = [
 
 // router 
 const updateRoute = (location) => {
-  // console.log(`location`, location);
+  console.log(`location updated`, location.hash);
   const { hash } = location;
   if(hash == '#films') return vm.page = '/films';
   if(hash == '#faqs') return vm.page = '/faqs';
@@ -1184,4 +1132,30 @@ const updateRoute = (location) => {
     if(vm.state.user) return vm.page = '/account';
     window.location.hash = '#games';
   }
+  if(/^#game\/\d+$/.test(hash)) {
+    vm.page = hash.slice(1);
+    const productId = vm.page.slice(5);
+    vm.state.reviews = null;
+    (async () => {
+      try {
+        vm.state.running.FETCH_REVIEW = true;
+        const reviews = await getReviewsForProduct(productId);
+        vm.state.reviews = reviews;
+      } catch(exception) {
+        console.error('failed to get reviews');
+      } finally {
+        vm.state.running.FETCH_REVIEW = false;
+      }
+    })()
+    return;
+  }
+  return vm.page = '/';
+}
+
+const routerNavigate = locationHash => {
+  window.location.hash = locationHash;
+}
+
+const routerNavigateBack = () => {
+  history.back();
 }
