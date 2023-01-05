@@ -42,7 +42,7 @@ const BICONOMY_API_KEY = {
 
 const BICONOMY_PURCHASE_BY_FEAR_TRANSFER_APPID = {
   [POLYGON_CHAINID]: '',
-  [MUMBAI_CHAINID]: '0f955092-4409-4da0-b3a8-15556e67c32b',
+  [MUMBAI_CHAINID]: 'e2874dd7-def1-4c88-beb7-c233e0151f43',
 }
 const BICONOMY_FEAR_METATRANSACTION_APPID = {
   [POLYGON_CHAINID]: 'dea3e094-2ff5-4190-9b07-f15885cdaf8d',
@@ -75,7 +75,7 @@ const CONTRACT = {
   },
   HORRORHUB_WEB_SALE: {
     [POLYGON_CHAINID]: "",
-    [MUMBAI_CHAINID]: '0x2c533ef69f0613b9915A621F914255d88EbF7175',
+    [MUMBAI_CHAINID]: '0x9E247845dBAe2F1A76CB8aAD7EBf31E1fb425595',
     ABI: HORRORHUB_WEB_SALE_ABI,
     instanceForChain(chainId) {
       return new ethers.Contract(
@@ -796,8 +796,9 @@ const getTransakPurchaseHistory = async (ethAddress) => {
     type: "transak",
     time: dayjs(o.createdAt).format('DD MMM YYYY HH:mm:ss'),
     item: `${o.cryptoAmount} ${o.cryptoCurrency}`,
-    cost: `${o.fiatAmount} ${o.fiatCurrency} <span class='text-yellow-300'>fiat</span>`,
+    cost: `${o.fiatAmount} ${o.fiatCurrency}`,
     status: o.status,
+    remark: `<span class='text-yellow-300'>fiat purchase</span>`,
   }));
 }
 
@@ -805,15 +806,17 @@ const getTransakPurchaseHistory = async (ethAddress) => {
 
 const getProductPurchaseHistory = async (ethAddress) => {
   const { games } = vm.state;
-  const totalNumberOfTransactions = (await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getTotalNumberOfTransactions()).toNumber();
-  if(totalNumberOfTransactions == 0) return [];
-  const transactions = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getTransaction(_.range(0, totalNumberOfTransactions));
-  return transactions.filter(t => t.sender === ethAddress).map(t => ({
+  // const totalNumberOfTransactions = (await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).getTotalNumberOfTransactions()).toNumber();
+  // if(totalNumberOfTransactions == 0) return [];
+  const transactions = await CONTRACT.HORRORHUB_WEB_SALE.instanceForChain(CHAINID).listTransactionsBySenderOrReceiver(ethAddress);
+  return transactions.map(t => ({
     type: "product",
     time: dayjs(t.created.toNumber() * 1000).format('DD MMM YYYY HH:mm:ss'),
     item: games.find(g => g.id == t.productId.toNumber()).name,
     cost: formatEtherHuman(t.amount) + ` ${t.token == 0 ? 'FEAR' : 'MATIC'}`,
     status: "COMPLETED",
+    sender: t.sender,
+    receiver: t.receiver,
   }));
 } 
 
@@ -829,7 +832,7 @@ const showTransakHistoryTab = () => {
       getTransakPurchaseHistory(ethAddress), // '0x6f59e2b0b7d0d68ed7c733ff8f84e33d8aa4e647'
       getProductPurchaseHistory(ethAddress),
     ]);
-    vm.state.user.transactionHistory = [
+    const transactionHistory = [
       ...transakPurchaseHistory,
       ...productPurchaseHistory,
     ].sort((x, y) => {
@@ -838,7 +841,22 @@ const showTransakHistoryTab = () => {
       if(dx.isBefore(dy)) return 1;
       if(dx.isAfter(dy)) return -1;
       return 0;
-    })
+    }).map(t => {
+      let remark = '';
+      const { type, sender, receiver } = t;
+      if(type == 'product') {
+        if(sender == ethAddress && receiver != ethAddress) remark = '🎁 gift sent';
+        if(sender != ethAddress && receiver == ethAddress) {
+          remark = '🎁 gift received';
+          t.cost = '';
+        }
+      }
+      return {
+        ...t,
+        remark: type == 'product' ? remark : t.remark,
+      }
+    });
+    vm.state.user.transactionHistory = transactionHistory;
   })();
 }
 
@@ -1082,6 +1100,7 @@ const logout = async () => {
   const confirmed = await fearConfirm("Are you sure you want to log out ?");
   if(!confirmed) return;
   vm.page = '/';
+  vm.tab = 'balance';
   vm.state.user = null;
   localStorage.removeItem('fear-wallet');
 }

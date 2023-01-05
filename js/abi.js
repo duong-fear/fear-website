@@ -2042,7 +2042,7 @@ const HORRORHUB_WEB_SALE_ABI = [
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "receiver",
+				"name": "ethAddress",
 				"type": "address"
 			}
 		],
@@ -2103,11 +2103,72 @@ const HORRORHUB_WEB_SALE_ABI = [
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "sender",
+				"name": "ethAddress",
 				"type": "address"
 			}
 		],
 		"name": "listTransactionsBySender",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "created",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "expired",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "productId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "receiver",
+						"type": "address"
+					},
+					{
+						"internalType": "enum Sale.TOKEN",
+						"name": "token",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct Sale.Transaction[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "ethAddress",
+				"type": "address"
+			}
+		],
+		"name": "listTransactionsBySenderOrReceiver",
 		"outputs": [
 			{
 				"components": [
