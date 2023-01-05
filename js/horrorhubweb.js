@@ -1172,3 +1172,16 @@ const productImageList = [
   'games/clucking-hell/images/clucking-hell-frostbite-menu.jpg',
   'games/blood-realms/images/blood-realms-screenshot-1.jpg',
 ];
+
+// router 
+const updateRoute = (location) => {
+  // console.log(`location`, location);
+  const { hash } = location;
+  if(hash == '#films') return vm.page = '/films';
+  if(hash == '#faqs') return vm.page = '/faqs';
+  if(hash == '#games') return vm.page = '/';
+  if(hash == '#account') {
+    if(vm.state.user) return vm.page = '/account';
+    window.location.hash = '#games';
+  }
+}
