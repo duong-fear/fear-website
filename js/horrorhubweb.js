@@ -304,43 +304,43 @@ const getTotalSoldStats = async () => {
 const qaList = [
   {
     q: "Who or What is FEAR?",
-    a: "FEAR is a horror gaming company owned by <b>Netcreeper Media Ltd</b>. Netcreeper Media is owned by brothers <b>Patrick</b> and <b>Jonathan Carey</b> who have been involved in the game development and publishing industry for over two decades.<br/>The most notable games developed and published by Netcreeper are the famous <b>Whack IT</b> games - a series of dark humored horror games which went viral in 2015 accruing over 300 million combined views, downloads and interactions.",
+    a: "FEAR is a horror gaming company owned by <b>Netcreeper Media Ltd</b>. Netcreeper Media is owned by brothers <b>Patrick</b> and <b>Jonathan Carey</b> who have been involved in the game development and publishing industry for over two decades.<br/><br/>The most notable games developed and published by Netcreeper are the famous <b>Whack IT</b> games - a series of dark humored horror games which went viral in 2015 accruing over 300 million combined views, downloads and interactions.",
     opened: false,
   },
   {
     q: "What is the Horror Hub?",
-    a: "A place where horror fans and gamers can gather to experience the most viral, horrific and hilarious FEAR games, films and animations. Later editions will allow the sharing and reviewing of FEAR content and beyond in the outer horror world!<br/>The Horror Hub is first launching for mobile web and Windows/MAC desktops and will later launch on the playstore and apple store.<br/>FEAR develops and owns all the property and rights of the Horror Hub and promises never to censor or water down the content on our platform. We own the platform and therefore our content is not owned BY the platform!",
+    a: "A place where horror fans and gamers can gather to experience the most viral, horrific and hilarious FEAR games, films and animations. Later editions will allow the sharing and reviewing of FEAR content and beyond in the outer horror world!<br/><br/>The Horror Hub is first launching for mobile web and Windows/MAC desktops and will later launch on the playstore and apple store.<br/><br/>FEAR develops and owns all the property and rights of the Horror Hub and promises never to censor or water down the content on our platform. We own the platform and therefore our content is not owned BY the platform!",
     opened: false,
   },
   {
     q: "Why aren't your games in the play store?",
-    a: "The Whack It games available at the launch of the horror hub are not available in the playstore because they were previously banned or censored by Google because of their crazy or violent content.<br/>We have since begun to bring out updated games that are less shocking and these will become available in the playstore. However the originals are in our opinion the best and can be accessed through the Horror Hub!<br/>Some of our other games we look to monetise in game content using our FEAR crypto currency and NFTs and Google policies are not clear around this area. Until policy and regulation settles down any games blockchain related will remain exclusively available in our Horror Hub!",
+    a: "The Whack It games available at the launch of the horror hub are not available in the playstore because they were previously banned or censored by Google because of their crazy or violent content.<br/><br/>We have since begun to bring out updated games that are less shocking and these will become available in the playstore. However the originals are in our opinion the best and can be accessed through the Horror Hub!<br/><br/>Some of our other games we look to monetise in game content using our FEAR crypto currency and NFTs and Google policies are not clear around this area. Until policy and regulation settles down any games blockchain related will remain exclusively available in our Horror Hub!",
     opened: false,
   },
   {
     q: "Crypto currency and NFTs you say... Aren't they all scams or risky things to purchase?",
-    a: "When you buy our games in the Horror Hub you don't have to hold our FEAR crypto currency. You simply top up your FEAR balance to the correct amount of USD and use it to purchase our games.<br/>In addition FEAR crypto currency is owned and supported by Netcreeper Media Ltd. We are a two decade old company famous for publishing casual horror games with a sterling reputation for transparency and honesty!<br/>You can find us cited in many notable online publications including <a class='font-bold text-cyan-400' href='https://forbes.mc/article/bravely-walking-into-the-world-of-fear' target='_blank'>Forbes</a> and <a class='font-bold text-cyan-400' href='https://cointelegraph.com/news/horror-gaming-project-integrates-metaverse-nfts-and-p2e-to-cause-extreme-fear' target='_blank'>CoinTelegraph</a>.",
+    a: "When you buy our games in the Horror Hub you don't have to hold our FEAR crypto currency. You simply top up your FEAR balance to the correct amount of USD and use it to purchase our games.<br/><br/>In addition FEAR crypto currency is owned and supported by Netcreeper Media Ltd. We are a two decade old company famous for publishing casual horror games with a sterling reputation for transparency and honesty!<br/><br/>You can find us cited in many notable online publications including <a class='font-bold text-cyan-400' href='https://forbes.mc/article/bravely-walking-into-the-world-of-fear' target='_blank'>Forbes</a> and <a class='font-bold text-cyan-400' href='https://cointelegraph.com/news/horror-gaming-project-integrates-metaverse-nfts-and-p2e-to-cause-extreme-fear' target='_blank'>CoinTelegraph</a>.",
     opened: false,
   },
   {
     q: "If I do wish to own FEAR crypto currency what are the benefits?",
-    a: "All our blockchain related content requires FEAR to be purchased. This means eventually our token may become rarer depending on the demand of our games and film media. By holding a small amount of FEAR you may also become entitled to exclusive benefits such as unique in-game asset ownership and content made exclusively available to FEAR holders.<br/>Please note this is not financial advice nor do we promote in anyway owning our token as an investment.",
+    a: "All our blockchain related content requires FEAR to be purchased. This means eventually our token may become rarer depending on the demand of our games and film media. By holding a small amount of FEAR you may also become entitled to exclusive benefits such as unique in-game asset ownership and content made exclusively available to FEAR holders.<br/><br/>Please note this is not financial advice nor do we promote in anyway owning our token as an investment.",
     opened: false,
   },
   {
     q: "Is it safe to purchase games using my credit card and who are Transak?",
-    a: "Yes. Our credit card purchases are handled on our behalf by Transak - One of the largest crypto payment processes in the world who work with blue chip blockchain gaming firms such as FEAR, Sand and Decentraland.<br/>When you make your purchase there'll be a slight delay before your FEAR balance is credited. At which point you can purchase our games. All payments you make are tracked in our Horror Hub under <b>Account</b> -> <b>Payment History</b> section so you can check back on the progress of your payment.",
+    a: "Yes. Our credit card purchases are handled on our behalf by Transak - One of the largest crypto payment processes in the world who work with blue chip blockchain gaming firms such as FEAR, Sand and Decentraland.<br/><br/>When you make your purchase there'll be a slight delay before your FEAR balance is credited. At which point you can purchase our games. All payments you make are tracked in our Horror Hub under <b>Account</b> -> <b>Payment History</b> section so you can check back on the progress of your payment.",
     opened: false,
     showBuyButton: true,
   },
   {
     q: "Why is the minimum credit card purchase $30",
-    a: "Crypto payment processing via credit card/bank transfer is still a little on the costly side due to increasing regulation and a shifting landscape in blockchain technology. Our partner Transak is working hard to bring the minimum spending requirement down to a lower level.<br/>However for now we have a feature whereby you can gift your FEAR credit to friends and other gamers via their google email.<br/>We also will be offering cashback bundles on FEAR purchases of a certain amount.",
+    a: "Crypto payment processing via credit card/bank transfer is still a little on the costly side due to increasing regulation and a shifting landscape in blockchain technology. Our partner Transak is working hard to bring the minimum spending requirement down to a lower level.<br/><br/>However for now we have a feature whereby you can gift your FEAR credit to friends and other gamers via their google email.<br/><br/>We also will be offering cashback bundles on FEAR purchases of a certain amount.",
     opened: false,
   },
   {
     q: "How do I install an APK?",
-    a: "Our games are not provided through the Play Store and therefore your android phone will not recognise the source of the games. In order to allow the games to be installed you must allow installs from unknown sources. This is common practice for third party game publishers providing games on market places outside of the Play Store.<br/>Follow the guide below to enable installs from unknown sources:<br/><a class='font-bold text-cyan-400' href='https://blog.appaloosa.io/en/guides/how-to-install-apps-from-unknown-sources-in-android' target='_blank'>https://blog.appaloosa.io/en/guides/how-to-install-apps-from-unknown-sources-in-android</a>",
+    a: "Our games are not provided through the Play Store and therefore your android phone will not recognise the source of the games. In order to allow the games to be installed you must allow installs from unknown sources. This is common practice for third party game publishers providing games on market places outside of the Play Store.<br/><br/>Follow the guide below to enable installs from unknown sources:<br/><a class='font-bold text-cyan-400' href='https://blog.appaloosa.io/en/guides/how-to-install-apps-from-unknown-sources-in-android' target='_blank'>https://blog.appaloosa.io/en/guides/how-to-install-apps-from-unknown-sources-in-android</a>",
     opened: false,
   },
 ];
