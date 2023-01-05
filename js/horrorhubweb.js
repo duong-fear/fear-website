@@ -483,23 +483,25 @@ const payWithMatic = async (productId, receiverOptions = {}) => {
 const downloadGame = async (productId) => {
   if(vm.state.running.DOWNLOAD_GAME === productId) return;
   try {
-    const signer = window.signer;
-    const address = signer.address
-    const epoch = getEpoch();
-    const sig = await signer.signMessage(`${address}:${epoch}`);
+    // const signer = window.signer;
+    // const address = signer.address
+    // const epoch = getEpoch();
+    // const sig = await signer.signMessage(`${address}:${epoch}`);
     vm.state.running.DOWNLOAD_GAME = productId;
-    const { url } = await axios.request({
-      method: "POST",
-      url: `${fAPIEndpoint}/getDownloadUrl`,
-      // url: `http://localhost:7071/api/horrorhubweb/getDownloadUrl`,
-      data: {
-        productId,
-        epoch,
-        address,
-        sig,
-      },
-    }).then(r => r.data);
-    window.location.href = url;
+    // const { url } = await axios.request({
+    //   method: "POST",
+    //   url: `${fAPIEndpoint}/getDownloadUrl`,
+    //   // url: `http://localhost:7071/api/horrorhubweb/getDownloadUrl`,
+    //   data: {
+    //     productId,
+    //     epoch,
+    //     address,
+    //     sig,
+    //   },
+    // }).then(r => r.data);
+    // window.location.href = url;
+    await sleep(1);
+    window.location.href = 'https://f004.backblazeb2.com/file/fear-public/2048/2048_3.0.apk';
   } catch (exception) {
     console.error("downloadGame() error", exception);
     fearError(getExceptionDetails(exception));
