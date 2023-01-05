@@ -690,6 +690,7 @@
                 <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.PAY_WITH_MATIC !== false"></i>
               </button>
               <button
+                :disabled="state.running.PAY_WITH_FEAR !== false || state.running.PAY_WITH_MATIC !== false"
                 @click="openModal('GIFT_PRODUCT', { productId: page })"
                 class="border-0 my-3 select-none uppercase py-4 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
               >
