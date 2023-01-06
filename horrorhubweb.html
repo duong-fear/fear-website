@@ -191,6 +191,14 @@
       color: #26262688;
       opacity: 0.8;
     }
+    #product-tab-divider::after {
+      width: 100%;
+      height: 2px;
+      background-color: #a3a3a311;
+      position: absolute;
+      content: '';
+      top: 50%;
+    }
   </style>
   <script src="/js/transak.js"></script>
 </head>
@@ -257,7 +265,7 @@
   <!-- main -->
   <div class="container mx-auto flex-1 flex max-w-6xl">
     <template x-if="!!state && page === '/'">
-      <div class="w-full" :class="state.games ? 'block' : 'flex flex-col'">
+      <div class="w-full" :class="state.games ? 'block' : 'flex flex-col'" x-data="{ platform: 'mobile' }">
       <div class="text-neutral-100 rounded-md p-1 sm:p-2 mx-2 sm:mx-0 mt-2 md:mt-4 text-center text-sm sm:text-base select-none">
         <span><b>The Horror Hub</b> - Experience the most Viral, Horrific and Hilarious FEAR Games, Films and Animations.</span>
       </div>
@@ -268,16 +276,26 @@
       </template>
       <template x-if="state.games">
       <div>
-      <!-- <div class="flex justify-center gap-1">
-        <div class="px-3 py-2 rounded-md bg-neutral-500">
-          <span>Mobile</span>
+      <div class="flex justify-center mt-1 relative" id="product-tab-divider">
+        <div class="flex justify-center bg-neutral-700 p-1 rounded-xl z-10 select-none text-sm sm:text-base">
+          <div
+            class="w-16 sm:w-20 text-center py-1 rounded-lg transition-all"
+            :class="platform == 'mobile' ? 'bg-neutral-300 shadow' : 'text-neutral-100 opacity-30'"
+            @click="platform = 'mobile'"
+          >
+            <span>Mobile</span>
+          </div>
+          <div
+            class="w-16 sm:w-20 text-center py-1 rounded-lg transition-all"
+            :class="platform == 'desktop' ? 'bg-neutral-300 shadow' : 'text-neutral-100 opacity-30'"
+            @click="platform = 'desktop'"
+          >
+            <span>Desktop</span>
+          </div>
         </div>
-        <div class="px-3 py-2 rounded-md bg-neutral-500">
-          <span>Desktop</span>
-        </div>
-      </div> -->
+      </div>
       <div class="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-2 mt-2">
-        <template x-for="(g, index) in state.games">
+        <template x-for="g in _.values(state.games).filter(g => g.platform == platform)">
           <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="routerNavigate(`game/${g.id}`)">
             <div class="shadow-md p-1 bg-neutral-900 rounded-md h-full flex flex-col">
               <div class="relative">
@@ -629,7 +647,7 @@
           <span x-html="state.games[productId].description"></span>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-4 p-2">
-          <a data-fancybox="gallery" href="https://www.youtube.com/watch?v=k3Yoch8jhXA&autoplay=1&rel=0&controls=0&showinfo=0">
+          <a data-fancybox="gallery" href="https://www.youtube.com/embed/k3Yoch8jhXA">
             <div class="relative">
               <img class="brightness-50" src="https://i3.ytimg.com/vi/k3Yoch8jhXA/maxresdefault.jpg" />
               <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">

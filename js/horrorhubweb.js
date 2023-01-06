@@ -237,7 +237,10 @@ const refreshUserStats = async () => {
   // vm.state.user.purchased = purchased;
 }
 
-const fetchInitialAppState = async () => {  
+const fetchInitialAppState = async () => {
+  const desktopGames = [
+    "Araya",
+  ]
   const [
     priceForAllProducts,
     productList,
@@ -257,6 +260,7 @@ const fetchInitialAppState = async () => {
     priceMatic: formatEther( priceForAllProducts[+p.rowKey].matic ),
     priceFear: formatEther( priceForAllProducts[+p.rowKey].fear ),
     totalSold: totalSoldStats[+p.rowKey],
+    platform: desktopGames.includes(p.name) ? 'desktop' : 'mobile',
   }));
   vm.state.games = _.zipObject(
     games.map(g => g.id),
