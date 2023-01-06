@@ -268,9 +268,13 @@
       </template>
       <template x-if="state.games">
       <div>
-      <!-- games divider -->
-      <!-- <div class="mx-2 sm:mx-0 font-bold px-2 text-neutral-100 py-2 mt-4 border-solid border-l-8 border-red bg-neutral-900 text-sm sm:text-base opacity-50">
-        <span>Games</span>
+      <!-- <div class="flex justify-center gap-1">
+        <div class="px-3 py-2 rounded-md bg-neutral-500">
+          <span>Mobile</span>
+        </div>
+        <div class="px-3 py-2 rounded-md bg-neutral-500">
+          <span>Desktop</span>
+        </div>
       </div> -->
       <div class="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-2 mt-2">
         <template x-for="(g, index) in state.games">
@@ -625,6 +629,14 @@
           <span x-html="state.games[productId].description"></span>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-4 p-2">
+          <a data-fancybox="gallery" href="https://www.youtube.com/watch?v=k3Yoch8jhXA&autoplay=1&rel=0&controls=0&showinfo=0">
+            <div class="relative">
+              <img class="brightness-50" src="https://i3.ytimg.com/vi/k3Yoch8jhXA/maxresdefault.jpg" />
+              <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                <img src="images/youtube-play.png" class="w-16 h-16 lg:w-20 lg:h-20" />
+              </div>
+            </div>
+          </a>
           <template x-for="src in productImageList">
             <a :href="src" data-fancybox="gallery" class="flex items-center justify-center">
               <img :src="src" class="rounded-md" />
