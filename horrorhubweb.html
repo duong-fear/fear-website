@@ -187,6 +187,10 @@
       bottom: 0rem;
       transition: background-color .15s ease-in-out;
     }
+    #tokenWithdrawAddress::placeholder, #tokenWithdrawAmount::placeholder {
+      color: #26262688;
+      opacity: 0.8;
+    }
   </style>
   <script src="/js/transak.js"></script>
 </head>
@@ -277,7 +281,7 @@
                 <span class="text-xs sm:text-sm lg:text-base font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="!state.user || !state.user.purchased.includes(g.id)">
                   <span x-text="g.priceUsd + ' USD'"></span>
                 </span>
-                <span class="text-xs sm:text-sm lg:text-base font-bold text-green-800 bg-green-100 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="state.user && state.user.purchased.includes(g.id)">
+                <span class="text-xs sm:text-sm lg:text-base font-bold text-green-800 bg-green-100 rounded-sm px-2 py-1 absolute -right-3 top-2 uppercase" x-show="state.user && state.user.purchased.includes(g.id)">
                   owned
                 </span>
                 <!-- <span class="text-xs sm:text-sm lg:text-base font-bold absolute bottom-0 px-1 py-1 text-neutral-50 bg-opacity-30 bg-neutral-800 -translate-x-1/2 w-full" x-text="g.name"></span> -->
@@ -412,6 +416,9 @@
                 </button>
               </div>
               <div class="flex gap-2 sm:gap-3 md:gap-4 p-2 sm:p-3 md:p-4 pt-0 justify-center items-center">
+                <button class="w-24 rounded-md fear-button border-2 neon-red font-bold p-2 select-none" @click="openModal('TOKEN_WITHDRAW')">
+                  <span>Withdraw</span>    
+                </button>
                 <button class="w-24 rounded-md fear-button border-2 neon-red font-bold p-2 select-none" @click="state.giftModal.visible = true">
                   <span>Gift 🎁</span>    
                 </button>
@@ -864,22 +871,79 @@
       </div>
     </div>
     </template>
-    <!-- <template x-if="state.modal.TOKEN_WITHDRAW">
+    <template x-if="state.modal.TOKEN_WITHDRAW">
       <div class="p-2 sm:p-3 md:p-4 rounded bg-neutral-800 border-2 md:border-4 border-solid border-neutral-700 text-neutral-100 w-full max-w-sm sm:max-w-md md:max-w-lg">
-        <div class="flex pb-4 text-lg justify-between items-center">
-          <span>Gift <b x-text="state.games[productId].name"></b> to your friend</span>
+        <div class="flex pb-4 text-lg justify-between items-center uppercase font-bold">
+          <span>Withdraw Token</span>
           <button
-            @click="closeModal('GIFT_PRODUCT')"
-            class="p-1"
-            :disabled="state.running.PRODUCT_GIFT_MODAL_FIND_ETH_ADDRESS"
+            @click="closeModal('TOKEN_WITHDRAW')"
+            class="p-1 disabled:cursor-not-allowed"
+            :disabled="state.running.WITHDRAW_TOKEN"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
+        <div class="rounded-md p-2 mb-4 border-dashed border-2 border-neutral-700">
+          <span>Enter your external wallet address here ...</span>
+        </div>
+        <div class="flex items-center justify-center gap-1">
+          <label for="tokenWithdrawAddress" class="flex-1 self-stretch flex justify-center items-center gap-1 bg-neutral-600 rounded px-2 py-2">
+            <span class="text-neutral-300 select-none opacity-60">Address</span>
+            <input
+              class="h-full flex-1 bg-neutral-600 outline-none text-right font-bold disabled:cursor-not-allowed"
+              type="text" autocomplete="off" id="tokenWithdrawAddress"
+              x-model="state.modal.TOKEN_WITHDRAW.receiverAddress"
+              placeholder="0x..."
+              :disabled="state.running.WITHDRAW_TOKEN"
+            />
+          </label>
+        </div>
+        <div class="flex items-center justify-center gap-1 pt-4">
+          <div class="flex items-center justify-center gap-1 self-stretch font-medium">
+            <button
+              @click="state.modal.TOKEN_WITHDRAW.token = 'fear'; state.modal.TOKEN_WITHDRAW.amount = formatEther(vm.state.user.fearBalance)"
+              class="inline-flex self-stretch items-center px-1 md:px-2 rounded transition-all disabled:cursor-not-allowed"
+              :class="state.modal.TOKEN_WITHDRAW.token == 'fear' ? 'bg-red': 'bg-neutral-700 opacity-40'"
+              :disabled="state.running.WITHDRAW_TOKEN"
+            >
+              <span>FEAR</span>
+            </button>
+            <button
+              @click="state.modal.TOKEN_WITHDRAW.token = 'matic'; state.modal.TOKEN_WITHDRAW.amount = formatEther(vm.state.user.maticBalance)"
+              class="inline-flex self-stretch items-center px-1 md:px-2 rounded transition-all disabled:cursor-not-allowed"
+              :class="state.modal.TOKEN_WITHDRAW.token == 'matic' ? 'bg-red': 'bg-neutral-700 opacity-40'"
+              :disabled="state.running.WITHDRAW_TOKEN"
+            >
+              <span>MATIC</span>
+            </button>
+          </div>
+          <label for="tokenWithdrawAmount" class="flex-1 self-stretch flex justify-center items-center gap-1 bg-neutral-600 rounded px-2 py-2">
+            <span class="text-neutral-300 select-none opacity-60">Amount</span>
+            <input
+              class="h-full w-full bg-neutral-600 outline-none text-right font-bold disabled:cursor-not-allowed"
+              type="text" autocomplete="off" id="tokenWithdrawAmount"
+              x-model="state.modal.TOKEN_WITHDRAW.amount"
+              :disabled="state.running.WITHDRAW_TOKEN"
+              placeholder="0"
+            />
+          </label>
+        </div>
+        <div class="flex items-center mt-4">
+          <button
+            @click="withdrawToken"
+            class="border-0 select-none uppercase py-2 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+            :disabled="state.running.WITHDRAW_TOKEN"
+        >
+          <span>
+            Withdraw
+          </span>
+          <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.WITHDRAW_TOKEN"></i>
+        </button>
+        </div>
       </div>
-    </template> -->
+    </template>
   </div>
   <!-- footer will be hidden on product details page so the action button can take the bottom -->
   <div

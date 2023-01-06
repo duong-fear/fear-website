@@ -8,6 +8,8 @@ const POLYGON_CHAINID = 137;
 const MUMBAI_CHAINID = 80001;
 const CHAINID = MUMBAI_CHAINID;
 
+const ZeroBN = ethers.constants.Zero;
+
 const config = {
   [POLYGON_CHAINID]: {
     google: {
@@ -835,6 +837,7 @@ const boostrapApp = () => {
         REFRESH_BALANCE: false,
         FETCH_REVIEW: false,
         PRODUCT_GIFT_MODAL_FIND_ETH_ADDRESS: false,
+        WITHDRAW_TOKEN: false,
       },
       modal: {
         GIFT_PRODUCT: null,
@@ -1068,6 +1071,13 @@ const refreshBalance = async () => {
 }
 
 const openModal = (key, options = {}) => {
+  if(key == 'TOKEN_WITHDRAW') {
+    vm.state.modal[key] = {
+      token: 'fear',
+      amount: formatEther(vm.state.user.fearBalance),
+    };
+    return;
+  }
   vm.state.modal[key] = options;
 }
 const closeModal = (key) => {
@@ -1162,4 +1172,71 @@ const routerNavigate = locationHash => {
 
 const routerNavigateBack = () => {
   history.back();
+}
+
+// withdraw token
+const withdrawToken = async () => {
+  try {
+    vm.state.running.WITHDRAW_TOKEN = true;
+    const { receiverAddress, token, amount, } = vm.state.modal.TOKEN_WITHDRAW;
+    const { ethAddress } = vm.state.user;
+    let amountBN;
+    if(!isEthAddress(receiverAddress)) throw new Error('Invalid receiver address');
+    try {
+      amountBN = ethers.utils.parseEther(amount);
+    } catch {
+      throw new Error("Invalid withdraw amount");
+    }
+    if(amountBN.eq(ZeroBN)) throw new Error("Withdraw amount must greater than Zero");
+    if(token == 'fear') {
+      // update balance
+      const fearBalanceBN = await getFearBalanceByAddress(ethAddress);
+      vm.state.user.fearBalance = fearBalanceBN;
+      // check if balance is sufficient
+      if(amountBN.gt(fearBalanceBN)) throw new Error("Withdraw amount is greater than your FEAR balance");
+      const confirmed = await fearConfirm(`Confirm your withdrawal request of ${formatEther(amountBN)} FEAR to ${receiverAddress} ?`);
+      if(!confirmed) return;
+      await sendFear(receiverAddress, amountBN);
+      fearSuccess("FEAR withdrawal success. Please check your wallet.");
+      // update balance again
+      const fearBalanceLeftBN = fearBalanceBN.sub(amountBN);
+      vm.state.user.fearBalance = fearBalanceLeftBN;
+      vm.state.modal.TOKEN_WITHDRAW.amount = formatEther(fearBalanceLeftBN);
+    }
+    if(token == 'matic') {
+      // update balance
+      let maticBalanceBN = await getEthBalanceByAddress(ethAddress);
+      vm.state.user.maticBalance = maticBalanceBN;
+      // check if balance is sufficient
+      if(amountBN.gt(maticBalanceBN)) throw new Error("Withdraw amount is greater than your MATIC balance");
+
+      const ETH_TRANSFER_GAS_LIMIT = ethers.BigNumber.from(21_000);
+      const gasPrice = await getRecommendedGasPrice();
+      const gasFeeBN = gasPrice.mul(ETH_TRANSFER_GAS_LIMIT);
+      if(!amountBN.gt(gasFeeBN)) {
+        return fearError(`Withdraw amount must greater than ${formatEther(gasFeeBN)} MATIC to cover network fee`);
+      }
+      const transferAmountBN = amountBN.sub(gasFeeBN);
+      const confirmed = await fearConfirm(`Confirm your withdrawal request of ${formatEther(amountBN)} MATIC to ${receiverAddress} ?`, `${formatEther(gasFeeBN)} MATIC will be deducted from your withdraw amount to pay network fee`);
+      if(!confirmed) return;
+      const tx = await window.signer.sendTransaction({
+        to: receiverAddress,
+        value: transferAmountBN,
+        gasPrice,
+        gasLimit: ETH_TRANSFER_GAS_LIMIT,
+      });
+      console.log(`tx hash`, tx.hash);
+      await tx.wait(2);
+      fearSuccess("MATIC withdrawal success. Please check your wallet.");
+      // update balance again
+      maticBalanceBN = await getEthBalanceByAddress(ethAddress);
+      vm.state.user.maticBalance = maticBalanceBN;
+      vm.state.modal.TOKEN_WITHDRAW.amount = formatEther(maticBalanceBN);
+    }
+  } catch(exception) {
+    console.error("withdrawToken() error", exception);
+    fearError(getExceptionDetails(exception).message);
+  } finally {
+    vm.state.running.WITHDRAW_TOKEN = false;
+  }
 }

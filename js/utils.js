@@ -252,3 +252,5 @@ const badWords = [
 ];
 
 const badWordsPattern = new RegExp(badWords.map(b => `\\b${b}\\b`).join('|'), 'gi');
+
+const isEthAddress = input => /^0x[A-Fa-f0-9]{40}$/.test(input) && ethers.utils.isAddress(input);
