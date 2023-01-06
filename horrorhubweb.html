@@ -668,7 +668,7 @@
             <button class="text-neutral-100 px-2" @click="routerNavigateBack">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
             </button>
-            <div class="flex-1 flex gap-1 mr-2">
+            <div class="flex-1 flex gap-1">
               <button
                 @click="payWithFear(productId)"
                 class="border-0 my-3 select-none uppercase py-4 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
@@ -700,15 +700,21 @@
               >
                 Gift 🎁
               </button>
+              <button
+                class="text-neutral-100 pr-3"
+                @click="openModal('SOCIAL_SHARING', { productId })"
+              >
+                <i x-html="shareSVG('w-8 h-8')"></i>
+              </button>
             </div>
           </div>
           <!-- download button when loged in and game has purchased -->
-          <div class="flex" x-show="state.user && state.user.purchased.includes(productId)">
+          <div class="flex gap-1 md:gap-2" x-show="state.user && state.user.purchased.includes(productId)">
             <button class="text-neutral-100 pl-3" @click="routerNavigateBack">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
             </button>
             <button
-              class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-green-100 text-green-800 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+              class="my-3 select-none uppercase py-4 flex-1 bg-green-100 text-green-800 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
               @click="downloadGame(productId)"
               :disabled="state.running.DOWNLOAD_GAME"
             >
@@ -716,7 +722,7 @@
               <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.DOWNLOAD_GAME"></i>
             </button>
             <button
-              class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-red-100 text-red-800 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+              class="my-3 select-none uppercase py-4 flex-1 bg-red-100 text-red-800 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
               @click="showProductReviewBox = true"
               x-show="!showProductReviewBox"
             >
@@ -724,9 +730,15 @@
             </button>
             <button
               @click="openModal('GIFT_PRODUCT', { productId: productId })"
-              class="border-0 mx-2 my-3 select-none uppercase py-4 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
+              class="border-0 my-3 select-none uppercase py-4 flex-1 neon-red fear-button-white font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               Gift 🎁
+            </button>
+            <button
+              class="text-neutral-100 pr-3"
+              @click="openModal('SOCIAL_SHARING', { productId })"
+            >
+              <i x-html="shareSVG('w-8 h-8')"></i>
             </button>
             <button
               class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-fuchsia-800 text-fuchsia-100 font-bold rounded-md flex justify-center items-center gap-1 disabled:opacity-70 disabled:cursor-not-allowed"
@@ -750,6 +762,12 @@
                 Login to purchase
               </span>
               <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.GOOGLE_LOGIN"></i>
+            </button>
+            <button
+              class="text-neutral-100 pr-3"
+              @click="openModal('SOCIAL_SHARING', { productId })"
+            >
+              <i x-html="shareSVG('w-8 h-8')"></i>
             </button>
           </div>
         </div>
@@ -830,7 +848,7 @@
   <div
     x-transition.duration.100ms
     class="fixed top-0 left-0 w-full h-full backdrop-blur-sm backdrop-brightness-50 flex items-center justify-center z-10"
-    x-show="state && (state.modal.GIFT_PRODUCT || state.modal.TOKEN_WITHDRAW)"  
+    x-show="state && (state.modal.GIFT_PRODUCT || state.modal.TOKEN_WITHDRAW || state.modal.SOCIAL_SHARING)"  
   >
     <template x-if="state.modal.GIFT_PRODUCT">
     <div class="p-2 sm:p-3 md:p-4 rounded bg-neutral-800 border-2 md:border-4 border-solid border-neutral-700 text-neutral-100 w-full max-w-sm sm:max-w-md md:max-w-lg">
@@ -972,6 +990,31 @@
           <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.WITHDRAW_TOKEN"></i>
         </button>
         </div>
+      </div>
+    </template>
+    <template x-if="state.modal.SOCIAL_SHARING">
+      <div class="text-neutral-300 flex items-center justify-center gap-2" @click.outside="onModalsClickOutside">
+        <button
+          class="self-stretch flex flex-col items-center justify-center w-36 h-36 bg-neutral-800 hover:bg-neutral-700 rounded-lg transition-all disabled:cursor-not-allowed"
+          :disabled="state.modal.SOCIAL_SHARING.copied"
+          @click="state.modal.SOCIAL_SHARING.copy"
+          >
+          <div class="w-16 h-16 flex items-center justify-center relative">
+            <i x-html="hyperLinkSVG('w-12 h-12')"></i>
+            <span x-show="state.modal.SOCIAL_SHARING.copied" class="bottom-0 right-0 absolute" x-transition.duration.100ms>✅</span>
+          </div>
+          <span x-show="!state.modal.SOCIAL_SHARING.copied">Copy Link</span>
+          <span x-show="state.modal.SOCIAL_SHARING.copied">Link Copied</span>
+          <span id="locationHref" :data-clipboard-text="window.location.href"></span>
+        </button>
+        <a
+          :href="state.modal.SOCIAL_SHARING.tweetUrl" target="_blank"
+        >
+          <div class="self-stretch flex flex-col items-center justify-center w-36 h-36 bg-neutral-800 hover:bg-neutral-700 rounded-lg transition-all">
+            <img src="https://araya.fear.io/icon/twitter.svg" class="h-16 w-16" />
+            <span>Tweet</span>
+          </div>
+        </a>
       </div>
     </template>
   </div>

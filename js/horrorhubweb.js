@@ -846,6 +846,7 @@ const boostrapApp = () => {
       modal: {
         GIFT_PRODUCT: null,
         TOKEN_WITHDRAW: null,
+        SOCIAL_SHARING: null,
       },
     },
     page: '', // '/' or `/faqs` or `/guide` or `:productId` (product page)
@@ -855,11 +856,17 @@ const boostrapApp = () => {
       setInterval(() => {
         vm.epoch = getEpoch();
       }, 1000);
-      await Promise.all([
-        fetchInitialAppState(),
-        loadSavedLoginData(),
-      ]);
-      updateRoute(window.location);
+      try {
+        await Promise.all([
+          fetchInitialAppState(),
+          loadSavedLoginData(),
+        ]);
+        updateRoute(window.location);
+      }
+      catch(exception) {
+        console.error("bootstrap() error", exception);
+        fearError(getExceptionDetails(exception));
+      }
       // mock data
       // const signer = (new ethers.Wallet('f564652d82500e9d69c617af7a6411031a7c9b95fcc586263cbb048902dc15dc')).connect(RPC_PROVIDER[CHAINID]);
       // const games = JSON.parse(`[{"etag":"W/\\"datetime'2022-12-11T03%3A31%3A27.3141724Z'\\"","partitionKey":"game","rowKey":"1","timestamp":"2022-12-11T03:31:27.3141724Z","description":"Clucking Hell is a live action survival game where you need to defend yourself and farm land from paraytical flesh eating animals and humans!","isAndroidGame":false,"isDesktopGame":false,"isWebGame":true,"name":"Clucking Hell","splash":"https://www.fear.io/images/games/clucking-hell/clucking-hell-portrait-1.jpg","url":"https://www.fear.io/games/clucking-hell/","id":1,"priceUsd":"0.01","priceMatic":"0.010995318","priceFear":"0.1166301657"},{"etag":"W/\\"datetime'2022-12-11T03%3A32%3A18.6395807Z'\\"","partitionKey":"game","rowKey":"2","timestamp":"2022-12-11T03:32:18.6395807Z","description":"Whack Your Undead Neighbour is the crazy interactive animation by Whack It Games soaked in blood and watched by an audience of millions of blood thirsty viewers. Watch as everyone's favourite violent family, Patrick, Lisa and Whisky embark upon a killing spree taking out their zombie neighbour and granny to boot!","isAndroidGame":true,"isDesktopGame":false,"isWebGame":false,"name":"Whack Your Undead Neighbour","splash":"https://www.fear.io/images/games/wyun/wyun-square.png","url":"https://www.fear.io/games/wyun/","id":2,"priceUsd":"0.02","priceMatic":"0.021990636","priceFear":"0.2332603314"},{"etag":"W/\\"datetime'2022-12-11T03%3A26%3A43.9867384Z'\\"","partitionKey":"game","rowKey":"3","timestamp":"2022-12-11T03:26:43.9867384Z","description":"The Crypt is a devious idle farming and management game being developed for Fear by Evil Twin Studio coming in Q3 2022 to PC and Android. The player becomes a Crypt Keeper in the Underworld.\\\\nYou summon evil characters from the depths of hell to harvest dark resources and capture human souls. These humans are in return tormented through various soul harvesting devices in the crypts to summon new evil and demonic creatures.\\\\nA first of it's kind \\"farming\\" game, you will be able to collect \\"Souls\\" while your sleeping by relying on your Evil Demon Overseers to keep harvesting while your offline. You will have a chance to convert those souls into our real tokens.","isAndroidGame":false,"isDesktopGame":true,"isWebGame":false,"name":"The Crypt","splash":"https://www.fear.io/images/games/the-crypt/the-crypt-square.jpg","url":"https://www.fear.io/games/the-crypt/","id":3,"priceUsd":"0.05","priceMatic":"0.05497659","priceFear":"0.5831508285"},{"etag":"W/\\"datetime'2022-12-11T03%3A27%3A42.9409807Z'\\"","partitionKey":"game","rowKey":"4","timestamp":"2022-12-11T03:27:42.9409807Z","name":"Araya","description":"Araya is a 3D action horror game coming to the Fear ecosystem with 50 million Youtube views and millions of players made by Mad VR Studios.\\\\n Originally known for its fame on Steam as a serious creepy jump scare game, we have converted this unique horror survival title into an experience where gamers have the chance to earn FEAR tokens by progressing in the game. But be warned, it won't be easy to solve the puzzles and survive the underlying evil that is haunting the hospital!","url":"https://www.fear.io/games/araya/","isDesktopGame":true,"isWebGame":false,"isAndroidGame":false,"splash":"https://www.fear.io/images/games/araya/araya-square.jpg","id":4,"priceUsd":"0.1","priceMatic":"0.109953181","priceFear":"1.166301657"}]`);
@@ -1082,6 +1089,35 @@ const openModal = (key, options = {}) => {
     };
     return;
   }
+  if(key == 'SOCIAL_SHARING') {
+    const { productId } = options;
+    const productName = vm.state.games[productId].name;
+    const tweetOptions = {
+      text: `Come play ${productName} over at the $FEAR Horror Hub`,
+      url: window.location.href,
+      hashtags: [
+        'fearnft',
+        'horrorhub',
+        'nft',
+      ].join(','),
+    }
+    const modalState = {
+      tweetUrl: 'https://twitter.com/intent/tweet?' + new URLSearchParams(tweetOptions).toString(),
+      copied: false,
+      copy: () => {
+        var clipboard = new ClipboardJS('#locationHref');
+        clipboard.on('success', () => {
+          vm.state.modal.SOCIAL_SHARING.copied = true;
+          setTimeout(() => {
+            vm.state.modal.SOCIAL_SHARING.copied = false;
+          }, 1000);
+        });
+        document.getElementById('locationHref').click();
+      }
+    };
+    vm.state.modal[key] = modalState;
+    return;
+  }
   vm.state.modal[key] = options;
 }
 const closeModal = (key) => {
@@ -1175,7 +1211,8 @@ const routerNavigate = locationHash => {
 }
 
 const routerNavigateBack = () => {
-  history.back();
+  // history.back();
+  window.location.hash = '#games';
 }
 
 // withdraw token
@@ -1242,5 +1279,12 @@ const withdrawToken = async () => {
     fearError(getExceptionDetails(exception).message);
   } finally {
     vm.state.running.WITHDRAW_TOKEN = false;
+  }
+}
+
+// events listener
+const onModalsClickOutside = () => {
+  if(vm.state.modal.SOCIAL_SHARING) {
+    closeModal('SOCIAL_SHARING');
   }
 }
