@@ -1102,7 +1102,8 @@ const openModal = (key, options = {}) => {
       ].join(','),
     }
     const modalState = {
-      tweetUrl: 'https://twitter.com/intent/tweet?' + new URLSearchParams(tweetOptions).toString(),
+      // keep the space at the start to bypass adblock filter
+      tweetUrl: ' https://twitter.com/intent/tweet?' + new URLSearchParams(tweetOptions).toString(),
       copied: false,
       copy: () => {
         var clipboard = new ClipboardJS('#locationHref');
