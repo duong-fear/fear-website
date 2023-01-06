@@ -793,12 +793,12 @@
   <div
     x-transition.duration.100ms
     class="fixed top-0 left-0 w-full h-full backdrop-blur-sm backdrop-brightness-50 flex items-center justify-center z-10"
-    x-show="state && state.modal.GIFT_PRODUCT"  
+    x-show="state && (state.modal.GIFT_PRODUCT || state.modal.TOKEN_WITHDRAW)"  
   >
     <template x-if="state.modal.GIFT_PRODUCT">
     <div class="p-2 sm:p-3 md:p-4 rounded bg-neutral-800 border-2 md:border-4 border-solid border-neutral-700 text-neutral-100 w-full max-w-sm sm:max-w-md md:max-w-lg">
       <div class="flex pb-4 text-lg justify-between items-center">
-        <span>Gift <b x-text="state.games[`_${state.modal.GIFT_PRODUCT.productId}`].name"></b> to your friend</span>
+        <span>Gift <b x-text="state.games[state.modal.GIFT_PRODUCT.productId].name"></b> to your friend</span>
         <button
           @click="closeModal('GIFT_PRODUCT')"
           class="p-1"
@@ -843,7 +843,7 @@
         >
           <span>
             <span>Pay</span>
-            <span class="font-bold" x-text="formatEtherHuman(state.games[`_${state.modal.GIFT_PRODUCT.productId}`].priceFear)"></span>
+            <span class="font-bold" x-text="formatEtherHuman(state.games[state.modal.GIFT_PRODUCT.productId].priceFear)"></span>
             <span class="font-bold">FEAR</span>
           </span>
           <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.GIFT_WITH_FEAR !== false"></i>
@@ -856,7 +856,7 @@
         >
           <span>
             <span>Pay</span>
-            <span class="font-bold" x-text="formatEtherHuman(state.games[`_${state.modal.GIFT_PRODUCT.productId}`].priceMatic)"></span>
+            <span class="font-bold" x-text="formatEtherHuman(state.games[state.modal.GIFT_PRODUCT.productId].priceMatic)"></span>
             <span class="font-bold">MATIC</span>
           </span>
           <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.GIFT_WITH_MATIC"></i>
@@ -864,6 +864,22 @@
       </div>
     </div>
     </template>
+    <!-- <template x-if="state.modal.TOKEN_WITHDRAW">
+      <div class="p-2 sm:p-3 md:p-4 rounded bg-neutral-800 border-2 md:border-4 border-solid border-neutral-700 text-neutral-100 w-full max-w-sm sm:max-w-md md:max-w-lg">
+        <div class="flex pb-4 text-lg justify-between items-center">
+          <span>Gift <b x-text="state.games[productId].name"></b> to your friend</span>
+          <button
+            @click="closeModal('GIFT_PRODUCT')"
+            class="p-1"
+            :disabled="state.running.PRODUCT_GIFT_MODAL_FIND_ETH_ADDRESS"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </template> -->
   </div>
   <!-- footer will be hidden on product details page so the action button can take the bottom -->
   <div

@@ -838,6 +838,7 @@ const boostrapApp = () => {
       },
       modal: {
         GIFT_PRODUCT: null,
+        TOKEN_WITHDRAW: null,
       },
     },
     page: '', // '/' or `/faqs` or `/guide` or `:productId` (product page)
