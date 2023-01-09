@@ -260,7 +260,8 @@ const fetchInitialAppState = async () => {
     priceMatic: formatEther( priceForAllProducts[+p.rowKey].matic ),
     priceFear: formatEther( priceForAllProducts[+p.rowKey].fear ),
     totalSold: totalSoldStats[+p.rowKey],
-    platform: desktopGames.includes(p.name) ? 'desktop' : 'mobile',
+    images: (p.images || '').trim().split(',').filter(Boolean).map(i => i.trim()) || [],
+    videos: (p.videos || '').trim().split(',').filter(Boolean).map(i => i.trim()) || [],
   }));
   vm.state.games = _.zipObject(
     games.map(g => g.id),
@@ -1167,14 +1168,6 @@ const giftWithMatic = async (productId, note = '') => {
     vm.state.running.GIFT_WITH_MATIC = false;
   }
 }
-
-// mock
-const productImageList = [
-  'games/blood-realms/images/blood-realms-screenshot-4.jpg',
-  'games/the-crypt/images/the-crypt-demons-2.jpg',
-  'games/clucking-hell/images/clucking-hell-frostbite-menu.jpg',
-  'games/blood-realms/images/blood-realms-screenshot-1.jpg',
-];
 
 // router 
 const updateRoute = (location) => {

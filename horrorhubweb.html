@@ -313,8 +313,9 @@
               </div>
               <div class="flex justify-between items-center text-xs sm:text-sm md:text-base gap-1">
                 <div class="flex items-center px-2 pb-1 gap-1 font-bold">
-                  <span x-text="g.avgRating" class="text-neutral-300"></span>
-                  <i x-html="starSVG('w-3 h-3 sm:h-4 sm:w-4 text-red')"></i>
+                  <span x-text="g.avgRating || 0" :class="g.avgRating ? 'text-neutral-300' : 'text-neutral-500'"></span>
+                  <i x-html="starSVG('w-3 h-3 sm:h-4 sm:w-4 text-red')" x-show="g.avgRating"></i>
+                  <i x-html="starSVG('w-3 h-3 sm:h-4 sm:w-4 text-neutral-500')" x-show="!g.avgRating"></i>
                 </div>
                 <div class="flex items-center px-2 pb-1 gap-1 text-neutral-300">
                   <i x-html="downloadCircleSVG('w-3 h-3 sm:h-4 sm:w-4')"></i>
@@ -643,21 +644,23 @@
         <!-- <div class="border-l-4 border-solid border-red-600 pl-2 mb-2 font-bold">
           <span>Game description</span>
         </div> -->
-        <div class="rounded-md text-neutral-300">
+        <div class="p-3 md:p-4 rounded-md text-neutral-300 border-2 border-neutral-500 border-dashed">
           <span x-html="state.games[productId].description"></span>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-4 p-2">
-          <a data-fancybox="gallery" href="https://www.youtube.com/embed/k3Yoch8jhXA">
-            <div class="relative -z-10">
-              <img class="brightness-50" src="https://i3.ytimg.com/vi/k3Yoch8jhXA/maxresdefault.jpg" />
-              <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-                <img src="images/youtube-play.png" class="w-16 h-16 lg:w-20 lg:h-20" />
+          <template x-for="videoId in state.games[productId].videos">
+            <a data-fancybox="gallery" :href="`https://www.youtube.com/embed/${videoId}`">
+              <div class="relative -z-10">
+                <img class="brightness-50 rounded-md" :src="`https://i3.ytimg.com/vi/${videoId}/maxresdefault.jpg`" />
+                <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                  <img src="images/youtube-play.png" class="w-16 h-16 lg:w-20 lg:h-20" />
+                </div>
               </div>
-            </div>
-          </a>
-          <template x-for="src in productImageList">
+            </a>
+          </template>
+          <template x-for="src in state.games[productId].images">
             <a :href="src" data-fancybox="gallery" class="flex items-center justify-center">
-              <img :src="src" class="rounded-md" />
+              <img :src="src" class="rounded-md aspect-video" />
             </a>
           </template>
         </div>
