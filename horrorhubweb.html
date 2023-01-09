@@ -294,8 +294,9 @@
           </div>
         </div>
       </div>
-      <div class="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-2 mt-2">
-        <template x-for="g in _.values(state.games).filter(g => g.platform == platform)">
+      <template x-for="_platform in ['mobile', 'desktop']">
+        <div class="w-full grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-2 mt-2" x-show="platform === _platform" x-transition:enter.duration.100ms>
+        <template x-for="g in _.values(state.games).filter(g => g.platform == _platform)">
           <div class="text-center m-1 xl:m-2 cursor-pointer flex flex-col items-center gap-1 md:gap-2" @click="routerNavigate(`game/${g.id}`)">
             <div class="shadow-md p-1 bg-neutral-900 rounded-md h-full flex flex-col">
               <div class="relative">
@@ -325,7 +326,8 @@
             </div>
           </div>
         </template>
-      </div>
+        </div>
+      </template>
       </div>
       </template>
       </div>
