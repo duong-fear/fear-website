@@ -1068,10 +1068,11 @@ const getUSDValueString = (_fearBalance, _maticBalance, textOnZeroOrError = '') 
 const logout = async () => {
   const confirmed = await fearConfirm("Are you sure you want to log out ?");
   if(!confirmed) return;
-  vm.page = '/';
+  // vm.page = '/';
   vm.tab = 'balance';
   vm.state.user = null;
   localStorage.removeItem('fear-wallet');
+  window.location.hash = '#games';
 }
 
 const refreshBalance = async () => {
