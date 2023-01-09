@@ -667,9 +667,9 @@
           </template>
         </div>
         <!-- action button: login | buy / download / review -->
-        <div class="left-0 sm:left-auto fixed bottom-0 left-0 container max-w-6xl backdrop-blur-lg backdrop-brightness-200 z-10 text-sm md:text-base" x-show="!showProductReviewBox">
+        <div class="left-0 sm:left-auto fixed bottom-0 left-0 container max-w-6xl backdrop-blur-lg backdrop-brightness-150 z-10 text-sm md:text-base" x-show="!showProductReviewBox">
           <!-- buy buttons when loged in and game hasnt purchased -->
-          <div class="flex" x-show="state.user && !state.user.purchased.includes(productId)">
+          <div class="flex" x-show="state.user && state.games[productId].status == 'ON_SALE' && !state.user.purchased.includes(productId)">
             <button class="text-neutral-100 px-2" @click="routerNavigateBack">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
             </button>
@@ -714,7 +714,7 @@
             </div>
           </div>
           <!-- download button when loged in and game has purchased -->
-          <div class="flex gap-1 md:gap-2" x-show="state.user && state.user.purchased.includes(productId)">
+          <div class="flex gap-1 md:gap-2" x-show="state.user && state.games[productId].status == 'ON_SALE' && state.user.purchased.includes(productId)">
             <button class="text-neutral-100 pl-3" @click="routerNavigateBack">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
             </button>
@@ -754,7 +754,7 @@
             </button>
           </div>
           <!-- login button -->
-          <div class="flex" x-show="!state.user">
+          <div class="flex" x-show="!state.user && state.games[productId].status == 'ON_SALE'">
             <button class="text-neutral-100 pl-3" @click="routerNavigateBack">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
             </button>
@@ -768,6 +768,42 @@
               </span>
               <i x-html="loadingSVG('w-4 h-4')" x-show="state.running.GOOGLE_LOGIN"></i>
             </button>
+            <button
+              class="text-neutral-100 pr-3"
+              @click="openModal('SOCIAL_SHARING', { productId })"
+            >
+              <i x-html="shareSVG('w-8 h-8')"></i>
+            </button>
+          </div>
+          <div class="flex" x-show="state.games[productId].status == 'COMING_SOON'">
+            <button class="text-neutral-100 pl-3" @click="routerNavigateBack">
+              <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
+            </button>
+            <button
+              class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-neutral-600 text-neutral-100 font-bold rounded-md flex justify-center items-center disabled:cursor-not-allowed"
+              disabled
+            >
+              <span>
+                Coming soon 😴
+              </span>
+            </button>
+            <button
+              class="text-neutral-100 pr-3"
+              @click="openModal('SOCIAL_SHARING', { productId })"
+            >
+              <i x-html="shareSVG('w-8 h-8')"></i>
+            </button>
+          </div>
+          <div class="flex" x-show="state.games[productId].status == 'FREE'">
+            <button class="text-neutral-100 pl-3" @click="routerNavigateBack">
+              <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
+            </button>
+            <a
+              :href="state.games[productId].downloadUrl" target="_blank" rel="noreferer"
+              class="mx-2 my-3 select-none uppercase py-4 flex-1 bg-green-100 text-green-800 font-bold rounded-md flex justify-center items-center gap-1"
+            >
+              <span>Free Download</span>
+            </a>
             <button
               class="text-neutral-100 pr-3"
               @click="openModal('SOCIAL_SHARING', { productId })"

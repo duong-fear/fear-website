@@ -238,9 +238,6 @@ const refreshUserStats = async () => {
 }
 
 const fetchInitialAppState = async () => {
-  const desktopGames = [
-    "Araya",
-  ]
   const [
     priceForAllProducts,
     productList,
