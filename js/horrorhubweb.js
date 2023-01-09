@@ -250,16 +250,21 @@ const fetchInitialAppState = async () => {
     getTotalSoldStats(),
   ]);
   vm.state.exchangeRate = exchangeRate;
-  const games = productList.map(p => ({
-    ...p,
-    id: +p.rowKey,
-    priceUsd: formatEther( priceForAllProducts[+p.rowKey].usd ),
-    priceMatic: formatEther( priceForAllProducts[+p.rowKey].matic ),
-    priceFear: formatEther( priceForAllProducts[+p.rowKey].fear ),
-    totalSold: totalSoldStats[+p.rowKey],
-    images: (p.images || '').trim().split(',').filter(Boolean).map(i => i.trim()) || [],
-    videos: (p.videos || '').trim().split(',').filter(Boolean).map(i => i.trim()) || [],
-  }));
+  const games = productList.map(p => {
+    const _priceUsd = formatEther( priceForAllProducts[+p.rowKey].usd );
+    const { status } = p;
+
+    return {
+      ...p,
+      id: +p.rowKey,
+      priceUsd: status === "FREE" ? 0 : ( status === "COMING_SOON" ? null : _priceUsd),
+      priceMatic: formatEther( priceForAllProducts[+p.rowKey].matic ),
+      priceFear: formatEther( priceForAllProducts[+p.rowKey].fear ),
+      totalSold: totalSoldStats[+p.rowKey],
+      images: (p.images || '').trim().split(',').filter(Boolean).map(i => i.trim()) || [],
+      videos: (p.videos || '').trim().split(',').filter(Boolean).map(i => i.trim()) || [],
+    };
+  });
   vm.state.games = _.zipObject(
     games.map(g => g.id),
     games,

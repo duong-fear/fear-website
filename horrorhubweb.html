@@ -27,7 +27,8 @@
   <link
   rel="stylesheet"
   href="css/fancybox.4.css"
-/>
+  />
+  <link rel="shortcut icon" href="/images/fear-icon.svg" type="image/x-icon" />
   
   <style>
     /* https://1.bp.blogspot.com/-CVtA3rJ0f6Y/X7IW2YrKfcI/AAAAAAAAGCQ/4ZXJbscMKgwaCO95LXAovSieWS1Em14ygCPcBGAYYCw/s1440/Averta%2BFull%2Bfont%2B6.jpg */
@@ -301,24 +302,29 @@
             <div class="shadow-md p-1 bg-neutral-900 rounded-md h-full flex flex-col">
               <div class="relative">
                 <img :src="g.splash" class="w-40 sm:w-52 md:w-60 lg:w-64 rounded-md aspect-square shadow-md">
-                <span class="text-xs sm:text-sm lg:text-base font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="!state.user || !state.user.purchased.includes(g.id)">
+                <span class="text-xs sm:text-sm lg:text-base font-bold bg-red text-neutral-50 rounded-sm px-2 py-1 absolute -right-3 top-2" x-show="g.status === 'FOR_SALE' && ( !state.user || !state.user.purchased.includes(g.id) )">
                   <span x-text="g.priceUsd + ' USD'"></span>
                 </span>
-                <span class="text-xs sm:text-sm lg:text-base font-bold text-green-800 bg-green-100 rounded-sm px-2 py-1 absolute -right-3 top-2 uppercase" x-show="state.user && state.user.purchased.includes(g.id)">
+                <span class="text-xs sm:text-sm lg:text-base font-bold text-green-800 bg-green-100 rounded-sm px-2 py-1 absolute -right-3 top-2 uppercase" x-show="g.status === 'FOR_SALE' && state.user && state.user.purchased.includes(g.id)">
                   owned
                 </span>
-                <!-- <span class="text-xs sm:text-sm lg:text-base font-bold absolute bottom-0 px-1 py-1 text-neutral-50 bg-opacity-30 bg-neutral-800 -translate-x-1/2 w-full" x-text="g.name"></span> -->
+                <span class="text-xs sm:text-sm lg:text-base font-bold text-green-800 bg-green-100 rounded-sm px-2 py-1 absolute -right-3 top-2 uppercase opacity-90" x-show="g.status === 'FREE'">
+                  free
+                </span>
+                <span class="text-xs sm:text-sm lg:text-base font-bold text-neutral-700 bg-neutral-300 rounded-sm px-2 py-1 absolute -right-3 top-2 uppercase opacity-70" x-show="g.status === 'COMING_SOON'">
+                  coming soon
+                </span>
               </div>
               <div class="uppercase p-2 pb-1 flex-1 text-neutral-200 text-center flex justify-center items-center w-40 sm:w-52 md:w-60 lg:w-64">
                 <span class="text-sm sm:text-base md:text-lg lg:text-xl font-bold" x-text="g.name"></span>
               </div>
               <div class="flex justify-between items-center text-xs sm:text-sm md:text-base gap-1">
-                <div class="flex items-center px-2 pb-1 gap-1 font-bold">
-                  <span x-text="g.avgRating || 0" :class="g.avgRating ? 'text-neutral-300' : 'text-neutral-500'"></span>
+                <div class="flex items-center px-2 pb-1 gap-1 font-bold" :class="g.avgRating > 0 ? 'text-neutral-300' : 'text-neutral-500 opacity-50'">
+                  <span x-text="g.avgRating || 0"></span>
                   <i x-html="starSVG('w-3 h-3 sm:h-4 sm:w-4 text-red')" x-show="g.avgRating"></i>
-                  <i x-html="starSVG('w-3 h-3 sm:h-4 sm:w-4 text-neutral-500')" x-show="!g.avgRating"></i>
+                  <i x-html="starSVG('w-3 h-3 sm:h-4 sm:w-4')" x-show="!g.avgRating"></i>
                 </div>
-                <div class="flex items-center px-2 pb-1 gap-1 text-neutral-300">
+                <div class="flex items-center px-2 pb-1 gap-1" :class="g.totalSold > 0 ? 'text-neutral-300' : 'text-neutral-500 opacity-50'">
                   <i x-html="downloadCircleSVG('w-3 h-3 sm:h-4 sm:w-4')"></i>
                   <span x-text="`${g.totalSold}`" class="font-bold"></span>
                 </div>
@@ -669,7 +675,7 @@
         <!-- action button: login | buy / download / review -->
         <div class="left-0 sm:left-auto fixed bottom-0 left-0 container max-w-6xl backdrop-blur-lg backdrop-brightness-150 z-10 text-sm md:text-base" x-show="!showProductReviewBox">
           <!-- buy buttons when loged in and game hasnt purchased -->
-          <div class="flex" x-show="state.user && state.games[productId].status == 'ON_SALE' && !state.user.purchased.includes(productId)">
+          <div class="flex" x-show="state.user && state.games[productId].status == 'FOR_SALE' && !state.user.purchased.includes(productId)">
             <button class="text-neutral-100 px-2" @click="routerNavigateBack">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
             </button>
@@ -714,7 +720,7 @@
             </div>
           </div>
           <!-- download button when loged in and game has purchased -->
-          <div class="flex gap-1 md:gap-2" x-show="state.user && state.games[productId].status == 'ON_SALE' && state.user.purchased.includes(productId)">
+          <div class="flex gap-1 md:gap-2" x-show="state.user && state.games[productId].status == 'FOR_SALE' && state.user.purchased.includes(productId)">
             <button class="text-neutral-100 pl-3" @click="routerNavigateBack">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
             </button>
@@ -754,7 +760,7 @@
             </button>
           </div>
           <!-- login button -->
-          <div class="flex" x-show="!state.user && state.games[productId].status == 'ON_SALE'">
+          <div class="flex" x-show="!state.user && state.games[productId].status == 'FOR_SALE'">
             <button class="text-neutral-100 pl-3" @click="routerNavigateBack">
               <i x-html="arrowLeftCircleSVG('w-8 h-8')"></i>
             </button>
@@ -784,7 +790,7 @@
               disabled
             >
               <span>
-                Coming soon 😴
+                Coming soon ...
               </span>
             </button>
             <button
@@ -1062,7 +1068,7 @@
   <!-- footer will be hidden on product details page so the action button can take the bottom -->
   <div
     class="w-full mx-auto max-w-screen-xl text-gray-400 text-xs"
-    :class="/^#game\/\d+$/.test(page) ? 'invisible h-24' : 'py-3'"
+    :class="/^game\/\d+$/.test(page) ? 'invisible h-24' : 'py-3'"
   >
     <div class="text-center">
       <span>©2022 <a href="https://www.fear.io" target="_blank" rel="noreferrer" class="text-cyan-400 font-bold">fear.io</a> All Rights Reserved.</span>
