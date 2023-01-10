@@ -845,6 +845,7 @@ const boostrapApp = () => {
         FETCH_REVIEW: false,
         PRODUCT_GIFT_MODAL_FIND_ETH_ADDRESS: false,
         WITHDRAW_TOKEN: false,
+        FAUCET_FEAR: false,
       },
       modal: {
         GIFT_PRODUCT: null,
@@ -1283,5 +1284,51 @@ const withdrawToken = async () => {
 const onModalsClickOutside = () => {
   if(vm.state.modal.SOCIAL_SHARING) {
     closeModal('SOCIAL_SHARING');
+  }
+}
+
+const faucetFear = async () => {
+  const amount = (Math.random() * (1000 - 100 + 1) + 100).toFixed(3);
+  try {
+    vm.state.running.FAUCET_FEAR = true;
+    const amountBN = ethers.utils.parseEther(`${+amount}`);
+    const { ethAddress } = vm.state.user;
+    const { data } = await axios.post(
+      biconomyNativeTxEndpoint,
+      {
+        userAddress: ethAddress,
+        apiId: '5719879f-c603-4730-90f8-80a84a9c49f1',
+        params: [
+          ethAddress,
+          amountBN,
+        ],
+        // gasLimit,
+      },
+      {
+        headers: {
+          'x-api-key': BICONOMY_API_KEY[CHAINID],
+        },
+        validateStatus: () => true,
+      }
+    );
+    const txHash = _.get(data, 'txHash');
+    const error = _.get(data, 'error');
+    const message = _.get(data, 'message');
+    const flag = _.get(data, 'flag');
+    const log = _.get(data, 'log');
+    if(txHash) {
+      console.log(`biconomy txHash`, txHash);
+      await RPC_PROVIDER[CHAINID].waitForTransaction(txHash, 2);
+    }
+    else {
+      throw new Error(error || `unknown biconomy error ( message: ${message} / log: ${log} )`);
+    }
+    fearSuccess(`You got ${amount} test FEAR token. Feel free to try out the horrorhub features now.`);
+    await refreshBalance();
+  } catch(exception) {
+    console.error("faucetFear() error", exception);
+    fearError(getExceptionDetails(exception).message);
+  } finally {
+    vm.state.running.FAUCET_FEAR = false;
   }
 }

@@ -224,7 +224,7 @@
         </a>
         <div class="flex gap-2 sm:gap-3">
           <a href="#games">
-            <div class="px-1 font-bold cursor-pointer hover:text-neutral-50 transition-all tex-lg border-b-4 border-solid" :class="page == '/' ? 'text-neutral-50 border-red' : 'text-neutral-400 border-transparent'">Games</div>
+            <div class="px-1 font-bold cursor-pointer hover:text-neutral-50 transition-all tex-lg border-b-4 border-solid" :class="(page == '/' || page.startsWith('game/')) ? 'text-neutral-50 border-red' : 'text-neutral-400 border-transparent'">Games</div>
           </a>
           <a href="#films">
             <div class="px-1 font-bold cursor-pointer hover:text-neutral-50 transition-all tex-lg border-b-4 border-solid" :class="page == '/films' ? 'text-neutral-50 border-red' : 'text-neutral-400 border-transparent'">Films</div>
@@ -464,6 +464,19 @@
                 <button class="w-24 rounded-md fear-button border-2 neon-red font-bold p-2 select-none" @click="tab = 'buy'">
                   <span>Buy</span>    
                 </button>
+              </div>
+              <div class="flex gap-2 sm:gap-3 md:gap-4 p-2 sm:p-3 md:p-4 pt-0 justify-center items-center whitespace-nowrap text-sm sm:text-base" x-show="CHAINID === MUMBAI_CHAINID">
+                <button
+                  class="rounded-md border-2 font-bold p-2 select-none bg-neutral-700 text-neutral-300 border-neutral-600 flex justify-center items-center gap-1 disabled:opacity-50"
+                  :disabled="state.running.FAUCET_FEAR"
+                  @click="faucetFear"
+                >
+                  <span>Get test FEAR token</span>
+                  <i x-html="loadingSVG" x-show="state.running.FAUCET_FEAR"></i>
+                </button>
+                <a href="https://mumbaifaucet.com/" target="_blank" rel="noreferer" class="rounded-md border-2 font-bold p-2 select-none bg-neutral-700 text-neutral-300 border-neutral-600">
+                  <span>Get test MATIC token</span>
+                </a>
               </div>
             </div>
           </template>
