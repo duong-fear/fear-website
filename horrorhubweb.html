@@ -474,9 +474,12 @@
                   <span>Get test FEAR token</span>
                   <i x-html="loadingSVG" x-show="state.running.FAUCET_FEAR"></i>
                 </button>
-                <a href="https://mumbaifaucet.com/" target="_blank" rel="noreferer" class="rounded-md border-2 font-bold p-2 select-none bg-neutral-700 text-neutral-300 border-neutral-600">
+                <button
+                  class="rounded-md border-2 font-bold p-2 select-none bg-neutral-700 text-neutral-300 border-neutral-600"
+                  @click="faucetMatic"
+                  >
                   <span>Get test MATIC token</span>
-                </a>
+                </button>
               </div>
             </div>
           </template>

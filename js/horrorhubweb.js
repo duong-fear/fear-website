@@ -1332,3 +1332,15 @@ const faucetFear = async () => {
     vm.state.running.FAUCET_FEAR = false;
   }
 }
+
+const faucetMatic = async () => {
+  const { ethAddress } = vm.state.user;
+  await Swal.fire({
+    title: 'Guide',
+    html: `To get the test MATIC token, go to <a href='https://mumbaifaucet.com' target='_blank' class='text-blue-500'>mumbaifaucet.com</a>, enter your wallet address: ${ethAddress} and press on <b>Send Me MATIC</b>`,
+    icon: 'info',
+    showCancelButton: true,
+    cancelButtonText: "Close",
+    showConfirmButton: false,
+  });
+}

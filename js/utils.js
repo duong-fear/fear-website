@@ -35,6 +35,17 @@ const fearAsk = async (title, message, inputValidator, options = {}) => {
   return isConfirmed ? value : undefined;
 }
 
+const fearInfo = async (title, message) => {
+  await Swal.fire({
+    title,
+    text: message,
+    icon: 'info',
+    showCancelButton: true,
+    showConfirmButton: false,
+    cancelButtonText: 'Close',
+  });
+}
+
 const fearConfirm = async (title, message, confirmButtonText) => {
   const { isConfirmed } = await Swal.fire({
     title,
